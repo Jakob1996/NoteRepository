@@ -1,12 +1,13 @@
 package com.example.noteapp
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.note_item.view.*
 
-class NoteAdapter(private val notes:List<Note>): RecyclerView.Adapter <NoteAdapter.MyViewHolder>() {
+class NoteAdapter(private val noteList:List<Note>, private val listener:OnItemClickListener): RecyclerView.Adapter <NoteAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater:LayoutInflater = LayoutInflater.from(parent.context)
@@ -15,14 +16,33 @@ class NoteAdapter(private val notes:List<Note>): RecyclerView.Adapter <NoteAdapt
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.itemView.note_title
+        holder.itemView.setBackgroundColor(Color.WHITE)
+        if(noteList[position].isSelected){
+            holder.itemView.setBackgroundColor(Color.LTGRAY)
+        }
 
+        holder.itemView.note_title.text = noteList[position].title
+        holder.itemView.note_message.text = noteList[position].message
     }
 
     override fun getItemCount(): Int {
-        return notes.size
+        return noteList.size
     }
 
     inner class MyViewHolder(view:View):RecyclerView.ViewHolder(view) {
+        init {
+            view.setOnClickListener{
+                listener.onItemClick(noteList[adapterPosition], adapterPosition)
+            }
+            view.setOnLongClickListener{
+                listener.onItemLongClick(noteList[adapterPosition], adapterPosition)
+                true
+            }
+        }
     }
+}
+
+interface OnItemClickListener{
+    fun onItemClick(note:Note, position:Int)
+    fun onItemLongClick(note:Note, position: Int)
 }
