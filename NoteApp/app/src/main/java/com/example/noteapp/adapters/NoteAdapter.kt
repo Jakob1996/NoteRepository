@@ -1,13 +1,15 @@
-package com.example.noteapp
+package com.example.noteapp.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.noteapp.R
+import com.example.noteapp.data.Note
 import kotlinx.android.synthetic.main.note_item.view.*
 
-class NoteAdapter(private val noteList:List<Note>, private val listener:OnItemClickListener): RecyclerView.Adapter <NoteAdapter.MyViewHolder>() {
+class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemClickListener): RecyclerView.Adapter <NoteAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater:LayoutInflater = LayoutInflater.from(parent.context)
@@ -43,6 +45,6 @@ class NoteAdapter(private val noteList:List<Note>, private val listener:OnItemCl
 }
 
 interface OnItemClickListener{
-    fun onItemClick(note:Note, position:Int)
-    fun onItemLongClick(note:Note, position: Int)
+    fun onItemClick(note: Note, position:Int)
+    fun onItemLongClick(note: Note, position: Int)
 }

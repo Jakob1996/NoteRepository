@@ -1,8 +1,10 @@
-package com.example.noteapp
+package com.example.noteapp.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import com.example.noteapp.R
+import com.example.noteapp.viewmodels.NotesViewModel
 
 class MainActivity : AppCompatActivity() {
     lateinit var viewModel: NotesViewModel

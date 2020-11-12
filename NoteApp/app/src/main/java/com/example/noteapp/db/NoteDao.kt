@@ -1,6 +1,7 @@
-package com.example.noteapp
+package com.example.noteapp.db
 
 import androidx.room.*
+import com.example.noteapp.data.Note
 import kotlinx.coroutines.flow.Flow
 
 //Dao "Data access object"
@@ -11,10 +12,10 @@ interface NoteDao {
     // wiedział aby nie wykonywac tego na wątku głównym
 
     @Insert
-    suspend fun insert(note:Note)
+    suspend fun insert(note: Note)
 
     @Update
-    suspend fun update(note:Note)
+    suspend fun update(note: Note)
 
     @Delete
     suspend fun deleteNotes(notes:List<Note>)
