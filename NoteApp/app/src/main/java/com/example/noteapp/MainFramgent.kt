@@ -5,9 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 
 
 class MainFramgent : Fragment(), OnItemClickListener {
+
+    lateinit var viewModel: NotesViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        viewModel = ViewModelProvider(requireActivity())[NotesViewModel::class.java]
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onItemClick(note: Note, position: Int) {
         TODO("Not yet implemented")
     }
