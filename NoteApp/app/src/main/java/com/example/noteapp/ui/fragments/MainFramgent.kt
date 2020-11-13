@@ -6,15 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.noteapp.R
+import com.example.noteapp.adapters.NoteAdapter
 import com.example.noteapp.adapters.OnItemClickListener
 import com.example.noteapp.data.Note
 import com.example.noteapp.viewmodels.NotesViewModel
+import kotlinx.android.synthetic.main.fragment_main_framgent.*
 
 
 class MainFramgent : Fragment(), OnItemClickListener {
 
-    lateinit var viewModel: NotesViewModel
+    private lateinit var viewModel: NotesViewModel
+    private lateinit var adapter: NoteAdapter
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(requireActivity())[NotesViewModel::class.java]
