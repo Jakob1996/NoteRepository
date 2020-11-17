@@ -22,4 +22,7 @@ interface NoteDao {
 
     @Query("SELECT*FROM NOTE_TABLE ORDER BY date DESC" )
     fun getAllNotes():Flow<List<Note>>
+
+    @Query ("DELETE FROM note_table")
+    suspend fun clearDatabase()
 }

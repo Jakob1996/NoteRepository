@@ -21,7 +21,13 @@ class Repository (app:Application) {
         notesDao.deleteNotes(list)
     }
 
+    suspend fun clearDatabase(){
+        notesDao.clearDatabase()
+    }
+
     fun getAllNotes(): LiveData<List<Note>> {
         return notesDao.getAllNotes().asLiveData()
     }
+
+
 }
