@@ -22,6 +22,4 @@ object NoteDataBaseBuilder {
                 // jeżeli pojawi się nowa wersja i tworzy nową wersje
                 .build()
 
-
-
 }
