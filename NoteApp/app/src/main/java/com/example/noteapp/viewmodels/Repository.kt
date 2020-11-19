@@ -28,6 +28,4 @@ class Repository (app:Application) {
     fun getAllNotes(): LiveData<List<Note>> {
         return notesDao.getAllNotes().asLiveData()
     }
-
-
 }

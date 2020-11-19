@@ -17,9 +17,9 @@ object NoteDataBaseBuilder {
     }
 
     private fun roomBuild(context: Context) =
-        Room.databaseBuilder(context, NoteDataBase::class.java, "note_database")
-                .fallbackToDestructiveMigration() // Pozwalamy na niszczenie starej bazy,
-                // jeżeli pojawi się nowa wersja i tworzy nową wersje
+        Room.databaseBuilder(context.applicationContext, NoteDataBase::class.java, "note_database")
                 .build()
+    // Pozwalamy na niszczenie starej bazy,
+    // jeżeli pojawi się nowa wersja i tworzy nową wersje
 
 }
