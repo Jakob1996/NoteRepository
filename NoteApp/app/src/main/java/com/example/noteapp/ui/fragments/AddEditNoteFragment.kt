@@ -12,12 +12,11 @@ import com.example.noteapp.R
 import com.example.noteapp.data.Note
 import com.example.noteapp.viewmodels.NotesViewModel
 import kotlinx.android.synthetic.main.fragment_add_edit_note.*
-import kotlinx.android.synthetic.main.note_item.*
 import java.util.*
 
 class AddEditNoteFragment:Fragment() {
 
-    lateinit var viewModel: NotesViewModel
+    private lateinit var viewModel: NotesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(requireActivity())[NotesViewModel::class.java]
@@ -71,6 +70,6 @@ class AddEditNoteFragment:Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.setSelectedNote(null!!)
+        viewModel.setSelectedNote(null)
     }
 }

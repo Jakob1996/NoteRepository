@@ -18,9 +18,12 @@ class NotesViewModel(app:Application):AndroidViewModel(app) {
 
     fun getSelectedNote(): LiveData<Note?> = selectedNote //LiveData nie pozwala na zmiane obiektów
 
-    fun setSelectedNote(note:Note){
+    fun setSelectedNote(note: Note?){
         selectedNote.postValue(note)
     }
+
+    var multiSelectMode = false
+    val selectedNotes = ArrayList<Note>()
 
     fun insert(note: Note){
         CoroutineScope(Dispatchers.IO).launch { repository.insert(note) }

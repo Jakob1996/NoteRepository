@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class Note (val title:String,
                  val message:String,
                  val date:Long,
-                 var isSelected:Boolean = true){
+                 var isSelected:Boolean = false){
 
     @PrimaryKey(autoGenerate = true)
     var rowId = 0

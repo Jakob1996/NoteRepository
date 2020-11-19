@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.noteapp"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -60,6 +60,6 @@ dependencies {
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0-M1'
 
-    kapt 'androidx.room:room-compiler:2.2.3'
+    kapt 'androidx.room:room-compiler:2.2.5'
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 }

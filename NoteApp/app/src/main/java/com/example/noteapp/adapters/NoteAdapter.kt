@@ -18,7 +18,7 @@ class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemC
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.itemView.setBackgroundColor(Color.WHITE)
+        holder.itemView.cardView.setBackgroundColor(Color.WHITE)
         if(noteList[position].isSelected){
             holder.itemView.setBackgroundColor(Color.LTGRAY)
         }
