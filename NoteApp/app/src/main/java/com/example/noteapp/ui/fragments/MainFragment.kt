@@ -18,10 +18,11 @@ import com.example.noteapp.viewmodels.NotesViewModel
 import kotlinx.android.synthetic.main.fragment_main_framgent.*
 
 
-class MainFramgent : Fragment(), OnItemClickListener {
+class MainFragment : Fragment(), OnItemClickListener, SortDialogFragment.OnItemClickDialogListener {
 
     private lateinit var viewModel: NotesViewModel
     private lateinit var noteAdapter: NoteAdapter
+    private val request_code = 123
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,11 +64,23 @@ class MainFramgent : Fragment(), OnItemClickListener {
                 findNavController().navigate(R.id.addEditNoteFragment)
             }
         }
+
+        sortDate_FB.setOnClickListener {
+            val sortDialogFragment = SortDialogFragment()
+            sortDialogFragment.setTargetFragment(this, request_code)
+            sortDialogFragment.show(parentFragmentManager, "SortDialogFragment")
+        }
     }
 
     private fun updateNotes(list:List<Note>) {
-        noteAdapter = NoteAdapter(list, this)
+        noteAdapter = if(viewModel.sortDesc) {
+            NoteAdapter(list, this)
+        } else{
+            NoteAdapter(list.asReversed(), this) // asReversed - Na odwrót
+        }
+
         recyclerView.adapter = noteAdapter
+
     }
 
     override fun onItemClick(note: Note, position: Int) {
@@ -89,6 +102,11 @@ class MainFramgent : Fragment(), OnItemClickListener {
             selectNote(note, position)
             updateButtonUI()
         }
+    }
+
+    override fun onItemClickDialog(sortDesc: Boolean) {
+        viewModel.sortDesc = sortDesc
+        updateNotes(viewModel.allNotes.value!!)
     }
 
     private fun selectNote(note: Note, position: Int) {

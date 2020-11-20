@@ -22,6 +22,7 @@ class NotesViewModel(app:Application):AndroidViewModel(app) {
         selectedNote.postValue(note)
     }
 
+    var sortDesc = true
     var multiSelectMode = false
     val selectedNotes = ArrayList<Note>()
 
