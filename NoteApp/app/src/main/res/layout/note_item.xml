@@ -14,18 +14,20 @@
         android:orientation="vertical">
 
         <TextView
+            android:maxLines="1"
             android:id="@+id/note_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/title"
             android:textSize="25sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:ellipsize="end"/>
 
         <TextView
+            android:maxLines="1"
+            android:ellipsize="end"
             android:id="@+id/note_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/message"
             android:textSize="20sp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

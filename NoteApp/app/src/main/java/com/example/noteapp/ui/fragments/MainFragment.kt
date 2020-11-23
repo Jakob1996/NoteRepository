@@ -1,5 +1,6 @@
 package com.example.noteapp.ui.fragments
 
+import android.content.res.Configuration
 import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -82,13 +84,21 @@ class MainFragment : Fragment(), OnItemClickListener, SortDialogFragment.OnItemC
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("log", "onViewCreated in MainFragment")
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
+        recyclerView.layoutManager =
+                if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+                    GridLayoutManager(requireContext(), 2)
+        } else {
+            GridLayoutManager(requireContext(), 1)
+        }
+
 
         addNote_FB.setOnClickListener {
             if(viewModel.multiSelectMode){
                 viewModel.delete(viewModel.selectedNotes.toList())
                 exitMultiSelectMode()
             }else {
+
+                viewModel.setSelectedNote(null)
                 findNavController().navigate(R.id.addEditNoteFragment)
             }
         }
@@ -98,6 +108,8 @@ class MainFragment : Fragment(), OnItemClickListener, SortDialogFragment.OnItemC
             sortDialogFragment.setTargetFragment(this, request_code)
             sortDialogFragment.show(parentFragmentManager, "SortDialogFragment")
         }
+
+        updateModeUI()
     }
 
     private fun updateNotes(list:List<Note>) {
@@ -163,9 +175,11 @@ class MainFragment : Fragment(), OnItemClickListener, SortDialogFragment.OnItemC
 
     private fun updateModeUI() {
         if(viewModel.multiSelectMode){
+            (requireActivity() as AppCompatActivity).supportActionBar?.title ="Multi-select-mode"
             addNote_FB.setImageIcon(Icon.createWithResource(requireContext(), R.drawable.ic_baseline_delete))
             addNote_FB.labelText = "Delete notes"
         }else{
+            (requireActivity() as AppCompatActivity).supportActionBar?.title ="Your notes"
             addNote_FB.setImageIcon(Icon.createWithResource(requireContext(), R.drawable.ic_note_add))
             addNote_FB.labelText = "Add note"
 

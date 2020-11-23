@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -57,16 +58,15 @@ class AddEditNoteFragment:Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        (requireActivity() as AppCompatActivity).supportActionBar?.title ="Take note"
+
         viewModel.getSelectedNote().observe(viewLifecycleOwner, Observer {
             note -> note.let {
             title_addEditFrag.setText(it?.title)
             mess_addEditFrag.setText(it?.message)
+            (requireActivity() as AppCompatActivity).supportActionBar?.title ="Edit note"
         }
         })
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.setSelectedNote(null)
     }
 }
