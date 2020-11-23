@@ -41,4 +41,11 @@ class NotesViewModel(app:Application):AndroidViewModel(app) {
     fun clearDatabase(){
         CoroutineScope(Dispatchers.IO).launch { repository.clearDatabase() }
     }
+
+    fun findInNotes(text:String): List<Note> {
+        val list = allNotes.value
+         return list!!.filter { note ->
+            note.title.contains(text.toString()) || note.message.contains(text.toString())
+        }
+    }
 }

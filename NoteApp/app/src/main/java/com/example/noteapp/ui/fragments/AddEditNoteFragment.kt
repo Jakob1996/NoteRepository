@@ -1,9 +1,8 @@
 package com.example.noteapp.ui.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -19,14 +18,12 @@ class AddEditNoteFragment:Fragment() {
     private lateinit var viewModel: NotesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        viewModel = ViewModelProvider(requireActivity())[NotesViewModel::class.java]
         super.onCreate(savedInstanceState)
-
+        viewModel = ViewModelProvider(requireActivity())[NotesViewModel::class.java]
         requireActivity().onBackPressedDispatcher.addCallback(this, object:OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-
                 //Po naciśnięciu przycisku wstecz sprawdzamy czy notatka nie jest pusta
-                if(title_addEditFrag.text.isNotEmpty()||mess_addEditFrag.text.isNotEmpty()){
+                if(title_addEditFrag.text.isNotEmpty() || mess_addEditFrag.text.isNotEmpty()){
                     val title = title_addEditFrag.text.toString()
                     val message = mess_addEditFrag.text.toString()
                     val date = Calendar.getInstance().timeInMillis
@@ -53,7 +50,7 @@ class AddEditNoteFragment:Fragment() {
         })
     }
 
-    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_add_edit_note, container, false)
     }

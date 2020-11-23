@@ -2,6 +2,7 @@ package com.example.noteapp.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.R
 import com.example.noteapp.viewmodels.NotesViewModel

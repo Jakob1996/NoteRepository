@@ -2,10 +2,10 @@ package com.example.noteapp.ui.fragments
 
 import android.graphics.drawable.Icon
 import android.os.Bundle
+import android.util.Log
+import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -22,22 +22,49 @@ class MainFragment : Fragment(), OnItemClickListener, SortDialogFragment.OnItemC
 
     private lateinit var viewModel: NotesViewModel
     private lateinit var noteAdapter: NoteAdapter
+    private lateinit var searchView: SearchView
     private val request_code = 123
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true) // Nasz fragment dostaje dostęp do naszego paska menu
         viewModel = ViewModelProvider(requireActivity())[NotesViewModel::class.java]
         requireActivity().onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                if(viewModel.multiSelectMode ){
-                    exitMultiSelectMode()
-                } else{
-                    isEnabled = false
-                    requireActivity().onBackPressed()
+                if(!searchView.isIconified){ //Jesli nasz searchView nie jest ikoną
+                    searchView.onActionViewCollapsed()
+                    updateModeUI()
+                }else{
+                    if(viewModel.multiSelectMode ){
+                        exitMultiSelectMode()
+                    } else{
+                        isEnabled = false
+                        requireActivity().onBackPressed()
+                    }
                 }
             }
         })
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.search_menu, menu) // Co rozdmuchać i w czym
+        val menuItem = menu.findItem(R.id.action_search)
+        searchView = menuItem.actionView as SearchView
+        searchView.queryHint = "Search in notes"
+
+        searchView.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean { // Metoda ktora sie wykonuje dopiero po zatwierdzeniu
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean { // Metoda ktora sie wykonuje po kazdej zmianie tekstu
+                updateNotes(viewModel.findInNotes(newText.toString()))
+                return false
+            }
+        })
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -54,6 +81,7 @@ class MainFragment : Fragment(), OnItemClickListener, SortDialogFragment.OnItemC
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("log", "onViewCreated in MainFragment")
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
 
         addNote_FB.setOnClickListener {
@@ -100,7 +128,7 @@ class MainFragment : Fragment(), OnItemClickListener, SortDialogFragment.OnItemC
         if(!viewModel.multiSelectMode){
             viewModel.multiSelectMode = !viewModel.multiSelectMode
             selectNote(note, position)
-            updateButtonUI()
+            updateModeUI()
         }
     }
 
@@ -128,12 +156,12 @@ class MainFragment : Fragment(), OnItemClickListener, SortDialogFragment.OnItemC
         viewModel.multiSelectMode = false
         viewModel.selectedNotes.forEach{it.isSelected = false}
         viewModel.selectedNotes.clear()
-        updateButtonUI()
+        updateModeUI()
         noteAdapter.notifyDataSetChanged() // Zmuszamy nasz layout do stworzenia jeszcze raz widoków i odświeży nam
                                             // wszystkie zaznaczone elementy
     }
 
-    private fun updateButtonUI() {
+    private fun updateModeUI() {
         if(viewModel.multiSelectMode){
             addNote_FB.setImageIcon(Icon.createWithResource(requireContext(), R.drawable.ic_baseline_delete))
             addNote_FB.labelText = "Delete notes"
