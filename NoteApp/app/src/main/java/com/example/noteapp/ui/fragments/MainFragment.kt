@@ -53,7 +53,7 @@ class MainFragment : Fragment(), OnItemClickListener, SortDialogFragment.OnItemC
         inflater.inflate(R.menu.search_menu, menu) // Co rozdmuchać i w czym
         val menuItem = menu.findItem(R.id.action_search)
         searchView = menuItem.actionView as SearchView
-        searchView.queryHint = "Search in notes"
+        searchView.queryHint = "Search in notes..."
 
         searchView.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean { // Metoda ktora sie wykonuje dopiero po zatwierdzeniu
@@ -83,7 +83,7 @@ class MainFragment : Fragment(), OnItemClickListener, SortDialogFragment.OnItemC
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("log", "onViewCreated in MainFragment")
+
         recyclerView.layoutManager =
                 if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
                     GridLayoutManager(requireContext(), 2)

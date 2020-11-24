@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.MainFragment"
-    android:background="@color/teal_200">
+    tools:context=".ui.fragments.MainFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         tools:listitem="@layout/note_item"
@@ -18,6 +17,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.github.clans.fab.FloatingActionMenu
+        app:menu_colorPressed="@color/gold"
+        app:menu_colorNormal="@color/gold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -26,6 +27,8 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.github.clans.fab.FloatingActionButton
+            app:fab_colorPressed="@color/gold"
+            app:fab_colorNormal="@color/gold"
             android:id="@+id/addNote_FB"
             app:fab_label="Add note"
             android:layout_width="wrap_content"
@@ -33,6 +36,8 @@
             android:src="@drawable/ic_note_add"/>
 
         <com.github.clans.fab.FloatingActionButton
+            app:fab_colorPressed="@color/gold"
+            app:fab_colorNormal="@color/gold"
             android:id="@+id/sortDate_FB"
             app:fab_label="Sort date"
             android:layout_width="wrap_content"
