@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
 import com.example.noteapp.data.Note
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,7 @@ class NotesViewModel(app:Application):AndroidViewModel(app) {
         selectedNote.postValue(note)
     }
 
+    var selectedNoteColor = "#333333"
     var sortDesc = true
     var multiSelectMode = false
     val selectedNotes = ArrayList<Note>()
@@ -38,6 +40,10 @@ class NotesViewModel(app:Application):AndroidViewModel(app) {
         CoroutineScope(Dispatchers.IO).launch { repository.delete(listNotes) }
     }
 
+    fun deleteOneNote(note: Note?){
+        CoroutineScope(Dispatchers.IO).launch { repository.deleteOneNote(note) }
+    }
+
     fun clearDatabase(){
         CoroutineScope(Dispatchers.IO).launch { repository.clearDatabase() }
     }
@@ -45,7 +51,7 @@ class NotesViewModel(app:Application):AndroidViewModel(app) {
     fun findInNotes(text:String): List<Note> {
         val list = allNotes.value
          return list!!.filter { note ->
-            note.title.contains(text.toString()) || note.message.contains(text.toString())
+            note.title.contains(text) || note.message.contains(text)
         }
     }
 }

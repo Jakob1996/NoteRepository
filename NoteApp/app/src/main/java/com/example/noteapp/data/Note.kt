@@ -7,8 +7,14 @@ import androidx.room.PrimaryKey
 data class Note (val title:String,
                  val message:String,
                  val date:Long,
-                 var isSelected:Boolean = false){
+                 var isSelected:Boolean = false,
+                 val color:String,
+                val imagePath:String){
 
     @PrimaryKey(autoGenerate = true)
     var rowId = 0
+
+    override fun toString(): String {
+        return "$title, $message, $date, $isSelected, $color $rowId"
+    }
 }

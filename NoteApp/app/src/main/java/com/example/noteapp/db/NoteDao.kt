@@ -20,6 +20,9 @@ interface NoteDao {
     @Delete
     suspend fun deleteNotes(notes:List<Note>)
 
+    @Delete
+    suspend fun deleteOneNote(note: Note?)
+
     @Query("SELECT*FROM NOTE_TABLE ORDER BY date DESC" )
     fun getAllNotes():Flow<List<Note>>
 

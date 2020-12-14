@@ -8,8 +8,7 @@
     <fragment
         android:id="@+id/mainFramgent"
         android:name="com.example.noteapp.ui.fragments.MainFragment"
-        android:label="fragment_main_framgent"
-        tools:layout="@layout/fragment_main_framgent" >
+        tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFramgent_to_addEditNoteFragment"
             app:destination="@id/addEditNoteFragment" />
@@ -17,6 +16,9 @@
     <fragment
         tools:layout="@layout/fragment_add_edit_note"
         android:id="@+id/addEditNoteFragment"
-        android:name="com.example.noteapp.ui.fragments.AddEditNoteFragment"
-        android:label="AddEditNoteFragment" />
+        android:name="com.example.noteapp.ui.fragments.AddEditNoteFragment">
+        <action
+            android:id="@+id/action_addEditNoteFragment_to_mainFramgent2"
+            app:destination="@id/mainFramgent" />
+    </fragment>
 </navigation>

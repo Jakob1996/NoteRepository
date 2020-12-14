@@ -21,6 +21,10 @@ class Repository (app:Application) {
         notesDao.deleteNotes(list)
     }
 
+    suspend fun deleteOneNote(note: Note?){
+        notesDao.deleteOneNote(note)
+    }
+
     suspend fun clearDatabase(){
         notesDao.clearDatabase()
     }
@@ -28,4 +32,5 @@ class Repository (app:Application) {
     fun getAllNotes(): LiveData<List<Note>> {
         return notesDao.getAllNotes().asLiveData()
     }
+
 }

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutMiscellaneous"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_miscallaneous"
+    app:behavior_peekHeight = "@dimen/bottom_sheet_behavior"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <TextView
+        android:id="@+id/textMiscellaneous"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:fontFamily="@font/ubuntumedium"
+
+        android:includeFontPadding="false"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:text="Miscellaneous"
+        android:gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layoutNoteColor"
+        android:layout_margin="11sp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+    <FrameLayout
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/vievColor1"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:background="@drawable/background_note_color_1"
+            />
+
+        <ImageView
+            android:id="@+id/imageColor1"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:contentDescription="@string/app_name"
+            android:padding="11dp"
+            android:src="@drawable/ic_done"
+            app:tint="@color/white"/>
+
+    </FrameLayout>
+
+        <FrameLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/vievColor2"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:background="@drawable/background_note_color_2"
+                />
+
+            <ImageView
+                android:id="@+id/imageColor2"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:contentDescription="@string/app_name"
+                android:padding="11dp"
+                app:tint="@color/white"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/vievColor3"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:background="@drawable/background_note_color_3"
+                />
+
+            <ImageView
+                android:id="@+id/imageColor3"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:contentDescription="@string/app_name"
+                android:padding="11dp"
+                app:tint="@color/white"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/vievColor4"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:background="@drawable/background_note_color_4"
+                />
+
+            <ImageView
+                android:id="@+id/imageColor4"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:contentDescription="@string/app_name"
+                android:padding="11dp"
+                app:tint="@color/white"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/vievColor5"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:background="@drawable/background_note_color_5"
+                />
+
+            <ImageView
+                android:id="@+id/imageColor5"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:contentDescription="@string/app_name"
+                android:padding="11dp"
+                app:tint="@color/white"/>
+
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ubuntumedium"
+            android:includeFontPadding="false"
+            android:text="@string/pick_color"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            />
+
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/layoutAddImage"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="7dp"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_image"
+            app:tint="@color/colorIcons" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:fontFamily="@font/ubuntumedium"
+            android:includeFontPadding="false"
+            android:text="add image"
+            android:textColor="@color/colorIcons"
+            android:textSize="13sp"/>
+    </LinearLayout>
+</LinearLayout>
