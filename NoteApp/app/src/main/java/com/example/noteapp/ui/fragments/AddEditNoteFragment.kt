@@ -279,6 +279,10 @@ class AddEditNoteFragment:Fragment() {
                                 itemSelected3()
                             }
 
+                            "#ff0266" ->{
+                                itemSelected6()
+                            }
+
                             "#3A52FC" -> {
                                 itemSelected4()
                             }
@@ -389,6 +393,14 @@ class AddEditNoteFragment:Fragment() {
             }
         })
 
+        layoutMiscellaneous.findViewById<ImageView>(R.id.imageColor6).setOnClickListener(object :View.OnClickListener{
+            override fun onClick(p0: View?) {
+                viewModel.selectedNoteColor = "#ff0266"
+                itemSelected6()
+                setSubtitleIndicator()
+            }
+        })
+
         layoutMiscellaneous.findViewById<LinearLayout>(R.id.layoutAddImage).setOnClickListener(object :View.OnClickListener{
             override fun onClick(p0: View?) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -405,6 +417,7 @@ class AddEditNoteFragment:Fragment() {
         imageColor1.setImageResource(R.drawable.ic_done)
         imageColor2.setImageResource(0)
         imageColor3.setImageResource(0)
+        imageColor6.setImageResource(0)
         imageColor4.setImageResource(0)
         imageColor5.setImageResource(0)
     }
@@ -413,6 +426,7 @@ class AddEditNoteFragment:Fragment() {
         imageColor1.setImageResource(0)
         imageColor2.setImageResource(R.drawable.ic_done)
         imageColor3.setImageResource(0)
+        imageColor6.setImageResource(0)
         imageColor4.setImageResource(0)
         imageColor5.setImageResource(0)
     }
@@ -421,14 +435,26 @@ class AddEditNoteFragment:Fragment() {
         imageColor1.setImageResource(0)
         imageColor2.setImageResource(0)
         imageColor3.setImageResource(R.drawable.ic_done)
+        imageColor6.setImageResource(0)
         imageColor4.setImageResource(0)
         imageColor5.setImageResource(0)
     }
+
+    fun itemSelected6(){
+        imageColor1.setImageResource(0)
+        imageColor2.setImageResource(0)
+        imageColor3.setImageResource(0)
+        imageColor6.setImageResource(R.drawable.ic_done)
+        imageColor4.setImageResource(0)
+        imageColor5.setImageResource(0)
+    }
+
 
     fun itemSelected4(){
         imageColor1.setImageResource(0)
         imageColor2.setImageResource(0)
         imageColor3.setImageResource(0)
+        imageColor6.setImageResource(0)
         imageColor4.setImageResource(R.drawable.ic_done)
         imageColor5.setImageResource(0)
     }
@@ -437,6 +463,7 @@ class AddEditNoteFragment:Fragment() {
         imageColor1.setImageResource(0)
         imageColor2.setImageResource(0)
         imageColor3.setImageResource(0)
+        imageColor6.setImageResource(0)
         imageColor4.setImageResource(0)
         imageColor5.setImageResource(R.drawable.ic_done)
     }

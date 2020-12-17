@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-
     <item
         android:bottom="2dp"
         android:left="2dp"
@@ -9,7 +7,7 @@
         android:top="2dp">
 
         <shape android:shape="oval">
-            <solid android:color="@color/colorNoteColor2" />
+            <solid android:color="@color/pink" />
         </shape>
     </item>
 </layer-list>

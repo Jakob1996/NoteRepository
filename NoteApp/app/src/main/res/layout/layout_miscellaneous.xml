@@ -20,18 +20,29 @@
         android:includeFontPadding="false"
         android:textColor="@color/white"
         android:textSize="14sp"
-        android:text="Miscellaneous"
+        android:text="Castomizer"
         android:gravity="center"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/layoutNoteColor"
-        android:layout_margin="11sp"
+        android:layout_margin="13sp"
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ubuntumedium"
+            android:includeFontPadding="false"
+            android:text="Note color"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            />
+
     <FrameLayout
+        android:layout_marginLeft="20dp"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content">
@@ -63,8 +74,7 @@
                 android:id="@+id/vievColor2"
                 android:layout_width="37dp"
                 android:layout_height="37dp"
-                android:background="@drawable/background_note_color_2"
-                />
+                android:background="@drawable/background_note_color_2" />
 
             <ImageView
                 android:id="@+id/imageColor2"
@@ -90,6 +100,25 @@
 
             <ImageView
                 android:id="@+id/imageColor3"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:contentDescription="@string/app_name"
+                android:padding="11dp"
+                app:tint="@color/white"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <View
+                android:id="@+id/vievColor6"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:background="@drawable/background_note_color_6" />
+
+            <ImageView
+                android:id="@+id/imageColor6"
                 android:layout_width="37dp"
                 android:layout_height="37dp"
                 android:contentDescription="@string/app_name"
@@ -142,22 +171,11 @@
 
         </FrameLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/ubuntumedium"
-            android:includeFontPadding="false"
-            android:text="@string/pick_color"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            />
-
     </LinearLayout>
     
     <LinearLayout
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"
         android:id="@+id/layoutAddImage"
         android:layout_width="match_parent"
         android:layout_height="36dp"
@@ -171,7 +189,9 @@
             android:layout_height="23dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_image"
-            app:tint="@color/colorIcons" />
+            app:tint="@color/colorIcons"
+            android:layout_gravity="center_vertical"
+            />
 
         <TextView
             android:layout_width="match_parent"
@@ -179,8 +199,10 @@
             android:layout_marginStart="11dp"
             android:fontFamily="@font/ubuntumedium"
             android:includeFontPadding="false"
-            android:text="add image"
+            android:text="@string/add_image"
             android:textColor="@color/colorIcons"
-            android:textSize="13sp"/>
+            android:textSize="13sp"
+            android:layout_gravity="center_vertical"
+            />
     </LinearLayout>
 </LinearLayout>
