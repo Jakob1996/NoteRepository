@@ -11,7 +11,12 @@
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFramgent_to_addEditNoteFragment"
-            app:destination="@id/addEditNoteFragment" />
+            app:destination="@id/addEditNoteFragment"
+            app:enterAnim="@anim/from_right_to_left"
+            app:exitAnim="@anim/from_left_to_left" />
+        <action
+            android:id="@+id/action_mainFramgent_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         tools:layout="@layout/fragment_add_edit_note"
@@ -19,6 +24,17 @@
         android:name="com.example.noteapp.ui.fragments.AddEditNoteFragment">
         <action
             android:id="@+id/action_addEditNoteFragment_to_mainFramgent2"
+            app:destination="@id/mainFramgent"
+            app:enterAnim="@anim/from_right_to_right"
+            app:exitAnim="@anim/from_left_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.noteapp.ui.fragments.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_mainFramgent"
             app:destination="@id/mainFramgent" />
     </fragment>
 </navigation>

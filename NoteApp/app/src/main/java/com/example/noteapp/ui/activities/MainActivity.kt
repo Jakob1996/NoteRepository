@@ -17,10 +17,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     lateinit var viewModel: NotesViewModel
 
-    private lateinit var navController: NavController
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var drawerLayout: DrawerLayout
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("xTa", "MainActivity onCreate")
@@ -28,21 +24,6 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[NotesViewModel::class.java]
 
-        navController = findNavController(R.id.fragment)
-        drawerLayout = findViewById(R.id.drawer_layout)
-
-        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
-
-
-        navigation_view.setupWithNavController(navController)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.fragment)
-
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }
 

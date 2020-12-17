@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
 import com.example.noteapp.data.Note
 import com.example.noteapp.viewmodels.NotesViewModel
@@ -114,7 +115,7 @@ class AddEditNoteFragment:Fragment() {
                             viewModel.setSelectedNote(null)
                             isEnabled = false
                             closeKeyboard()
-                            requireActivity().onBackPressed()
+                                findNavController().navigate(R.id.action_addEditNoteFragment_to_mainFramgent2)
                         }
                         }
                     })
@@ -158,7 +159,7 @@ class AddEditNoteFragment:Fragment() {
             Log.d("kot", "$value")
             //findNavController().navigate(R.id.mainFramgent)
             closeKeyboard()
-            requireActivity().onBackPressed()
+            findNavController().navigate(R.id.action_addEditNoteFragment_to_mainFramgent2)
         }
         return true
     }
@@ -178,34 +179,87 @@ class AddEditNoteFragment:Fragment() {
 
         initMiscellaneous()
 
+        back_from_addEdit.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                findNavController().navigate(R.id.action_addEditNoteFragment_to_mainFramgent2)
+            }
+        })
+
+        done.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                if (title_addEditFrag.text.isNotEmpty() || mess_addEditFrag.text.isNotEmpty()) {
+                    Log.d("asdfg", "$selectedImagePath")
+                    val title = title_addEditFrag.text.toString()
+                    val message = mess_addEditFrag.text.toString()
+                    val date = Calendar.getInstance().timeInMillis
+                    val color= viewModel.selectedNoteColor
+                    Log.d("tits", color)
+
+                    //Jeśli notatka nie jest pusta, oraz nie jest zaznaczona w MainFragment - Tworzymy
+                    if (viewModel.getSelectedNote().value == null) {
+                        val note = Note(title, message, date, isSelected = false, color, selectedImagePath)
+                        viewModel.insert(note)
+                        Log.d("kot", "1")
+                        Toast.makeText(
+                                requireContext(),
+                                "Note created",
+                                Toast.LENGTH_LONG
+                        )
+                                .show()
+
+                        //Jeśli notatka nie jest pusta, ale jest zaznaczona w MainFragment - Aktualizujemy
+                    } else {
+                        val selectedNote = viewModel.getSelectedNote().value!!
+                        if (selectedNote.title != title || selectedNote.message != message || selectedNote.color != color) {
+                            val note = Note(title, message, date, isSelected = false, color, selectedImagePath).apply {
+                                rowId = viewModel.getSelectedNote().value!!.rowId
+                            }
+                            Toast.makeText(
+                                    requireContext(),
+                                    "Note updated",
+                                    Toast.LENGTH_LONG
+                            ).show()
+                            viewModel.update(note)
+                        }
+                    }
+                } else if (viewModel.getSelectedNote().value != null) {
+                    viewModel.deleteOneNote(viewModel.getSelectedNote().value)
+                    Toast.makeText(
+                            requireContext(),
+                            "Note deleted",
+                            Toast.LENGTH_LONG
+                    )
+                            .show()
+                }
+
+                /*else {
+            Log.d("adds", "ff")
+            viewModel.deleteOneNote(viewModel.getSelectedNote().value)
+        }
+         */
+                viewModel.setSelectedNote(null)
+                closeKeyboard()
+                findNavController().navigate(R.id.action_addEditNoteFragment_to_mainFramgent2)
+            }
+        })
+
 
         imageView = requireActivity().findViewById(R.id.imageNote)
 
             viewModel.getSelectedNote().observe(viewLifecycleOwner, Observer { note ->
                 note.let {
-                    Log.d("tits", "2")
                         title_addEditFrag.setText(it?.title)
                         mess_addEditFrag.setText(it?.message)
-                    Log.d("ggggg", "${note?.imagePath}")
-
-                    title_addEditFrag.isFocusableInTouchMode();
-                    title_addEditFrag.setFocusable(true);
-                    title_addEditFrag.requestFocus();
 
                     if((title_addEditFrag.text.isEmpty()&&mess_addEditFrag.text.isEmpty())) {
-                        Log.d("tits", "${title_addEditFrag.text} i ${mess_addEditFrag.text}")
-                        (requireActivity() as AppCompatActivity).supportActionBar?.title = "Add note"
                         viewModel.selectedNoteColor = "#333333"
                         gradientDrawable.setColor(Color.parseColor(viewModel.selectedNoteColor))
 
                     } else {
-                        Log.d("tits", "${title_addEditFrag.text} i ${mess_addEditFrag.text}")
-                        (requireActivity() as AppCompatActivity).supportActionBar?.title = "Edit note"
+                        toolbar_Title_AddEdit.text = "Note editor"
                         gradientDrawable.setColor(Color.parseColor(viewModel.getSelectedNote().value?.color))
                         viewModel.selectedNoteColor = viewModel.getSelectedNote().value!!.color
 
-
-                        Log.d("kottt", "aa ${note?.imagePath}")
                         if(!note!!.imagePath.isEmpty()){
                             selectedImagePath = note.imagePath
                             imageView.setImageBitmap(BitmapFactory.decodeFile(note!!.imagePath))

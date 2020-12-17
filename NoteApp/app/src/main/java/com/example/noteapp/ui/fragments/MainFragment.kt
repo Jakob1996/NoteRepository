@@ -1,3 +1,4 @@
+
 package com.example.noteapp.ui.fragments
 
 import android.content.res.Configuration
@@ -5,9 +6,9 @@ import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.LinearLayout
 import android.widget.SearchView
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -22,9 +23,6 @@ import com.example.noteapp.adapters.NoteAdapter
 import com.example.noteapp.adapters.OnItemClickListener
 import com.example.noteapp.data.Note
 import com.example.noteapp.viewmodels.NotesViewModel
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment(), OnItemClickListener, SortDialogFragment.OnItemClickDialogListener {
@@ -45,17 +43,12 @@ class MainFragment : Fragment(), OnItemClickListener, SortDialogFragment.OnItemC
         viewModel.setSelectedNote(null)
         requireActivity().onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                if(!searchView.isIconified){ //Jesli nasz searchView nie jest ikoną
-                    searchView.onActionViewCollapsed()
-                    updateModeUI()
-                }else{
                     if(viewModel.multiSelectMode ){
                         exitMultiSelectMode()
                     } else{
                         isEnabled = false
                         requireActivity().onBackPressed()
                     }
-                }
             }
         })
     }
@@ -81,6 +74,12 @@ class MainFragment : Fragment(), OnItemClickListener, SortDialogFragment.OnItemC
         updateModeUI()
         checkIsEmpty()
 
+        searchIcon.setOnClickListener(object:View.OnClickListener{
+            override fun onClick(v: View?) {
+                findNavController().navigate(R.id.action_mainFramgent_to_searchFragment)
+            }
+        })
+
         addNote_FB.setOnClickListener {
             if(viewModel.multiSelectMode) {
                 viewModel.delete(viewModel.selectedNotes.toList())
@@ -89,7 +88,7 @@ class MainFragment : Fragment(), OnItemClickListener, SortDialogFragment.OnItemC
                 checkIsEmpty()
             } else{
                 viewModel.setSelectedNote(null)
-                findNavController().navigate(R.id.addEditNoteFragment)
+                findNavController().navigate(R.id.action_mainFramgent_to_addEditNoteFragment)
             }
         }
 
@@ -160,7 +159,7 @@ class MainFragment : Fragment(), OnItemClickListener, SortDialogFragment.OnItemC
             }
         } else {
             viewModel.setSelectedNote(note)
-            findNavController().navigate(R.id.addEditNoteFragment)
+            findNavController().navigate(R.id.action_mainFramgent_to_addEditNoteFragment)
         }
     }
 
@@ -220,7 +219,7 @@ class MainFragment : Fragment(), OnItemClickListener, SortDialogFragment.OnItemC
         updateModeUI()
 
         noteAdapter.notifyDataSetChanged() // Zmuszamy nasz layout do stworzenia jeszcze raz widoków i odświeży nam
-                                            // wszystkie zaznaczone elementy
+        // wszystkie zaznaczone elementy
     }
 
     private fun updateModeUI() {
