@@ -121,49 +121,6 @@ class AddEditNoteFragment:Fragment() {
                     })
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == android.R.id.home){
-            if(title_addEditFrag.text.isNotEmpty() || mess_addEditFrag.text.isNotEmpty()){
-                Log.d("tits", "kot")
-                val title = title_addEditFrag.text.toString()
-                val message = mess_addEditFrag.text.toString()
-                val date = Calendar.getInstance().timeInMillis
-                val color  = viewModel.selectedNoteColor
-
-                //Jeśli notatka nie jest pusta, oraz nie jest zaznaczona w MainFragment - Tworzymy
-                if(viewModel.getSelectedNote().value == null){
-                    val note = Note(title, message, date, isSelected = false, color, selectedImagePath)
-                    viewModel.insert(note)
-                    Toast.makeText(requireContext(), "Note created", Toast.LENGTH_LONG).show()
-                    Log.d("kot", "2")
-                    //Jeśli notatka nie jest pusta, ale jest zaznaczona w MainFragment - Aktualizujemy
-                } else{
-                    val selectedNote = viewModel.getSelectedNote().value!!
-                    if(selectedNote.title!= title || selectedNote.message!= message || selectedNote.color != color){
-                        val note = Note(title, message, date, isSelected = false, color, selectedImagePath).apply {
-                            rowId = viewModel.getSelectedNote().value!!.rowId
-                        }
-
-                        Toast.makeText(requireContext(), "Note updated", Toast.LENGTH_LONG).show()
-                        viewModel.update(note)
-                    }
-                }
-            } else if(viewModel.getSelectedNote().value!=null){
-                viewModel.deleteOneNote(viewModel.getSelectedNote().value)
-                Toast.makeText(requireContext(), "Note deleted", Toast.LENGTH_LONG).show()
-            }
-
-            viewModel.setSelectedNote(null)
-
-            value=true
-            Log.d("kot", "$value")
-            //findNavController().navigate(R.id.mainFramgent)
-            closeKeyboard()
-            findNavController().navigate(R.id.action_addEditNoteFragment_to_mainFramgent2)
-        }
-        return true
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         Log.d("xTa", "AddEditNoteFragment onCreateView")
@@ -242,7 +199,6 @@ class AddEditNoteFragment:Fragment() {
                 findNavController().navigate(R.id.action_addEditNoteFragment_to_mainFramgent2)
             }
         })
-
 
         imageView = requireActivity().findViewById(R.id.imageNote)
 
