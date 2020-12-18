@@ -51,7 +51,7 @@ class NotesViewModel(app:Application):AndroidViewModel(app) {
     fun findInNotes(text:String): List<Note> {
         val list = allNotes.value
          return list!!.filter { note ->
-            note.title.contains(text) || note.message.contains(text)
+            note.title.toLowerCase().contains(text.toLowerCase()) || note.message.toUpperCase().contains(text.toUpperCase())
         }
     }
 }

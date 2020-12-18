@@ -36,5 +36,8 @@
         <action
             android:id="@+id/action_searchFragment_to_mainFramgent"
             app:destination="@id/mainFramgent" />
+        <action
+            android:id="@+id/action_searchFragment_to_addEditNoteFragment"
+            app:destination="@id/addEditNoteFragment" />
     </fragment>
 </navigation>
