@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-        <com.jcminarro.roundkornerlayout.RoundKornerLinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:background="@drawable/background_note"
-            android:id="@+id/linear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="10dp"
-            app:corner_radius="11dp">
+<com.jcminarro.roundkornerlayout.RoundKornerLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background_note"
+    android:id="@+id/linear"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    app:corner_radius="11dp">
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/imageNote"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:visibility="gone"
-                app:riv_corner_radius_top_left="11dp"
-                app:riv_corner_radius_top_right="11dp" />
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/imageNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:visibility="gone"
+        app:riv_corner_radius_top_left="11dp"
+        app:riv_corner_radius_top_right="11dp" />
 
-            <TextView
-                android:textColor="@color/white"
-                android:maxLines="1"
-                android:id="@+id/note_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                android:ellipsize="end"
-                android:fontFamily="@font/ubuntumedium"
-                android:includeFontPadding="false"
-                android:layout_marginStart="9dp"
-                android:layout_marginEnd="9dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_gravity="center_vertical"
-                android:paddingTop="2dp"/>
+    <TextView
+        android:textColor="@color/white"
+        android:maxLines="1"
+        android:id="@+id/note_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:ellipsize="end"
+        android:fontFamily="@font/ubuntumedium"
+        android:includeFontPadding="false"
+        android:layout_marginStart="9dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="center_vertical"
+        android:paddingTop="2dp"/>
 
-            <TextView
-                android:textColor="@color/white"
-                android:id="@+id/note_message"
-                android:maxLines="8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="13sp"
-                android:fontFamily="@font/ubunturegular"
-                android:includeFontPadding="false"
-                android:layout_marginStart="9dp"
-                android:layout_marginEnd="9dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="5dp"
-                android:layout_gravity="center_vertical"
-                android:paddingBottom="3dp" />
-        </com.jcminarro.roundkornerlayout.RoundKornerLinearLayout>
+    <TextView
+        android:textColor="@color/white"
+        android:id="@+id/note_message"
+        android:maxLines="8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:fontFamily="@font/ubunturegular"
+        android:includeFontPadding="false"
+        android:layout_marginStart="9dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="center_vertical"
+        android:paddingBottom="3dp" />
+</com.jcminarro.roundkornerlayout.RoundKornerLinearLayout>

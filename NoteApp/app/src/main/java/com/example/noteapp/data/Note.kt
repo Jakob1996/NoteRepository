@@ -13,8 +13,4 @@ data class Note (val title:String,
 
     @PrimaryKey(autoGenerate = true)
     var rowId = 0
-
-    override fun toString(): String {
-        return "$title, $message, $date, $isSelected, $color $rowId"
-    }
 }

@@ -1,4 +1,4 @@
-package com.example.noteapp.ui.fragments
+package com.example.noteapp.ui.fragments.search
 
 import android.os.Bundle
 import android.text.Editable
@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,19 +15,18 @@ import com.example.noteapp.R
 import com.example.noteapp.adapters.NoteAdapter
 import com.example.noteapp.adapters.OnItemClickListener
 import com.example.noteapp.data.Note
-import com.example.noteapp.viewmodels.NotesViewModel
-import kotlinx.android.synthetic.main.fragment_note.*
+import com.example.noteapp.viewmodels.ViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : Fragment(), OnItemClickListener {
 
-    private lateinit var viewModel: NotesViewModel
+    private lateinit var viewModel: ViewModel
     private lateinit var noteAdapter: NoteAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity())[NotesViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
 
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

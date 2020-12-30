@@ -1,4 +1,4 @@
-package com.example.noteapp.ui.fragments
+package com.example.noteapp.ui.fragments.sort
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.noteapp.R
 
 class SortDialogFragment: DialogFragment() {
-    private lateinit var listener:OnItemClickDialogListener
+    private lateinit var listener: OnItemClickDialogListener
     private lateinit var radioGroup: RadioGroup
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -21,7 +21,7 @@ class SortDialogFragment: DialogFragment() {
         radioGroup = view.findViewById(R.id.sort_RG)
         builder.setView(view)
                 .setTitle("Sort date:")
-                .setPositiveButton("OK", ){di, i ->
+                .setPositiveButton("OK"){di, i ->
                     when(radioGroup.checkedRadioButtonId){
                         R.id.sort_desc_RB -> {listener.onItemClickDialog(true)}
                         R.id.sort_asc_RB -> {listener.onItemClickDialog(false)}

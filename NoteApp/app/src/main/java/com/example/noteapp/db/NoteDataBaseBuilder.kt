@@ -8,7 +8,7 @@ object NoteDataBaseBuilder {
     private var instance:NoteDataBase? = null
 
     fun getInstance(context: Context): NoteDataBase {
-        if(instance == null){
+        if(instance==null){
             synchronized(NoteDataBase::class){
                 instance = roomBuild(context)
             }

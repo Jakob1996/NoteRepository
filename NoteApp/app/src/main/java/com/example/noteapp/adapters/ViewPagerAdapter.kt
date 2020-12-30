@@ -12,7 +12,6 @@ class ViewPagerAdapter(supportFragmentManager:FragmentManager) : FragmentStatePa
 
     override fun getCount(): Int {
         return mFragmentList.size
-
     }
 
     override fun getItem(position: Int): Fragment {

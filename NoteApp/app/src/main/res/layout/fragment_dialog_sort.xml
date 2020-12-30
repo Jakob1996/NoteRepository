@@ -18,7 +18,7 @@
             android:id="@+id/sort_desc_RB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/robotoligth"
+            android:fontFamily="@font/ubunturegular"
             android:text="Descending" />
 
         <RadioButton
@@ -27,6 +27,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Ascending"
-            android:fontFamily="@font/robotoligth"/>
+            android:fontFamily="@font/ubunturegular"/>
     </RadioGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>

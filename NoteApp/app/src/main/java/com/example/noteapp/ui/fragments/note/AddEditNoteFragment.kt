@@ -1,4 +1,4 @@
-package com.example.noteapp.ui.fragments
+package com.example.noteapp.ui.fragments.note
 
 import android.content.Context
 import android.content.Intent
@@ -14,7 +14,6 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -23,16 +22,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
 import com.example.noteapp.data.Note
-import com.example.noteapp.viewmodels.NotesViewModel
+import com.example.noteapp.viewmodels.ViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_add_edit_note.*
-import kotlinx.android.synthetic.main.layout_miscellaneous.*
+import kotlinx.android.synthetic.main.note_layout_miscellaneous.*
 import java.lang.Exception
 import java.util.*
 
 class AddEditNoteFragment:Fragment() {
 
-    private lateinit var viewModel: NotesViewModel
+    private lateinit var viewModel: ViewModel
 
     private var value:Boolean=false
 
@@ -48,9 +47,7 @@ class AddEditNoteFragment:Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("xTa", "AddEditNoteFragment onCreate")
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[NotesViewModel::class.java]
-
-        setHasOptionsMenu(true)
+        viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
 
             requireActivity().onBackPressedDispatcher.addCallback(
                     this,
@@ -73,7 +70,7 @@ class AddEditNoteFragment:Fragment() {
                                     //Jeśli notatka nie jest pusta, oraz nie jest zaznaczona w MainFragment - Tworzymy
                                     if (viewModel.getSelectedNote().value == null) {
                                         val note = Note(title, message, date, isSelected = false, color, selectedImagePath)
-                                        viewModel.insert(note)
+                                        viewModel.insertNote(note)
                                         Log.d("kot", "1")
                                         Toast.makeText(
                                             requireContext(),
@@ -94,7 +91,7 @@ class AddEditNoteFragment:Fragment() {
                                                 "Note updated",
                                                 Toast.LENGTH_LONG
                                             ).show()
-                                            viewModel.update(note)
+                                            viewModel.updateNote(note)
                                         }
                                     }
                                 } else if (viewModel.getSelectedNote().value != null) {
@@ -115,7 +112,7 @@ class AddEditNoteFragment:Fragment() {
                             viewModel.setSelectedNote(null)
                             isEnabled = false
                             closeKeyboard()
-                                findNavController().navigate(R.id.action_addEditNoteFragment_to_mainFramgent2)
+                                requireActivity().onBackPressed()
                         }
                         }
                     })
@@ -155,7 +152,7 @@ class AddEditNoteFragment:Fragment() {
                     //Jeśli notatka nie jest pusta, oraz nie jest zaznaczona w MainFragment - Tworzymy
                     if (viewModel.getSelectedNote().value == null) {
                         val note = Note(title, message, date, isSelected = false, color, selectedImagePath)
-                        viewModel.insert(note)
+                        viewModel.insertNote(note)
                         Log.d("kot", "1")
                         Toast.makeText(
                                 requireContext(),
@@ -176,7 +173,7 @@ class AddEditNoteFragment:Fragment() {
                                     "Note updated",
                                     Toast.LENGTH_LONG
                             ).show()
-                            viewModel.update(note)
+                            viewModel.updateNote(note)
                         }
                     }
                 } else if (viewModel.getSelectedNote().value != null) {
@@ -258,13 +255,6 @@ class AddEditNoteFragment:Fragment() {
             val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.d("xTa", "MainFragment onCreateOptionsMenu")
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_add_edit_item, menu) // Co rozdmuchać i w czym
-
     }
 
     fun setSubtitleIndicator(){

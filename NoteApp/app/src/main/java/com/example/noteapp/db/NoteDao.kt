@@ -1,6 +1,7 @@
 package com.example.noteapp.db
 
 import androidx.room.*
+import com.example.noteapp.data.ItemsOfList
 import com.example.noteapp.data.Note
 import kotlinx.coroutines.flow.Flow
 
@@ -12,10 +13,10 @@ interface NoteDao {
     // wiedział aby nie wykonywac tego na wątku głównym
 
     @Insert
-    suspend fun insert(note: Note)
+    suspend fun insertNote(note: Note)
 
     @Update
-    suspend fun update(note: Note)
+    suspend fun updateNote(note: Note)
 
     @Delete
     suspend fun deleteNotes(notes:List<Note>)
@@ -27,5 +28,8 @@ interface NoteDao {
     fun getAllNotes():Flow<List<Note>>
 
     @Query ("DELETE FROM note_table")
-    suspend fun clearDatabase()
+    suspend fun clearDatabaseNotes()
+
+
+
 }

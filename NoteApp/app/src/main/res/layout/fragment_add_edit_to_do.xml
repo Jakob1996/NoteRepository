@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/addEditToDoItems"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:animateLayoutChanges="true">
 
             <RelativeLayout
-                android:id="@+id/toolbar_fragmentAddEdit"
+                android:id="@+id/toolbar_fragmentAddEditTodo"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
@@ -35,7 +35,7 @@
                 app:titleTextColor="@color/white">
 
                 <ImageView
-                    android:id="@+id/back_from_addEdit"
+                    android:id="@+id/back_from_addEditTodo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_back"
@@ -43,29 +43,27 @@
                     app:tint="@color/colorIcons" />
 
                 <TextView
-                    android:id="@+id/toolbar_Title_AddEdit"
+                    android:id="@+id/toolbar_Title_AddEditTodo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Note creator"
+                    android:text="Todo List creator"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:textColor="@color/colorIcons"
                     />
 
-
                 <ImageView
-                    android:id="@+id/done"
+                    android:id="@+id/doneTodo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_done_circle"
+                    android:src="@drawable/ic_add_circle"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     app:tint="@color/colorIcons" />
-
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/line1"
+                android:id="@+id/line1Todo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
@@ -74,17 +72,17 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar_fragmentAddEdit">
+                app:layout_constraintTop_toBottomOf="@+id/toolbar_fragmentAddEditTodo">
 
                 <View
-                    android:id="@+id/viewSubtitleIndicator"
+                    android:id="@+id/todo_viewSubtitleIndicator"
                     android:layout_width="7dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/background_subtitle_indicator" />
 
                 <EditText
-                    android:id="@+id/title_addEditFrag"
+                    android:id="@+id/title_addEditFragCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -92,51 +90,29 @@
                     android:background="@color/color_Primary"
                     android:fontFamily="@font/ubuntubold"
                     android:gravity="center_vertical"
-                    android:hint="@string/note_title"
+                    android:hint="Category name"
                     android:maxLength="25"
                     android:textColor="@color/white"
                     android:textColorHint="@color/colorTextHint"
                     android:textSize="26sp" />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imageNote"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewTodo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
-                android:layout_marginEnd="32dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/app_name"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/line1" />
-
-
-            <EditText
-                android:id="@+id/mess_addEditFrag"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="30dp"
-                android:background="@color/color_Primary"
-                android:fontFamily="@font/ubuntumedium"
-                android:gravity="left"
-                android:hint="@string/type_note_here"
-                android:textColor="@color/white"
-                android:textColorHint="@color/colorTextHint"
-                android:textSize="20sp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="1dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageNote" />
-
+                app:layout_constraintTop_toBottomOf="@+id/line1Todo" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-    <include layout="@layout/note_layout_miscellaneous" />
+    <include layout="@layout/todo_layout_miscellaneous" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
