@@ -14,6 +14,8 @@ import com.example.noteapp.R
 import com.example.noteapp.adapters.ViewPagerAdapter
 import com.example.noteapp.ui.fragments.note.NoteFragment
 import com.example.noteapp.ui.fragments.todo.CategoryFragment
+import com.example.noteapp.ui.fragments.todo.DialogAddCategoryItem
+import com.example.noteapp.ui.fragments.todo.DialogAddToDoFragment
 import com.example.noteapp.viewmodels.ViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
@@ -105,21 +107,6 @@ class MainFragment() : Fragment(){
             }
         })
 
-        /*
-        if(viewPager.currentItem == 0 && viewModel.getMultiSelectNote().value==false){
-                addNote_FB.labelText = "Add Note"
-            }else {
-                addNote_FB.labelText = "Delete Notes"
-            }
-
-         if (viewPager.currentItem == 1 && viewModel.getMultiSelectCategoryMode().value==false) {
-                addNote_FB.labelText = "Add Category"
-            } else{
-                addNote_FB.labelText = "Delete Category"
-            }
-
-         */
-
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
@@ -152,12 +139,16 @@ class MainFragment() : Fragment(){
             if(addNote_FB.labelText == "Add Note"){
                 findNavController().navigate(R.id.action_mainFramgent_to_addEditNoteFragment)
             }else if(addNote_FB.labelText == "Add Category"){
-                findNavController().navigate(R.id.action_mainFramgent_to_addEditToDoFragment)
+                val fm = requireActivity().supportFragmentManager
+                val dialogFragment = DialogAddCategoryItem()
+                dialogFragment.show(fm, "Abc")
+
             } else if(addNote_FB.labelText == "Delete Notes"){
                 viewModel.deleteNotes(viewModel.selectedNotes)
                 viewModel.setMutliSelectNote(false)
                 addNote_FB.labelText="Add Note"
             } else if(addNote_FB.labelText == "Delete Category"){
+                viewModel.selectedCategoryItems.forEach { viewModel.deleteItems(it.rowIdCategory) }
                 viewModel.deleteCategotyItems(viewModel.selectedCategoryItems)
                 viewModel.setMutliSelectCategoryMode(false)
             }

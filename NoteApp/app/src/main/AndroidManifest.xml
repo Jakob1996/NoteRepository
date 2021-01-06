@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
-        android:hardwareAccelerated="false"
         android:largeHeap="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_app2"
@@ -13,7 +12,7 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.NoteApp">
+        android:theme="@style/splashScreenTheme">
         <activity android:name=".ui.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

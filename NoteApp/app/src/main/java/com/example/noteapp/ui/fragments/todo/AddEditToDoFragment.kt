@@ -1,8 +1,6 @@
 package com.example.noteapp.ui.fragments.todo
 
 import android.content.Context
-import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -17,25 +15,25 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.noteapp.R
+import com.example.noteapp.adapters.OnItemTodoClickListener
+import com.example.noteapp.adapters.ToDoItemAdapter
 import com.example.noteapp.data.Category
-import com.example.noteapp.data.Note
+import com.example.noteapp.data.ItemOfList
 import com.example.noteapp.viewmodels.ViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.fragment_add_edit_note.*
 import kotlinx.android.synthetic.main.fragment_add_edit_to_do.*
-import kotlinx.android.synthetic.main.note_layout_miscellaneous.*
-import kotlinx.android.synthetic.main.todo_item.*
 import kotlinx.android.synthetic.main.todo_layout_miscellaneous.*
 import java.util.*
 
-class AddEditToDoFragment : Fragment() {
+class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
     private lateinit var viewModel: ViewModel
     private var value:Boolean=false
+    private lateinit var itemTodoAdapter: ToDoItemAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +70,9 @@ class AddEditToDoFragment : Fragment() {
                                         val category = Category(categoryName, color, false, date).apply {
                                             rowIdCategory = viewModel.getSelectedCategotyItem().value!!.rowIdCategory
                                         }
+
+
+
                                         Toast.makeText(
                                                 requireContext(),
                                                 "Category updated",
@@ -90,11 +91,6 @@ class AddEditToDoFragment : Fragment() {
                                         .show()
                             }
 
-                            /*else {
-                        Log.d("adds", "ff")
-                        viewModel.deleteOneNote(viewModel.getSelectedNote().value)
-                    }
-                     */
                             viewModel.setSelectedCategotyItem(null)
                             isEnabled = false
                             closeKeyboard()
@@ -119,7 +115,6 @@ class AddEditToDoFragment : Fragment() {
             category.let {
                 title_addEditFragCategory.setText(it?.categoryName)
 
-
                 if((title_addEditFragCategory.text.isEmpty())) {
                     viewModel.selectedCategotyItemColor = "#333333"
                     gradientDrawable.setColor(Color.parseColor(viewModel.selectedCategotyItemColor))
@@ -128,6 +123,9 @@ class AddEditToDoFragment : Fragment() {
                     toolbar_Title_AddEditTodo.text = "Category editor"
                     gradientDrawable.setColor(Color.parseColor(viewModel.getSelectedCategotyItem().value?.color))
                     viewModel.selectedCategotyItemColor = viewModel.getSelectedCategotyItem().value!!.color
+                    viewModel.getAllItemsFromCategory(viewModel.getSelectedCategotyItem().value!!.rowIdCategory).observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                        updateItems(it)
+                    })
 
                     when(viewModel.getSelectedCategotyItem().value?.color){
                         "#333333"-> {
@@ -157,6 +155,23 @@ class AddEditToDoFragment : Fragment() {
                 }
             }
         })
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+
+        addTodo.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                val fm = requireActivity().supportFragmentManager
+                val dialogFragment = DialogAddToDoFragment()
+                dialogFragment.show(fm, "Abc")
+
+               itemTodoAdapter.notifyDataSetChanged()
+
+            }
+        })
+
     }
 
     fun initMiscellaneous() {
@@ -282,7 +297,6 @@ class AddEditToDoFragment : Fragment() {
             todo_imageColor5.setImageResource(R.drawable.ic_done)
         }
 
-
         fun closeKeyboard() {
             val view = requireActivity().currentFocus
             if (view != null) {
@@ -291,5 +305,41 @@ class AddEditToDoFragment : Fragment() {
             }
         }
 
+    override fun onItemClick(itemsOfList: ItemOfList, position: Int) {
+     if(itemsOfList.isDone){
+         val updateItem = itemsOfList
+         updateItem.isDone = false
+         viewModel.updateItem(updateItem)
+     }   else{
+         val updateItem2 = itemsOfList
+         updateItem2.isDone = true
+         viewModel.updateItem(updateItem2)
+        }
+    }
 
+    override fun onItemLongClick(itemsOfList: ItemOfList, position: Int) {
+        //TODO("Not yet implemented")
+    }
+
+    fun updateItems(list: List<ItemOfList>){
+        val lm = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+
+        recyclerViewTodo.layoutManager = lm
+
+        itemTodoAdapter = ToDoItemAdapter(list, this)
+
+        recyclerViewTodo.adapter = itemTodoAdapter
+
+        val item = object :SwipeToDelete(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+               viewModel.deleteItem(itemTodoAdapter.getItemInPosition(viewHolder.adapterPosition))
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(item)
+
+        itemTouchHelper.attachToRecyclerView(recyclerViewTodo)
+
+
+        itemTodoAdapter.notifyDataSetChanged()
+    }
 }

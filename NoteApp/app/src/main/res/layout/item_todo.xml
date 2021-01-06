@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.jcminarro.roundkornerlayout.RoundKornerLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_Primary"
+    android:id="@+id/layout_todo_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="3dp"
+    app:corner_radius="11dp">
+
+    <CheckBox
+        android:id="@+id/todoCheckBox"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="CheckBox"
+        android:textColor="@color/white"
+        android:maxLines="1"
+        android:textSize="17dp"
+        android:fontFamily="@font/ubunturegular"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="center_vertical"
+        android:paddingTop="2dp"
+        android:paddingLeft="15dp"
+        android:buttonTint="@color/colorNoteColor2" />
+</com.jcminarro.roundkornerlayout.RoundKornerLinearLayout>

@@ -1,10 +1,12 @@
 package com.example.noteapp.ui.fragments.note
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -45,17 +47,6 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
         })
     }
 
-    fun RecyclerView.smoothSnapToPosition(position: Int, snapMode:Int = LinearSmoothScroller.SNAP_TO_START){
-        val smoothScroller = object : LinearSmoothScroller(this.context){
-            override fun getVerticalSnapPreference(): Int = snapMode
-
-            override fun getHorizontalSnapPreference(): Int = snapMode
-        }
-
-        smoothScroller.targetPosition = position
-        layoutManager?.startSmoothScroll(smoothScroller)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         return inflater.inflate(R.layout.fragment_note, container, false)
@@ -67,29 +58,7 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
 
         recyclerView.layoutManager = StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
 
-        //updateModeUI()
         checkIsEmpty()
-
-        /*
-        addNote_FB.setOnClickListener {
-            if(viewModel.multiSelectMode) {
-                viewModel.delete(viewModel.selectedNotes.toList())
-                Toast.makeText(requireContext(), "Notes deleted", Toast.LENGTH_LONG).show()
-                exitMultiSelectMode()
-                checkIsEmpty()
-            } else{
-                viewModel.setSelectedNote(null)
-                findNavController().navigate(R.id.action_mainFramgent_to_addEditNoteFragment)
-            }
-        }
-
-        sortDate_FB.setOnClickListener {
-            val sortDialogFragment = SortDialogFragment()
-            sortDialogFragment.setTargetFragment(this, request_code)
-            sortDialogFragment.show(parentFragmentManager, "SortDialogFragment")
-        }
-
-         */
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -97,7 +66,6 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
         Log.d("adda", "MainFragment onActivityCreated")
 
         viewModel.allNotes.observe(viewLifecycleOwner, Observer {
-            updateNotes(it)
 
             viewModel.allNotes.value?.forEach { for (i in viewModel.selectedNotes){ if(it.rowId.equals(i.rowId)){
                 it.isSelected=true
@@ -111,9 +79,9 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
     private fun checkIsEmpty() {
         viewModel.allNotes.observe(viewLifecycleOwner, Observer {
             if(viewModel.allNotes.value!!.size==0){
-                empty_textView.hint = "Empty notes"
+                empty_textView.visibility = View.VISIBLE
             } else{
-                empty_textView.hint = " "
+                empty_textView.visibility = View.GONE
             }
         })
     }
@@ -171,18 +139,6 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
         // wszystkie zaznaczone elementy
     }
 
-    /*
-    private fun updateModeUI() {
-        if(viewModel.multiSelectMode){
-            addNote_FB.setImageIcon(Icon.createWithResource(requireContext(), R.drawable.ic_baseline_delete))
-            addNote_FB.labelText = "Delete notes"
-        }else{
-            addNote_FB.setImageIcon(Icon.createWithResource(requireContext(), R.drawable.ic_note_add))
-            addNote_FB.labelText = "Add note"
-        }
-    }
-
-     */
 
     private fun updateNotes(list:List<Note>) {
         val lm = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)

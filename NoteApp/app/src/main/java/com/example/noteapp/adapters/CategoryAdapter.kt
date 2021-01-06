@@ -7,25 +7,24 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.noteapp.R
 import com.example.noteapp.data.Category
-import kotlinx.android.synthetic.main.note_item.view.*
-import kotlinx.android.synthetic.main.todo_item.view.*
+import kotlinx.android.synthetic.main.category_item.view.*
 
 class ItemsCategoryTodoAdapter(private val list: List<Category>, private val listener: OnItemCategoryClickListener): RecyclerView.Adapter<ItemsCategoryTodoAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater:LayoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.todo_item, parent, false)
+        val view = layoutInflater.inflate(R.layout.category_item, parent, false)
         return MyViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.itemView.layout_todo_item.setBackgroundColor(Color.parseColor(list[position].color))
+        holder.itemView.layout_category_item.setBackgroundColor(Color.parseColor(list[position].color))
 
         if(list[position].isSelected){
-            holder.itemView.layout_todo_item.setBackgroundColor(Color.parseColor("#F0F4D7"))
+            holder.itemView.layout_category_item.setBackgroundColor(Color.parseColor("#F0F4D7"))
         }
 
-        holder.itemView.todo_categoryName.text = list[position].categoryName
+        holder.itemView.categoryName_textView.text = list[position].categoryName
     }
 
     override fun getItemCount(): Int {

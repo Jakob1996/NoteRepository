@@ -5,11 +5,11 @@ import androidx.room.Room
 
 object DataBaseBuilder {
 
-    private var instance:ToDoDataBase? = null
+    private var instance:DataBase? = null
 
-    fun getInstance(context:Context): ToDoDataBase{
+    fun getInstance(context:Context): DataBase{
         if(instance==null){
-            synchronized(ToDoDataBase::class){
+            synchronized(DataBase::class){
                 instance = roomBuild(context)
             }
         }
@@ -17,5 +17,5 @@ object DataBaseBuilder {
     }
 
     private fun roomBuild(context: Context) =
-        Room.databaseBuilder(context.applicationContext, ToDoDataBase::class.java, "todo_database").build()
+        Room.databaseBuilder(context.applicationContext, DataBase::class.java, "todo_database").build()
 }

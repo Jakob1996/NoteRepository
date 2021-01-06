@@ -3,7 +3,7 @@ package com.example.noteapp.data.relations
 import androidx.room.Embedded
 import androidx.room.Relation
 import com.example.noteapp.data.Category
-import com.example.noteapp.data.ItemsOfList
+import com.example.noteapp.data.ItemOfList
 
 data class CategoryWithItems(
         @Embedded val category: Category,
@@ -11,5 +11,5 @@ data class CategoryWithItems(
                 parentColumn = "rowIdCategory",
                 entityColumn = "categoryName"
         )
-        val items:List<ItemsOfList>
+        val items:List<ItemOfList>
         )

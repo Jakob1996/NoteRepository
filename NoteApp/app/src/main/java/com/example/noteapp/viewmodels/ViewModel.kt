@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.noteapp.data.Category
-import com.example.noteapp.data.ItemsOfList
+import com.example.noteapp.data.ItemOfList
 import com.example.noteapp.data.Note
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -79,7 +79,7 @@ class ViewModel(app:Application):AndroidViewModel(app) {
 
     //CategoryViewModel
 
-    val allCategoryItems = repository.getAllCategoryItems()
+    val allCategoryItems = repository.getAllCategory()
 
     private val selectedCategoryItem = MutableLiveData<Category?>()
 
@@ -131,33 +131,37 @@ class ViewModel(app:Application):AndroidViewModel(app) {
 
     //ItemViewModel
 
-    private lateinit var allItems:LiveData<List<ItemsOfList>>
+    private lateinit var allItems:LiveData<List<ItemOfList>>
 
-    suspend fun getAllItemsFromCategory(categoryName:String):LiveData<List<ItemsOfList>>{
-        return repository.getAllItems(categoryName)
+     fun getAllItemsFromCategory(categoryId:Int):LiveData<List<ItemOfList>>{
+        return repository.getAllItems(categoryId)
 }
 
-    private val selectedItem = MutableLiveData<ItemsOfList?>()
+    private val selectedItem = MutableLiveData<ItemOfList?>()
 
-    fun getSelectedItem(): LiveData<ItemsOfList?> = selectedItem
+    fun getSelectedItem(): LiveData<ItemOfList?> = selectedItem
 
-    fun setSelectedItem(item:ItemsOfList?){
+    fun setSelectedItem(item:ItemOfList?){
         selectedItem.postValue(item)
     }
 
-    fun insertItem(item:ItemsOfList){
+    fun insertItem(item:ItemOfList){
         CoroutineScope(Dispatchers.IO).launch { repository.insertItem(item) }
     }
 
-    fun updateItem(item: ItemsOfList){
+    fun updateItem(item: ItemOfList){
         CoroutineScope(Dispatchers.IO).launch { repository.updateItem(item) }
     }
 
-    fun deleteItem(item: ItemsOfList){
+    fun deleteItem(item: ItemOfList){
         CoroutineScope(Dispatchers.IO).launch { repository.deleteItem(item) }
     }
 
-    fun deleteItems(categoryName:String){
-        CoroutineScope(Dispatchers.IO).launch { repository.deleteAllITems(categoryName) }
+    fun deleteItems(categoryId: Int){
+        CoroutineScope(Dispatchers.IO).launch { repository.deleteAllITems(categoryId) }
     }
+
+   val allI = repository.getAllI()
+
+
 }

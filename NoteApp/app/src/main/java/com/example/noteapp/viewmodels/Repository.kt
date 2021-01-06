@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import com.example.noteapp.data.Category
-import com.example.noteapp.data.ItemsOfList
+import com.example.noteapp.data.ItemOfList
 import com.example.noteapp.data.Note
 import com.example.noteapp.db.DataBaseBuilder
 
@@ -14,8 +14,7 @@ class Repository (app:Application) {
     private val categoryDao = builder.categoryDao()
     private val itemDao = builder.itemDao()
 
-
-    //Note
+    //Note repository
     suspend fun insertNote(note: Note){
         notesDao.insertNote(note)
     }
@@ -40,14 +39,14 @@ class Repository (app:Application) {
         return notesDao.getAllNotes().asLiveData()
     }
 
-    //Category
+    //Category repository
 
     suspend fun insertCategory(category: Category){
         categoryDao.insertCategory(category)
     }
 
     suspend fun updateCategory(category: Category){
-        categoryDao.updateCategoty(category)
+        categoryDao.updateCategory(category)
     }
 
     suspend fun deleteCategory(category:List<Category>){
@@ -58,34 +57,40 @@ class Repository (app:Application) {
         categoryDao.clearDataBaseCategory()
     }
 
-    fun getAllCategoryItems():LiveData<List<Category>>{
-        return categoryDao.getAllCategoryItems().asLiveData()
+    fun getAllCategory():LiveData<List<Category>>{
+        return categoryDao.getAllCategory().asLiveData()
     }
 
-    //Items
+    //Items repository
 
-    suspend fun insertItem(item:ItemsOfList){
+    suspend fun insertItem(item: ItemOfList){
         itemDao.insertItem(item)
     }
 
-    suspend fun deleteItem(item: ItemsOfList){
+    suspend fun deleteItem(item: ItemOfList){
 
         itemDao.deleteItem(item)
     }
 
-    suspend fun deleteItems(items:List<ItemsOfList>){
+    suspend fun deleteItems(items:List<ItemOfList>){
         itemDao.deleteItems(items)
     }
 
-    suspend fun updateItem(item: ItemsOfList){
+    suspend fun updateItem(item: ItemOfList){
         itemDao.updateItem(item)
     }
 
-    suspend fun getAllItems(categoryName: String):LiveData<List<ItemsOfList>>{
-        return itemDao.getAllItems(categoryName).asLiveData()
+     fun getAllItems(categoryId: Int):LiveData<List<ItemOfList>>{
+        return itemDao.getAllItems(categoryId).asLiveData()
     }
 
-    suspend fun deleteAllITems(categoryName:String){
-        itemDao.deleteAllItems(categoryName)
+     fun deleteAllITems(categoryId: Int){
+        itemDao.deleteAllItems(categoryId)
     }
+
+    fun getAllI():LiveData<List<ItemOfList>>{
+        return itemDao.getAllI().asLiveData()
+    }
+
+
 }

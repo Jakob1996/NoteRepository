@@ -1,7 +1,6 @@
 package com.example.noteapp.db
 
 import androidx.room.*
-import com.example.noteapp.data.ItemsOfList
 import com.example.noteapp.data.Note
 import kotlinx.coroutines.flow.Flow
 

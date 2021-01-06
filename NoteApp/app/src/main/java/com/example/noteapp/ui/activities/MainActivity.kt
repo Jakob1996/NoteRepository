@@ -11,11 +11,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_NoteApp)
         Log.d("xTa", "MainActivity onCreate")
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProvider(this)[ViewModel::class.java]
-
     }
 }
 

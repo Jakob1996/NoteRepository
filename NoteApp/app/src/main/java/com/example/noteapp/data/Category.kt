@@ -1,10 +1,9 @@
 package com.example.noteapp.data
 
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "category_table")
+@Entity (tableName = "category_table")
 data class Category(
         val categoryName:String,
                 val color:String,

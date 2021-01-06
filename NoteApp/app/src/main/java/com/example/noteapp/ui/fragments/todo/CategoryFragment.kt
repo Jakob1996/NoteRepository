@@ -65,10 +65,7 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
                 it.isSelected=true
             }} }
 
-
-
             updateItems(it)
-            //updateModeUI()
         })
     }
 
@@ -89,7 +86,6 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
         if(viewModel.getMultiSelectCategoryMode().value == false){
             viewModel.setMutliSelectCategoryMode(true)
             selectCategoryItem(category, position)
-            //updateModeUI()
         }
     }
 
@@ -114,7 +110,6 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
         viewModel.setMutliSelectCategoryMode(false)
         viewModel.selectedCategoryItems.forEach{it.isSelected = false}
         viewModel.selectedCategoryItems.clear()
-        //updateModeUI()
 
         toDoCategoryAdapter.notifyDataSetChanged()
     }
@@ -138,9 +133,9 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
     private fun checkIsEmpty() {
         viewModel.allCategoryItems.observe(viewLifecycleOwner, Observer {
             if(viewModel.allCategoryItems.value!!.size==0){7
-                empty_textView_Todo.hint = "Category list is empty"
+                empty_textView_Todo.visibility = View.VISIBLE
             } else{
-                empty_textView_Todo.hint = " "
+                empty_textView_Todo.visibility = View.GONE
             }
         })
     }

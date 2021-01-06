@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background_note"
-    android:id="@+id/layout_todo_item"
+    android:id="@+id/layout_category_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -13,9 +13,9 @@
     <TextView
         android:textColor="@color/white"
         android:maxLines="1"
-        android:id="@+id/todo_categoryName"
+        android:id="@+id/categoryName_textView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:textSize="17sp"
         android:textStyle="bold"
         android:ellipsize="end"
@@ -26,6 +26,6 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:layout_gravity="center_vertical"
-        android:paddingTop="2dp"/>
+        android:paddingTop="2dp" />
 
 </com.jcminarro.roundkornerlayout.RoundKornerLinearLayout>

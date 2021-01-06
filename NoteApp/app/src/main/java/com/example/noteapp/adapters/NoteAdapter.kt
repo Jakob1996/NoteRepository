@@ -31,6 +31,7 @@ class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemC
         holder.itemView.note_title.text = noteList[position].title
         holder.itemView.note_message.text = noteList[position].message
 
+
         if(!noteList[position].imagePath.isEmpty()){
             imageNote.setImageBitmap(BitmapFactory.decodeFile(noteList[position].imagePath))
             imageNote.visibility = View.VISIBLE
