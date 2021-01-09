@@ -33,4 +33,10 @@
     <color name="colorNoteColor6">#00E676</color>
     <color name="colorDelete">#FF4842</color>
     <color name="colorSearchBackgoround">#333333</color>
+    <color name="colorFont1">#DCDCDC</color>
+    <color name="colorFont2">#ededed</color>
+    <color name="colorFont3">#e0e0e0</color>
+    <color name="colorFont4">#d4d4d4</color>
+    <color name="colorFont5">#c8c8c8</color>
+
 </resources>

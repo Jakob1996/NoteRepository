@@ -137,6 +137,7 @@ class MainFragment() : Fragment(){
 
         addNote_FB.setOnClickListener(View.OnClickListener {
             if(addNote_FB.labelText == "Add Note"){
+                viewModel.newNote = true
                 findNavController().navigate(R.id.action_mainFramgent_to_addEditNoteFragment)
             }else if(addNote_FB.labelText == "Add Category"){
                 val fm = requireActivity().supportFragmentManager

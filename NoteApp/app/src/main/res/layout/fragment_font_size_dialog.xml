@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/addCategoryLayout"
+<LinearLayout android:id="@+id/fontSizeLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="200dp"
     android:layout_height="wrap_content"
@@ -15,7 +15,7 @@
         android:background="@color/colorQuickActionsBackground">
 
         <EditText
-            android:id="@+id/category_title_editText"
+            android:id="@+id/item_name"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_width="match_parent"
@@ -25,7 +25,9 @@
             android:textColorHint="@color/colorIcons"
             android:textColor="@color/white"
             android:fontFamily="@font/ubunturegular"
-            android:backgroundTint="@color/colorNoteColor2" />
+            android:backgroundTint="@color/colorNoteColor2"
+
+            />
 
     </LinearLayout>
 
@@ -34,14 +36,14 @@
         android:layout_height="50dp"
         android:background="@color/colorPrimary_dark"
         >
-    <Button
-        android:id="@+id/add_category_button"
-        android:layout_width="200dp"
-        android:layout_height="match_parent"
-        android:text="Add"
-        android:textColor="@color/colorNoteColor2"
-        android:background="@color/colorPrimary_dark"
-        android:fontFamily="@font/ubunturegular" />
+        <Button
+            android:id="@+id/add_button"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="Add"
+            android:textColor="@color/colorNoteColor2"
+            android:background="@color/colorPrimary_dark"
+            android:fontFamily="@font/ubunturegular" />
     </LinearLayout>
 
 

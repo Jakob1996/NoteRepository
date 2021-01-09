@@ -1,5 +1,7 @@
 package com.example.noteapp.adapters
 
+import android.graphics.Color
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +28,8 @@ class ToDoItemAdapter(private val list: List<ItemOfList>, private val listener: 
 
         if(list[position].isDone){
             holder.itemView.todoCheckBox.isChecked = true
+            holder.itemView.todoCheckBox.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+            holder.itemView.todoCheckBox.setTextColor(Color.parseColor("#7B7B7B"))
         } else{
             holder.itemView.todoCheckBox.isChecked = false
         }

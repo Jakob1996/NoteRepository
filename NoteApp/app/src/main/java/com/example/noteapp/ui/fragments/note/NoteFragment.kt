@@ -34,7 +34,6 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
 
         viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
 
-        viewModel.setSelectedNote(null)
         requireActivity().onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
                 if(viewModel.getMultiSelectNote().value == true){
@@ -64,6 +63,7 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d("adda", "MainFragment onActivityCreated")
+        viewModel.setSelectedNote(null)
 
         viewModel.allNotes.observe(viewLifecycleOwner, Observer {
 
@@ -95,6 +95,7 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
             }
         } else {
             viewModel.setSelectedNote(note)
+            viewModel.noteBeforeChange = viewModel.getSelectedNote().value
             findNavController().navigate(R.id.action_mainFramgent_to_addEditNoteFragment)
         }
     }

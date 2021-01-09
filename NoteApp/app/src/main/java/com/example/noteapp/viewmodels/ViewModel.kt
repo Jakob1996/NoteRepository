@@ -26,6 +26,14 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     }
 
     var selectedNoteColor = "#333333"
+    var selectedFontNote:Int = 1
+    var selectedFontSize:Int = 3
+    var noteTitle = ""
+    var noteMessage = ""
+    var noteDate: Long= 1
+    var pathImage = ""
+    var idNote = 1
+
     var sortDescNote = true
     private val multiSelectNote = MutableLiveData<Boolean?>()
     init {
@@ -37,16 +45,9 @@ class ViewModel(app:Application):AndroidViewModel(app) {
         multiSelectNote.postValue(boolean)
     }
 
+    var newNote = false
 
-
-    /*
-    private var multiSelectModeNote = false
-    var getMultiSelectModeNote = multiSelectModeNote
-    fun setMutliSelectModeNote(boolean: Boolean){
-        multiSelectModeNote = boolean
-        mulVal.value = boolean
-    }
-     */
+    var noteBeforeChange:Note? = null
 
     val selectedNotes = ArrayList<Note>()
 

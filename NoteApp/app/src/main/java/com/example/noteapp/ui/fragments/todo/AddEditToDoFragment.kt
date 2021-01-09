@@ -71,8 +71,6 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
                                             rowIdCategory = viewModel.getSelectedCategotyItem().value!!.rowIdCategory
                                         }
 
-
-
                                         Toast.makeText(
                                                 requireContext(),
                                                 "Category updated",
@@ -171,7 +169,6 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
 
             }
         })
-
     }
 
     fun initMiscellaneous() {
@@ -318,7 +315,13 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
     }
 
     override fun onItemLongClick(itemsOfList: ItemOfList, position: Int) {
-        //TODO("Not yet implemented")
+        viewModel.setSelectedItem(itemsOfList)
+
+        val fm = requireActivity().supportFragmentManager
+        val dialogFragment = DialogAddToDoFragment()
+        dialogFragment.show(fm, "Abc")
+
+        itemTodoAdapter.notifyDataSetChanged()
     }
 
     fun updateItems(list: List<ItemOfList>){
@@ -335,6 +338,7 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
                viewModel.deleteItem(itemTodoAdapter.getItemInPosition(viewHolder.adapterPosition))
             }
         }
+
         val itemTouchHelper = ItemTouchHelper(item)
 
         itemTouchHelper.attachToRecyclerView(recyclerViewTodo)
