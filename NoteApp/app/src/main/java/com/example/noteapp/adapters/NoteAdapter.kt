@@ -1,19 +1,22 @@
 package com.example.noteapp.adapters
 
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.util.Log
+import android.icu.number.NumberFormatter.with
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.Glide.with
 import com.example.noteapp.R
 import com.example.noteapp.data.Note
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.note_item.view.*
 
-class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemClickListener): RecyclerView.Adapter <NoteAdapter.MyViewHolder>() {
+class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemClickListener, private val context:Context): RecyclerView.Adapter <NoteAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater:LayoutInflater = LayoutInflater.from(parent.context)
@@ -33,11 +36,22 @@ class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemC
 
 
         if(!noteList[position].imagePath.isEmpty()){
-            imageNote.setImageBitmap(BitmapFactory.decodeFile(noteList[position].imagePath))
-            imageNote.visibility = View.VISIBLE
+            Glide
+                    .with(context).load(noteList[position].imagePath).override(1000, 1000).fitCenter().centerCrop().into(imageNote)
+            holder.itemView.imageNote.visibility = View.VISIBLE
         } else{
             imageNote.visibility = View.GONE
         }
+
+/*
+        if(!noteList[position].imagePath.isEmpty()){
+            imageNote.setImageBitmap(BitmapFactory.decodeFile(noteList[position].imagePath))
+            holder.itemView.imageNote.visibility = View.VISIBLE
+        } else{
+            imageNote.visibility = View.GONE
+        }
+
+ */
     }
 
     override fun getItemCount(): Int {

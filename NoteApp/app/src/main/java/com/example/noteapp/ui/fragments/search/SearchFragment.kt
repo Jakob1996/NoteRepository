@@ -68,7 +68,7 @@ class SearchFragment : Fragment(), OnItemClickListener {
 
         recyclerView_InSearch.layoutManager = lm
 
-        noteAdapter = NoteAdapter(list, this)
+        noteAdapter = NoteAdapter(list, this, requireContext())
         recyclerView_InSearch.adapter = noteAdapter
         noteAdapter.notifyDataSetChanged()
     }
@@ -79,7 +79,7 @@ class SearchFragment : Fragment(), OnItemClickListener {
         val emptyList: List<Note>?
         recyclerView_InSearch.layoutManager = lm
 
-        noteAdapter = NoteAdapter(emptyList(), this)
+        noteAdapter = NoteAdapter(emptyList(), this, requireContext())
         recyclerView_InSearch.adapter = noteAdapter
         noteAdapter.notifyDataSetChanged()
     }

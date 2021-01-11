@@ -9,16 +9,13 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_margin="10dp"
-    app:corner_radius="11dp">
+    app:corner_radius="10dp">
 
-    <com.makeramen.roundedimageview.RoundedImageView
+    <ImageView
         android:id="@+id/imageNote"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:visibility="gone"
-        app:riv_corner_radius_top_left="11dp"
-        app:riv_corner_radius_top_right="11dp" />
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true" />
 
     <TextView
         android:textColor="@color/white"

@@ -153,7 +153,6 @@ class MainFragment() : Fragment(){
                 viewModel.deleteCategotyItems(viewModel.selectedCategoryItems)
                 viewModel.setMutliSelectCategoryMode(false)
             }
-
         })
     }
 

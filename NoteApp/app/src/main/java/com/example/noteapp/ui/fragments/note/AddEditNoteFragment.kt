@@ -20,13 +20,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.noteapp.R
 import com.example.noteapp.data.Note
 import com.example.noteapp.viewmodels.ViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_add_edit_note.*
-import kotlinx.android.synthetic.main.fragment_add_edit_note.imageNote
 import kotlinx.android.synthetic.main.note_layout_miscellaneous.*
 import java.lang.Exception
 import java.util.*
@@ -42,10 +41,8 @@ class AddEditNoteFragment:Fragment() {
     private val REQUEST_CODE_STORAGE_PERMISSION = 1
 
     private val REQUEST_CODE_SELECT_IMAGE = 2
+
     private val RESULT_OK = -1
-
-    private lateinit var note: Note
-
 
     private var quit = 1
 
@@ -69,6 +66,7 @@ class AddEditNoteFragment:Fragment() {
                             val color = viewModel.selectedNoteColor
                             val fontColor = viewModel.selectedFontNote
                             val fontSize = viewModel.selectedFontSize
+                            val path = viewModel.pathImage
 
                             //Jeśli notatka nie jest pusta, oraz nie jest zaznaczona w MainFragment - Tworzymy
                             if (viewModel.newNote) {
@@ -89,7 +87,7 @@ class AddEditNoteFragment:Fragment() {
                                 if (selectedNote.title != title || selectedNote.message != message || selectedNote.color != color
                                         || viewModel.selectedFontNote != selectedNote.fontColor || fontSize != selectedNote.fontSize) {
                                     val note = Note(title, message, date, isSelected = false,
-                                            viewModel.selectedNoteColor, viewModel.pathImage, viewModel.selectedFontNote, viewModel.selectedFontSize).apply {
+                                            viewModel.selectedNoteColor, selectedImagePath, viewModel.selectedFontNote, viewModel.selectedFontSize).apply {
                                         rowId = viewModel.getSelectedNote().value!!.rowId
                                     }
                                     Toast.makeText(
@@ -100,6 +98,7 @@ class AddEditNoteFragment:Fragment() {
                                     viewModel.updateNote(note)
                                 }
                             }
+
                         } else if (viewModel.getSelectedNote().value != null) {
                             if(!viewModel.newNote){
                                 viewModel.deleteOneNote(viewModel.getSelectedNote().value)
@@ -171,14 +170,13 @@ class AddEditNoteFragment:Fragment() {
 
         back_from_addEdit.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                findNavController().navigate(R.id.action_addEditNoteFragment_to_mainFramgent2)
+                requireActivity().onBackPressed()
             }
         })
 
         done.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 if (title_addEditFrag.text.isNotEmpty() || mess_addEditFrag.text.isNotEmpty()) {
-                    Log.d("asdfg", "$selectedImagePath")
                     val title = title_addEditFrag.text.toString()
                     val message = mess_addEditFrag.text.toString()
                     val date = Calendar.getInstance().timeInMillis
@@ -198,7 +196,6 @@ class AddEditNoteFragment:Fragment() {
                                 Toast.LENGTH_LONG
                         )
                                 .show()
-
                         //Jeśli notatka nie jest pusta, ale jest zaznaczona w MainFragment - Aktualizujemy
                     } else {
                         val bf = viewModel.noteBeforeChange
@@ -233,70 +230,65 @@ class AddEditNoteFragment:Fragment() {
                 closeKeyboard()
                 viewModel.selectedFontNote = 1
                 viewModel.selectedFontSize = 3
-                findNavController().navigate(R.id.action_addEditNoteFragment_to_mainFramgent2)
+                requireActivity().onBackPressed()
             }
         })
 
-        imageView = requireActivity().findViewById(R.id.imageNote)
+        imageView = requireActivity().findViewById(R.id.imageNoteFrag)
 
         viewModel.getSelectedNote().observe(viewLifecycleOwner, Observer {
 
-                    if(viewModel.getSelectedNote().value==null) {
-                        viewModel.selectedNoteColor = "#333333"
-                        gradientDrawable.setColor(Color.parseColor(viewModel.selectedNoteColor))
-                    } else{
-                        viewModel.noteTitle = it!!.title
-                        viewModel.noteMessage = it.message
-                        viewModel.noteDate = it.date
-                        viewModel.pathImage = it.imagePath
-                        viewModel.selectedNoteColor = it.imagePath
-                        viewModel.selectedFontSize = it.fontSize
-                        viewModel.selectedFontNote = it.fontColor
-                        viewModel.idNote = it.rowId
+            if(viewModel.getSelectedNote().value==null) {
+                viewModel.selectedNoteColor = "#333333"
+                gradientDrawable.setColor(Color.parseColor(viewModel.selectedNoteColor))
+            } else{
+                viewModel.noteTitle = it!!.title
+                viewModel.noteMessage = it.message
+                viewModel.noteDate = it.date
+                viewModel.pathImage = it.imagePath
+                viewModel.selectedNoteColor = it.color
+                viewModel.selectedFontSize = it.fontSize
+                viewModel.selectedFontNote = it.fontColor
+                viewModel.idNote = it.rowId
+                viewModel.pathImage = it.imagePath
+                selectedImagePath = it.imagePath
 
+                title_addEditFrag.setText(viewModel.noteTitle)
+                mess_addEditFrag.setText(viewModel.noteMessage)
+                setFontColor(viewModel.selectedFontNote)
+                setFontSize(viewModel.selectedFontSize)
+                Glide.with(context).load(it.imagePath).into(imageView)
 
-                        title_addEditFrag.setText(viewModel.noteTitle)
-                        mess_addEditFrag.setText(viewModel.noteMessage)
-                        setFontColor(viewModel.selectedFontNote)
-                        setFontSize(viewModel.selectedFontSize)
+                toolbar_Title_AddEdit.text = "Note editor"
+                gradientDrawable.setColor(Color.parseColor(viewModel.getSelectedNote().value?.color))
+                viewModel.selectedNoteColor = viewModel.getSelectedNote().value!!.color
 
-                        toolbar_Title_AddEdit.text = "Note editor"
-                        gradientDrawable.setColor(Color.parseColor(viewModel.getSelectedNote().value?.color))
-                        viewModel.selectedNoteColor = viewModel.getSelectedNote().value!!.color
-
-
-                        if (!it!!.imagePath.isEmpty()) {
-                            selectedImagePath = it.imagePath
-                            imageView.setImageBitmap(BitmapFactory.decodeFile(it!!.imagePath))
-                            imageView.visibility = View.VISIBLE
-                        }
-
-                        when (viewModel.getSelectedNote().value?.color) {
-                            "#333333" -> {
-                                itemSelected1()
-                            }
-
-                            "#FDBE3B" -> {
-                                itemSelected2()
-                            }
-
-                            "#FF4842" -> {
-                                itemSelected3()
-                            }
-
-                            "#ff0266" -> {
-                                itemSelected6()
-                            }
-
-                            "#3A52FC" -> {
-                                itemSelected4()
-                            }
-
-                            "#000000" -> {
-                                itemSelected5()
-                            }
-                        }
+                when (viewModel.getSelectedNote().value?.color) {
+                    "#333333" -> {
+                        itemSelected1()
                     }
+
+                    "#FDBE3B" -> {
+                        itemSelected2()
+                    }
+
+                    "#FF4842" -> {
+                        itemSelected3()
+                    }
+
+                    "#ff0266" -> {
+                        itemSelected6()
+                    }
+
+                    "#3A52FC" -> {
+                        itemSelected4()
+                    }
+
+                    "#000000" -> {
+                        itemSelected5()
+                }
+            }
+            }
         })
     }
 
@@ -475,8 +467,7 @@ class AddEditNoteFragment:Fragment() {
                         val inputStream = requireActivity().contentResolver.openInputStream(selectedImageUri)
                         val bitmap = BitmapFactory.decodeStream(inputStream)
 
-                        imageNote.setImageBitmap(bitmap)
-                        imageNote.visibility = View.VISIBLE
+                        imageView.setImageBitmap(bitmap)
                         selectedImagePath = getPathFromUri(selectedImageUri)
 
                     } catch (exeption: Exception) {
@@ -485,8 +476,6 @@ class AddEditNoteFragment:Fragment() {
                 }
             }
         }
-
-        Log.d("kottt", "aaa $selectedImagePath")
     }
 
     fun getPathFromUri(contentUri: Uri): String {
@@ -496,7 +485,7 @@ class AddEditNoteFragment:Fragment() {
             filePath = contentUri.path!!
         } else {
             cursor.moveToFirst()
-            var index = cursor.getColumnIndex("_data")
+            val index = cursor.getColumnIndex("_data")
             filePath = cursor.getString(index)
             cursor.close()
         }
@@ -509,6 +498,7 @@ class AddEditNoteFragment:Fragment() {
             1 -> {
                 mess_addEditFrag.setTextColor(Color.parseColor("#FFFFFF"))
             }
+
             2 -> {
                 mess_addEditFrag.setTextColor(Color.parseColor("#959595"))
             }
@@ -544,13 +534,14 @@ class AddEditNoteFragment:Fragment() {
     }
 
     override fun onDestroyView() {
+
         if(quit==2){
          setOffAddEdit()
         }
 
         val title = title_addEditFrag.text
         val message = mess_addEditFrag.text
-        val pathImage = viewModel.pathImage
+        val pathImage = selectedImagePath
         val fontSize = viewModel.selectedFontSize
         val fontColor = viewModel.selectedFontNote
         val date = viewModel.noteDate
@@ -565,6 +556,7 @@ class AddEditNoteFragment:Fragment() {
     }
 
     fun setOffAddEdit(){
+        selectedImagePath = ""
         title_addEditFrag.setText("")
         mess_addEditFrag.setText("")
         viewModel.setSelectedNote(null)

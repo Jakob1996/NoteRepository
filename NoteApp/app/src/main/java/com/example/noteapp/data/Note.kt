@@ -13,8 +13,7 @@ data class Note(
     val imagePath:String,
     val fontColor: Int,
     val fontSize:Int
-){
-
+) {
     @PrimaryKey(autoGenerate = true)
     var rowId = 0
 }

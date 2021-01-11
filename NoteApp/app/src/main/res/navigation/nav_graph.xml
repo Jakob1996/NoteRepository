@@ -13,10 +13,18 @@
             android:id="@+id/action_mainFramgent_to_addEditNoteFragment"
             app:destination="@id/addEditNoteFragment"
             app:enterAnim="@anim/from_right_to_left"
-            app:exitAnim="@anim/from_left_to_left" />
+            app:exitAnim="@anim/zero_to_zero"
+            app:launchSingleTop="false"
+            app:popEnterAnim="@anim/zero_to_zero"
+            app:popExitAnim="@anim/from_left_to_right" />
         <action
             android:id="@+id/action_mainFramgent_to_searchFragment"
-            app:destination="@id/searchFragment" />
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/from_right_to_left"
+            app:exitAnim="@anim/zero_to_zero"
+            app:launchSingleTop="false"
+            app:popEnterAnim="@anim/zero_to_zero"
+            app:popExitAnim="@anim/from_left_to_right" />
         <action
             android:id="@+id/action_mainFramgent_to_addEditToDoFragment"
             app:destination="@id/addEditToDoFragment" />
@@ -28,8 +36,9 @@
         <action
             android:id="@+id/action_addEditNoteFragment_to_mainFramgent2"
             app:destination="@id/mainFramgent"
-            app:enterAnim="@anim/from_right_to_right"
-            app:exitAnim="@anim/from_left_to_right" />
+            app:enterAnim="@anim/zero_to_zero"
+            app:exitAnim="@anim/from_left_to_right"
+            app:launchSingleTop="false" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"

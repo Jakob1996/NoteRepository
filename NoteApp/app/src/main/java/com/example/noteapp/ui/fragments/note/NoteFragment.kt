@@ -1,5 +1,6 @@
 package com.example.noteapp.ui.fragments.note
 
+import android.content.res.Configuration
 import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
@@ -55,8 +56,6 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
         Log.d("addda", "MainFragment onViewCreated")
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView.layoutManager = StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
-
         checkIsEmpty()
     }
 
@@ -65,6 +64,7 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
         Log.d("adda", "MainFragment onActivityCreated")
         viewModel.setSelectedNote(null)
 
+
         viewModel.allNotes.observe(viewLifecycleOwner, Observer {
 
             viewModel.allNotes.value?.forEach { for (i in viewModel.selectedNotes){ if(it.rowId.equals(i.rowId)){
@@ -72,7 +72,6 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
             }} }
 
             updateNotes(it)
-            //updateModeUI()
         })
     }
 
@@ -140,24 +139,28 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
         // wszystkie zaznaczone elementy
     }
 
-
     private fun updateNotes(list:List<Note>) {
-        val lm = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+
+        val lm =if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        } else{
+            StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
+        }
+
+        lm.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
         recyclerView.layoutManager = lm
 
         noteAdapter = if(viewModel.sortDescNote) {
-            NoteAdapter(list, this)
+            NoteAdapter(list, this, requireContext())
 
         } else{
-            NoteAdapter(list.asReversed(), this) // asReversed - Na odwrót
+            NoteAdapter(list.asReversed(), this, requireContext()) // asReversed - Na odwrót
         }
 
         recyclerView.adapter = noteAdapter
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
-
-        //recyclerView.smoothScrollToPosition(noteAdapter.itemCount)
 
         checkIsEmpty()
         noteAdapter.notifyDataSetChanged()

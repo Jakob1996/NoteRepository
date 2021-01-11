@@ -25,6 +25,16 @@ class ViewModel(app:Application):AndroidViewModel(app) {
         selectedNote.postValue(note)
     }
 
+    private val selected = MutableLiveData<Note?>() // MutableLiveData pozwala na zmiane obiektów
+
+    fun getSelected(): LiveData<Note?> = selectedNote //LiveData nie pozwala na zmiane obiektów
+
+    fun setSelected(note: Note?){
+        selectedNote.postValue(note)
+    }
+
+
+
     var selectedNoteColor = "#333333"
     var selectedFontNote:Int = 1
     var selectedFontSize:Int = 3
