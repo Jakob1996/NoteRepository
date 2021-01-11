@@ -11,6 +11,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Glide.with
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.noteapp.R
 import com.example.noteapp.data.Note
 import com.squareup.picasso.Picasso
@@ -34,10 +35,10 @@ class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemC
         holder.itemView.note_title.text = noteList[position].title
         holder.itemView.note_message.text = noteList[position].message
 
-
         if(!noteList[position].imagePath.isEmpty()){
             Glide
-                    .with(context).load(noteList[position].imagePath).override(1000, 1000).fitCenter().centerCrop().into(imageNote)
+                    .with(context).load(noteList[position].imagePath).placeholder(R.drawable.background_note).override(1000, 1000).fitCenter().centerCrop().into(imageNote)
+
             holder.itemView.imageNote.visibility = View.VISIBLE
         } else{
             imageNote.visibility = View.GONE
@@ -52,6 +53,8 @@ class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemC
         }
 
  */
+
+
     }
 
     override fun getItemCount(): Int {

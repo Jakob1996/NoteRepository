@@ -141,14 +141,16 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
 
     private fun updateNotes(list:List<Note>) {
 
-
         val lm =if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
         } else{
             StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
         }
 
+
         lm.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+
         recyclerView.layoutManager = lm
 
         noteAdapter = if(viewModel.sortDescNote) {

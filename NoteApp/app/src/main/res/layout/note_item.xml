@@ -11,6 +11,7 @@
     android:layout_margin="10dp"
     app:corner_radius="10dp">
 
+
     <ImageView
         android:id="@+id/imageNote"
         android:layout_width="match_parent"
