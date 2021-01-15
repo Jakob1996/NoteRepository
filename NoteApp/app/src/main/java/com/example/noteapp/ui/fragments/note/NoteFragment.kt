@@ -64,7 +64,6 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
         Log.d("adda", "MainFragment onActivityCreated")
         viewModel.setSelectedNote(null)
 
-
         viewModel.allNotes.observe(viewLifecycleOwner, Observer {
 
             viewModel.allNotes.value?.forEach { for (i in viewModel.selectedNotes){ if(it.rowId.equals(i.rowId)){
@@ -94,7 +93,7 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
             }
         } else {
             viewModel.setSelectedNote(note)
-            viewModel.noteBeforeChange = viewModel.getSelectedNote().value
+            viewModel.setSelectedNoteBeforeChange(note)
             findNavController().navigate(R.id.action_mainFramgent_to_addEditNoteFragment)
         }
     }
@@ -148,8 +147,6 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
             StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
         }
 
-
-        lm.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
 
         recyclerView.layoutManager = lm
 

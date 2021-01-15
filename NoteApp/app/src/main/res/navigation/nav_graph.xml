@@ -28,17 +28,23 @@
         <action
             android:id="@+id/action_mainFramgent_to_addEditToDoFragment"
             app:destination="@id/addEditToDoFragment" />
+        <action
+            android:id="@+id/action_mainFramgent_to_addNoteFragment"
+            app:destination="@id/addNoteFragment" />
     </fragment>
     <fragment
-        tools:layout="@layout/fragment_add_edit_note"
+        tools:layout="@layout/fragment_before_edit_note"
         android:id="@+id/addEditNoteFragment"
-        android:name="com.example.noteapp.ui.fragments.note.AddEditNoteFragment">
+        android:name="com.example.noteapp.ui.fragments.note.BeforeEditNoteFragment">
         <action
             android:id="@+id/action_addEditNoteFragment_to_mainFramgent2"
             app:destination="@id/mainFramgent"
             app:enterAnim="@anim/zero_to_zero"
             app:exitAnim="@anim/from_left_to_right"
             app:launchSingleTop="false" />
+        <action
+            android:id="@+id/action_before_EditNoteFragment_to_editNoteFragment"
+            app:destination="@id/editNoteFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -58,6 +64,22 @@
         android:label="AddEditToDoFragment" >
         <action
             android:id="@+id/action_addEditToDoFragment_to_mainFramgent"
+            app:destination="@id/mainFramgent" />
+    </fragment>
+    <fragment
+        android:id="@+id/editNoteFragment"
+        android:name="com.example.noteapp.ui.fragments.note.EditNoteFragment"
+        android:label="EditNoteFragment" >
+        <action
+            android:id="@+id/action_editNoteFragment_to_addEditNoteFragment"
+            app:destination="@id/addEditNoteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addNoteFragment"
+        android:name="com.example.noteapp.ui.fragments.note.AddNoteFragment"
+        android:label="AddNoteFragment" >
+        <action
+            android:id="@+id/action_addNoteFragment_to_mainFramgent"
             app:destination="@id/mainFramgent" />
     </fragment>
 </navigation>

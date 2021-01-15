@@ -25,12 +25,12 @@ class ViewModel(app:Application):AndroidViewModel(app) {
         selectedNote.postValue(note)
     }
 
-    private val selected = MutableLiveData<Note?>() // MutableLiveData pozwala na zmiane obiektów
+    private val noteBeforeChan = MutableLiveData<Note?>() // MutableLiveData pozwala na zmiane obiektów
 
-    fun getSelected(): LiveData<Note?> = selectedNote //LiveData nie pozwala na zmiane obiektów
+    fun getSelectedNoteBeforeChange(): LiveData<Note?> = noteBeforeChan //LiveData nie pozwala na zmiane obiektów
 
-    fun setSelected(note: Note?){
-        selectedNote.postValue(note)
+    fun setSelectedNoteBeforeChange(note: Note?){
+        noteBeforeChan.postValue(note)
     }
 
 

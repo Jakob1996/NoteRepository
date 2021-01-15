@@ -28,8 +28,11 @@ class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemC
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val imageNote = holder.itemView.findViewById<ImageView>(R.id.imageNote)
         holder.itemView.linear.setBackgroundColor(Color.parseColor(noteList[position].color))
+
         if(noteList[position].isSelected){
-            holder.itemView.linear.setBackgroundColor(Color.parseColor("#F0F4D7"))
+            holder.itemView.delLayout.visibility = View.VISIBLE
+        } else{
+            holder.itemView.delLayout.visibility = View.GONE
         }
 
         holder.itemView.note_title.text = noteList[position].title

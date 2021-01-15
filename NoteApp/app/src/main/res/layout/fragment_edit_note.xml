@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_Primary">
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:clipToPadding="false"
-        android:paddingBottom="10dp">
+        android:layout_height="match_parent"
+        android:background="@color/color_Primary"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true">
+            android:layout_height="match_parent">
 
             <RelativeLayout
                 android:id="@+id/toolbar_fragmentAddEdit"
@@ -35,60 +27,53 @@
                 app:titleTextColor="@color/white">
 
                 <ImageView
-                    android:id="@+id/back_from_addEdit"
+                    android:id="@+id/back_from_editNote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_back"
                     android:layout_centerVertical="true"
+                    android:src="@drawable/ic_back"
                     app:tint="@color/colorIcons" />
 
                 <TextView
-                    android:id="@+id/toolbar_Title_AddEdit"
+                    android:id="@+id/toolbar_EditNote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Note creator"
-                    android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
-                    android:textColor="@color/colorIcons" />
+                    android:layout_centerVertical="true"
+                    android:text="Note editor"
+                    android:textColor="@color/colorIcons"
+                    android:fontFamily="@font/robotoligth"
+                    android:textSize="14sp" />
 
                 <ImageView
-                    android:id="@+id/done"
+                    android:id="@+id/done_editNote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_done_circle"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:src="@drawable/ic_done_circle"
                     app:tint="@color/colorIcons" />
 
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/line1"
+                android:id="@+id/layout_title_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="20dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar_fragmentAddEdit">
 
-                <View
-                    android:id="@+id/viewSubtitleIndicator"
-                    android:layout_width="7dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/background_subtitle_indicator" />
-
                 <EditText
-                    android:id="@+id/title_addEditFrag"
+                    android:id="@+id/title_editNote"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="5dp"
                     android:background="@color/color_Primary"
-                    android:fontFamily="@font/ubuntubold"
+                    android:fontFamily="@font/robotoligth"
                     android:gravity="center_vertical"
                     android:hint="@string/note_title"
                     android:maxLength="25"
@@ -97,43 +82,41 @@
                     android:textSize="26sp" />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imageNoteFrag"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="32dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/app_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/line1" />
-
-
-            <EditText
-                android:id="@+id/mess_addEditFrag"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="20dp"
+                android:layout_marginBottom="16dp"
                 android:background="@color/color_Primary"
-                android:fontFamily="@font/ubuntumedium"
-                android:gravity="left"
-                android:hint="@string/type_note_here"
-                android:textColor="@color/white"
-                android:textColorHint="@color/colorTextHint"
-                android:textSize="20sp"
+                app:cardBackgroundColor="@color/color_Primary"
+                app:cardElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageNoteFrag" />
+                app:layout_constraintTop_toBottomOf="@+id/layout_title_edit">
+
+                <EditText
+                    android:focusable="true"
+                    android:focusedByDefault="true"
+                    android:id="@+id/mess_EditNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_Primary"
+                    android:fontFamily="@font/robotoligth"
+                    android:gravity="left"
+                    android:hint="@string/type_note_here"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/colorTextHint"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line1" />
+            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.core.widget.NestedScrollView>
 
-    <include layout="@layout/note_layout_miscellaneous" />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -20,23 +20,32 @@
     <color name="colorPrimary_dark">#292929</color>
     <color name="colorSearchIcon">#DBDBDB</color>
     <color name="colorTextHint">#7B7B7B</color>
-    <color name="colorQuickActionsBackground">#2F2D2E</color>
-    <color name="colorIcons">#A4A4A4</color>
+    <color name="colorQuickActionsBackground">#323232</color>
+    <color name="colorIcons">#FFFFFF</color>
     <color name="colorTextSubtitle">#CECECE</color>
-    <color name="colorDefaultNoteColor">#333333</color>
+    <color name="colorDefaultNoteColor">#393939</color>
     <color name="colorNoteSubtitleText">#FAFAFA</color>
     <color name="colorMiscellaneousBackground">#1F1F1F</color>
     <color name="colorNoteColor2">#FDBE3B</color>
     <color name="colorNoteColor3">#FF4842</color>
-    <color name="colorNoteColor4">#3A52FC</color>
+    <color name="colorNoteColor4">#3A52FF</color>
     <color name="colorNoteColor5">#000000</color>
     <color name="colorNoteColor6">#00E676</color>
-    <color name="colorDelete">#FF4842</color>
+    <color name="colorDelete">#FF3630</color>
     <color name="colorSearchBackgoround">#333333</color>
     <color name="colorFont1">#DCDCDC</color>
     <color name="colorFont2">#ededed</color>
     <color name="colorFont3">#e0e0e0</color>
     <color name="colorFont4">#d4d4d4</color>
     <color name="colorFont5">#c8c8c8</color>
+    <color name="colorDelet">#D8FFFFFF</color>
 
+    <color name="color_Top">#292929</color>
+
+    <color name="colorDefaultNoteColor2">#393939</color>
+    <color name="colorNoteColor22">#FDBE3B</color>
+    <color name="colorNoteColor33">#FF4842</color>
+    <color name="colorNoteColor44">#3A52FC</color>
+    <color name="colorNoteColor55">#000000</color>
+    <color name="colorNoteColor66">#00E676</color>
 </resources>
