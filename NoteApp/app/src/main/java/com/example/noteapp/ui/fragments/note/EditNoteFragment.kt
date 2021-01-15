@@ -31,24 +31,24 @@ class EditNoteFragment : Fragment() {
 
 
         requireActivity().onBackPressedDispatcher.addCallback(
-            this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
+                this,
+                object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
 
-                    //Po naciśnięciu przycisku wstecz sprawdzamy czy notatka nie jest pusta
-                    if (title_editNote.text.isNotEmpty() || mess_EditNote.text.isNotEmpty()) {
-                        var note = viewModel.getSelectedNote().value
-                        val title = title_editNote.text.toString()
-                        val mess = mess_EditNote.text.toString()
-                        note!!.message = mess
-                        note.title = title
+                        //Po naciśnięciu przycisku wstecz sprawdzamy czy notatka nie jest pusta
+                        if (title_editNote.text.isNotEmpty() || mess_EditNote.text.isNotEmpty()) {
+                            var note = viewModel.getSelectedNote().value
+                            val title = title_editNote.text.toString()
+                            val mess = mess_EditNote.text.toString()
+                            note!!.message = mess
+                            note.title = title
 
-                        viewModel.setSelectedNote(note)
+                            viewModel.setSelectedNote(note)
                         }
-                    isEnabled = false
-                    requireActivity().onBackPressed()
-                }
-            })
+                        isEnabled = false
+                        requireActivity().onBackPressed()
+                    }
+                })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -81,9 +81,9 @@ class EditNoteFragment : Fragment() {
     }
 
     private fun showSoftKeyboard(){
-            val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
 
-            imm?.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
+        imm?.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
     }
 
     fun setFontColor(colorPath: Int?) {

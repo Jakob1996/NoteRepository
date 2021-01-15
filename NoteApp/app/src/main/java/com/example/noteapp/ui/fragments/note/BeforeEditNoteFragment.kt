@@ -91,21 +91,22 @@ class BeforeEditNoteFragment:Fragment() {
                                 "${path}, messSize: ${message.length}")
 
                         if (noteBefore.title != title || noteBefore.message != message || noteBefore.color != color
-                            || fontSize!= noteBefore.fontSize ||  fontColor != noteBefore.fontColor || noteBefore.imagePath != path
-                            || noteBefore.title.length!=title.length || noteBefore.message.length != message.length) {
+                                || fontSize!= noteBefore.fontSize ||  fontColor != noteBefore.fontColor || noteBefore.imagePath != path
+                                || noteBefore.title.length!=title.length || noteBefore.message.length != message.length) {
                             val note = Note(
-                                title,
-                                message,
-                                date,
-                                isSelected = false,
-                                viewModel.selectedNoteColor,
-                                viewModel.pathImage,
-                                viewModel.selectedFontNote,
-                                viewModel.selectedFontSize
+                                    title,
+                                    message,
+                                    date,
+                                    isSelected = false,
+                                    viewModel.selectedNoteColor,
+                                    viewModel.pathImage,
+                                    viewModel.selectedFontNote,
+                                    viewModel.selectedFontSize
                             ).apply {
                                 rowId = viewModel.getSelectedNote().value!!.rowId
                             }
                             viewModel.updateNote(note)
+                            viewModel.noteState = null
                         }
                         quit = 2
                         isEnabled = false
@@ -127,6 +128,12 @@ class BeforeEditNoteFragment:Fragment() {
 
 
         initMiscellaneous()
+
+        editNote.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                findNavController().navigate(R.id.action_before_EditNoteFragment_to_editNoteFragment)
+            }
+        })
 
         fontSizeL.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -215,8 +222,8 @@ class BeforeEditNoteFragment:Fragment() {
 
                     "#000000" -> {
                         itemSelected5()
+                    }
                 }
-            }
             }
         })
     }
@@ -466,7 +473,7 @@ class BeforeEditNoteFragment:Fragment() {
         Log.d("onDepp", "OnDestroy")
 
         if(quit==2){
-         setOffAddEdit()
+            setOffAddEdit()
         }
 
         val title = title_addEditFrag.text

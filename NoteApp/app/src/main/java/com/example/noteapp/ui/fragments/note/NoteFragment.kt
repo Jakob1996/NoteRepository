@@ -161,7 +161,17 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
 
+        if(viewModel.noteState!=null){
+            (recyclerView.layoutManager as StaggeredGridLayoutManager).onRestoreInstanceState(viewModel.noteState)
+        }
+
         checkIsEmpty()
         noteAdapter.notifyDataSetChanged()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        viewModel.noteState = recyclerView.layoutManager?.onSaveInstanceState()
     }
 }

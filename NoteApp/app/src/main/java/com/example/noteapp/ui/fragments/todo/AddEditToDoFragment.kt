@@ -27,6 +27,7 @@ import com.example.noteapp.data.ItemOfList
 import com.example.noteapp.viewmodels.ViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_add_edit_to_do.*
+import kotlinx.android.synthetic.main.fragment_todo_list.*
 import kotlinx.android.synthetic.main.todo_layout_miscellaneous.*
 import java.util.*
 

@@ -1,6 +1,7 @@
 package com.example.noteapp.ui.fragments.todo
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -126,18 +127,27 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
 
         category_recyclerView.adapter = toDoCategoryAdapter
 
+        if(viewModel.categoryToDoState!=null){
+            (category_recyclerView.layoutManager as StaggeredGridLayoutManager).onRestoreInstanceState(viewModel.categoryToDoState)
+        }
+
         checkIsEmpty()
         toDoCategoryAdapter.notifyDataSetChanged()
     }
 
     private fun checkIsEmpty() {
         viewModel.allCategoryItems.observe(viewLifecycleOwner, Observer {
-            if(viewModel.allCategoryItems.value!!.size==0){7
+            if(viewModel.allCategoryItems.value!!.size==0){
                 empty_textView_Todo.visibility = View.VISIBLE
             } else{
                 empty_textView_Todo.visibility = View.GONE
             }
         })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.categoryToDoState = category_recyclerView.layoutManager?.onSaveInstanceState()
     }
 }
 

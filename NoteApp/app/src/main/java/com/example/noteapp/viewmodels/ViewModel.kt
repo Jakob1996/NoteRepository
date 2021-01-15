@@ -1,6 +1,8 @@
 package com.example.noteapp.viewmodels
 
 import android.app.Application
+import android.os.Parcelable
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,13 +29,19 @@ class ViewModel(app:Application):AndroidViewModel(app) {
 
     private val noteBeforeChan = MutableLiveData<Note?>() // MutableLiveData pozwala na zmiane obiektów
 
-    fun getSelectedNoteBeforeChange(): LiveData<Note?> = noteBeforeChan //LiveData nie pozwala na zmiane obiektów
+    fun getSelectedNoteBeforeChange(): LiveData<Note?> {
+        Log.d("ccccc", "bef title: ${noteBeforeChan.value?.title}, mess: ${noteBeforeChan.value?.message}," +
+                " color: ${noteBeforeChan.value?.color}, fontColor: ${noteBeforeChan.value?.fontColor}, fontSize: ${noteBeforeChan.value?.fontSize}, " +
+                "${noteBeforeChan.value?.imagePath}, messSize: ${noteBeforeChan.value?.message?.length}")
+        return noteBeforeChan
+    } //LiveData nie pozwala na zmiane obiektów
 
     fun setSelectedNoteBeforeChange(note: Note?){
         noteBeforeChan.postValue(note)
     }
 
-
+    var noteState:Parcelable? = null
+    var categoryToDoState:Parcelable? = null
 
     var selectedNoteColor = "#333333"
     var selectedFontNote:Int = 1
@@ -56,8 +64,6 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     }
 
     var newNote = false
-
-    var noteBeforeChange:Note? = null
 
     val selectedNotes = ArrayList<Note>()
 

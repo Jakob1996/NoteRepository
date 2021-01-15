@@ -55,38 +55,37 @@ class AddNoteFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
 
         requireActivity().onBackPressedDispatcher.addCallback(
-            this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    val title = title_addNoteFrag.text.toString()
-                    val message = mess_addNoteFrag.text.toString()
-                    val date = Calendar.getInstance().timeInMillis
-                    val color = viewModel.selectedNoteColor
-                    val fontSize = viewModel.selectedFontSize
-                    val path = viewModel.pathImage
-                    val fontColor = viewModel.selectedFontNote
+                this,
+                object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        val title = title_addNoteFrag.text.toString()
+                        val message = mess_addNoteFrag.text.toString()
+                        val date = Calendar.getInstance().timeInMillis
+                        val color = viewModel.selectedNoteColor
+                        val fontSize = viewModel.selectedFontSize
+                        val path = viewModel.pathImage
+                        val fontColor = viewModel.selectedFontNote
 
 
-                    if (title.isNotEmpty()||message.isNotEmpty()) {
-                        val note = Note(title, message, date, isSelected = false, color, path, fontColor, fontSize)
-                        viewModel.insertNote(note)
+                        if (title.isNotEmpty()||message.isNotEmpty()) {
+                            val note = Note(title, message, date, isSelected = false, color, path, fontColor, fontSize)
+                            viewModel.insertNote(note)
+                            viewModel.noteState = null
+                        }
+                        //Jeśli notatka nie jest pusta, ale jest zaznaczona w MainFragment - Aktualizujemy
+
+                        quit = 2
+                        isEnabled = false
+                        closeKeyboard()
+                        requireActivity().onBackPressed()
                     }
-                    //Jeśli notatka nie jest pusta, ale jest zaznaczona w MainFragment - Aktualizujemy
-
-
-                    quit = 2
-                    isEnabled = false
-                    closeKeyboard()
-                    requireActivity().onBackPressed()
-
                 }
-            }
         )
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_add_note, container, false)
     }
@@ -214,9 +213,9 @@ class AddNoteFragment : Fragment() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
