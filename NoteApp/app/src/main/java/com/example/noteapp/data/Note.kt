@@ -12,9 +12,10 @@ data class Note(
     val color:String,
     val imagePath:String,
     val fontColor: Int,
-    val fontSize:Int
-    //val isFavourite:Boolean=false,
-    //val hasPassword:Boolean=false
+    val fontSize:Int,
+    val isFavourite:Boolean=false,
+    val hasPassword:Boolean=false,
+    val password:Int
 ) {
     @PrimaryKey(autoGenerate = true)
     var rowId = 0

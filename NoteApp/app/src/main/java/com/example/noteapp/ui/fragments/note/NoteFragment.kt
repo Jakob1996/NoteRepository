@@ -94,7 +94,12 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
         } else {
             viewModel.setSelectedNote(note)
             viewModel.setSelectedNoteBeforeChange(note)
-            findNavController().navigate(R.id.action_mainFramgent_to_addEditNoteFragment)
+            if(note.hasPassword){
+                findNavController().navigate(R.id.action_mainFramgent_to_checkPasswordFragment)
+            } else
+            {
+                findNavController().navigate(R.id.action_mainFramgent_to_addEditNoteFragment)
+            }
         }
     }
 
@@ -102,7 +107,6 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
         if(viewModel.getMultiSelectNote().value==false){
             viewModel.setMutliSelectNote(true)
             selectNote(note, position)
-            //updateModeUI()
         }
     }
 
@@ -132,7 +136,6 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
         viewModel.setMutliSelectNote(false)
         viewModel.selectedNotes.forEach{it.isSelected = false}
         viewModel.selectedNotes.clear()
-        //updateModeUI()
 
         noteAdapter.notifyDataSetChanged() // Zmuszamy nasz layout do stworzenia jeszcze raz widoków i odświeży nam
         // wszystkie zaznaczone elementy

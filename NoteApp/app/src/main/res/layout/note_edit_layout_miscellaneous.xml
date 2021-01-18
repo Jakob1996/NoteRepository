@@ -120,6 +120,7 @@
         </FrameLayout>
 
         <FrameLayout
+            android:id="@+id/layoutPasswordImage"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content">
@@ -129,6 +130,7 @@
                 android:layout_height="45dp" />
 
             <ImageView
+                android:id="@+id/imageViewPassword"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:contentDescription="@string/app_name"
@@ -140,6 +142,7 @@
         </FrameLayout>
 
         <FrameLayout
+            android:id="@+id/favouriteNoteButton"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content">
@@ -150,6 +153,7 @@
                 />
 
             <ImageView
+                android:id="@+id/favouriteImage"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:contentDescription="@string/app_name"

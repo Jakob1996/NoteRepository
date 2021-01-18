@@ -65,24 +65,11 @@ class BeforeEditNoteFragment:Fragment() {
                         val fontSize = viewModel.selectedFontSize
                         val path = viewModel.pathImage
                         val fontColor = viewModel.selectedFontNote
+                        val favourite = viewModel.isFavourite
+                        val hasPassword = viewModel.hasPassword
+                        val password  = viewModel.password
 
-                        /*
-                            //Jeśli notatka nie jest pusta, oraz nie jest zaznaczona w MainFragment - Tworzymy
-                            if (viewModel.newNote) {
-                                val note = Note(title, message, date, isSelected = false, color, selectedImagePath, fontColor, fontSize)
-                                viewModel.insertNote(note)
-                                Log.d("kot", "1")
-                                Toast.makeText(
-                                        requireContext(),
-                                        "Note created",
-                                        Toast.LENGTH_LONG
-                                )
-                                        .show()
-                                //Jeśli notatka nie jest pusta, ale jest zaznaczona w MainFragment - Aktualizujemy
-                            */
-
-
-                        val selectedNote = viewModel.getSelectedNote().value!!
+                        Log.d("abbb", "onBack ${viewModel.password} hasPassword: ${viewModel.hasPassword}")
                         val noteBefore = viewModel.getSelectedNoteBeforeChange().value!!
 
                         Log.d("abccba", "bef title: ${noteBefore.title}, mess: ${noteBefore.message}, color: ${noteBefore.color}, fontColor: ${noteBefore.fontColor}, fontSize: ${noteBefore.fontSize}, " +
@@ -92,7 +79,7 @@ class BeforeEditNoteFragment:Fragment() {
 
                         if (noteBefore.title != title || noteBefore.message != message || noteBefore.color != color
                                 || fontSize!= noteBefore.fontSize ||  fontColor != noteBefore.fontColor || noteBefore.imagePath != path
-                                || noteBefore.title.length!=title.length || noteBefore.message.length != message.length) {
+                                || noteBefore.title.length!=title.length || noteBefore.message.length != message.length || noteBefore.isFavourite!= favourite||noteBefore.hasPassword!=hasPassword) {
                             val note = Note(
                                     title,
                                     message,
@@ -101,7 +88,10 @@ class BeforeEditNoteFragment:Fragment() {
                                     viewModel.selectedNoteColor,
                                     viewModel.pathImage,
                                     viewModel.selectedFontNote,
-                                    viewModel.selectedFontSize
+                                    viewModel.selectedFontSize,
+                                    viewModel.isFavourite,
+                                    viewModel.hasPassword,
+                                    viewModel.password
                             ).apply {
                                 rowId = viewModel.getSelectedNote().value!!.rowId
                             }
@@ -111,7 +101,7 @@ class BeforeEditNoteFragment:Fragment() {
                         quit = 2
                         isEnabled = false
                         closeKeyboard()
-                        requireActivity().onBackPressed()
+                        findNavController().navigate(R.id.action_addEditNoteFragment_to_mainFramgent2)
                     }
                 }
         )
@@ -128,6 +118,19 @@ class BeforeEditNoteFragment:Fragment() {
 
 
         initMiscellaneous()
+
+        layoutPasswordImage.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                if(viewModel.hasPassword){
+                    val fm = requireActivity().supportFragmentManager
+                    val dialogFrag = RemovePasswordDialogFragment()
+                    dialogFrag.show(fm, "Ab")
+                    setImagePassword(viewModel.hasPassword)
+                } else{
+                    findNavController().navigate(R.id.action_addEditNoteFragment_to_passwordNoteFragment)
+                }
+            }
+        })
 
         editNote.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
@@ -171,6 +174,18 @@ class BeforeEditNoteFragment:Fragment() {
             }
         })
 
+        favouriteNoteButton.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                if(viewModel.isFavourite){
+                    viewModel.isFavourite = false
+                    setFavourite(viewModel.isFavourite)
+                } else{
+                    viewModel.isFavourite = true
+                    setFavourite(viewModel.isFavourite)
+                }
+            }
+        })
+
         imageView = requireActivity().findViewById(R.id.imageNoteFrag)
 
         viewModel.getSelectedNote().observe(viewLifecycleOwner, Observer {
@@ -188,8 +203,14 @@ class BeforeEditNoteFragment:Fragment() {
                 viewModel.selectedFontNote = it.fontColor
                 viewModel.idNote = it.rowId
                 viewModel.pathImage = it.imagePath
-                viewModel.pathImage = it.imagePath
+                viewModel.isFavourite = it.isFavourite
+                viewModel.hasPassword = it.hasPassword
+                viewModel.password = it.password
 
+                Log.d("abbb", "${viewModel.password} hasPassword: ${viewModel.hasPassword}")
+
+                setImagePassword(viewModel.hasPassword)
+                setFavourite(viewModel.isFavourite)
                 title_addEditFrag.setText(viewModel.noteTitle)
                 mess_addEditFrag.setText(viewModel.noteMessage)
                 setFontColor(viewModel.selectedFontNote)
@@ -227,6 +248,7 @@ class BeforeEditNoteFragment:Fragment() {
             }
         })
     }
+
 
     fun closeKeyboard() {
         val view = requireActivity().currentFocus
@@ -472,10 +494,6 @@ class BeforeEditNoteFragment:Fragment() {
     override fun onDestroyView() {
         Log.d("onDepp", "OnDestroy")
 
-        if(quit==2){
-            setOffAddEdit()
-        }
-
         val title = title_addEditFrag.text
         val message = mess_addEditFrag.text
         val pathImage = viewModel.pathImage
@@ -484,11 +502,19 @@ class BeforeEditNoteFragment:Fragment() {
         val date = viewModel.noteDate
         val color = viewModel.selectedNoteColor
         val id = viewModel.idNote
+        val isFavourite = viewModel.isFavourite
+        val hasPassword = viewModel.hasPassword
+        val password = viewModel.password
 
-        val note = Note(title.toString(), message.toString(), date, false, color, pathImage, fontColor, fontSize)
+        val note = Note(title.toString(), message.toString(), date, false, color, pathImage, fontColor, fontSize, isFavourite, hasPassword, password)
         note.rowId = id
 
         viewModel.setSelectedNote(note)
+
+        if(quit==2){
+            setOffAddEdit()
+        }
+
         super.onDestroyView()
     }
 
@@ -506,5 +532,26 @@ class BeforeEditNoteFragment:Fragment() {
         viewModel.selectedFontNote = 1
         viewModel.selectedNoteColor = "#333333"
         viewModel.idNote = -1
+        viewModel.isFavourite = false
+        viewModel.hasPassword = false
+        viewModel.password = 0
+    }
+
+    fun setFavourite(boolean: Boolean){
+        if(boolean){
+            favouriteImage.setColorFilter(Color.parseColor("#FDBE3B"))
+        } else{
+            favouriteImage.setColorFilter(Color.WHITE)
+        }
+    }
+
+    private fun setImagePassword(hasPassword: Boolean) {
+        if(hasPassword){
+            imageViewPassword.setColorFilter(Color.parseColor("#FF4343"))
+            imageViewPassword.setImageResource(R.drawable.ic_lock_24)
+        } else{
+            imageViewPassword.setColorFilter(Color.WHITE)
+            imageViewPassword.setImageResource(R.drawable.ic_baseline_lock)
+        }
     }
 }

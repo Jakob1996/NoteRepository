@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -21,6 +22,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.noteapp.R
 import com.example.noteapp.data.Note
@@ -65,10 +67,12 @@ class AddNoteFragment : Fragment() {
                         val fontSize = viewModel.selectedFontSize
                         val path = viewModel.pathImage
                         val fontColor = viewModel.selectedFontNote
-
+                        val favourite = viewModel.isFavourite
+                        val hasPassword = viewModel.hasPassword
+                        val password = viewModel.password
 
                         if (title.isNotEmpty()||message.isNotEmpty()) {
-                            val note = Note(title, message, date, isSelected = false, color, path, fontColor, fontSize)
+                            val note = Note(title, message, date, isSelected = false, color, path, fontColor, fontSize, favourite, hasPassword, password)
                             viewModel.insertNote(note)
                             viewModel.noteState = null
                         }
@@ -133,6 +137,24 @@ class AddNoteFragment : Fragment() {
             }
         })
 
+        favouriteNoteButton.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                if(viewModel.isFavourite){
+                    viewModel.isFavourite = false
+                    setFavourite(viewModel.isFavourite)
+                } else{
+                    viewModel.isFavourite = true
+                    setFavourite(viewModel.isFavourite)
+                }
+            }
+        })
+
+        layoutPasswordImage.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                findNavController().navigate(R.id.action_addNoteFragment_to_passwordNoteFragment)
+            }
+        })
+
         imageView = requireActivity().findViewById(R.id.imageAddNoteFrag)
 
         viewModel.getSelectedNote().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
@@ -140,6 +162,7 @@ class AddNoteFragment : Fragment() {
             if(viewModel.getSelectedNote().value==null) {
                 viewModel.selectedNoteColor = "#333333"
                 gradientDrawable.setColor(Color.parseColor(viewModel.selectedNoteColor))
+                setFavourite(viewModel.isFavourite)
 
             } else{
                 viewModel.noteTitle = it!!.title
@@ -151,8 +174,11 @@ class AddNoteFragment : Fragment() {
                 viewModel.selectedFontNote = it.fontColor
                 viewModel.idNote = it.rowId
                 viewModel.pathImage = it.imagePath
-                viewModel.pathImage = it.imagePath
+                viewModel.hasPassword = it.hasPassword
+                viewModel.password = it.password
 
+
+                setImagePassword(viewModel.hasPassword)
                 title_addNoteFrag.setText(viewModel.noteTitle)
                 mess_addNoteFrag.setText(viewModel.noteMessage)
                 setFontColor(viewModel.selectedFontNote)
@@ -190,7 +216,6 @@ class AddNoteFragment : Fragment() {
             }
         })
     }
-
 
     fun closeKeyboard() {
         val view = requireActivity().currentFocus
@@ -448,8 +473,11 @@ class AddNoteFragment : Fragment() {
         val date = viewModel.noteDate
         val color = viewModel.selectedNoteColor
         val id = viewModel.idNote
+        val isFavourite = viewModel.isFavourite
+        val hasPassword = viewModel.hasPassword
+        val password = viewModel.password
 
-        val note = Note(title.toString(), message.toString(), date, false, color, pathImage, fontColor, fontSize)
+        val note = Note(title.toString(), message.toString(), date, false, color, pathImage, fontColor, fontSize, isFavourite, hasPassword, password)
         note.rowId = id
 
         viewModel.setSelectedNote(note)
@@ -470,5 +498,27 @@ class AddNoteFragment : Fragment() {
         viewModel.selectedFontNote = 1
         viewModel.selectedNoteColor = "#333333"
         viewModel.idNote = -1
+        viewModel.isFavourite = false
+        viewModel.hasPassword = false
+        viewModel.password = 0
+    }
+
+    fun setFavourite(boolean: Boolean){
+        if(boolean){
+            favouriteImage.setColorFilter(Color.parseColor("#FDBE3B"))
+        } else{
+            favouriteImage.setColorFilter(Color.WHITE)
+
+        }
+    }
+
+    private fun setImagePassword(hasPassword: Boolean) {
+        if(hasPassword){
+            imageViewPassword.setColorFilter(Color.parseColor("#FF4343"))
+            imageViewPassword.setImageResource(R.drawable.ic_lock_24)
+        } else{
+            imageViewPassword.setColorFilter(Color.WHITE)
+            imageViewPassword.setImageResource(R.drawable.ic_baseline_lock)
+        }
     }
 }

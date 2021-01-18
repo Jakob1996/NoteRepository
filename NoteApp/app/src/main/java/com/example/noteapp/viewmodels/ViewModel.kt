@@ -51,6 +51,9 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     var noteDate: Long= 1
     var pathImage = ""
     var idNote = 1
+    var hasPassword = false
+    var password:Int = 0
+    var isFavourite = false
 
     var sortDescNote = true
     private val multiSelectNote = MutableLiveData<Boolean?>()
@@ -177,8 +180,4 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     fun deleteItems(categoryId: Int){
         CoroutineScope(Dispatchers.IO).launch { repository.deleteAllITems(categoryId) }
     }
-
-   val allI = repository.getAllI()
-
-
 }

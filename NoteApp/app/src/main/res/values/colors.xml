@@ -48,4 +48,5 @@
     <color name="colorNoteColor44">#3A52FC</color>
     <color name="colorNoteColor55">#000000</color>
     <color name="colorNoteColor66">#00E676</color>
+    <color name="colorPassword">#FF4343</color>
 </resources>
