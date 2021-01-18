@@ -125,7 +125,6 @@ class BeforeEditNoteFragment:Fragment() {
                     val fm = requireActivity().supportFragmentManager
                     val dialogFrag = RemovePasswordDialogFragment()
                     dialogFrag.show(fm, "Ab")
-                    setImagePassword(viewModel.hasPassword)
                 } else{
                     findNavController().navigate(R.id.action_addEditNoteFragment_to_passwordNoteFragment)
                 }

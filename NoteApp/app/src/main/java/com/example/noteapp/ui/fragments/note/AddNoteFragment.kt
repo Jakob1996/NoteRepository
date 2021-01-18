@@ -151,7 +151,13 @@ class AddNoteFragment : Fragment() {
 
         layoutPasswordImage.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
-                findNavController().navigate(R.id.action_addNoteFragment_to_passwordNoteFragment)
+                if(viewModel.hasPassword){
+                    val fm = requireActivity().supportFragmentManager
+                    val dialogFragment = RemovePasswordDialogFragment()
+                    dialogFragment.show(fm, "abcc")
+                } else{
+                    findNavController().navigate(R.id.action_addNoteFragment_to_passwordNoteFragment)
+                }
             }
         })
 
