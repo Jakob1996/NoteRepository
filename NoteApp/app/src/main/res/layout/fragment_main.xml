@@ -9,136 +9,142 @@
     tools:context=".ui.fragments.main.MainFragment">
 
     <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/draw_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/color_Top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragments.main.MainFragment">
+
+        <RelativeLayout
+            android:id="@+id/toolbar_fragmentAddEdit"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:background="@color/color_Top"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".ui.fragments.main.MainFragment">
+            android:gravity="center_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_back"
+            app:titleTextColor="@color/white">
 
+            <ImageView
+                android:id="@+id/menuButton"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_menu2"
+                android:layout_centerVertical="true"
+                app:tint="@color/colorIcons" />
 
-            <RelativeLayout
-                android:id="@+id/toolbar_fragmentAddEdit"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/color_Top"
-                android:gravity="center_vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:navigationIcon="@drawable/ic_back"
-                app:titleTextColor="@color/white">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/ic_menu2"
-                    android:layout_centerVertical="true"
-                    app:tint="@color/colorIcons" />
-
-                <TextView
-                    android:id="@+id/toolbar_Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/explore"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:textColor="@color/colorIcons"
-                    android:textSize="13sp"
-                    android:fontFamily="@font/robotoligth"
-                    />
-
-                <ImageView
-                    android:id="@+id/searchIcon"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/ic_search"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    app:tint="@color/colorIcons" />
-            </RelativeLayout>
-
-            <com.google.android.material.appbar.AppBarLayout
-                android:background="@color/color_Top"
-                android:backgroundTint="@color/color_Top"
-                app:elevation="0dp"
-                android:id="@+id/appbar_layout"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar_fragmentAddEdit">
-
-                <com.google.android.material.tabs.TabLayout
-                    android:background="@color/color_Top"
-                    android:backgroundTint="@color/color_Top"
-                    android:id="@+id/tabsLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabGravity="fill"
-                    app:tabMode="fixed"
-                    app:tabTextAppearance="@style/CustomTabStyle"
-                    app:tabTextColor="@color/white" />
-            </com.google.android.material.appbar.AppBarLayout>
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/viewPager"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appbar_layout" />
-
-            <com.github.clans.fab.FloatingActionMenu
-                android:id="@+id/floatingActionMenu"
+            <TextView
+                android:id="@+id/toolbar_Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:menu_colorNormal="@color/gold"
-                app:menu_colorPressed="@color/gold">
+                android:text="@string/explore"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/colorIcons"
+                android:textSize="13sp"
+                android:fontFamily="@font/robotoligth"
+                />
 
-                <com.github.clans.fab.FloatingActionButton
-                    android:id="@+id/addNote_FB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_note_add"
-                    app:fab_colorNormal="@color/gold"
-                    app:fab_colorPressed="@color/gold"
-                    app:fab_label="Add note" />
+            <ImageView
+                android:id="@+id/searchIcon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_search"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                app:tint="@color/colorIcons" />
+        </RelativeLayout>
 
-                <com.github.clans.fab.FloatingActionButton
-                    android:id="@+id/sortDate_FB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_sort"
-                    app:fab_colorNormal="@color/gold"
-                    app:fab_colorPressed="@color/gold"
-                    app:fab_label="Sort date" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:background="@color/color_Top"
+            android:backgroundTint="@color/color_Top"
+            app:elevation="0dp"
+            android:id="@+id/appbar_layout"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_fragmentAddEdit">
 
-            </com.github.clans.fab.FloatingActionMenu>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.tabs.TabLayout
+                android:background="@color/color_Top"
+                android:backgroundTint="@color/color_Top"
+                android:id="@+id/tabsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabGravity="fill"
+                app:tabMode="fixed"
+                app:tabTextAppearance="@style/CustomTabStyle"
+                app:tabTextColor="@color/white" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appbar_layout" />
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/floatingActionMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:menu_colorNormal="@color/gold"
+            app:menu_colorPressed="@color/gold">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/addNote_FB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_note_add"
+                app:fab_colorNormal="@color/gold"
+                app:fab_colorPressed="@color/gold"
+                app:fab_label="Add note" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/sortDate_FB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_sort"
+                app:fab_colorNormal="@color/gold"
+                app:fab_colorPressed="@color/gold"
+                app:fab_label="Sort date" />
+
+        </com.github.clans.fab.FloatingActionMenu>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.navigation.NavigationView
-            android:layout_width="wrap_content"
+            android:layout_gravity="start"
+            android:background="@color/colorSearchBackgoround"
+            android:layout_width="300dp"
             android:layout_height="match_parent"
-            android:layout_gravity = "start">
+            app:itemTextColor="@color/white">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
+                <include layout="@layout/menu_drawer2"/>
+            </LinearLayout>
         </com.google.android.material.navigation.NavigationView>
+
     </androidx.drawerlayout.widget.DrawerLayout>
 </RelativeLayout>

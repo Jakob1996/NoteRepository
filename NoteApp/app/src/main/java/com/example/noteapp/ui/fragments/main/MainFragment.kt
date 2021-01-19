@@ -18,6 +18,7 @@ import com.example.noteapp.ui.fragments.todo.DialogAddCategoryItem
 import com.example.noteapp.ui.fragments.todo.DialogAddToDoFragment
 import com.example.noteapp.viewmodels.ViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.menu_drawer2.*
 
 class MainFragment() : Fragment(){
     private lateinit var viewModel:ViewModel
@@ -47,6 +48,8 @@ class MainFragment() : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         Log.d("abcd", "MainFragment onViewCreated")
 
+
+
         /*
         addNote_FB.setOnClickListener {
             if(viewModel.multiSelectMode) {
@@ -69,6 +72,18 @@ class MainFragment() : Fragment(){
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d("abcd", "MainFragment onActivityCreated")
+
+        homeLayout.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                draw_lay.close()
+            }
+        })
+
+        menuButton.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                draw_lay.open()
+            }
+        })
 
         setUpTabs()
 
