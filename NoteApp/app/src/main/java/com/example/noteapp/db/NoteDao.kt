@@ -11,7 +11,7 @@ interface NoteDao {
     //suspend - asynchronicznosc, zawieszenie. Piszemy to po to aby komputer
     // wiedział aby nie wykonywac tego na wątku głównym
 
-    @Insert
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNote(note: Note)
 
     @Update

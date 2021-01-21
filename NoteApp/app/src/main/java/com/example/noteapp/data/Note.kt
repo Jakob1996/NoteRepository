@@ -5,17 +5,18 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "note_table")
 data class Note(
-    var title:String,
-    var message:String,
-    val date:Long,
+    var title:String="",
+    var message:String="",
+    val date:Long=1,
     var isSelected:Boolean = false,
-    val color:String,
-    val imagePath:String,
-    val fontColor: Int,
-    val fontSize:Int,
+    val color:String="",
+    val imagePath:String="",
+    val fontColor: Int=1,
+    val fontSize:Int=1,
     val isFavourite:Boolean=false,
     val hasPassword:Boolean=false,
-    val password:Int
+    val password:Int=0,
+    val firebasePath:String = ""
 ) {
     @PrimaryKey(autoGenerate = true)
     var rowId = 0

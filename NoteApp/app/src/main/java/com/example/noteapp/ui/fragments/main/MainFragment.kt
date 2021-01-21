@@ -12,17 +12,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.example.noteapp.R
 import com.example.noteapp.adapters.ViewPagerAdapter
+import com.example.noteapp.ui.fragments.login.LoginFragment
 import com.example.noteapp.ui.fragments.note.NoteFragment
 import com.example.noteapp.ui.fragments.todo.CategoryFragment
 import com.example.noteapp.ui.fragments.todo.DialogAddCategoryItem
 import com.example.noteapp.ui.fragments.todo.DialogAddToDoFragment
 import com.example.noteapp.viewmodels.ViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.menu_drawer2.*
 
 class MainFragment() : Fragment(){
     private lateinit var viewModel:ViewModel
     private val request_code = 123
+    private val fbAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("abcd", "MainFragment onCreate")
@@ -50,6 +54,7 @@ class MainFragment() : Fragment(){
 
 
 
+
         /*
         addNote_FB.setOnClickListener {
             if(viewModel.multiSelectMode) {
@@ -72,6 +77,16 @@ class MainFragment() : Fragment(){
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d("abcd", "MainFragment onActivityCreated")
+
+        loginMenuButton.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                if(fbAuth.currentUser!=null){
+                    findNavController().navigate(R.id.action_mainFramgent_to_profileFragment)
+                } else{
+                    findNavController().navigate(R.id.action_mainFramgent_to_loginFragment)
+                }
+            }
+        })
 
         homeLayout.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {

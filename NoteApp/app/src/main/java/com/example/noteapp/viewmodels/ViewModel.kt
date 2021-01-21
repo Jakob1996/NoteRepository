@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.noteapp.data.Category
 import com.example.noteapp.data.ItemOfList
 import com.example.noteapp.data.Note
@@ -14,7 +15,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ViewModel(app:Application):AndroidViewModel(app) {
+
     private val repository = Repository(app)
+
+    //Room ViewModel
 
     //NoteViewModel
     val allNotes = repository.getAllNotes()
@@ -30,9 +34,6 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     private val noteBeforeChan = MutableLiveData<Note?>() // MutableLiveData pozwala na zmiane obiektów
 
     fun getSelectedNoteBeforeChange(): LiveData<Note?> {
-        Log.d("ccccc", "bef title: ${noteBeforeChan.value?.title}, mess: ${noteBeforeChan.value?.message}," +
-                " color: ${noteBeforeChan.value?.color}, fontColor: ${noteBeforeChan.value?.fontColor}, fontSize: ${noteBeforeChan.value?.fontSize}, " +
-                "${noteBeforeChan.value?.imagePath}, messSize: ${noteBeforeChan.value?.message?.length}")
         return noteBeforeChan
     } //LiveData nie pozwala na zmiane obiektów
 
@@ -110,7 +111,7 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     }
 
     var selectedCategotyItemColor = "#333333"
-    var sortDescCategoryItem = true
+    var sortDescCategoryItem = false
 
 
     private val multiSelectCategotyMode = MutableLiveData<Boolean?>()
@@ -179,5 +180,44 @@ class ViewModel(app:Application):AndroidViewModel(app) {
 
     fun deleteItems(categoryId: Int){
         CoroutineScope(Dispatchers.IO).launch { repository.deleteAllITems(categoryId) }
+    }
+
+    //Firebase ViewMode
+
+    val userData = repository.getUserData()
+
+    fun addNotesToCloud(){
+        repository.saveNotesToCloud(allNotes.value!!)
+    }
+
+    val notesFromFirebase = repository.getUserData()
+
+    fun getNotesFromFirebase(){
+        repository.getUserData().value?.forEach {
+
+            Log.d("fireee", "${it.message}")
+
+            val titlee = it.title
+            val messagee = it.message
+            val datee = it.date
+            val isSelectedd = it.isSelected
+            val colorr = it.color
+            val imagePathh = it.imagePath
+            val fontColorr = it.fontColor
+            val fontSizee = it.fontSize
+            val fav = it.isFavourite
+            val hasPasswordd = it.hasPassword
+            val passwordd = it.password
+
+            val note = Note(titlee, messagee, datee, isSelectedd, colorr, imagePathh, fontColorr, fontSizee, fav, hasPassword, password).apply {
+                rowId =it.rowId
+            }
+
+            insertNote(note)
+        }
+    }
+    
+    fun removeData(){
+        repository.removeFromFirebase()
     }
 }

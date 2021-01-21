@@ -37,6 +37,12 @@
         <action
             android:id="@+id/action_mainFramgent_to_checkPasswordFragment"
             app:destination="@id/checkPasswordFragment" />
+        <action
+            android:id="@+id/action_mainFramgent_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_mainFramgent_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         tools:layout="@layout/fragment_before_edit_note"
@@ -123,4 +129,29 @@
             android:id="@+id/action_checkPasswordFragment_to_addEditNoteFragment"
             app:destination="@id/addEditNoteFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.example.noteapp.ui.fragments.registration.RegistrationFragment"
+        android:label="RegistrationFragment" >
+        <action
+            android:id="@+id/action_registrationFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.noteapp.ui.fragments.login.LoginFragment"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration" >
+        <action
+            android:id="@+id/action_loginFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.noteapp.ui.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
