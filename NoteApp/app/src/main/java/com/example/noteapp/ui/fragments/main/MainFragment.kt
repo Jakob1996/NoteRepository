@@ -17,6 +17,7 @@ import com.example.noteapp.ui.fragments.note.NoteFragment
 import com.example.noteapp.ui.fragments.todo.CategoryFragment
 import com.example.noteapp.ui.fragments.todo.DialogAddCategoryItem
 import com.example.noteapp.ui.fragments.todo.DialogAddToDoFragment
+import com.example.noteapp.viewmodels.ProfilViewModel
 import com.example.noteapp.viewmodels.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
@@ -25,6 +26,7 @@ import kotlinx.android.synthetic.main.menu_drawer2.*
 
 class MainFragment() : Fragment(){
     private lateinit var viewModel:ViewModel
+    private lateinit var profileViewModel: ProfilViewModel
     private val request_code = 123
     private val fbAuth = FirebaseAuth.getInstance()
 
@@ -52,9 +54,6 @@ class MainFragment() : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         Log.d("abcd", "MainFragment onViewCreated")
 
-
-
-
         /*
         addNote_FB.setOnClickListener {
             if(viewModel.multiSelectMode) {
@@ -81,8 +80,11 @@ class MainFragment() : Fragment(){
         loginMenuButton.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
                 if(fbAuth.currentUser!=null){
+                    viewModel.setMutliSelectNote(false)
+                    exitMultiSelect()
                     findNavController().navigate(R.id.action_mainFramgent_to_profileFragment)
                 } else{
+                    exitMultiSelect()
                     findNavController().navigate(R.id.action_mainFramgent_to_loginFragment)
                 }
             }
@@ -124,7 +126,7 @@ class MainFragment() : Fragment(){
         viewModel.getMultiSelectNote().observe(viewLifecycleOwner, Observer {
             if(viewPager.currentItem==0&&it==false){
                 addNote_FB.labelText = "Add Note"
-            } else if(viewPager.currentItem==0&& it == true){
+            } else if(viewPager.currentItem==0 && it == true){
                 addNote_FB.labelText = "Delete Notes"
             }
         })
@@ -148,9 +150,11 @@ class MainFragment() : Fragment(){
                         addNote_FB.labelText = "Add Note"
                     }
                 } else if (position==1){
+                    exitMultiSelect()
                     if(viewModel.getMultiSelectCategoryMode().value == true){
                         addNote_FB.labelText = "Delete Category"
                     } else {
+                        exitMultiSelect()
                         addNote_FB.labelText = "Add Category"
                     }
                 }
@@ -175,6 +179,13 @@ class MainFragment() : Fragment(){
                 dialogFragment.show(fm, "Abc")
 
             } else if(addNote_FB.labelText == "Delete Notes"){
+                viewModel.selectedNotes.forEach {
+                    it.isSelected = false
+                }
+                if(fbAuth.currentUser!=null) {
+                    profileViewModel = ViewModelProvider(requireActivity())[ProfilViewModel::class.java]
+                    profileViewModel.deleteDataFromFirebase(viewModel.selectedNotes)
+                }
                 viewModel.deleteNotes(viewModel.selectedNotes)
                 viewModel.setMutliSelectNote(false)
                 addNote_FB.labelText="Add Note"
@@ -193,5 +204,11 @@ class MainFragment() : Fragment(){
 
         viewPager.adapter = adapter
         tabsLayout.setupWithViewPager(viewPager)
+    }
+
+    private fun exitMultiSelect(){
+        viewModel.setMutliSelectNote(false)
+        viewModel.selectedNotes.forEach { it.isSelected=false }
+        viewModel.selectedNotes.clear()
     }
 }

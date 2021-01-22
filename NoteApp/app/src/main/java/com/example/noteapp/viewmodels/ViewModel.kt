@@ -181,43 +181,4 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     fun deleteItems(categoryId: Int){
         CoroutineScope(Dispatchers.IO).launch { repository.deleteAllITems(categoryId) }
     }
-
-    //Firebase ViewMode
-
-    val userData = repository.getUserData()
-
-    fun addNotesToCloud(){
-        repository.saveNotesToCloud(allNotes.value!!)
-    }
-
-    val notesFromFirebase = repository.getUserData()
-
-    fun getNotesFromFirebase(){
-        repository.getUserData().value?.forEach {
-
-            Log.d("fireee", "${it.message}")
-
-            val titlee = it.title
-            val messagee = it.message
-            val datee = it.date
-            val isSelectedd = it.isSelected
-            val colorr = it.color
-            val imagePathh = it.imagePath
-            val fontColorr = it.fontColor
-            val fontSizee = it.fontSize
-            val fav = it.isFavourite
-            val hasPasswordd = it.hasPassword
-            val passwordd = it.password
-
-            val note = Note(titlee, messagee, datee, isSelectedd, colorr, imagePathh, fontColorr, fontSizee, fav, hasPassword, password).apply {
-                rowId =it.rowId
-            }
-
-            insertNote(note)
-        }
-    }
-    
-    fun removeData(){
-        repository.removeFromFirebase()
-    }
 }

@@ -10,10 +10,16 @@ import com.example.noteapp.data.Category
 import com.example.noteapp.data.ItemOfList
 import com.example.noteapp.data.Note
 import com.example.noteapp.db.DataBaseBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import kotlin.coroutines.coroutineContext
 
 class Repository (app:Application) {
     private val REPO_DEBUG = "REPO_DEBUG"
@@ -23,21 +29,26 @@ class Repository (app:Application) {
     private val auth = FirebaseAuth.getInstance()
     private val cloud = FirebaseFirestore.getInstance()
 
-    fun getUserData(): LiveData<List<Note>>{
+    fun getUserData(): LiveData<List<Note>> {
         val cloudResult = MutableLiveData<List<Note>>()
         val uid = auth.currentUser?.uid
-        cloud.collection("users")
+        //if(auth.currentUser!=null) {
+            cloud.collection("users")
                 .document(uid!!)
                 .collection("notes")
-                .get()
-                .addOnSuccessListener {
-                    val notes = it.toObjects(Note::class.java)
-                    cloudResult.postValue(notes)
+                .addSnapshotListener(object :EventListener<QuerySnapshot>{
+                    override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
+                        val res = value?.toObjects(Note::class.java)
+                        cloudResult.postValue(res)
+                    }
+                })
+                    /*
                 }
-                .addOnFailureListener {
-                    Log.d(REPO_DEBUG, it.message.toString())
-                }
+        } else {
+            cloudResult = MutableLiveData<List<Note>>()
+        }
 
+                     */
         return cloudResult
     }
 
@@ -47,26 +58,33 @@ class Repository (app:Application) {
             cloud.collection("users")
                     .document(uid!!)
                     .collection("notes")
-                    .document()
+                    .document("${it.rowId}")
                     .set(it)
                     .addOnSuccessListener {
                         Log.d("TAG", "Successfully!!!")
                     }
-                    .addOnFailureListener{
+                    .addOnFailureListener {
                         Log.d(REPO_DEBUG, it.message.toString())
                     }
         }
     }
 
-    fun clearNotesCloud(notes: List<Note>){
+    fun clearDataFromFirebase(notes:List<Note>){
         val uid = auth.currentUser?.uid
         notes.forEach {
             cloud.collection("users")
                     .document(uid!!)
                     .collection("notes")
-                    .document()
-        }
+                    .document("${it.rowId}")
+                    .delete()
+                    .addOnSuccessListener {
+                        Log.d("Deletedd", "Deleted successed!")
+                    }
+                    .addOnFailureListener{
+                        Log.d("Deletedd", "Deleted failure!")
+                    }
 
+        }
     }
 
     //Room Repository

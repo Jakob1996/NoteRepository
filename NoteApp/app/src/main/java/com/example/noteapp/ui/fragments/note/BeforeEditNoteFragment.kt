@@ -84,7 +84,7 @@ class BeforeEditNoteFragment:Fragment() {
                                     title,
                                     message,
                                     date,
-                                    isSelected = false,
+                                    false,
                                     viewModel.selectedNoteColor,
                                     viewModel.pathImage,
                                     viewModel.selectedFontNote,

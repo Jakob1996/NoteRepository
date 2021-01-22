@@ -11,12 +11,11 @@ data class Note(
     var isSelected:Boolean = false,
     val color:String="",
     val imagePath:String="",
-    val fontColor: Int=1,
+    val fontColor:Int=1,
     val fontSize:Int=1,
     val isFavourite:Boolean=false,
     val hasPassword:Boolean=false,
-    val password:Int=0,
-    val firebasePath:String = ""
+    val password:Int=0
 ) {
     @PrimaryKey(autoGenerate = true)
     var rowId = 0

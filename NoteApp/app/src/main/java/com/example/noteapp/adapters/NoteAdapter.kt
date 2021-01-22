@@ -46,18 +46,6 @@ class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemC
         } else{
             imageNote.visibility = View.GONE
         }
-
-/*
-        if(!noteList[position].imagePath.isEmpty()){
-            imageNote.setImageBitmap(BitmapFactory.decodeFile(noteList[position].imagePath))
-            holder.itemView.imageNote.visibility = View.VISIBLE
-        } else{
-            imageNote.visibility = View.GONE
-        }
-
- */
-
-
     }
 
     override fun getItemCount(): Int {

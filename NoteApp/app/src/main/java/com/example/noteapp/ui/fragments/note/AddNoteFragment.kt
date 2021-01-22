@@ -26,8 +26,10 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.noteapp.R
 import com.example.noteapp.data.Note
+import com.example.noteapp.viewmodels.ProfilViewModel
 import com.example.noteapp.viewmodels.ViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_add_note.*
 import kotlinx.android.synthetic.main.note_edit_layout_miscellaneous.*
 import java.lang.Exception
@@ -36,6 +38,10 @@ import java.util.*
 
 class AddNoteFragment : Fragment() {
     private lateinit var viewModel: ViewModel
+
+    private lateinit var profileViewModel:ProfilViewModel
+
+    private val fbAuth = FirebaseAuth.getInstance()
 
     private var value: Boolean = false
 
@@ -50,7 +56,6 @@ class AddNoteFragment : Fragment() {
     private var quit = 1
 
     private lateinit var imageView: ImageView
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,8 +77,18 @@ class AddNoteFragment : Fragment() {
                         val password = viewModel.password
 
                         if (title.isNotEmpty()||message.isNotEmpty()) {
-                            val note = Note(title, message, date, isSelected = false, color, path, fontColor, fontSize, favourite, hasPassword, password)
+                            val note = Note(title, message, date, isSelected = false, color, path, fontColor, fontSize, favourite, hasPassword, password).apply {
+                                val randomString = UUID.randomUUID().toString().substring(0,15)
+                                rowId = title.hashCode()+message.hashCode()+date.hashCode()*color.hashCode()
+
+                            }
                             viewModel.insertNote(note)
+                            if(fbAuth.currentUser!=null) {
+                                profileViewModel = ViewModelProvider(requireActivity())[ProfilViewModel::class.java]
+                                val noteAsList = listOf<Note>(note)
+                                profileViewModel.addNotesToCloud(noteAsList)
+
+                            }
                             viewModel.noteState = null
                         }
                         //Jeśli notatka nie jest pusta, ale jest zaznaczona w MainFragment - Aktualizujemy
