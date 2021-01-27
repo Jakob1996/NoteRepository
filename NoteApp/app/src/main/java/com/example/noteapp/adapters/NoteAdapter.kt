@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.icu.number.NumberFormatter.with
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,15 +38,19 @@ class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemC
 
         holder.itemView.note_title.text = noteList[position].title
         holder.itemView.note_message.text = noteList[position].message
+/*
+        if(!noteList[position].imagePaths.isEmpty()){
 
-        if(!noteList[position].imagePath.isEmpty()){
-            Glide
-                    .with(context).load(noteList[position].imagePath).placeholder(R.drawable.background_note).override(1000, 1000).fitCenter().centerCrop().into(imageNote)
+                Glide
+                        .with(context).load(noteList[position].imagePaths.get(0)).placeholder(R.drawable.background_note).override(1000, 1000).fitCenter().centerCrop().into(imageNote)
 
-            holder.itemView.imageNote.visibility = View.VISIBLE
+                holder.itemView.imageNote.visibility = View.VISIBLE
+
         } else{
             imageNote.visibility = View.GONE
         }
+
+ */
     }
 
     override fun getItemCount(): Int {

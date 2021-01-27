@@ -1,37 +1,39 @@
 package com.example.noteapp.ui.fragments.note
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.noteapp.R
+import com.example.noteapp.adapters.ImageAdapter
 import com.example.noteapp.data.Note
 import com.example.noteapp.viewmodels.ViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.sangcomz.fishbun.FishBun
+import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import kotlinx.android.synthetic.main.fragment_before_edit_note.*
 import kotlinx.android.synthetic.main.note_edit_layout_miscellaneous.*
-import java.lang.Exception
 import java.util.*
+import kotlin.collections.ArrayList
 
 class BeforeEditNoteFragment:Fragment() {
+
+    private lateinit var imageAdapter:ImageAdapter
 
     private lateinit var viewModel: ViewModel
 
@@ -47,7 +49,11 @@ class BeforeEditNoteFragment:Fragment() {
 
     private var quit = 1
 
-    private lateinit var imageView: ImageView
+    private var imageList:ArrayList<Uri>? = null
+
+    private var imageListString:ArrayList<String>? = arrayListOf()
+
+    //private lateinit var imageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("xTa", "AddEditNoteFragment onCreate")
@@ -69,16 +75,12 @@ class BeforeEditNoteFragment:Fragment() {
                         val hasPassword = viewModel.hasPassword
                         val password  = viewModel.password
 
-                        Log.d("abbb", "onBack ${viewModel.password} hasPassword: ${viewModel.hasPassword}")
+
+
                         val noteBefore = viewModel.getSelectedNoteBeforeChange().value!!
 
-                        Log.d("abccba", "bef title: ${noteBefore.title}, mess: ${noteBefore.message}, color: ${noteBefore.color}, fontColor: ${noteBefore.fontColor}, fontSize: ${noteBefore.fontSize}, " +
-                                "${noteBefore.imagePath}, messSize: ${noteBefore.message.length}")
-                        Log.d("abccba", "aft title: ${title}, mess: ${message}, color: ${color}, fontColor: ${fontColor}, fontSize: ${fontSize}, " +
-                                "${path}, messSize: ${message.length}")
-
                         if (noteBefore.title != title || noteBefore.message != message || noteBefore.color != color
-                                || fontSize!= noteBefore.fontSize ||  fontColor != noteBefore.fontColor || noteBefore.imagePath != path
+                                || fontSize!= noteBefore.fontSize ||  fontColor != noteBefore.fontColor || noteBefore.imagePaths != path
                                 || noteBefore.title.length!=title.length || noteBefore.message.length != message.length || noteBefore.isFavourite!= favourite||noteBefore.hasPassword!=hasPassword) {
                             val note = Note(
                                     title,
@@ -86,7 +88,7 @@ class BeforeEditNoteFragment:Fragment() {
                                     date,
                                     false,
                                     viewModel.selectedNoteColor,
-                                    viewModel.pathImage,
+                                   path,
                                     viewModel.selectedFontNote,
                                     viewModel.selectedFontSize,
                                     viewModel.isFavourite,
@@ -115,7 +117,6 @@ class BeforeEditNoteFragment:Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val gradientDrawable: GradientDrawable = viewSubtitleIndicator.background as GradientDrawable
-
 
         initMiscellaneous()
 
@@ -185,8 +186,6 @@ class BeforeEditNoteFragment:Fragment() {
             }
         })
 
-        imageView = requireActivity().findViewById(R.id.imageNoteFrag)
-
         viewModel.getSelectedNote().observe(viewLifecycleOwner, Observer {
 
             if(viewModel.getSelectedNote().value==null) {
@@ -196,25 +195,25 @@ class BeforeEditNoteFragment:Fragment() {
                 viewModel.noteTitle = it!!.title
                 viewModel.noteMessage = it.message
                 viewModel.noteDate = it.date
-                viewModel.pathImage = it.imagePath
+                viewModel.pathImage = it.imagePaths
                 viewModel.selectedNoteColor = it.color
                 viewModel.selectedFontSize = it.fontSize
                 viewModel.selectedFontNote = it.fontColor
                 viewModel.idNote = it.rowId
-                viewModel.pathImage = it.imagePath
                 viewModel.isFavourite = it.isFavourite
                 viewModel.hasPassword = it.hasPassword
                 viewModel.password = it.password
 
                 Log.d("abbb", "${viewModel.password} hasPassword: ${viewModel.hasPassword}")
 
+                initAdapter(viewModel.pathImage)
                 setImagePassword(viewModel.hasPassword)
                 setFavourite(viewModel.isFavourite)
                 title_addEditFrag.setText(viewModel.noteTitle)
                 mess_addEditFrag.setText(viewModel.noteMessage)
                 setFontColor(viewModel.selectedFontNote)
                 setFontSize(viewModel.selectedFontSize)
-                Glide.with(context).load(it.imagePath).override(1000, 1000).fitCenter().centerCrop().into(imageView)
+                //Glide.with(requireContext()).load(it.imagePath).override(1000, 1000).fitCenter().centerCrop().into(imageView)
 
                 gradientDrawable.setColor(Color.parseColor(viewModel.getSelectedNote().value?.color))
                 viewModel.selectedNoteColor = viewModel.getSelectedNote().value!!.color
@@ -248,6 +247,19 @@ class BeforeEditNoteFragment:Fragment() {
         })
     }
 
+    private fun initAdapter(listImages:ArrayList<String>) {
+
+        val lm = GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
+
+        recyclerViewImageBeforeFrag.layoutManager = lm
+
+        imageAdapter = ImageAdapter(listImages, requireContext())
+
+        recyclerViewImageBeforeFrag.adapter = imageAdapter
+
+        imageAdapter.notifyDataSetChanged()
+    }
+
 
     fun closeKeyboard() {
         val view = requireActivity().currentFocus
@@ -263,10 +275,20 @@ class BeforeEditNoteFragment:Fragment() {
     }
 
     fun selectImage() {
+
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        intent.setType("image/*")
+        startActivityForResult(intent, 1)
+
+
+
+        /*
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         if (intent.resolveActivity(requireActivity().packageManager) != null) {
             startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE)
         }
+         */
     }
 
     override fun onRequestPermissionsResult(
@@ -275,6 +297,7 @@ class BeforeEditNoteFragment:Fragment() {
             grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
 
         if (requestCode == REQUEST_CODE_STORAGE_PERMISSION && grantResults.size > 0) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -347,16 +370,36 @@ class BeforeEditNoteFragment:Fragment() {
             }
         })
 
-        layoutMiscellaneous.findViewById<FrameLayout>(R.id.layoutAddImage).setOnClickListener(object : View.OnClickListener {
-            override fun onClick(p0: View?) {
+
+
+        layoutAddImage.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                openImagePicker()
+
+
+                /*
+                 if(ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
+                 }
+
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
                 } else {
                     selectImage()
                 }
+                 */
             }
         })
+    }
+
+    private fun openImagePicker() {
+        FishBun.with(this).setImageAdapter(GlideAdapter())
+                .setMinCount(1)
+                .setMaxCount(10)
+                .setAllViewTitle("All")
+                .setActionBarTitle("Selected Images")
+                .startAlbum()
     }
 
     fun itemSelected1() {
@@ -416,6 +459,52 @@ class BeforeEditNoteFragment:Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        when(requestCode){
+            FishBun.FISHBUN_REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK){
+                    imageList = data?.getParcelableArrayListExtra(FishBun.INTENT_PATH)
+
+
+                    imageList?.forEach {
+                        viewModel.pathImage.add(it.toString())
+                    }
+
+                    initAdapter(viewModel.pathImage)
+                }
+            }
+        }
+
+        /*
+        if(requestCode == 1 && requestCode == RESULT_OK){
+            val listBitmaps = arrayListOf<Bitmap>()
+            val clipData = data?.clipData
+            if(clipData!= null){
+              for (i in 0..clipData.itemCount){
+                  val imageUri = clipData.getItemAt(i).uri
+                  try {
+                      val inpStr = context?.contentResolver?.openInputStream(imageUri)
+                      val bitm = BitmapFactory.decodeStream(inpStr)
+                      listBitmaps.add(bitm)
+                  } catch ( e : FileNotFoundException){
+                      e.printStackTrace()
+                  }
+              }
+            } else{
+                val imageUri = data?.data
+                try {
+                    val inpStr = context?.contentResolver?.openInputStream(imageUri!!)
+                    val bitmap = BitmapFactory.decodeStream(inpStr)
+                    listBitmaps.add(bitmap)
+                } catch (e : FileNotFoundException){
+                    e.printStackTrace()
+                }
+
+            }
+        }
+
+         */
+
+        /*
         if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == RESULT_OK) {
             if (data != null) {
                 val selectedImageUri: Uri? = data.data
@@ -431,6 +520,17 @@ class BeforeEditNoteFragment:Fragment() {
                         Toast.makeText(context, "${exeption.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
+            }
+        }
+
+         */
+
+    }
+
+    private fun setImages() {
+        if(imageList != null){
+            for (it in imageList!!.indices){
+                Log.d("abbb", "$it")
             }
         }
     }
@@ -526,7 +626,7 @@ class BeforeEditNoteFragment:Fragment() {
         viewModel.noteTitle = ""
         viewModel.noteMessage=""
         viewModel.noteDate = 1
-        viewModel.pathImage = ""
+        viewModel.pathImage = arrayListOf()
         viewModel.selectedFontSize = 3
         viewModel.selectedFontNote = 1
         viewModel.selectedNoteColor = "#333333"

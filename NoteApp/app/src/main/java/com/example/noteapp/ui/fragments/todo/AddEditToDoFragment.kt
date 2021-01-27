@@ -105,7 +105,6 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         val gradientDrawable:GradientDrawable = todo_viewSubtitleIndicator.background as GradientDrawable
         initMiscellaneous()
@@ -154,6 +153,8 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
                 }
             }
         })
+
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

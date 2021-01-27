@@ -140,7 +140,9 @@ class MainFragment() : Fragment(){
         })
 
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+            }
 
             override fun onPageSelected(position: Int) {
                 if(position==0){
@@ -150,17 +152,16 @@ class MainFragment() : Fragment(){
                         addNote_FB.labelText = "Add Note"
                     }
                 } else if (position==1){
-                    exitMultiSelect()
                     if(viewModel.getMultiSelectCategoryMode().value == true){
                         addNote_FB.labelText = "Delete Category"
                     } else {
-                        exitMultiSelect()
                         addNote_FB.labelText = "Add Category"
                     }
                 }
             }
 
-            override fun onPageScrollStateChanged(state: Int) {}
+            override fun onPageScrollStateChanged(state: Int) {
+            }
         })
 
             searchIcon.setOnClickListener(object : View.OnClickListener {

@@ -28,7 +28,4 @@ interface NoteDao {
 
     @Query ("DELETE FROM note_table")
     suspend fun clearDatabaseNotes()
-
-
-
 }

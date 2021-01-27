@@ -4,6 +4,7 @@ import androidx.room.*
 import com.example.noteapp.data.Category
 import kotlinx.coroutines.flow.Flow
 
+
 @Dao
 interface CategoryDao {
 

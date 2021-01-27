@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
+import com.bumptech.glide.Glide
 import com.example.noteapp.data.Category
 import com.example.noteapp.data.ItemOfList
 import com.example.noteapp.data.Note
@@ -28,6 +29,10 @@ class Repository (app:Application) {
     private val storage = FirebaseStorage.getInstance()
     private val auth = FirebaseAuth.getInstance()
     private val cloud = FirebaseFirestore.getInstance()
+
+    fun saveImage (){
+
+    }
 
     fun getUserData(): LiveData<List<Note>> {
         val cloudResult = MutableLiveData<List<Note>>()
@@ -54,7 +59,11 @@ class Repository (app:Application) {
 
     fun saveNotesToCloud(notes:List<Note>){
         val uid = auth.currentUser?.uid
+
+        val ref = storage.reference.child("users").child("uid")
         notes.forEach {
+
+
             cloud.collection("users")
                     .document(uid!!)
                     .collection("notes")

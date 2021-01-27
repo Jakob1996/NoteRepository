@@ -9,7 +9,7 @@ data class CategoryWithItems(
         @Embedded val category: Category,
         @Relation(
                 parentColumn = "rowIdCategory",
-                entityColumn = "categoryName"
+                entityColumn = "categoryId"
         )
         val items:List<ItemOfList>
         )

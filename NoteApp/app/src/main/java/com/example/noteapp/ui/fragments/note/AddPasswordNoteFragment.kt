@@ -38,7 +38,7 @@ class AddPasswordNoteFragment : Fragment() {
                 val fontColor = note.fontColor
                 val fontSize = note.fontSize
                 val favourite = note.isFavourite
-                val imagePath = note.imagePath
+                val imagePath = note.imagePaths
                 val isSelected = note.isSelected
                 var rowIdd = note.rowId
                 val hasPassword = true

@@ -1,5 +1,6 @@
 package com.example.noteapp.ui.fragments.note
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -23,20 +24,33 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.noteapp.R
+import com.example.noteapp.adapters.ImageAdapter
 import com.example.noteapp.data.Note
 import com.example.noteapp.viewmodels.ProfilViewModel
 import com.example.noteapp.viewmodels.ViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.auth.FirebaseAuth
+import com.sangcomz.fishbun.FishBun
+import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import kotlinx.android.synthetic.main.fragment_add_note.*
+import kotlinx.android.synthetic.main.fragment_before_edit_note.*
 import kotlinx.android.synthetic.main.note_edit_layout_miscellaneous.*
 import java.lang.Exception
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class AddNoteFragment : Fragment() {
+
+    private lateinit var imageAdapter:ImageAdapter
+
+    private var imageList:ArrayList<Uri> = arrayListOf()
+
+    private var imageListString:ArrayList<String> = arrayListOf()
+
     private lateinit var viewModel: ViewModel
 
     private lateinit var profileViewModel:ProfilViewModel
@@ -176,7 +190,6 @@ class AddNoteFragment : Fragment() {
             }
         })
 
-        imageView = requireActivity().findViewById(R.id.imageAddNoteFrag)
 
         viewModel.getSelectedNote().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
@@ -189,14 +202,15 @@ class AddNoteFragment : Fragment() {
                 viewModel.noteTitle = it!!.title
                 viewModel.noteMessage = it.message
                 viewModel.noteDate = it.date
-                viewModel.pathImage = it.imagePath
+                viewModel.pathImage = it.imagePaths!!
                 viewModel.selectedNoteColor = it.color
                 viewModel.selectedFontSize = it.fontSize
                 viewModel.selectedFontNote = it.fontColor
                 viewModel.idNote = it.rowId
-                viewModel.pathImage = it.imagePath
                 viewModel.hasPassword = it.hasPassword
                 viewModel.password = it.password
+
+                initAdapter(viewModel.pathImage)
 
 
                 setImagePassword(viewModel.hasPassword)
@@ -204,7 +218,7 @@ class AddNoteFragment : Fragment() {
                 mess_addNoteFrag.setText(viewModel.noteMessage)
                 setFontColor(viewModel.selectedFontNote)
                 setFontSize(viewModel.selectedFontSize)
-                Glide.with(context).load(it.imagePath).override(1000, 1000).fitCenter().centerCrop().into(imageView)
+                Glide.with(requireContext()).load(it.imagePaths[0]).override(1000, 1000).fitCenter().centerCrop().into(imageView)
 
                 gradientDrawable.setColor(Color.parseColor(viewModel.getSelectedNote().value?.color))
                 viewModel.selectedNoteColor = viewModel.getSelectedNote().value!!.color
@@ -338,12 +352,17 @@ class AddNoteFragment : Fragment() {
 
         layoutMiscellaneous.findViewById<FrameLayout>(R.id.layoutAddImage).setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
+                openImagePicker()
+                /*
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
                 } else {
                     selectImage()
                 }
+
+                 */
+
             }
         })
     }
@@ -405,6 +424,22 @@ class AddNoteFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        when(requestCode){
+            FishBun.FISHBUN_REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK){
+                    imageList = data?.getParcelableArrayListExtra(FishBun.INTENT_PATH)!!
+
+
+                    imageList.forEach {
+                        viewModel.pathImage.add(it.toString())
+                    }
+
+                    initAdapter(viewModel.pathImage)
+                }
+            }
+        }
+
+        /*
         if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == RESULT_OK) {
             if (data != null) {
                 val selectedImageUri: Uri? = data.data
@@ -413,8 +448,8 @@ class AddNoteFragment : Fragment() {
                         val inputStream = requireActivity().contentResolver.openInputStream(selectedImageUri)
                         val bitmap = BitmapFactory.decodeStream(inputStream)
 
-                        viewModel.pathImage = getPathFromUri(selectedImageUri)
-                        Glide.with(context).load(viewModel.pathImage).override(1000, 1000).fitCenter().centerCrop().into(imageView)
+                        //viewModel.pathImage = getPathFromUri(selectedImageUri)
+                        //Glide.with(requireContext()).load(viewModel.pathImage).override(1000, 1000).fitCenter().centerCrop().into(imageView)
 
                     } catch (exeption: Exception) {
                         Toast.makeText(context, "${exeption.message}", Toast.LENGTH_SHORT).show()
@@ -422,6 +457,21 @@ class AddNoteFragment : Fragment() {
                 }
             }
         }
+
+         */
+    }
+
+    private fun initAdapter(path:ArrayList<String>) {
+
+        val lm = GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
+
+        recyclerViewImageAddNoteFrag.layoutManager = lm
+
+        imageAdapter = ImageAdapter(path, requireContext())
+
+        recyclerViewImageAddNoteFrag.adapter = imageAdapter
+
+        imageAdapter.notifyDataSetChanged()
     }
 
     fun getPathFromUri(contentUri: Uri): String {
@@ -514,7 +564,7 @@ class AddNoteFragment : Fragment() {
         viewModel.noteTitle = ""
         viewModel.noteMessage=""
         viewModel.noteDate = 1
-        viewModel.pathImage = ""
+        viewModel.pathImage = arrayListOf()
         viewModel.selectedFontSize = 3
         viewModel.selectedFontNote = 1
         viewModel.selectedNoteColor = "#333333"
@@ -541,5 +591,14 @@ class AddNoteFragment : Fragment() {
             imageViewPassword.setColorFilter(Color.WHITE)
             imageViewPassword.setImageResource(R.drawable.ic_baseline_lock)
         }
+    }
+
+    private fun openImagePicker() {
+        FishBun.with(this).setImageAdapter(GlideAdapter())
+            .setMinCount(1)
+            .setMaxCount(10)
+            .setAllViewTitle("All")
+            .setActionBarTitle("Selected Images")
+            .startAlbum()
     }
 }

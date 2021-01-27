@@ -46,8 +46,6 @@ class ProfilViewModel(app: Application):AndroidViewModel(app) {
 
      */
 
-
-
     fun deleteDataFromFirebase(notes:List<Note>){
         repository.clearDataFromFirebase(notes)
     }
