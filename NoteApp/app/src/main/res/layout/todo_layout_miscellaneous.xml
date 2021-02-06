@@ -21,12 +21,60 @@
         android:textSize="14sp"
         android:text="Castomizer"
         android:gravity="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/favourtieLay_category"
+        android:orientation="horizontal"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginTop="7dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ubuntumedium"
+            android:includeFontPadding="false"
+            android:text="Options"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+        <ImageView
+            android:id="@+id/favouriteImage_category"
+            android:layout_width="47dp"
+            android:layout_height="47dp"
+            android:contentDescription="@string/app_name"
+            android:padding="11dp"
+            app:tint="@color/white"
+            android:src="@drawable/ic_baseline_favorite_24"
+            android:layout_marginStart="10dp"
+            />
+
+        <ImageView
+            android:id="@+id/imageViewPassword_category"
+            android:layout_width="47dp"
+            android:layout_height="47dp"
+            android:contentDescription="@string/app_name"
+            android:padding="11dp"
+            app:tint="@color/white"
+            android:src="@drawable/ic_baseline_lock" />
+
+        <ImageView
+            android:id="@+id/infoImage_category"
+            android:layout_width="47dp"
+            android:layout_height="47dp"
+            android:contentDescription="@string/app_name"
+            android:padding="11dp"
+            app:tint="@color/white"
+            android:src="@drawable/ic_outline_info"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/todo_layoutNoteColor"
-        android:layout_margin="13sp"
+
+        android:layout_margin="13dp"
         android:orientation="horizontal"
         android:gravity="center_vertical">
 

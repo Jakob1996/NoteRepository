@@ -32,8 +32,9 @@ class CheckPasswordFragment : Fragment() {
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     isEnabled = false
-                    requireActivity().onBackPressed()
                     quit = 2
+                    viewModel.isSearchEdit = 1
+                    requireActivity().onBackPressed()
                 }
             }
         )

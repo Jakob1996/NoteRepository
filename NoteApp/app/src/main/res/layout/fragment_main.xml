@@ -22,67 +22,88 @@
         <RelativeLayout
             android:id="@+id/toolbar_fragmentAddEdit"
             android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
             android:background="@color/color_Top"
             android:gravity="center_vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/ic_back"
             app:titleTextColor="@color/white">
 
             <ImageView
                 android:id="@+id/menuButton"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_menu2"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
                 android:layout_centerVertical="true"
-                app:tint="@color/colorIcons" />
+                android:background="@drawable/ripple"
+                android:padding="6dp"
+                android:src="@drawable/ic_menu2"
+                app:tint="@color/colorIcons"
+                />
 
             <TextView
                 android:id="@+id/toolbar_Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/explore"
-                android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-                android:textColor="@color/colorIcons"
-                android:textSize="13sp"
-                android:fontFamily="@font/robotoligth"
-                />
-
-            <ImageView
-                android:id="@+id/searchIcon"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_search"
-                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                app:tint="@color/colorIcons" />
+                android:fontFamily="@font/robotoligth"
+                android:text="@string/explore"
+                android:textColor="@color/colorIcons"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true">
+                <ImageView
+                    android:id="@+id/searchIcon"
+                    android:layout_width="37dp"
+                    android:layout_height="37dp"
+                    android:background="@color/fui_transparent"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_search"
+                    app:tint="@color/colorIcons"
+                    tools:ignore="ContentDescription"
+                    />
+
+                <ImageView
+                    android:id="@+id/fav_FB"
+                    android:layout_width="37dp"
+                    android:layout_height="37dp"
+                    android:background="@color/fui_transparent"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_baseline_favorite_24"
+                    app:tint="@color/colorIcons"
+                    tools:ignore="ContentDescription"
+                    android:layout_marginStart="3dp"/>
+            </LinearLayout>
         </RelativeLayout>
 
         <com.google.android.material.appbar.AppBarLayout
-            android:background="@color/color_Top"
-            android:backgroundTint="@color/color_Top"
-            app:elevation="0dp"
             android:id="@+id/appbar_layout"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="3dp"
             android:layout_marginEnd="16dp"
+            android:background="@color/color_Top"
+            android:backgroundTint="@color/color_Top"
+            app:elevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar_fragmentAddEdit">
 
             <com.google.android.material.tabs.TabLayout
-                android:background="@color/color_Top"
-                android:backgroundTint="@color/color_Top"
                 android:id="@+id/tabsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/color_Top"
+                android:backgroundTint="@color/color_Top"
                 app:tabGravity="fill"
                 app:tabMode="fixed"
                 app:tabTextAppearance="@style/CustomTabStyle"
@@ -114,20 +135,21 @@
                 android:id="@+id/addNote_FB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_note_add"
+                android:src="@drawable/ic_baseline_bookmark_add"
                 app:fab_colorNormal="@color/gold"
                 app:fab_colorPressed="@color/gold"
-                app:fab_label="Add note" />
+                app:fab_label="Add Note" />
 
             <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/sortDate_FB"
+                android:id="@+id/sort_FB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_sort"
                 app:fab_colorNormal="@color/gold"
                 app:fab_colorPressed="@color/gold"
-                app:fab_label="Sort date" />
-
+                app:fab_label="Sort date"
+                android:tint="@color/white"
+                />
         </com.github.clans.fab.FloatingActionMenu>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

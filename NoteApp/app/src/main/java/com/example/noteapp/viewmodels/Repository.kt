@@ -111,7 +111,7 @@ class Repository (app:Application) {
         notesDao.updateNote(note)
     }
 
-    suspend fun deleteNotes(list: List<Note>){
+     fun deleteNotes(list: List<Note>){
         notesDao.deleteNotes(list)
     }
 
@@ -137,7 +137,7 @@ class Repository (app:Application) {
         categoryDao.updateCategory(category)
     }
 
-    suspend fun deleteCategory(category:List<Category>){
+     fun deleteCategory(category:List<Category>){
         categoryDao.deleteCategory(category)
     }
 

@@ -1,5 +1,6 @@
 package com.example.noteapp.ui.fragments.todo
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -16,33 +17,23 @@ import com.example.noteapp.R
 import com.example.noteapp.adapters.ItemsCategoryTodoAdapter
 import com.example.noteapp.adapters.OnItemCategoryClickListener
 import com.example.noteapp.data.Category
+import com.example.noteapp.ui.fragments.note.RemovePasswordDialogFragment
 import com.example.noteapp.ui.fragments.sort.SortDialogFragment
 import com.example.noteapp.viewmodels.ViewModel
 import kotlinx.android.synthetic.main.fragment_add_edit_to_do.*
 import kotlinx.android.synthetic.main.fragment_todo_list.*
+import kotlinx.android.synthetic.main.note_edit_layout_miscellaneous.*
+import kotlinx.android.synthetic.main.todo_layout_miscellaneous.*
 
 class CategoryFragment : Fragment(), OnItemCategoryClickListener,
     SortDialogFragment.OnItemClickDialogListener {
     private lateinit var viewModel: ViewModel
     private lateinit var toDoCategoryAdapter: ItemsCategoryTodoAdapter
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
-
-        viewModel.setSelectedCategotyItem(null)
-        requireActivity().onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                if(viewModel.getMultiSelectCategoryMode().value==true ){
-                    exitMultiSelectMode()
-                } else{
-                    isEnabled = false
-                    requireActivity().onBackPressed()
-                }
-            }
-        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -59,8 +50,16 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        viewModel.getNotifyDataCategory().observe(viewLifecycleOwner, Observer {
+            if(it==true){
+                viewModel.allCategoryItems.value?.forEach { it.isSelected = false }
+                updateItems(viewModel.allCategoryItems.value!!)
+                exitMultiSelectMode()
+                viewModel.setNotifyDataCategory(false)
+            }
+        })
+
         viewModel.allCategoryItems.observe(viewLifecycleOwner, Observer {
-            updateItems(it)
 
             viewModel.allCategoryItems.value?.forEach { for (i in viewModel.selectedCategoryItems){ if(it.rowIdCategory.equals(i.rowIdCategory)){
                 it.isSelected=true
@@ -71,7 +70,7 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
     }
 
     override fun onItemClick(category:Category, position: Int) {
-        if(viewModel.getMultiSelectCategoryMode().value == true){
+        if(viewModel.getMultiSelectMode().value == true){
             if(viewModel.selectedCategoryItems.contains(category)){
                 unselectCategoryItem(category, position)
             } else{
@@ -84,8 +83,8 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
     }
 
     override fun onItemLongClick(category: Category, position: Int) {
-        if(viewModel.getMultiSelectCategoryMode().value == false){
-            viewModel.setMutliSelectCategoryMode(true)
+        if(viewModel.getMultiSelectMode().value == false){
+            viewModel.setMutliSelectMode(true)
             selectCategoryItem(category, position)
         }
     }
@@ -103,27 +102,42 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
 
         toDoCategoryAdapter.notifyItemChanged(position)
 
-        if(viewModel.selectedCategoryItems.isEmpty())
+        if(viewModel.selectedCategoryItems.isEmpty()&&viewModel.selectedNotes.isEmpty()) {
             exitMultiSelectMode()
+        }
     }
 
     private fun exitMultiSelectMode() {
-        viewModel.setMutliSelectCategoryMode(false)
+
+        viewModel.selectedNotes.forEach { it.isSelected = false }
+        viewModel.selectedNotes.clear()
+
         viewModel.selectedCategoryItems.forEach{it.isSelected = false}
         viewModel.selectedCategoryItems.clear()
 
-        toDoCategoryAdapter.notifyDataSetChanged()
+        viewModel.setMutliSelectMode(false)
     }
 
     private fun updateItems(list:List<Category>) {
         val lm = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         category_recyclerView.layoutManager = lm
 
+        var listMode:List<Category> = listOf()
+
+        /*
+        if(viewModel.getFabButtonMode().value==true){
+            listMode = list.filter { it.isFavourite==true }
+        } else {
+            listMode = list
+        }
+         */
+
         toDoCategoryAdapter = if(viewModel.sortDescNote) {
             ItemsCategoryTodoAdapter(list, this)
         } else{
             ItemsCategoryTodoAdapter(list.asReversed(), this) // asReversed - Na odwrót
         }
+
 
         category_recyclerView.adapter = toDoCategoryAdapter
 

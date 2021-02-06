@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -28,7 +30,14 @@ class SearchFragment : Fragment(), OnItemClickListener {
 
         viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
 
+        requireActivity().onBackPressedDispatcher.addCallback(this, object :OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                isEnabled = false
+                findNavController().navigate(R.id.action_searchFragment_to_mainFramgent)
+            }
+        })
     }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_search, container, false)
@@ -36,8 +45,6 @@ class SearchFragment : Fragment(), OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
         recyclerView_InSearch.layoutManager = StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
 
@@ -49,7 +56,6 @@ class SearchFragment : Fragment(), OnItemClickListener {
 
         editSearcher.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -68,7 +74,7 @@ class SearchFragment : Fragment(), OnItemClickListener {
 
         recyclerView_InSearch.layoutManager = lm
 
-        noteAdapter = NoteAdapter(list, this, requireContext())
+        noteAdapter = NoteAdapter(list, this)
         recyclerView_InSearch.adapter = noteAdapter
         noteAdapter.notifyDataSetChanged()
     }
@@ -79,13 +85,21 @@ class SearchFragment : Fragment(), OnItemClickListener {
         val emptyList: List<Note>?
         recyclerView_InSearch.layoutManager = lm
 
-        noteAdapter = NoteAdapter(emptyList(), this, requireContext())
+        noteAdapter = NoteAdapter(emptyList(), this)
         recyclerView_InSearch.adapter = noteAdapter
         noteAdapter.notifyDataSetChanged()
     }
 
     override fun onItemClick(note: Note, position: Int) {
-
+        viewModel.setSelectedNote(note)
+        viewModel.setSelectedNoteBeforeChange(note)
+        if(note.hasPassword){
+            viewModel.isSearchEdit = 2
+            findNavController().navigate(R.id.action_searchFragment_to_checkPasswordFragment)
+        } else
+        {   viewModel.isSearchEdit = 2
+            findNavController().navigate(R.id.action_searchFragment_to_beforeAddEditNoteFragment)
+        }
     }
 
     override fun onItemLongClick(note: Note, position: Int) {

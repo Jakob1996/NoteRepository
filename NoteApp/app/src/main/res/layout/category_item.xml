@@ -5,27 +5,29 @@
     android:background="@drawable/background_note"
     android:id="@+id/layout_category_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="60dp"
     android:orientation="vertical"
     android:layout_margin="9dp"
-    app:corner_radius="11dp">
+    app:corner_radius="11dp"
+    android:gravity="center_vertical"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
 
     <TextView
         android:textColor="@color/white"
         android:maxLines="1"
         android:id="@+id/categoryName_textView"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
         android:textSize="17sp"
         android:textStyle="bold"
         android:ellipsize="end"
         android:fontFamily="@font/ubuntumedium"
         android:includeFontPadding="false"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
         android:layout_gravity="center_vertical"
-        android:paddingTop="2dp" />
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"/>
 
 </com.jcminarro.roundkornerlayout.RoundKornerLinearLayout>

@@ -1,6 +1,7 @@
 package com.example.noteapp.adapters
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ class ItemsCategoryTodoAdapter(private val list: List<Category>, private val lis
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.itemView.layout_category_item.setBackgroundColor(Color.parseColor(list[position].color))
 
+        Log.d("pps", "${list[position].isSelected}")
         if(list[position].isSelected){
             holder.itemView.layout_category_item.setBackgroundColor(Color.parseColor("#F0F4D7"))
         }

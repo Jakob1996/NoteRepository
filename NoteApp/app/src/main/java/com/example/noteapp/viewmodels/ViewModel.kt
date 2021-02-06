@@ -23,24 +23,42 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     //NoteViewModel
     val allNotes = repository.getAllNotes()
 
-    private val selectedNote = MutableLiveData<Note?>() // MutableLiveData pozwala na zmiane obiektów
+    private val selectedNote = MutableLiveData<Note?>()
 
-    fun getSelectedNote(): LiveData<Note?> = selectedNote //LiveData nie pozwala na zmiane obiektów
+    fun getSelectedNote(): LiveData<Note?> = selectedNote
 
     fun setSelectedNote(note: Note?){
         selectedNote.postValue(note)
     }
 
-    private val noteBeforeChan = MutableLiveData<Note?>() // MutableLiveData pozwala na zmiane obiektów
+    private val noteBeforeChan = MutableLiveData<Note?>()
 
     fun getSelectedNoteBeforeChange(): LiveData<Note?> {
         return noteBeforeChan
-    } //LiveData nie pozwala na zmiane obiektów
+    }
 
     fun setSelectedNoteBeforeChange(note: Note?){
         noteBeforeChan.postValue(note)
     }
 
+    private var searchMode = MutableLiveData<Boolean?>()
+
+    fun getSearchMode(): LiveData<Boolean?> = searchMode
+
+    fun setSearchMode(boolean: Boolean?){
+        searchMode.postValue(boolean)
+    }
+
+    var isSearchEdit = 1
+
+    private var fabButtonMode = MutableLiveData<Boolean?>()
+    fun getFabButtonMode():LiveData<Boolean?> = fabButtonMode
+
+    fun setFabButtonMode(boolean: Boolean?){
+        fabButtonMode.postValue(boolean)
+    }
+
+    var searchInNote:String = ""
     var noteState:Parcelable? = null
     var categoryToDoState:Parcelable? = null
 
@@ -57,14 +75,34 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     var isFavourite = false
 
     var sortDescNote = true
-    private val multiSelectNote = MutableLiveData<Boolean?>()
+    private val multiSelectMode = MutableLiveData<Boolean?>()
     init {
-        multiSelectNote.value = false
+        multiSelectMode.value = false
     }
 
-    fun getMultiSelectNote():LiveData<Boolean?> = multiSelectNote
-    fun setMutliSelectNote(boolean: Boolean?){
-        multiSelectNote.postValue(boolean)
+    fun getMultiSelectMode():LiveData<Boolean?> = multiSelectMode
+    fun setMutliSelectMode(boolean: Boolean?){
+        multiSelectMode.postValue(boolean)
+    }
+
+    private val notifyDataNote = MutableLiveData<Boolean?>()
+    init {
+        notifyDataNote.value = false
+    }
+
+    fun getNotifyDataNote():LiveData<Boolean?> = notifyDataNote
+    fun setNotifyDataNote(boolean: Boolean?){
+        notifyDataNote.postValue(boolean)
+    }
+
+    private val notifyDataCategory = MutableLiveData<Boolean?>()
+    init {
+        notifyDataCategory.value = false
+    }
+
+    fun getNotifyDataCategory():LiveData<Boolean?> = notifyDataCategory
+    fun setNotifyDataCategory(boolean: Boolean?){
+        notifyDataCategory.postValue(boolean)
     }
 
     var newNote = false
@@ -80,7 +118,7 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     }
 
     fun deleteNotes(listNotes:List<Note>){
-        CoroutineScope(Dispatchers.IO).launch { repository.deleteNotes(listNotes) }
+         repository.deleteNotes(listNotes)
     }
 
     fun deleteOneNote(note: Note?){
@@ -100,6 +138,15 @@ class ViewModel(app:Application):AndroidViewModel(app) {
 
     //CategoryViewModel
 
+    var categoryName:String = ""
+    var selectedCategotyItemColor = "#333333"
+    var categoryIsSelected:Boolean = false
+    var categoryDate:Long=0
+    var isFavouriteCategory:Boolean = false
+    var hasPasswordCategory:Boolean = false
+    var passwordCategory:Int = 0
+    var categoryId:Int =0
+
     val allCategoryItems = repository.getAllCategory()
 
     private val selectedCategoryItem = MutableLiveData<Category?>()
@@ -110,19 +157,7 @@ class ViewModel(app:Application):AndroidViewModel(app) {
         selectedCategoryItem.postValue(category)
     }
 
-    var selectedCategotyItemColor = "#333333"
     var sortDescCategoryItem = false
-
-
-    private val multiSelectCategotyMode = MutableLiveData<Boolean?>()
-    init {
-        multiSelectCategotyMode.value = false
-    }
-
-    fun getMultiSelectCategoryMode():LiveData<Boolean?> = multiSelectCategotyMode
-    fun setMutliSelectCategoryMode(boolean: Boolean?){
-        multiSelectCategotyMode.postValue(boolean)
-    }
 
 
     val selectedCategoryItems = ArrayList<Category>()
@@ -136,7 +171,7 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     }
 
     fun deleteCategotyItems(category:List<Category>){
-        CoroutineScope(Dispatchers.IO).launch { repository.deleteCategory(category) }
+      repository.deleteCategory(category)
     }
 
     fun clearDataBaseCategoryItems(){

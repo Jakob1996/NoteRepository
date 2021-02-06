@@ -5,12 +5,14 @@ import androidx.room.PrimaryKey
 
 @Entity (tableName = "category_table")
 data class Category(
-        val categoryName:String,
+                val categoryName:String,
                 val color:String,
                 var isSelected:Boolean = false,
-                val date:Long){
+                val date:Long,
+                val isFavoutire:Boolean = false,
+                val hasPassword:Boolean = false,
+                val password:Int = 0){
 
         @PrimaryKey(autoGenerate = true)
         var rowIdCategory = 0
-
 }

@@ -3,14 +3,10 @@ package com.example.noteapp.ui.fragments.note
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
@@ -20,12 +16,9 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
 import com.example.noteapp.R
 import com.example.noteapp.adapters.ImageAdapter
 import com.example.noteapp.data.Note
@@ -36,20 +29,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import kotlinx.android.synthetic.main.fragment_add_note.*
-import kotlinx.android.synthetic.main.fragment_before_edit_note.*
 import kotlinx.android.synthetic.main.note_edit_layout_miscellaneous.*
-import java.lang.Exception
+import kotlinx.android.synthetic.main.todo_layout_miscellaneous.*
 import java.util.*
 import kotlin.collections.ArrayList
-
 
 class AddNoteFragment : Fragment() {
 
     private lateinit var imageAdapter:ImageAdapter
 
     private var imageList:ArrayList<Uri> = arrayListOf()
-
-    private var imageListString:ArrayList<String> = arrayListOf()
 
     private lateinit var viewModel: ViewModel
 
@@ -61,19 +50,12 @@ class AddNoteFragment : Fragment() {
 
     private var selectedImagePath: String = ""
 
-    private val REQUEST_CODE_STORAGE_PERMISSION = 1
-
-    private val REQUEST_CODE_SELECT_IMAGE = 2
-
-    private val RESULT_OK = -1
-
     private var quit = 1
-
-    private lateinit var imageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
+
 
         requireActivity().onBackPressedDispatcher.addCallback(
                 this,
@@ -91,29 +73,28 @@ class AddNoteFragment : Fragment() {
                         val password = viewModel.password
 
                         if (title.isNotEmpty()||message.isNotEmpty()) {
-                            val note = Note(title, message, date, isSelected = false, color, path, fontColor, fontSize, favourite, hasPassword, password).apply {
-                                val randomString = UUID.randomUUID().toString().substring(0,15)
-                                rowId = title.hashCode()+message.hashCode()+date.hashCode()*color.hashCode()
 
+                            val note = Note(title, message, date, isSelected = false, color,
+                                    path, fontColor, fontSize, favourite, hasPassword, password).apply {
+                                rowId = title.hashCode()+message.hashCode()+date.hashCode()*color.hashCode()
                             }
+
                             viewModel.insertNote(note)
+
                             if(fbAuth.currentUser!=null) {
                                 profileViewModel = ViewModelProvider(requireActivity())[ProfilViewModel::class.java]
-                                val noteAsList = listOf<Note>(note)
+                                val noteAsList = listOf(note)
                                 profileViewModel.addNotesToCloud(noteAsList)
-
                             }
                             viewModel.noteState = null
                         }
-                        //Jeśli notatka nie jest pusta, ale jest zaznaczona w MainFragment - Aktualizujemy
 
                         quit = 2
                         isEnabled = false
                         closeKeyboard()
-                        requireActivity().onBackPressed()
+                        findNavController().navigate(R.id.action_addNoteFragment_to_mainFramgent)
                     }
-                }
-        )
+                })
     }
 
     override fun onCreateView(
@@ -126,7 +107,8 @@ class AddNoteFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val gradientDrawable: GradientDrawable = addNote_viewSubtitleIndicator.background as GradientDrawable
+        val gradientDrawable: GradientDrawable =
+                addNote_viewSubtitleIndicator.background as GradientDrawable
 
         initMiscellaneous()
 
@@ -148,9 +130,11 @@ class AddNoteFragment : Fragment() {
         colorFontL.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 ++viewModel.selectedFontNote
+
                 if (viewModel.selectedFontNote > 3) {
                     viewModel.selectedFontNote = 1
                 }
+
                 setFontColor(viewModel.selectedFontNote)
                 viewModel.selectedFontNote + 1
 
@@ -212,15 +196,14 @@ class AddNoteFragment : Fragment() {
 
                 initAdapter(viewModel.pathImage)
 
-
                 setImagePassword(viewModel.hasPassword)
                 title_addNoteFrag.setText(viewModel.noteTitle)
                 mess_addNoteFrag.setText(viewModel.noteMessage)
                 setFontColor(viewModel.selectedFontNote)
                 setFontSize(viewModel.selectedFontSize)
-                Glide.with(requireContext()).load(it.imagePaths[0]).override(1000, 1000).fitCenter().centerCrop().into(imageView)
 
-                gradientDrawable.setColor(Color.parseColor(viewModel.getSelectedNote().value?.color))
+                val selectedColor = viewModel.getSelectedNote().value?.color
+                gradientDrawable.setColor(Color.parseColor(selectedColor))
                 viewModel.selectedNoteColor = viewModel.getSelectedNote().value!!.color
 
                 when (viewModel.getSelectedNote().value?.color) {
@@ -263,29 +246,6 @@ class AddNoteFragment : Fragment() {
     fun setSubtitleIndicator() {
         val gradientDrawable: GradientDrawable = addNote_viewSubtitleIndicator.background as GradientDrawable
         gradientDrawable.setColor(Color.parseColor(viewModel.selectedNoteColor))
-    }
-
-    fun selectImage() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        if (intent.resolveActivity(requireActivity().packageManager) != null) {
-            startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE)
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode == REQUEST_CODE_STORAGE_PERMISSION && grantResults.size > 0) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                selectImage()
-            } else {
-                Toast.makeText(requireContext(), "Permission Denited", Toast.LENGTH_LONG).show()
-            }
-        }
     }
 
     fun initMiscellaneous() {
@@ -350,21 +310,6 @@ class AddNoteFragment : Fragment() {
             }
         })
 
-        layoutMiscellaneous.findViewById<FrameLayout>(R.id.layoutAddImage).setOnClickListener(object : View.OnClickListener {
-            override fun onClick(p0: View?) {
-                openImagePicker()
-                /*
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
-                } else {
-                    selectImage()
-                }
-
-                 */
-
-            }
-        })
     }
 
     fun itemSelected1() {
@@ -429,36 +374,13 @@ class AddNoteFragment : Fragment() {
                 if (resultCode == Activity.RESULT_OK){
                     imageList = data?.getParcelableArrayListExtra(FishBun.INTENT_PATH)!!
 
-
                     imageList.forEach {
                         viewModel.pathImage.add(it.toString())
                     }
-
                     initAdapter(viewModel.pathImage)
                 }
             }
         }
-
-        /*
-        if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == RESULT_OK) {
-            if (data != null) {
-                val selectedImageUri: Uri? = data.data
-                if (selectedImageUri != null) {
-                    try {
-                        val inputStream = requireActivity().contentResolver.openInputStream(selectedImageUri)
-                        val bitmap = BitmapFactory.decodeStream(inputStream)
-
-                        //viewModel.pathImage = getPathFromUri(selectedImageUri)
-                        //Glide.with(requireContext()).load(viewModel.pathImage).override(1000, 1000).fitCenter().centerCrop().into(imageView)
-
-                    } catch (exeption: Exception) {
-                        Toast.makeText(context, "${exeption.message}", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
-
-         */
     }
 
     private fun initAdapter(path:ArrayList<String>) {
@@ -472,21 +394,6 @@ class AddNoteFragment : Fragment() {
         recyclerViewImageAddNoteFrag.adapter = imageAdapter
 
         imageAdapter.notifyDataSetChanged()
-    }
-
-    fun getPathFromUri(contentUri: Uri): String {
-        val filePath: String
-        val cursor = requireActivity().contentResolver.query(contentUri, null, null, null, null)
-        if (cursor == null) {
-            filePath = contentUri.path!!
-        } else {
-            cursor.moveToFirst()
-            val index = cursor.getColumnIndex("_data")
-            filePath = cursor.getString(index)
-            cursor.close()
-        }
-
-        return filePath
     }
 
     fun setFontColor(colorPath: Int?) {
@@ -579,7 +486,6 @@ class AddNoteFragment : Fragment() {
             favouriteImage.setColorFilter(Color.parseColor("#FDBE3B"))
         } else{
             favouriteImage.setColorFilter(Color.WHITE)
-
         }
     }
 
@@ -594,11 +500,13 @@ class AddNoteFragment : Fragment() {
     }
 
     private fun openImagePicker() {
+        val count = 10 - viewModel.pathImage.size
         FishBun.with(this).setImageAdapter(GlideAdapter())
             .setMinCount(1)
-            .setMaxCount(10)
+            .setMaxCount(count)
             .setAllViewTitle("All")
             .setActionBarTitle("Selected Images")
+            .setIsUseDetailView(false)
             .startAlbum()
     }
 }

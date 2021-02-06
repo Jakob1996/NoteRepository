@@ -1,5 +1,6 @@
 package com.example.noteapp.ui.fragments.note
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -17,7 +18,9 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.navigateUp
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.noteapp.R
 import com.example.noteapp.adapters.ImageAdapter
@@ -26,7 +29,10 @@ import com.example.noteapp.viewmodels.ViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
+import com.xeoh.android.texthighlighter.TextHighlighter
 import kotlinx.android.synthetic.main.fragment_before_edit_note.*
+import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.fragment_search_in_note_dialog2.*
 import kotlinx.android.synthetic.main.note_edit_layout_miscellaneous.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -41,69 +47,78 @@ class BeforeEditNoteFragment:Fragment() {
 
     private var selectedImagePath: String = ""
 
-    private val REQUEST_CODE_STORAGE_PERMISSION = 1
-
-    private val REQUEST_CODE_SELECT_IMAGE = 2
-
-    private val RESULT_OK = -1
-
     private var quit = 1
 
     private var imageList:ArrayList<Uri>? = null
 
-    private var imageListString:ArrayList<String>? = arrayListOf()
+    private val textHighLighter = TextHighlighter()
 
-    //private lateinit var imageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("xTa", "AddEditNoteFragment onCreate")
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
 
+
+
+
         requireActivity().onBackPressedDispatcher.addCallback(
                 this,
                 object : OnBackPressedCallback(true) {
                     override fun handleOnBackPressed() {
-                        val title = title_addEditFrag.text.toString()
-                        val message = mess_addEditFrag.text.toString()
-                        val date = Calendar.getInstance().timeInMillis
-                        val color = viewModel.selectedNoteColor
-                        val fontSize = viewModel.selectedFontSize
-                        val path = viewModel.pathImage
-                        val fontColor = viewModel.selectedFontNote
-                        val favourite = viewModel.isFavourite
-                        val hasPassword = viewModel.hasPassword
-                        val password  = viewModel.password
+                        Log.d("valll", "${viewModel.getSearchMode().value}")
+                        if (viewModel.getSearchMode().value == true&&mess_addEditFrag.text.isNotEmpty()) {
+                            textHighLighter
+                                    .setForegroundColor(mess_addEditFrag.currentTextColor)
+                                    .setBackgroundColor(Color.TRANSPARENT)
+                                    .invalidate(TextHighlighter.BASE_MATCHER)
+                            viewModel.setSearchMode(false)
+                        } else {
+                            val title = title_addEditFrag.text.toString()
+                            val message = mess_addEditFrag.text.toString()
+                            val date = Calendar.getInstance().timeInMillis
+                            val color = viewModel.selectedNoteColor
+                            val fontSize = viewModel.selectedFontSize
+                            val path = viewModel.pathImage
+                            val fontColor = viewModel.selectedFontNote
+                            val favourite = viewModel.isFavourite
+                            val hasPassword = viewModel.hasPassword
+                            val password = viewModel.password
 
+                            val noteBefore = viewModel.getSelectedNoteBeforeChange().value!!
 
-
-                        val noteBefore = viewModel.getSelectedNoteBeforeChange().value!!
-
-                        if (noteBefore.title != title || noteBefore.message != message || noteBefore.color != color
-                                || fontSize!= noteBefore.fontSize ||  fontColor != noteBefore.fontColor || noteBefore.imagePaths != path
-                                || noteBefore.title.length!=title.length || noteBefore.message.length != message.length || noteBefore.isFavourite!= favourite||noteBefore.hasPassword!=hasPassword) {
-                            val note = Note(
-                                    title,
-                                    message,
-                                    date,
-                                    false,
-                                    viewModel.selectedNoteColor,
-                                   path,
-                                    viewModel.selectedFontNote,
-                                    viewModel.selectedFontSize,
-                                    viewModel.isFavourite,
-                                    viewModel.hasPassword,
-                                    viewModel.password
-                            ).apply {
-                                rowId = viewModel.getSelectedNote().value!!.rowId
+                            if (noteBefore.title != title || noteBefore.message != message || noteBefore.color != color
+                                    || fontSize != noteBefore.fontSize || fontColor != noteBefore.fontColor || noteBefore.imagePaths != path
+                                    || noteBefore.title.length != title.length || noteBefore.message.length != message.length || noteBefore.isFavourite != favourite || noteBefore.hasPassword != hasPassword) {
+                                val note = Note(
+                                        title,
+                                        message,
+                                        date,
+                                        false,
+                                        color,
+                                        path,
+                                        fontColor,
+                                        fontSize,
+                                        favourite,
+                                        hasPassword,
+                                        password
+                                ).apply {
+                                    rowId = viewModel.getSelectedNote().value!!.rowId
+                                }
+                                viewModel.updateNote(note)
+                                viewModel.noteState = null
                             }
-                            viewModel.updateNote(note)
-                            viewModel.noteState = null
+                            quit = 2
+                            isEnabled = false
+                            closeKeyboard()
+                            Log.d("vbn", viewModel.isSearchEdit.toString())
+
+                            if(viewModel.isSearchEdit==1){
+                                findNavController().navigate(R.id.action_beforeAddEditNoteFragment_to_mainFramgent)
+                            } else{
+                                findNavController().navigate(R.id.action_beforeAddEditNoteFragment_to_searchFragment2)
+                            }
                         }
-                        quit = 2
-                        isEnabled = false
-                        closeKeyboard()
-                        findNavController().navigate(R.id.action_addEditNoteFragment_to_mainFramgent2)
                     }
                 }
         )
@@ -114,11 +129,20 @@ class BeforeEditNoteFragment:Fragment() {
         return inflater.inflate(R.layout.fragment_before_edit_note, container, false)
     }
 
+    @SuppressLint("Range")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val gradientDrawable: GradientDrawable = viewSubtitleIndicator.background as GradientDrawable
 
         initMiscellaneous()
+
+        searchInMessageNote.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                val fm = requireActivity().supportFragmentManager
+                val dialogSearchFrag = SearchInNoteDialogFragment()
+                dialogSearchFrag.show(fm, "ab")
+            }
+        })
 
         layoutPasswordImage.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
@@ -127,14 +151,14 @@ class BeforeEditNoteFragment:Fragment() {
                     val dialogFrag = RemovePasswordDialogFragment()
                     dialogFrag.show(fm, "Ab")
                 } else{
-                    findNavController().navigate(R.id.action_addEditNoteFragment_to_passwordNoteFragment)
+                    findNavController().navigate(R.id.action_beforeAddEditNoteFragment_to_passwordNoteFragment)
                 }
             }
         })
 
         editNote.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
-                findNavController().navigate(R.id.action_before_EditNoteFragment_to_editNoteFragment)
+                findNavController().navigate(R.id.action_before_AddEditNoteFragment_to_editNoteFragment)
             }
         })
 
@@ -144,6 +168,7 @@ class BeforeEditNoteFragment:Fragment() {
                 if (viewModel.selectedFontSize > 5) {
                     viewModel.selectedFontSize = 1
                 }
+
                 setFontSize(viewModel.selectedFontSize)
                 viewModel.selectedFontSize + 1
 
@@ -168,6 +193,14 @@ class BeforeEditNoteFragment:Fragment() {
             }
         })
 
+        layoutInfo.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                val fm = requireActivity().supportFragmentManager
+                val infoDialogFrag = InfoDialogFragment()
+                infoDialogFrag.show(fm, "hhh")
+            }
+        })
+
         back_from_addEdit.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 requireActivity().onBackPressed()
@@ -185,6 +218,15 @@ class BeforeEditNoteFragment:Fragment() {
                 }
             }
         })
+
+       viewModel.getSearchMode().observe(viewLifecycleOwner, Observer{
+           if(viewModel.getSearchMode().value==true){
+           textHighLighter
+                   .setBackgroundColor(Color.parseColor("#FFFF00"))
+                   .addTarget(mess_addEditFrag)
+                   .highlight(viewModel.searchInNote, TextHighlighter.BASE_MATCHER)
+           }
+       })
 
         viewModel.getSelectedNote().observe(viewLifecycleOwner, Observer {
 
@@ -204,18 +246,17 @@ class BeforeEditNoteFragment:Fragment() {
                 viewModel.hasPassword = it.hasPassword
                 viewModel.password = it.password
 
-                Log.d("abbb", "${viewModel.password} hasPassword: ${viewModel.hasPassword}")
-
                 initAdapter(viewModel.pathImage)
                 setImagePassword(viewModel.hasPassword)
+
                 setFavourite(viewModel.isFavourite)
                 title_addEditFrag.setText(viewModel.noteTitle)
                 mess_addEditFrag.setText(viewModel.noteMessage)
                 setFontColor(viewModel.selectedFontNote)
                 setFontSize(viewModel.selectedFontSize)
-                //Glide.with(requireContext()).load(it.imagePath).override(1000, 1000).fitCenter().centerCrop().into(imageView)
 
-                gradientDrawable.setColor(Color.parseColor(viewModel.getSelectedNote().value?.color))
+                val selectedNoteColor = viewModel.getSelectedNote().value?.color
+                gradientDrawable.setColor(Color.parseColor(selectedNoteColor))
                 viewModel.selectedNoteColor = viewModel.getSelectedNote().value!!.color
 
                 when (viewModel.getSelectedNote().value?.color) {
@@ -272,40 +313,6 @@ class BeforeEditNoteFragment:Fragment() {
     fun setSubtitleIndicator() {
         val gradientDrawable: GradientDrawable = viewSubtitleIndicator.background as GradientDrawable
         gradientDrawable.setColor(Color.parseColor(viewModel.selectedNoteColor))
-    }
-
-    fun selectImage() {
-
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        intent.setType("image/*")
-        startActivityForResult(intent, 1)
-
-
-
-        /*
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        if (intent.resolveActivity(requireActivity().packageManager) != null) {
-            startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE)
-        }
-         */
-    }
-
-    override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-
-        if (requestCode == REQUEST_CODE_STORAGE_PERMISSION && grantResults.size > 0) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                selectImage()
-            } else {
-                Toast.makeText(requireContext(), "Permission Denited", Toast.LENGTH_LONG).show()
-            }
-        }
     }
 
     fun initMiscellaneous() {
@@ -369,36 +376,17 @@ class BeforeEditNoteFragment:Fragment() {
                 setSubtitleIndicator()
             }
         })
-
-
-
-        layoutAddImage.setOnClickListener(object :View.OnClickListener{
-            override fun onClick(v: View?) {
-                openImagePicker()
-
-
-                /*
-                 if(ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
-                 }
-
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
-                } else {
-                    selectImage()
-                }
-                 */
-            }
-        })
     }
 
     private fun openImagePicker() {
+
+        val count = 10 - viewModel.pathImage.size
         FishBun.with(this).setImageAdapter(GlideAdapter())
-                .setMinCount(1)
-                .setMaxCount(10)
+                .setMinCount(0)
+                .setMaxCount(count)
                 .setAllViewTitle("All")
                 .setActionBarTitle("Selected Images")
+                .setIsUseDetailView(false)
                 .startAlbum()
     }
 
@@ -464,90 +452,13 @@ class BeforeEditNoteFragment:Fragment() {
                 if (resultCode == Activity.RESULT_OK){
                     imageList = data?.getParcelableArrayListExtra(FishBun.INTENT_PATH)
 
-
                     imageList?.forEach {
                         viewModel.pathImage.add(it.toString())
                     }
-
                     initAdapter(viewModel.pathImage)
                 }
             }
         }
-
-        /*
-        if(requestCode == 1 && requestCode == RESULT_OK){
-            val listBitmaps = arrayListOf<Bitmap>()
-            val clipData = data?.clipData
-            if(clipData!= null){
-              for (i in 0..clipData.itemCount){
-                  val imageUri = clipData.getItemAt(i).uri
-                  try {
-                      val inpStr = context?.contentResolver?.openInputStream(imageUri)
-                      val bitm = BitmapFactory.decodeStream(inpStr)
-                      listBitmaps.add(bitm)
-                  } catch ( e : FileNotFoundException){
-                      e.printStackTrace()
-                  }
-              }
-            } else{
-                val imageUri = data?.data
-                try {
-                    val inpStr = context?.contentResolver?.openInputStream(imageUri!!)
-                    val bitmap = BitmapFactory.decodeStream(inpStr)
-                    listBitmaps.add(bitmap)
-                } catch (e : FileNotFoundException){
-                    e.printStackTrace()
-                }
-
-            }
-        }
-
-         */
-
-        /*
-        if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == RESULT_OK) {
-            if (data != null) {
-                val selectedImageUri: Uri? = data.data
-                if (selectedImageUri != null) {
-                    try {
-                        val inputStream = requireActivity().contentResolver.openInputStream(selectedImageUri)
-                        val bitmap = BitmapFactory.decodeStream(inputStream)
-
-                        viewModel.pathImage = getPathFromUri(selectedImageUri)
-                        Glide.with(context).load(viewModel.pathImage).override(1000, 1000).fitCenter().centerCrop().into(imageView)
-
-                    } catch (exeption: Exception) {
-                        Toast.makeText(context, "${exeption.message}", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
-
-         */
-
-    }
-
-    private fun setImages() {
-        if(imageList != null){
-            for (it in imageList!!.indices){
-                Log.d("abbb", "$it")
-            }
-        }
-    }
-
-    fun getPathFromUri(contentUri: Uri): String {
-        val filePath: String
-        val cursor = requireActivity().contentResolver.query(contentUri, null, null, null, null)
-        if (cursor == null) {
-            filePath = contentUri.path!!
-        } else {
-            cursor.moveToFirst()
-            val index = cursor.getColumnIndex("_data")
-            filePath = cursor.getString(index)
-            cursor.close()
-        }
-
-        return filePath
     }
 
     fun setFontColor(colorPath: Int?) {
@@ -634,6 +545,8 @@ class BeforeEditNoteFragment:Fragment() {
         viewModel.isFavourite = false
         viewModel.hasPassword = false
         viewModel.password = 0
+        viewModel.setSearchMode(false)
+        viewModel.isSearchEdit = 1
     }
 
     fun setFavourite(boolean: Boolean){

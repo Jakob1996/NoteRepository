@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
 import com.example.noteapp.data.Note
 import com.example.noteapp.viewmodels.ViewModel
@@ -29,7 +30,6 @@ class EditNoteFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
 
-
         requireActivity().onBackPressedDispatcher.addCallback(
                 this,
                 object : OnBackPressedCallback(true) {
@@ -37,7 +37,7 @@ class EditNoteFragment : Fragment() {
 
                         //Po naciśnięciu przycisku wstecz sprawdzamy czy notatka nie jest pusta
                         if (title_editNote.text.isNotEmpty() || mess_EditNote.text.isNotEmpty()) {
-                            var note = viewModel.getSelectedNote().value
+                            val note = viewModel.getSelectedNote().value
                             val title = title_editNote.text.toString()
                             val mess = mess_EditNote.text.toString()
                             note!!.message = mess
@@ -46,7 +46,7 @@ class EditNoteFragment : Fragment() {
                             viewModel.setSelectedNote(note)
                         }
                         isEnabled = false
-                        requireActivity().onBackPressed()
+                       findNavController().navigate(R.id.action_editNoteFragment_to_addEditNoteFragment)
                     }
                 })
     }
@@ -77,7 +77,6 @@ class EditNoteFragment : Fragment() {
         super.onStart()
 
         showSoftKeyboard()
-
     }
 
     private fun showSoftKeyboard(){

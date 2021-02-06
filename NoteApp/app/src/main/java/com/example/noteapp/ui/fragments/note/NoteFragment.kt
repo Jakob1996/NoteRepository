@@ -10,6 +10,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.map
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
@@ -27,24 +28,11 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
 
     private lateinit var viewModel: ViewModel
     private lateinit var noteAdapter: NoteAdapter
-    private val request_code = 123
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("addda", "MainFragment onCreate")
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
-
-        requireActivity().onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                if(viewModel.getMultiSelectNote().value == true){
-                    exitMultiSelectMode()
-                } else{
-                    isEnabled = false
-                    requireActivity().onBackPressed()
-                }
-            }
-        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,7 +50,25 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d("adda", "MainFragment onActivityCreated")
-        viewModel.setSelectedNote(null)
+
+        viewModel.getFabButtonMode().observe(viewLifecycleOwner, Observer {
+            if(it==true){
+                updateNotes(viewModel.allNotes.value!!.filter {
+                    it.isFavourite == true
+                })
+            } else{
+                updateNotes(viewModel.allNotes.value!!)
+            }
+        })
+
+        viewModel.getNotifyDataNote().observe(viewLifecycleOwner, Observer {
+            if (it==true){
+                viewModel.allNotes.value?.forEach { it.isSelected=false }
+                updateNotes(viewModel.allNotes.value!!)
+                exitMultiSelectMode()
+                viewModel.setNotifyDataNote(false)
+            }
+        })
 
         viewModel.allNotes.observe(viewLifecycleOwner, Observer {
 
@@ -85,7 +91,7 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
     }
 
     override fun onItemClick(note: Note, position: Int) {
-        if(viewModel.getMultiSelectNote().value==true){
+        if(viewModel.getMultiSelectMode().value==true){
             if(viewModel.selectedNotes.contains(note)){
                 unselectNote(note, position)
             } else{
@@ -96,16 +102,15 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
             viewModel.setSelectedNoteBeforeChange(note)
             if(note.hasPassword){
                 findNavController().navigate(R.id.action_mainFramgent_to_checkPasswordFragment)
-            } else
-            {
-                findNavController().navigate(R.id.action_mainFramgent_to_addEditNoteFragment)
+            } else {
+                findNavController().navigate(R.id.action_mainFramgent_to_BeforeAddEditNoteFragment)
             }
         }
     }
 
     override fun onItemLongClick(note: Note, position: Int) {
-        if(viewModel.getMultiSelectNote().value==false){
-            viewModel.setMutliSelectNote(true)
+        if(viewModel.getMultiSelectMode().value==false){
+            viewModel.setMutliSelectMode(true)
             selectNote(note, position)
         }
     }
@@ -128,21 +133,21 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
 
         noteAdapter.notifyItemChanged(position)
 
-        if(viewModel.selectedNotes.isEmpty())
+        if(viewModel.selectedNotes.isEmpty()&&viewModel.selectedCategoryItems.isEmpty())
             exitMultiSelectMode()
     }
 
     private fun exitMultiSelectMode() {
-        viewModel.setMutliSelectNote(false)
+        viewModel.selectedCategoryItems.forEach { it.isSelected = false }
+        viewModel.selectedCategoryItems.clear()
+
         viewModel.selectedNotes.forEach{it.isSelected = false}
         viewModel.selectedNotes.clear()
 
-        noteAdapter.notifyDataSetChanged() // Zmuszamy nasz layout do stworzenia jeszcze raz widoków i odświeży nam
-        // wszystkie zaznaczone elementy
+        viewModel.setMutliSelectMode(false)
     }
 
     private fun updateNotes(list:List<Note>) {
-
         val lm =if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
@@ -150,19 +155,22 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
             StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
         }
 
-
         recyclerView.layoutManager = lm
 
+        var listMod:List<Note> = listOf()
+        if(viewModel.getFabButtonMode().value==true){
+            listMod = list.filter { it.isFavourite == true }
+        } else {
+            listMod = list
+        }
         noteAdapter = if(viewModel.sortDescNote) {
-            NoteAdapter(list, this, requireContext())
+            NoteAdapter(listMod, this)
 
         } else{
-            NoteAdapter(list.asReversed(), this, requireContext()) // asReversed - Na odwrót
+            NoteAdapter(list.asReversed(), this) // asReversed - Na odwrót
         }
 
         recyclerView.adapter = noteAdapter
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setItemViewCacheSize(20);
 
         if(viewModel.noteState!=null){
             (recyclerView.layoutManager as StaggeredGridLayoutManager).onRestoreInstanceState(viewModel.noteState)

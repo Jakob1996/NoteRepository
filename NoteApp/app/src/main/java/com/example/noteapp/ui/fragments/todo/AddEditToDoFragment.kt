@@ -16,6 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -24,9 +25,14 @@ import com.example.noteapp.adapters.OnItemTodoClickListener
 import com.example.noteapp.adapters.ToDoItemAdapter
 import com.example.noteapp.data.Category
 import com.example.noteapp.data.ItemOfList
+import com.example.noteapp.data.Note
+import com.example.noteapp.ui.fragments.note.RemovePasswordDialogFragment
 import com.example.noteapp.viewmodels.ViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.android.synthetic.main.category_item.*
+import kotlinx.android.synthetic.main.fragment_add_category_dialog.*
 import kotlinx.android.synthetic.main.fragment_add_edit_to_do.*
+import kotlinx.android.synthetic.main.fragment_before_edit_note.*
 import kotlinx.android.synthetic.main.fragment_todo_list.*
 import kotlinx.android.synthetic.main.todo_layout_miscellaneous.*
 import java.util.*
@@ -45,10 +51,6 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
                 this,
                 object : OnBackPressedCallback(true) {
                     override fun handleOnBackPressed() {
-                        if (value==true) {
-                            isEnabled=false
-                            requireActivity().onBackPressed()
-                        } else{
                             //Po naciśnięciu przycisku wstecz sprawdzamy czy lista nie jest pusta
                             if (title_addEditFragCategory.text.isNotEmpty()) {
                                 val categoryName = title_addEditFragCategory.text.toString()
@@ -67,34 +69,32 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
                                     //Jeśli notatka nie jest pusta, ale jest zaznaczona w MainFragment - Aktualizujemy
                                 } else {
                                     val selectedCategory = viewModel.getSelectedCategotyItem().value!!
+
+                                    val colorr = viewModel.selectedCategotyItemColor
+                                    val name = title_addEditFragCategory.text.toString()
+                                    val datee = viewModel.categoryDate
+                                    val isSelectedd = viewModel.categoryIsSelected
+                                    val isFavourite = viewModel.isFavouriteCategory
+                                    val hasPassword = viewModel.hasPasswordCategory
+                                    val password = viewModel.passwordCategory
+                                    val id = viewModel.categoryId
+
                                     if (selectedCategory.categoryName != categoryName || selectedCategory.color != color) {
-                                        val category = Category(categoryName, color, false, date).apply {
-                                            rowIdCategory = viewModel.getSelectedCategotyItem().value!!.rowIdCategory
+                                        val category = Category(name, colorr, isSelectedd, datee, isFavourite, hasPassword, password, ).apply {
+                                            rowIdCategory = id
                                         }
 
-                                        Toast.makeText(
-                                                requireContext(),
-                                                "Category updated",
-                                                Toast.LENGTH_LONG
-                                        ).show()
                                         viewModel.updateCategoryItem(category)
                                     }
                                 }
-                            } else if (viewModel.getSelectedCategotyItem().value != null) {
-
-                                Toast.makeText(
-                                        requireContext(),
-                                        "Note deleted",
-                                        Toast.LENGTH_LONG
-                                )
-                                        .show()
                             }
 
-                            viewModel.setSelectedCategotyItem(null)
                             isEnabled = false
+                            setOffAddEdit()
+                            viewModel.setSelectedCategotyItem(null)
                             closeKeyboard()
                             requireActivity().onBackPressed()
-                        }
+
                     }
                 })
     }
@@ -109,8 +109,7 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
         val gradientDrawable:GradientDrawable = todo_viewSubtitleIndicator.background as GradientDrawable
         initMiscellaneous()
 
-        viewModel.getSelectedCategotyItem().observe(viewLifecycleOwner, androidx.lifecycle.Observer { category ->
-            category.let {
+        viewModel.getSelectedCategotyItem().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
                 title_addEditFragCategory.setText(it?.categoryName)
 
                 if((title_addEditFragCategory.text.isEmpty())) {
@@ -118,9 +117,21 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
                     gradientDrawable.setColor(Color.parseColor(viewModel.selectedCategotyItemColor))
 
                 } else {
+                    val cat = viewModel.getSelectedCategotyItem().value
+
                     toolbar_Title_AddEditTodo.text = "Category editor"
-                    gradientDrawable.setColor(Color.parseColor(viewModel.getSelectedCategotyItem().value?.color))
-                    viewModel.selectedCategotyItemColor = viewModel.getSelectedCategotyItem().value!!.color
+                    gradientDrawable.setColor(Color.parseColor(it!!.color))
+                    viewModel.selectedCategotyItemColor = it.color
+                    viewModel.categoryName = it.categoryName
+                    viewModel.categoryDate = it.date
+                    viewModel.categoryIsSelected = it.isSelected
+                    viewModel.isFavouriteCategory = it.isFavoutire
+                    viewModel.hasPasswordCategory = it.hasPassword
+                    viewModel.passwordCategory = it.password
+                    viewModel.categoryId = it.rowIdCategory
+
+                    setImagePassword(viewModel.hasPasswordCategory)
+
                     viewModel.getAllItemsFromCategory(viewModel.getSelectedCategotyItem().value!!.rowIdCategory).observe(viewLifecycleOwner, androidx.lifecycle.Observer {
                         updateItems(it)
                     })
@@ -151,7 +162,7 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
                         }
                     }
                 }
-            }
+
         })
 
         super.onViewCreated(view, savedInstanceState)
@@ -160,6 +171,29 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        favouriteImage_category.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                if(viewModel.isFavouriteCategory){
+                    viewModel.isFavouriteCategory = false
+                    setFavourite(viewModel.isFavouriteCategory)
+                } else{
+                    viewModel.isFavouriteCategory = true
+                    setFavourite(viewModel.isFavouriteCategory)
+                }
+            }
+        })
+
+        imageViewPassword_category.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                if(viewModel.hasPasswordCategory){
+                    val fm = requireActivity().supportFragmentManager
+                    val dialogFragment = RemovePasswordDialogFragment()
+                    dialogFragment.show(fm, "ppp")
+                } else{
+                    findNavController().navigate(R.id.action_addEditToDoFragment_to_passwordNoteFragment)
+                }
+            }
+        })
 
         addTodo.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
@@ -345,7 +379,58 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
 
         itemTouchHelper.attachToRecyclerView(recyclerViewTodo)
 
-
         itemTodoAdapter.notifyDataSetChanged()
+    }
+
+    fun setFavourite(boolean: Boolean){
+        if(boolean){
+            favouriteImage_category.setColorFilter(Color.parseColor("#FDBE3B"))
+        } else{
+            favouriteImage_category.setColorFilter(Color.WHITE)
+        }
+    }
+
+    private fun setImagePassword(hasPassword: Boolean) {
+        if(hasPassword){
+            imageViewPassword_category.setColorFilter(Color.parseColor("#FF4343"))
+            imageViewPassword_category.setImageResource(R.drawable.ic_lock_24)
+        } else{
+            imageViewPassword_category.setColorFilter(Color.WHITE)
+            imageViewPassword_category.setImageResource(R.drawable.ic_baseline_lock)
+        }
+    }
+
+    override fun onDestroyView() {
+
+        val color = viewModel.selectedCategotyItemColor
+        val name = title_addEditFragCategory.text.toString()
+        val date = viewModel.categoryDate
+        val isSelected = viewModel.categoryIsSelected
+        val isFavourite = viewModel.isFavouriteCategory
+        val hasPassword = viewModel.hasPassword
+        val password = viewModel.passwordCategory
+        val id = viewModel.categoryId
+
+
+        val category = Category(name, color, isSelected, date, isFavourite, hasPassword, password).apply {
+            rowIdCategory = id
+        }
+
+
+        viewModel.setSelectedCategotyItem(category)
+
+        super.onDestroyView()
+    }
+
+    fun setOffAddEdit(){
+
+        viewModel.selectedCategotyItemColor = "#333333"
+        viewModel.categoryName = ""
+        viewModel.categoryDate = 0
+        viewModel.categoryIsSelected = false
+        viewModel.isFavouriteCategory = false
+        viewModel.hasPassword =false
+        viewModel.passwordCategory = 0
+        viewModel.categoryId = 0
     }
 }
