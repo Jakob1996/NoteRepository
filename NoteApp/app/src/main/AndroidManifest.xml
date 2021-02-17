@@ -10,11 +10,11 @@
     <application
         android:largeHeap="true"
         android:allowBackup="true"
+        android:supportsRtl="true"
         android:icon="@mipmap/ic_app2"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
         android:theme="@style/splashScreenTheme"
         tools:targetApi="m">
         <activity android:name=".ui.activities.MainActivity"

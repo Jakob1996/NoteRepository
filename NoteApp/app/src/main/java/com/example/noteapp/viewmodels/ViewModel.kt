@@ -1,26 +1,31 @@
 package com.example.noteapp.viewmodels
 
 import android.app.Application
+import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.noteapp.data.Category
 import com.example.noteapp.data.ItemOfList
 import com.example.noteapp.data.Note
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.noteapp.data.relations.CategoryWithItems
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 
 class ViewModel(app:Application):AndroidViewModel(app) {
 
+    var stateFragmentMain:Bundle? = null
+    var searchStateFragment:Bundle? = null
+
     private val repository = Repository(app)
+
+    var search:String?=null
 
     //Room ViewModel
 
     //NoteViewModel
+
     val allNotes = repository.getAllNotes()
 
     private val selectedNote = MutableLiveData<Note?>()
@@ -31,6 +36,7 @@ class ViewModel(app:Application):AndroidViewModel(app) {
         selectedNote.postValue(note)
     }
 
+    /*
     private val noteBeforeChan = MutableLiveData<Note?>()
 
     fun getSelectedNoteBeforeChange(): LiveData<Note?> {
@@ -40,6 +46,10 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     fun setSelectedNoteBeforeChange(note: Note?){
         noteBeforeChan.postValue(note)
     }
+
+     */
+
+    var noteBeforeChange:Note? = null
 
     private var searchMode = MutableLiveData<Boolean?>()
 
@@ -51,11 +61,11 @@ class ViewModel(app:Application):AndroidViewModel(app) {
 
     var isSearchEdit = 1
 
-    private var fabButtonMode = MutableLiveData<Boolean?>()
-    fun getFabButtonMode():LiveData<Boolean?> = fabButtonMode
+    private var fabNoteButtonMode = MutableLiveData<Boolean?>()
+    fun getNoteFabButtonMode():LiveData<Boolean?> = fabNoteButtonMode
 
-    fun setFabButtonMode(boolean: Boolean?){
-        fabButtonMode.postValue(boolean)
+    fun setNoteFabButtonMode(boolean: Boolean?){
+        fabNoteButtonMode.postValue(boolean)
     }
 
     var searchInNote:String = ""
@@ -68,13 +78,21 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     var noteTitle = ""
     var noteMessage = ""
     var noteDate: Long= 1
-    var pathImage = arrayListOf<String>()
+    var pathImage = arrayListOf<String?>()
     var idNote = 1
     var hasPassword = false
     var password:Int = 0
     var isFavourite = false
 
-    var sortDescNote = true
+    private val sortDescNote = MutableLiveData<Boolean?>()
+
+    fun getSortDescNote():LiveData<Boolean?> = sortDescNote
+
+    fun setSortDescNote(boolean: Boolean){
+        sortDescNote.postValue(boolean)
+    }
+
+
     private val multiSelectMode = MutableLiveData<Boolean?>()
     init {
         multiSelectMode.value = false
@@ -85,6 +103,13 @@ class ViewModel(app:Application):AndroidViewModel(app) {
         multiSelectMode.postValue(boolean)
     }
 
+    private var fabCategoryButtonMode = MutableLiveData<Boolean?>()
+    fun getCategoryFabButtonMode():LiveData<Boolean?> = fabCategoryButtonMode
+
+    fun setCategoryFabButtonMode(boolean: Boolean?){
+        fabCategoryButtonMode.postValue(boolean)
+    }
+
     private val notifyDataNote = MutableLiveData<Boolean?>()
     init {
         notifyDataNote.value = false
@@ -93,6 +118,14 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     fun getNotifyDataNote():LiveData<Boolean?> = notifyDataNote
     fun setNotifyDataNote(boolean: Boolean?){
         notifyDataNote.postValue(boolean)
+    }
+
+    private val sortDescCategory = MutableLiveData<Boolean?>()
+
+    fun getSortDescCategory():LiveData<Boolean?> = sortDescCategory
+
+    fun setSortDescCategory(boolean: Boolean){
+        sortDescCategory.postValue(boolean)
     }
 
     private val notifyDataCategory = MutableLiveData<Boolean?>()
@@ -129,12 +162,15 @@ class ViewModel(app:Application):AndroidViewModel(app) {
         CoroutineScope(Dispatchers.IO).launch { repository.clearDatabaseNotes() }
     }
 
+    /*
     fun findInNotes(text:String): List<Note> {
         val list = allNotes.value
          return list!!.filter { note ->
             note.title.toLowerCase().contains(text.toLowerCase()) || note.message.toUpperCase().contains(text.toUpperCase())
         }
     }
+
+     */
 
     //CategoryViewModel
 
@@ -156,6 +192,18 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     fun setSelectedCategotyItem(category: Category?){
         selectedCategoryItem.postValue(category)
     }
+
+    /*
+    private var selectedCategoryItemBefore = MutableLiveData<Category?>()
+
+    fun getSelectedCategoryItemBefore():LiveData<Category?> = selectedCategoryItemBefore
+
+    fun setSelectedCategoryItemBefore(category:Category?){
+        selectedCategoryItemBefore.postValue(category)
+    }
+     */
+
+    var categoryItemBeforeChange:Category? = null
 
     var sortDescCategoryItem = false
 
@@ -216,4 +264,15 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     fun deleteItems(categoryId: Int){
         CoroutineScope(Dispatchers.IO).launch { repository.deleteAllITems(categoryId) }
     }
+
+    //State Model
+
+    var p:Boolean = true
+
+    /*
+    fun getCategoryWithItems(categoryId:Int):List<CategoryWithItems>{
+        return CoroutineScope(Dispatchers.IO).launch { repository.getCategoryWithItems(categoryId) }
+    }
+
+     */
 }

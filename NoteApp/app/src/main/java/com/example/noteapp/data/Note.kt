@@ -11,7 +11,7 @@ data class Note(
         val date:Long=1,
         var isSelected:Boolean = false,
         val color:String="",
-        val imagePaths:ArrayList<String> = arrayListOf("bbb"),
+        //val imagePaths:ArrayList<String> = arrayListOf("bbb"),
         val fontColor:Int=1,
         val fontSize:Int=1,
         val isFavourite:Boolean=false,
@@ -22,6 +22,7 @@ data class Note(
     var rowId = 0
 }
 
+/*
 class PathTypeConverter{
 
     @TypeConverter
@@ -36,3 +37,5 @@ class PathTypeConverter{
         return gson.toJson(list)
     }
 }
+
+ */

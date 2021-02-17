@@ -33,14 +33,12 @@ class ProfileFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         viewModel.allNotes.observe(viewLifecycleOwner, Observer {
             notesFromRoom = it
         })
-
-
 
         saveButt.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {

@@ -2,25 +2,19 @@ package com.example.noteapp.viewmodels
 
 import android.app.Application
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
-import com.bumptech.glide.Glide
 import com.example.noteapp.data.Category
 import com.example.noteapp.data.ItemOfList
 import com.example.noteapp.data.Note
 import com.example.noteapp.db.DataBaseBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import kotlin.coroutines.coroutineContext
 
 class Repository (app:Application) {
     private val REPO_DEBUG = "REPO_DEBUG"
@@ -30,9 +24,6 @@ class Repository (app:Application) {
     private val auth = FirebaseAuth.getInstance()
     private val cloud = FirebaseFirestore.getInstance()
 
-    fun saveImage (){
-
-    }
 
     fun getUserData(): LiveData<List<Note>> {
         val cloudResult = MutableLiveData<List<Note>>()
@@ -44,7 +35,7 @@ class Repository (app:Application) {
                 .addSnapshotListener(object :EventListener<QuerySnapshot>{
                     override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
                         val res = value?.toObjects(Note::class.java)
-                        cloudResult.postValue(res)
+                        cloudResult.postValue(res!!)
                     }
                 })
                     /*
@@ -92,7 +83,6 @@ class Repository (app:Application) {
                     .addOnFailureListener{
                         Log.d("Deletedd", "Deleted failure!")
                     }
-
         }
     }
 
@@ -101,6 +91,7 @@ class Repository (app:Application) {
     private val notesDao = builder.notesDao()
     private val categoryDao = builder.categoryDao()
     private val itemDao = builder.itemDao()
+
 
     //Note repository
     suspend fun insertNote(note: Note){
@@ -179,4 +170,12 @@ class Repository (app:Application) {
     fun getAllI():LiveData<List<ItemOfList>>{
         return itemDao.getAllI().asLiveData()
     }
+
+    /*
+    suspend fun getCategoryWithItems(categoryId:Int):LiveData<List<CategoryWithItems>>{
+        return categoryDao.getCategoryWithItems(categoryId)
+    }
+
+     */
+
 }

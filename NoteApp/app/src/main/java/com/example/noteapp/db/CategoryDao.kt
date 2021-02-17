@@ -23,4 +23,10 @@ interface CategoryDao {
 
     @Query("DELETE FROM category_table")
     fun clearDataBaseCategory()
+    
+/*
+    @Transaction
+    @Query ("SELECT * FROM category_table WHERE rowIdCategory =:categoryId")
+    suspend fun getCategoryWithItems(categoryId:Int):LiveData<List<CategoryWithItems>>
+ */
 }

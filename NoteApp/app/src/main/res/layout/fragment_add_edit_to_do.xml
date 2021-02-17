@@ -90,10 +90,14 @@
                     android:fontFamily="@font/ubuntubold"
                     android:gravity="center_vertical"
                     android:hint="Category name"
-                    android:maxLength="25"
                     android:textColor="@color/white"
                     android:textColorHint="@color/colorTextHint"
-                    android:textSize="26sp" />
+                    android:textSize="26sp"
+                    android:maxLines="1"
+                    android:maxEms="1"
+                    android:scrollHorizontally="true"
+                    android:inputType="text"
+                    />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

@@ -25,8 +25,8 @@ class AddPasswordNoteFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_password_note, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         add_password_button.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
@@ -40,12 +40,11 @@ class AddPasswordNoteFragment : Fragment() {
                     val fontColor = note.fontColor
                     val fontSize = note.fontSize
                     val favourite = note.isFavourite
-                    val imagePath = note.imagePaths
                     val isSelected = note.isSelected
                     val rowIdd = note.rowId
                     val hasPassword = true
                     val password = password_editText.text.toString().toInt()
-                    val not = Note(title, message, date, isSelected, color, imagePath, fontColor, fontSize, favourite, hasPassword, password).apply {
+                    val not = Note(title, message, date, isSelected, color, fontColor, fontSize, favourite, hasPassword, password).apply {
                         rowId = rowIdd
                     }
                     viewModel.setSelectedNote(not)

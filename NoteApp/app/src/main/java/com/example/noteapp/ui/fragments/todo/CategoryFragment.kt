@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.noteapp.R
 import com.example.noteapp.adapters.ItemsCategoryTodoAdapter
+import com.example.noteapp.adapters.NoteAdapter
 import com.example.noteapp.adapters.OnItemCategoryClickListener
 import com.example.noteapp.data.Category
 import com.example.noteapp.ui.fragments.note.RemovePasswordDialogFragment
@@ -50,6 +51,24 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        viewModel.getSortDescCategory().observe(requireActivity(), Observer {
+            updateItems(viewModel.allCategoryItems.value!!)
+        })
+
+
+        viewModel.getCategoryFabButtonMode().observe(requireActivity(), Observer {
+            /*
+            if(it==true){
+                updateItems(viewModel.allCategoryItems.value!!.filter {
+                    it.isFavoutire == true
+                })
+            } else{
+                updateItems(viewModel.allCategoryItems.value!!)
+            }
+             */
+            updateItems(viewModel.allCategoryItems.value!!)
+        })
+
         viewModel.getNotifyDataCategory().observe(viewLifecycleOwner, Observer {
             if(it==true){
                 viewModel.allCategoryItems.value?.forEach { it.isSelected = false }
@@ -78,7 +97,12 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
             }
         } else {
             viewModel.setSelectedCategotyItem(category)
-            findNavController().navigate(R.id.action_mainFramgent_to_addEditToDoFragment)
+            viewModel.categoryItemBeforeChange = category
+            if(category.hasPassword){
+                findNavController().navigate(R.id.action_mainFramgent_to_checkPasswordFragment)
+            } else{
+                findNavController().navigate(R.id.action_mainFramgent_to_addEditToDoFragment)
+            }
         }
     }
 
@@ -122,23 +146,36 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
         val lm = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         category_recyclerView.layoutManager = lm
 
-        var listMode:List<Category> = listOf()
+        val listMode:List<Category>
 
-        /*
-        if(viewModel.getFabButtonMode().value==true){
-            listMode = list.filter { it.isFavourite==true }
+        if(viewModel.getCategoryFabButtonMode().value==true){
+            listMode = list.filter { it.isFavoutire==true }
         } else {
             listMode = list
         }
-         */
 
-        toDoCategoryAdapter = if(viewModel.sortDescNote) {
-            ItemsCategoryTodoAdapter(list, this)
+        if(viewModel.getSortDescCategory().value!=null) {
+            toDoCategoryAdapter = if (viewModel.getSortDescCategory().value!!) {
+                ItemsCategoryTodoAdapter(listMode, this)
+
+            } else {
+                ItemsCategoryTodoAdapter(listMode.asReversed(), this)
+            }
+        } else{
+            toDoCategoryAdapter = if (viewModel.p) {
+                ItemsCategoryTodoAdapter(listMode, this)
+            } else {
+                ItemsCategoryTodoAdapter(listMode.asReversed(), this)
+            }
+        }
+
+/*
+        toDoCategoryAdapter = if(viewModel.getSortDescNote().value!!) {
         } else{
             ItemsCategoryTodoAdapter(list.asReversed(), this) // asReversed - Na odwrót
         }
 
-
+ */
         category_recyclerView.adapter = toDoCategoryAdapter
 
         if(viewModel.categoryToDoState!=null){

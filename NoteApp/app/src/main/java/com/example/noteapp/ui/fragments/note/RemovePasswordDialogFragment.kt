@@ -1,7 +1,6 @@
 package com.example.noteapp.ui.fragments.note
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import com.example.noteapp.R
 import com.example.noteapp.data.Category
 import com.example.noteapp.data.Note
 import com.example.noteapp.viewmodels.ViewModel
-import kotlinx.android.synthetic.main.fragment_password_note.*
 import kotlinx.android.synthetic.main.fragment_remove_password_dialog.*
 
 
@@ -24,16 +22,15 @@ class RemovePasswordDialogFragment : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_remove_password_dialog, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         noRemovePasswordButton.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
-             dismiss()
+                dismiss()
             }
         })
 
@@ -49,12 +46,11 @@ class RemovePasswordDialogFragment : DialogFragment() {
                     val fontColor = note.fontColor
                     val fontSize = note.fontSize
                     val favourite = note.isFavourite
-                    val imagePath = note.imagePaths
                     val isSelected = note.isSelected
                     val rowIdd = note.rowId
                     val hasPassword = false
                     val password = 0
-                    val not = Note(title, message, date, isSelected, color, imagePath, fontColor, fontSize, favourite, hasPassword, password).apply {
+                    val not = Note(title, message, date, isSelected, color, fontColor, fontSize, favourite, hasPassword, password).apply {
                         rowId = rowIdd
                     }
                     viewModel.setSelectedNote(not)

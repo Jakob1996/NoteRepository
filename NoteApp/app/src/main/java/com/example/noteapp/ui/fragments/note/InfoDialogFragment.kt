@@ -1,7 +1,6 @@
 package com.example.noteapp.ui.fragments.note
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ class InfoDialogFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -32,5 +30,4 @@ class InfoDialogFragment : DialogFragment() {
         val value = viewModel.getSelectedNote().value!!.message.length
         textLenghtValue.text = value.toString()
     }
-
 }

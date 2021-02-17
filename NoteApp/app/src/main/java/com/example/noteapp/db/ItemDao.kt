@@ -28,6 +28,4 @@ interface ItemDao {
 
     @Query("SELECT * FROM item_table")
     fun getAllI():Flow<List<ItemOfList>>
-
-
 }

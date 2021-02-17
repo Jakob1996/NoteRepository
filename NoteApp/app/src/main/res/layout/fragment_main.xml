@@ -84,6 +84,8 @@
             </LinearLayout>
         </RelativeLayout>
 
+
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar_layout"
             android:layout_width="0dp"

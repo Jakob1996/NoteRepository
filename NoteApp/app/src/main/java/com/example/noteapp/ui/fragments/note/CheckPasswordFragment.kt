@@ -1,7 +1,6 @@
 package com.example.noteapp.ui.fragments.note
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
-import com.example.noteapp.data.Note
 import com.example.noteapp.viewmodels.ViewModel
-import kotlinx.android.synthetic.main.fragment_before_edit_note.*
 import kotlinx.android.synthetic.main.fragment_check_password.*
-import java.util.*
 
 
 class CheckPasswordFragment : Fragment() {
@@ -48,33 +44,59 @@ class CheckPasswordFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_check_password, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-         check_add_password_button.setOnClickListener(object :View.OnClickListener{
-             override fun onClick(v: View?) {
-                 viewModel.getSelectedNote().observe(viewLifecycleOwner, Observer{
-                     if(check_password_editText.text.isNotEmpty()) {
-                         if (check_password_editText.text.toString().toInt() == it!!.password) {
-                             findNavController().navigate(R.id.action_checkPasswordFragment_to_addEditNoteFragment)
-                         } else {
-                             Toast.makeText(
-                                 requireContext(),
-                                 "Password is not correct",
-                                 Toast.LENGTH_SHORT
-                             ).show()
-                             check_password_editText.setText("")
-                         }
-                     } else{
-                         Toast.makeText(
-                             requireContext(),
-                             "Password is not correct",
-                             Toast.LENGTH_SHORT
-                         ).show()
-                     }
-                 })
-             }
-         })
+        check_add_password_button.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                viewModel.getSelectedNote().observe(viewLifecycleOwner, Observer{
+                    if(it!=null) {
+                        if (check_password_editText.text.isNotEmpty()) {
+                            if (check_password_editText.text.toString().toInt() == it.password) {
+                                findNavController().navigate(R.id.action_checkPasswordFragment_to_addEditNoteFragment)
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Password is not correct",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                check_password_editText.setText("")
+                            }
+                        } else {
+                            Toast.makeText(
+                                requireContext(),
+                                "Password is not correct",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                })
+
+                viewModel.getSelectedCategotyItem().observe(viewLifecycleOwner, Observer {
+                    if(it!=null){
+                        if(check_password_editText.text.isNotEmpty()){
+                            if(check_password_editText.text.toString().toInt() == it.password){
+                                findNavController().navigate(R.id.action_checkPasswordFragment_to_addEditToDoFragment)
+                            } else{
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Password is not correct",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                check_password_editText.setText("")
+                            }
+                        } else{
+                            Toast.makeText(
+                                requireContext(),
+                                "Password is not correct",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                })
+
+            }
+        })
     }
 
     override fun onDestroyView() {
@@ -82,7 +104,10 @@ class CheckPasswordFragment : Fragment() {
 
         if(quit==2){
             viewModel.setSelectedNote(null)
-            viewModel.setSelectedNoteBeforeChange(null)
+            viewModel.noteBeforeChange = null
+
+            viewModel.setSelectedCategotyItem(null)
+            viewModel.categoryItemBeforeChange = null
         }
     }
 }

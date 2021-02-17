@@ -1,15 +1,10 @@
 package com.example.noteapp.ui.fragments.note
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -18,28 +13,17 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.navigateUp
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.noteapp.R
-import com.example.noteapp.adapters.ImageAdapter
 import com.example.noteapp.data.Note
 import com.example.noteapp.viewmodels.ViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.sangcomz.fishbun.FishBun
-import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import com.xeoh.android.texthighlighter.TextHighlighter
 import kotlinx.android.synthetic.main.fragment_before_edit_note.*
-import kotlinx.android.synthetic.main.fragment_search.*
-import kotlinx.android.synthetic.main.fragment_search_in_note_dialog2.*
 import kotlinx.android.synthetic.main.note_edit_layout_miscellaneous.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class BeforeEditNoteFragment:Fragment() {
-
-    private lateinit var imageAdapter:ImageAdapter
 
     private lateinit var viewModel: ViewModel
 
@@ -49,24 +33,16 @@ class BeforeEditNoteFragment:Fragment() {
 
     private var quit = 1
 
-    private var imageList:ArrayList<Uri>? = null
-
     private val textHighLighter = TextHighlighter()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("xTa", "AddEditNoteFragment onCreate")
-        super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
-
-
-
+        super.onCreate(savedInstanceState)
 
         requireActivity().onBackPressedDispatcher.addCallback(
                 this,
                 object : OnBackPressedCallback(true) {
                     override fun handleOnBackPressed() {
-                        Log.d("valll", "${viewModel.getSearchMode().value}")
                         if (viewModel.getSearchMode().value == true&&mess_addEditFrag.text.isNotEmpty()) {
                             textHighLighter
                                     .setForegroundColor(mess_addEditFrag.currentTextColor)
@@ -79,16 +55,15 @@ class BeforeEditNoteFragment:Fragment() {
                             val date = Calendar.getInstance().timeInMillis
                             val color = viewModel.selectedNoteColor
                             val fontSize = viewModel.selectedFontSize
-                            val path = viewModel.pathImage
                             val fontColor = viewModel.selectedFontNote
                             val favourite = viewModel.isFavourite
                             val hasPassword = viewModel.hasPassword
                             val password = viewModel.password
 
-                            val noteBefore = viewModel.getSelectedNoteBeforeChange().value!!
+                            val noteBefore = viewModel.noteBeforeChange
 
-                            if (noteBefore.title != title || noteBefore.message != message || noteBefore.color != color
-                                    || fontSize != noteBefore.fontSize || fontColor != noteBefore.fontColor || noteBefore.imagePaths != path
+                            if (noteBefore!!.title != title || noteBefore.message != message || noteBefore.color != color
+                                    || fontSize != noteBefore.fontSize || fontColor != noteBefore.fontColor
                                     || noteBefore.title.length != title.length || noteBefore.message.length != message.length || noteBefore.isFavourite != favourite || noteBefore.hasPassword != hasPassword) {
                                 val note = Note(
                                         title,
@@ -96,7 +71,6 @@ class BeforeEditNoteFragment:Fragment() {
                                         date,
                                         false,
                                         color,
-                                        path,
                                         fontColor,
                                         fontSize,
                                         favourite,
@@ -111,7 +85,7 @@ class BeforeEditNoteFragment:Fragment() {
                             quit = 2
                             isEnabled = false
                             closeKeyboard()
-                            Log.d("vbn", viewModel.isSearchEdit.toString())
+
 
                             if(viewModel.isSearchEdit==1){
                                 findNavController().navigate(R.id.action_beforeAddEditNoteFragment_to_mainFramgent)
@@ -122,6 +96,7 @@ class BeforeEditNoteFragment:Fragment() {
                     }
                 }
         )
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -130,11 +105,13 @@ class BeforeEditNoteFragment:Fragment() {
     }
 
     @SuppressLint("Range")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val gradientDrawable: GradientDrawable = viewSubtitleIndicator.background as GradientDrawable
 
         initMiscellaneous()
+
 
         searchInMessageNote.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
@@ -219,14 +196,14 @@ class BeforeEditNoteFragment:Fragment() {
             }
         })
 
-       viewModel.getSearchMode().observe(viewLifecycleOwner, Observer{
-           if(viewModel.getSearchMode().value==true){
-           textHighLighter
-                   .setBackgroundColor(Color.parseColor("#FFFF00"))
-                   .addTarget(mess_addEditFrag)
-                   .highlight(viewModel.searchInNote, TextHighlighter.BASE_MATCHER)
-           }
-       })
+        viewModel.getSearchMode().observe(viewLifecycleOwner, Observer{
+            if(viewModel.getSearchMode().value==true){
+                textHighLighter
+                    .setBackgroundColor(Color.parseColor("#FFFF00"))
+                    .addTarget(mess_addEditFrag)
+                    .highlight(viewModel.searchInNote, TextHighlighter.BASE_MATCHER)
+            }
+        })
 
         viewModel.getSelectedNote().observe(viewLifecycleOwner, Observer {
 
@@ -237,7 +214,6 @@ class BeforeEditNoteFragment:Fragment() {
                 viewModel.noteTitle = it!!.title
                 viewModel.noteMessage = it.message
                 viewModel.noteDate = it.date
-                viewModel.pathImage = it.imagePaths
                 viewModel.selectedNoteColor = it.color
                 viewModel.selectedFontSize = it.fontSize
                 viewModel.selectedFontNote = it.fontColor
@@ -246,7 +222,6 @@ class BeforeEditNoteFragment:Fragment() {
                 viewModel.hasPassword = it.hasPassword
                 viewModel.password = it.password
 
-                initAdapter(viewModel.pathImage)
                 setImagePassword(viewModel.hasPassword)
 
                 setFavourite(viewModel.isFavourite)
@@ -286,21 +261,9 @@ class BeforeEditNoteFragment:Fragment() {
                 }
             }
         })
+
+
     }
-
-    private fun initAdapter(listImages:ArrayList<String>) {
-
-        val lm = GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
-
-        recyclerViewImageBeforeFrag.layoutManager = lm
-
-        imageAdapter = ImageAdapter(listImages, requireContext())
-
-        recyclerViewImageBeforeFrag.adapter = imageAdapter
-
-        imageAdapter.notifyDataSetChanged()
-    }
-
 
     fun closeKeyboard() {
         val view = requireActivity().currentFocus
@@ -378,8 +341,8 @@ class BeforeEditNoteFragment:Fragment() {
         })
     }
 
+    /*
     private fun openImagePicker() {
-
         val count = 10 - viewModel.pathImage.size
         FishBun.with(this).setImageAdapter(GlideAdapter())
                 .setMinCount(0)
@@ -389,6 +352,8 @@ class BeforeEditNoteFragment:Fragment() {
                 .setIsUseDetailView(false)
                 .startAlbum()
     }
+
+     */
 
     fun itemSelected1() {
         imageColor1.setImageResource(R.drawable.ic_done)
@@ -444,6 +409,7 @@ class BeforeEditNoteFragment:Fragment() {
         imageColor5.setImageResource(R.drawable.ic_done)
     }
 
+    /*
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -460,6 +426,8 @@ class BeforeEditNoteFragment:Fragment() {
             }
         }
     }
+
+     */
 
     fun setFontColor(colorPath: Int?) {
         when (colorPath) {
@@ -502,11 +470,9 @@ class BeforeEditNoteFragment:Fragment() {
     }
 
     override fun onDestroyView() {
-        Log.d("onDepp", "OnDestroy")
 
         val title = title_addEditFrag.text
         val message = mess_addEditFrag.text
-        val pathImage = viewModel.pathImage
         val fontSize = viewModel.selectedFontSize
         val fontColor = viewModel.selectedFontNote
         val date = viewModel.noteDate
@@ -516,7 +482,7 @@ class BeforeEditNoteFragment:Fragment() {
         val hasPassword = viewModel.hasPassword
         val password = viewModel.password
 
-        val note = Note(title.toString(), message.toString(), date, false, color, pathImage, fontColor, fontSize, isFavourite, hasPassword, password)
+        val note = Note(title.toString(), message.toString(), date, false, color, fontColor, fontSize, isFavourite, hasPassword, password)
         note.rowId = id
 
         viewModel.setSelectedNote(note)
@@ -533,7 +499,7 @@ class BeforeEditNoteFragment:Fragment() {
         title_addEditFrag.setText("")
         mess_addEditFrag.setText("")
         viewModel.setSelectedNote(null)
-        viewModel.setSelectedNoteBeforeChange(null)
+        viewModel.noteBeforeChange = null
         viewModel.noteTitle = ""
         viewModel.noteMessage=""
         viewModel.noteDate = 1

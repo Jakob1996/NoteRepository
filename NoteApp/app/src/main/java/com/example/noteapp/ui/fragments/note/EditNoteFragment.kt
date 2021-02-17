@@ -3,24 +3,19 @@ package com.example.noteapp.ui.fragments.note
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
-import com.example.noteapp.data.Note
 import com.example.noteapp.viewmodels.ViewModel
-import kotlinx.android.synthetic.main.fragment_before_edit_note.*
 import kotlinx.android.synthetic.main.fragment_edit_note.*
-import java.util.*
 
 
 class EditNoteFragment : Fragment() {
@@ -59,18 +54,28 @@ class EditNoteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mess_EditNote.requestFocus();
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         viewModel.getSelectedNote().observe(viewLifecycleOwner, Observer {
+
             title_editNote.setText(it!!.title)
-            mess_EditNote.setText(it.message)
+            //mess_EditNote.setText(it.message)
             setFontColor(it.fontColor)
             setFontSize(it.fontSize)
         })
+
+        mess_EditNote.setText(viewModel.getSelectedNote().value!!.message)
+
+
+        //!!!
+        if(mess_EditNote.text.isNotEmpty()) {
+            mess_EditNote.requestFocus(mess_EditNote.text.length)
+        }
+
     }
 
     override fun onStart() {

@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_registration.*
 
 

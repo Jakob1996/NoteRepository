@@ -1,33 +1,38 @@
 package com.example.noteapp.ui.fragments.note
 
 import android.content.res.Configuration
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.activity.OnBackPressedCallback
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.map
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.noteapp.R
 import com.example.noteapp.adapters.NoteAdapter
 import com.example.noteapp.adapters.OnItemClickListener
 import com.example.noteapp.data.Note
-import com.example.noteapp.ui.fragments.sort.SortDialogFragment
+import com.example.noteapp.databinding.FragmentNoteBinding
 import com.example.noteapp.viewmodels.ViewModel
 import kotlinx.android.synthetic.main.fragment_note.*
 
-class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnItemClickDialogListener {
+
+//Sprawdzic notifyDataSetChanged!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+class NoteFragment() : Fragment(), OnItemClickListener{
 
     private lateinit var viewModel: ViewModel
     private lateinit var noteAdapter: NoteAdapter
+
+    var _binding:FragmentNoteBinding? = null
+    val binding get() = _binding!!
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,29 +41,22 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        return inflater.inflate(R.layout.fragment_note, container, false)
+        _binding = FragmentNoteBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("addda", "MainFragment onViewCreated")
         super.onViewCreated(view, savedInstanceState)
 
-        checkIsEmpty()
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d("adda", "MainFragment onActivityCreated")
+        viewModel.getSortDescNote().observe(requireActivity(), Observer {
+            updateNotes(viewModel.allNotes.value!!)
+        })
 
-        viewModel.getFabButtonMode().observe(viewLifecycleOwner, Observer {
-            if(it==true){
-                updateNotes(viewModel.allNotes.value!!.filter {
-                    it.isFavourite == true
-                })
-            } else{
-                updateNotes(viewModel.allNotes.value!!)
-            }
+        viewModel.getNoteFabButtonMode().observe(viewLifecycleOwner, Observer {
+
+            updateNotes(viewModel.allNotes.value!!)
         })
 
         viewModel.getNotifyDataNote().observe(viewLifecycleOwner, Observer {
@@ -70,15 +68,21 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
             }
         })
 
-        viewModel.allNotes.observe(viewLifecycleOwner, Observer {
 
+        viewModel.allNotes.observe(viewLifecycleOwner, Observer {
             viewModel.allNotes.value?.forEach { for (i in viewModel.selectedNotes){ if(it.rowId.equals(i.rowId)){
                 it.isSelected=true
             }} }
 
             updateNotes(it)
         })
+
+
+
+        checkIsEmpty()
     }
+
+
 
     private fun checkIsEmpty() {
         viewModel.allNotes.observe(viewLifecycleOwner, Observer {
@@ -99,11 +103,12 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
             }
         } else {
             viewModel.setSelectedNote(note)
-            viewModel.setSelectedNoteBeforeChange(note)
+            viewModel.noteBeforeChange = note
             if(note.hasPassword){
                 findNavController().navigate(R.id.action_mainFramgent_to_checkPasswordFragment)
             } else {
                 findNavController().navigate(R.id.action_mainFramgent_to_BeforeAddEditNoteFragment)
+
             }
         }
     }
@@ -113,11 +118,6 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
             viewModel.setMutliSelectMode(true)
             selectNote(note, position)
         }
-    }
-
-    override fun onItemClickDialog(sortDesc: Boolean) {
-        viewModel.sortDescNote = sortDesc
-        updateNotes(viewModel.allNotes.value!!)
     }
 
     private fun selectNote(note: Note, position: Int) {
@@ -148,6 +148,7 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
     }
 
     private fun updateNotes(list:List<Note>) {
+        Log.d("Abccc", "updateNote")
         val lm =if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
@@ -158,16 +159,28 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
         recyclerView.layoutManager = lm
 
         var listMod:List<Note> = listOf()
-        if(viewModel.getFabButtonMode().value==true){
+
+        if(viewModel.getNoteFabButtonMode().value==true){
             listMod = list.filter { it.isFavourite == true }
         } else {
             listMod = list
         }
-        noteAdapter = if(viewModel.sortDescNote) {
-            NoteAdapter(listMod, this)
 
+        if(viewModel.getSortDescNote().value!=null) {
+            Log.d("sorted", "!=null")
+            noteAdapter = if (viewModel.getSortDescNote().value!!) {
+                NoteAdapter(listMod, this)
+
+            } else {
+                NoteAdapter(listMod.asReversed(), this)
+            }
         } else{
-            NoteAdapter(list.asReversed(), this) // asReversed - Na odwrót
+            Log.d("sorted", "==null")
+            noteAdapter = if (viewModel.p) {
+                NoteAdapter(listMod, this)
+            } else {
+                NoteAdapter(listMod.asReversed(), this)
+            }
         }
 
         recyclerView.adapter = noteAdapter
@@ -185,4 +198,5 @@ class NoteFragment() : Fragment(), OnItemClickListener, SortDialogFragment.OnIte
 
         viewModel.noteState = recyclerView.layoutManager?.onSaveInstanceState()
     }
+
 }

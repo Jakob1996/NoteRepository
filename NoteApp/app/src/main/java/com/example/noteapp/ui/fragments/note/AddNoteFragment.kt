@@ -1,11 +1,9 @@
 package com.example.noteapp.ui.fragments.note
 
-import android.app.Activity
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -18,27 +16,17 @@ import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.noteapp.R
-import com.example.noteapp.adapters.ImageAdapter
 import com.example.noteapp.data.Note
 import com.example.noteapp.viewmodels.ProfilViewModel
 import com.example.noteapp.viewmodels.ViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.auth.FirebaseAuth
-import com.sangcomz.fishbun.FishBun
-import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import kotlinx.android.synthetic.main.fragment_add_note.*
 import kotlinx.android.synthetic.main.note_edit_layout_miscellaneous.*
-import kotlinx.android.synthetic.main.todo_layout_miscellaneous.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class AddNoteFragment : Fragment() {
-
-    private lateinit var imageAdapter:ImageAdapter
-
-    private var imageList:ArrayList<Uri> = arrayListOf()
 
     private lateinit var viewModel: ViewModel
 
@@ -56,7 +44,6 @@ class AddNoteFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
 
-
         requireActivity().onBackPressedDispatcher.addCallback(
                 this,
                 object : OnBackPressedCallback(true) {
@@ -66,7 +53,6 @@ class AddNoteFragment : Fragment() {
                         val date = Calendar.getInstance().timeInMillis
                         val color = viewModel.selectedNoteColor
                         val fontSize = viewModel.selectedFontSize
-                        val path = viewModel.pathImage
                         val fontColor = viewModel.selectedFontNote
                         val favourite = viewModel.isFavourite
                         val hasPassword = viewModel.hasPassword
@@ -75,7 +61,7 @@ class AddNoteFragment : Fragment() {
                         if (title.isNotEmpty()||message.isNotEmpty()) {
 
                             val note = Note(title, message, date, isSelected = false, color,
-                                    path, fontColor, fontSize, favourite, hasPassword, password).apply {
+                                     fontColor, fontSize, favourite, hasPassword, password).apply {
                                 rowId = title.hashCode()+message.hashCode()+date.hashCode()*color.hashCode()
                             }
 
@@ -104,11 +90,12 @@ class AddNoteFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_add_note, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    @SuppressLint("Range")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val gradientDrawable: GradientDrawable =
-                addNote_viewSubtitleIndicator.background as GradientDrawable
+            addNote_viewSubtitleIndicator.background as GradientDrawable
 
         initMiscellaneous()
 
@@ -186,15 +173,12 @@ class AddNoteFragment : Fragment() {
                 viewModel.noteTitle = it!!.title
                 viewModel.noteMessage = it.message
                 viewModel.noteDate = it.date
-                viewModel.pathImage = it.imagePaths!!
                 viewModel.selectedNoteColor = it.color
                 viewModel.selectedFontSize = it.fontSize
                 viewModel.selectedFontNote = it.fontColor
                 viewModel.idNote = it.rowId
                 viewModel.hasPassword = it.hasPassword
                 viewModel.password = it.password
-
-                initAdapter(viewModel.pathImage)
 
                 setImagePassword(viewModel.hasPassword)
                 title_addNoteFrag.setText(viewModel.noteTitle)
@@ -366,6 +350,7 @@ class AddNoteFragment : Fragment() {
         imageColor5.setImageResource(R.drawable.ic_done)
     }
 
+    /*
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -382,19 +367,7 @@ class AddNoteFragment : Fragment() {
             }
         }
     }
-
-    private fun initAdapter(path:ArrayList<String>) {
-
-        val lm = GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
-
-        recyclerViewImageAddNoteFrag.layoutManager = lm
-
-        imageAdapter = ImageAdapter(path, requireContext())
-
-        recyclerViewImageAddNoteFrag.adapter = imageAdapter
-
-        imageAdapter.notifyDataSetChanged()
-    }
+     */
 
     fun setFontColor(colorPath: Int?) {
         when (colorPath) {
@@ -445,7 +418,6 @@ class AddNoteFragment : Fragment() {
 
         val title = title_addNoteFrag.text
         val message = mess_addNoteFrag.text
-        val pathImage = viewModel.pathImage
         val fontSize = viewModel.selectedFontSize
         val fontColor = viewModel.selectedFontNote
         val date = viewModel.noteDate
@@ -455,7 +427,7 @@ class AddNoteFragment : Fragment() {
         val hasPassword = viewModel.hasPassword
         val password = viewModel.password
 
-        val note = Note(title.toString(), message.toString(), date, false, color, pathImage, fontColor, fontSize, isFavourite, hasPassword, password)
+        val note = Note(title.toString(), message.toString(), date, false, color, fontColor, fontSize, isFavourite, hasPassword, password)
         note.rowId = id
 
         viewModel.setSelectedNote(note)
@@ -467,7 +439,7 @@ class AddNoteFragment : Fragment() {
         title_addNoteFrag.setText("")
         mess_addNoteFrag.setText("")
         viewModel.setSelectedNote(null)
-        viewModel.setSelectedNoteBeforeChange(null)
+        viewModel.noteBeforeChange = null
         viewModel.noteTitle = ""
         viewModel.noteMessage=""
         viewModel.noteDate = 1
@@ -499,6 +471,7 @@ class AddNoteFragment : Fragment() {
         }
     }
 
+    /*
     private fun openImagePicker() {
         val count = 10 - viewModel.pathImage.size
         FishBun.with(this).setImageAdapter(GlideAdapter())
@@ -509,4 +482,6 @@ class AddNoteFragment : Fragment() {
             .setIsUseDetailView(false)
             .startAlbum()
     }
+
+     */
 }

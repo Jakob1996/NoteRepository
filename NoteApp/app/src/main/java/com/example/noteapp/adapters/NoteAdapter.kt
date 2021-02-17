@@ -1,22 +1,13 @@
 package com.example.noteapp.adapters
 
-import android.content.Context
-import android.graphics.BitmapFactory
+import android.annotation.SuppressLint
 import android.graphics.Color
-import android.icu.number.NumberFormatter.with
-import android.opengl.Visibility
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.Glide.with
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.noteapp.R
 import com.example.noteapp.data.Note
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.note_item.view.*
 
 class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemClickListener): RecyclerView.Adapter <NoteAdapter.MyViewHolder>() {
@@ -27,10 +18,10 @@ class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemC
         return MyViewHolder(view)
     }
 
+    @SuppressLint("Range")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val imageNote = holder.itemView.findViewById<ImageView>(R.id.imageNote)
+        //val imageNote = holder.itemView.imageNote
         holder.itemView.linear.setBackgroundColor(Color.parseColor(noteList[position].color))
-
 
             //Log.d("pps", "${noteList[position].isSelected}")
 
@@ -42,7 +33,6 @@ class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemC
         else {
             holder.itemView.delLayout.visibility = View.GONE
         }
-
          */
 
         if(noteList[position].isFavourite){

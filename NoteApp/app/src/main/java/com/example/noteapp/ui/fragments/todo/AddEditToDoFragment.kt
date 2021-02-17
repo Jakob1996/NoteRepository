@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,15 +24,10 @@ import com.example.noteapp.adapters.OnItemTodoClickListener
 import com.example.noteapp.adapters.ToDoItemAdapter
 import com.example.noteapp.data.Category
 import com.example.noteapp.data.ItemOfList
-import com.example.noteapp.data.Note
 import com.example.noteapp.ui.fragments.note.RemovePasswordDialogFragment
 import com.example.noteapp.viewmodels.ViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.category_item.*
-import kotlinx.android.synthetic.main.fragment_add_category_dialog.*
 import kotlinx.android.synthetic.main.fragment_add_edit_to_do.*
-import kotlinx.android.synthetic.main.fragment_before_edit_note.*
-import kotlinx.android.synthetic.main.fragment_todo_list.*
 import kotlinx.android.synthetic.main.todo_layout_miscellaneous.*
 import java.util.*
 
@@ -41,6 +35,7 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
     private lateinit var viewModel: ViewModel
     private var value:Boolean=false
     private lateinit var itemTodoAdapter: ToDoItemAdapter
+    private var quit = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +64,7 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
                                     //Jeśli notatka nie jest pusta, ale jest zaznaczona w MainFragment - Aktualizujemy
                                 } else {
                                     val selectedCategory = viewModel.getSelectedCategotyItem().value!!
+                                    val beforeCategory = viewModel.categoryItemBeforeChange
 
                                     val colorr = viewModel.selectedCategotyItemColor
                                     val name = title_addEditFragCategory.text.toString()
@@ -79,7 +75,8 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
                                     val password = viewModel.passwordCategory
                                     val id = viewModel.categoryId
 
-                                    if (selectedCategory.categoryName != categoryName || selectedCategory.color != color) {
+                                    if (name !=  beforeCategory!!.categoryName || colorr != beforeCategory.color||hasPassword!=beforeCategory.hasPassword
+                                            || isFavourite!=beforeCategory.isFavoutire) {
                                         val category = Category(name, colorr, isSelectedd, datee, isFavourite, hasPassword, password, ).apply {
                                             rowIdCategory = id
                                         }
@@ -90,11 +87,13 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
                             }
 
                             isEnabled = false
-                            setOffAddEdit()
-                            viewModel.setSelectedCategotyItem(null)
                             closeKeyboard()
-                            requireActivity().onBackPressed()
-
+                            quit = 2
+                        if(viewModel.isSearchEdit==1) {
+                            findNavController().navigate(R.id.action_addEditToDoFragment_to_mainFramgent)
+                        } else{
+                            findNavController().navigate(R.id.action_addEditToDoFragment_to_searchCategoryFragment)
+                        }
                     }
                 })
     }
@@ -105,6 +104,7 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val gradientDrawable:GradientDrawable = todo_viewSubtitleIndicator.background as GradientDrawable
         initMiscellaneous()
@@ -131,6 +131,8 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
                     viewModel.categoryId = it.rowIdCategory
 
                     setImagePassword(viewModel.hasPasswordCategory)
+
+                    setFavourite(viewModel.isFavouriteCategory)
 
                     viewModel.getAllItemsFromCategory(viewModel.getSelectedCategotyItem().value!!.rowIdCategory).observe(viewLifecycleOwner, androidx.lifecycle.Observer {
                         updateItems(it)
@@ -165,12 +167,6 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
 
         })
 
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
         favouriteImage_category.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
                 if(viewModel.isFavouriteCategory){
@@ -201,11 +197,12 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
                 val dialogFragment = DialogAddToDoFragment()
                 dialogFragment.show(fm, "Abc")
 
-               itemTodoAdapter.notifyDataSetChanged()
+                itemTodoAdapter.notifyDataSetChanged()
 
             }
         })
     }
+
 
     fun initMiscellaneous() {
         val layoutMiscellaneous = requireActivity().findViewById<LinearLayout>(R.id.todoLayoutMiscellaneous)
@@ -416,14 +413,19 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
             rowIdCategory = id
         }
 
-
         viewModel.setSelectedCategotyItem(category)
+
+        if(quit==2){
+            setOffAddEdit()
+        }
 
         super.onDestroyView()
     }
 
     fun setOffAddEdit(){
 
+        viewModel.setSelectedCategotyItem(null)
+        viewModel.categoryItemBeforeChange = null
         viewModel.selectedCategotyItemColor = "#333333"
         viewModel.categoryName = ""
         viewModel.categoryDate = 0
@@ -432,5 +434,6 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
         viewModel.hasPassword =false
         viewModel.passwordCategory = 0
         viewModel.categoryId = 0
+        viewModel.isSearchEdit = 1
     }
 }

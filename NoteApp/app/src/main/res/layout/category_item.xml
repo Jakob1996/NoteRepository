@@ -6,7 +6,7 @@
     android:id="@+id/layout_category_item"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_margin="9dp"
     app:corner_radius="11dp"
     android:gravity="center_vertical"
@@ -29,5 +29,31 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:layout_marginEnd="10dp">
+
+        <ImageView
+            android:id="@+id/favLayCatItem"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_baseline_favorite_24"
+            app:tint = "@color/gold"
+            android:visibility="gone"
+            android:layout_marginEnd="3dp" />
+
+        <ImageView
+            android:id="@+id/delLayCatItem"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_lock_all"
+            app:tint = "@color/gold"
+            android:visibility="gone"
+            android:layout_marginEnd="3dp" />
+    </LinearLayout>
 
 </com.jcminarro.roundkornerlayout.RoundKornerLinearLayout>

@@ -89,10 +89,12 @@
                     android:fontFamily="@font/robotoligth"
                     android:gravity="center_vertical"
                     android:hint="@string/note_title"
-                    android:maxLength="25"
                     android:textColor="@color/white"
                     android:textColorHint="@color/colorTextHint"
-                    android:textSize="26sp" />
+                    android:textSize="26sp"
+                    android:scrollHorizontally="true"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

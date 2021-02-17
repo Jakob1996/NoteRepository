@@ -33,7 +33,7 @@
             android:id="@+id/toolbar_Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Find your note"
+            android:text="Find your category"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:textColor="@color/colorIcons" />
@@ -74,7 +74,7 @@
                 />
 
             <EditText
-                android:id="@+id/editSearcher"
+                android:id="@+id/editSearcherCategory"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_centerVertical="true"
@@ -82,7 +82,7 @@
                 android:backgroundTint="#00FFFFFF"
                 android:fontFamily="@font/ubunturegular"
                 android:gravity="center_vertical"
-                android:hint="Search in notes..."
+                android:hint="Search in category..."
                 android:textColor="@color/white"
                 android:textColorHint="@color/colorIcons"
                 android:textSize="13sp"
@@ -95,17 +95,16 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_InSearch"
+        android:id="@+id/recyclerView_InSearch_Category"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginRight="8dp"
-        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView"
-        app:spanCount="2"
-        tools:listitem="@layout/note_item" />
+        app:spanCount="1"
+        tools:listitem="@layout/category_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>
