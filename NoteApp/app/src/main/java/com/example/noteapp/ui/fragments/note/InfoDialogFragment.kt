@@ -6,28 +6,39 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.noteapp.R
-import com.example.noteapp.viewmodels.ViewModel
-import kotlinx.android.synthetic.main.fragment_info_dialog.*
+import com.example.noteapp.databinding.FragmentInfoDialogBinding
+import com.example.noteapp.viewmodels.NoteViewModel
 
 class InfoDialogFragment : DialogFragment() {
-    private lateinit var viewModel:ViewModel
+    private lateinit var noteViewModel:NoteViewModel
+
+    private var _binding:FragmentInfoDialogBinding? = null
+
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
+        noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_info_dialog, container, false)
+
+        _binding = FragmentInfoDialogBinding.inflate(inflater, container, false)
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val value = viewModel.getSelectedNote().value!!.message.length
-        textLenghtValue.text = value.toString()
+        val value = noteViewModel.getSelectedNote().value!!.message.length
+        binding.textLenghtValue.text = value.toString()
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }

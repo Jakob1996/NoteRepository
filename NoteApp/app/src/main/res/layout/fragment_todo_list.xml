@@ -23,8 +23,6 @@
         android:textColorHint="@color/colorNoteSubtitleText"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:animateLayoutChanges="false"
-        android:nestedScrollingEnabled="false"
         android:id="@+id/category_recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"

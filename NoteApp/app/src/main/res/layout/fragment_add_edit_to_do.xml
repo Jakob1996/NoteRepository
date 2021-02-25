@@ -115,6 +115,8 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <include layout="@layout/todo_layout_miscellaneous" />
+    <include
+        android:id="@+id/include_miscellaneous_todoItem"
+        layout="@layout/todo_layout_miscellaneous" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.jcminarro.roundkornerlayout.RoundKornerLinearLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/color_Primary"
@@ -14,10 +14,10 @@
         android:id="@+id/todoCheckBox"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="CheckBox"
+        android:text="@string/checkbox"
         android:textColor="@color/white"
         android:maxLines="1"
-        android:textSize="17dp"
+        android:textSize="17sp"
         android:fontFamily="@font/robotoligth"
         android:ellipsize="end"
         android:includeFontPadding="false"
@@ -26,4 +26,4 @@
         android:paddingLeft="7dp"
         android:buttonTint="@color/colorNoteColor2" />
 
-</com.jcminarro.roundkornerlayout.RoundKornerLinearLayout>
+</LinearLayout>

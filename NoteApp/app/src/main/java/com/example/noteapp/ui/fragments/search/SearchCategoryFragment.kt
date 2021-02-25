@@ -16,66 +16,76 @@ import com.example.noteapp.R
 import com.example.noteapp.adapters.ItemsCategoryTodoAdapter
 import com.example.noteapp.adapters.OnItemCategoryClickListener
 import com.example.noteapp.data.Category
-import com.example.noteapp.viewmodels.ViewModel
-import kotlinx.android.synthetic.main.fragment_search.icBackInSearchFragment
-import kotlinx.android.synthetic.main.fragment_search_category.*
+import com.example.noteapp.databinding.FragmentSearchCategoryBinding
+import com.example.noteapp.viewmodels.ToDoViewModel
 
 class SearchCategoryFragment : Fragment(), OnItemCategoryClickListener {
 
-    private lateinit var viewModel: ViewModel
+    private lateinit var todoViewModel: ToDoViewModel
     private lateinit var categoryAdapter: ItemsCategoryTodoAdapter
+
+    private var _binding:FragmentSearchCategoryBinding? = null
+    private val binding get() = _binding!!
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
+        todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
 
         requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                viewModel.search = null
+                todoViewModel.search = null
                 findNavController().navigate(R.id.action_searchCategoryFragment_to_mainFramgent)
                 isEnabled = false
             }
         })
     }
 
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
+        _binding = FragmentSearchCategoryBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_category, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.allCategoryItems.observe(viewLifecycleOwner, Observer {
-            if(viewModel.search!=null){
-                updateCategory(it, viewModel.search!!)
+        todoViewModel.allCategoryItems.observe(viewLifecycleOwner, Observer {
+            if(todoViewModel.search!=null){
+                updateCategory(it, todoViewModel.search!!)
             } else{
                 updateCategoryEmpty()
             }
         })
 
-        if(viewModel.search!=null) {
-            editSearcherCategory.setText(viewModel.search)
-            editSearcherCategory.requestFocus(editSearcherCategory.text.length)
+        if(todoViewModel.search!=null) {
+            binding.editSearcherCategory.setText(todoViewModel.search)
+            binding.editSearcherCategory.requestFocus(binding.editSearcherCategory.text.length)
         }
 
-        icBackInSearchFragment.setOnClickListener(object:View.OnClickListener{
+        binding.icBackInSearchFragment.setOnClickListener(object:View.OnClickListener{
             override fun onClick(v: View?) {
                 findNavController().navigate(R.id.action_searchFragment_to_mainFramgent)
             }
         })
 
-        editSearcherCategory.addTextChangedListener(object : TextWatcher {
+        binding.editSearcherCategory.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
                 if(!s.isNullOrEmpty()) {
-                    updateCategory(viewModel.allCategoryItems.value!!, s.toString())
-                    viewModel.search = editSearcherCategory.text.toString()
+                    updateCategory(todoViewModel.allCategoryItems.value!!, s.toString())
+                    todoViewModel.search = binding.editSearcherCategory.text.toString()
                 } else updateCategoryEmpty()
             }
 
@@ -91,7 +101,7 @@ class SearchCategoryFragment : Fragment(), OnItemCategoryClickListener {
 
     private fun updateCategory(list:List<Category>, search:String) {
         val lm = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-        recyclerView_InSearch_Category.layoutManager = lm
+        binding.recyclerViewInSearchCategory.layoutManager = lm
 
 
         val listMod = list.filter {  it ->
@@ -99,28 +109,28 @@ class SearchCategoryFragment : Fragment(), OnItemCategoryClickListener {
         }
 
         categoryAdapter = ItemsCategoryTodoAdapter(listMod, this)
-        recyclerView_InSearch_Category.adapter = categoryAdapter
+        binding.recyclerViewInSearchCategory.adapter = categoryAdapter
         categoryAdapter.notifyDataSetChanged()
     }
 
     private fun updateCategoryEmpty() {
         val lm = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
 
-        recyclerView_InSearch_Category.layoutManager = lm
+        binding.recyclerViewInSearchCategory.layoutManager = lm
 
         categoryAdapter = ItemsCategoryTodoAdapter(emptyList(), this)
-        recyclerView_InSearch_Category.adapter = categoryAdapter
+        binding.recyclerViewInSearchCategory.adapter = categoryAdapter
         categoryAdapter.notifyDataSetChanged()
     }
 
     override fun onItemClick(category: Category, position: Int) {
-        viewModel.setSelectedCategotyItem(category)
-        viewModel.categoryItemBeforeChange = category
+        todoViewModel.setSelectedCategotyItem(category)
+        todoViewModel.categoryItemBeforeChange = category
         if(category.hasPassword){
-            viewModel.isSearchEdit = 2
+            todoViewModel.isSearchEdit = 2
             findNavController().navigate(R.id.action_searchCategoryFragment_to_checkPasswordFragment)
         } else
-        {   viewModel.isSearchEdit = 2
+        {   todoViewModel.isSearchEdit = 2
             findNavController().navigate(R.id.action_searchCategoryFragment_to_addEditToDoFragment)
         }
     }

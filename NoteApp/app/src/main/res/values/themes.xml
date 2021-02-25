@@ -5,11 +5,10 @@
         <item name="colorPrimary">@color/colorQuickActionsBackground</item>
         <item name="colorAccent">@color/gold</item>
         <item name="android:statusBarColor" tools:targetApi="l">@color/color_Primary</item>
-        <item name="fontFamily">@font/ubuntubold</item>
     </style>
 
     <style name="CustomTabStyle" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">11sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:fontFamily">@font/robotoligth</item>
 
     </style>

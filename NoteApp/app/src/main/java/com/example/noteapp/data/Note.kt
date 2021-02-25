@@ -1,8 +1,6 @@
 package com.example.noteapp.data
 
 import androidx.room.*
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
 @Entity(tableName = "note_table")
 data class Note(
@@ -11,7 +9,6 @@ data class Note(
         val date:Long=1,
         var isSelected:Boolean = false,
         val color:String="",
-        //val imagePaths:ArrayList<String> = arrayListOf("bbb"),
         val fontColor:Int=1,
         val fontSize:Int=1,
         val isFavourite:Boolean=false,
@@ -37,5 +34,4 @@ class PathTypeConverter{
         return gson.toJson(list)
     }
 }
-
  */

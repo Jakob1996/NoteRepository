@@ -2,19 +2,31 @@ package com.example.noteapp.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.fragment.app.FragmentPagerAdapter
+import com.example.noteapp.ui.fragments.note.NoteFragment
+import com.example.noteapp.ui.fragments.todo.CategoryFragment
 
-class ViewPagerAdapter(supportFragmentManager:FragmentManager) : FragmentStatePagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class ViewPagerAdapter(supportFragmentManager:FragmentManager) : FragmentPagerAdapter(supportFragmentManager ) {
 
     private val mFragmentList = ArrayList<Fragment>()
     private val mFragmentTitleList = ArrayList<String>()
 
     override fun getCount(): Int {
-        return mFragmentList.size
+        return 2
     }
 
     override fun getItem(position: Int): Fragment {
-        return mFragmentList[position]
+        when(position){
+            0->{
+                return NoteFragment()
+            }
+
+            1-> {
+                return CategoryFragment()
+            }
+
+            else -> { return NoteFragment()}
+        }
     }
 
     fun addFragment(fragment:Fragment, title:String){
@@ -22,7 +34,14 @@ class ViewPagerAdapter(supportFragmentManager:FragmentManager) : FragmentStatePa
         mFragmentTitleList.add(title)
     }
 
+
     override fun getPageTitle(position: Int): CharSequence? {
-        return mFragmentTitleList[position]
+        when(position){
+            0 -> {return "Notes"}
+            1 -> {return "ToDo List"}
+        }
+        return super.getPageTitle(position)
     }
+
+
 }

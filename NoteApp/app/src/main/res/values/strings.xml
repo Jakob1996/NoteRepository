@@ -10,4 +10,9 @@
     <string name="type_note_here">Type note here...</string>
     <string name="add_image">Add Image</string>
     <string name="explore">Explore</string>
+    <string name="notes_is_empty">Notes is empty</string>
+    <string name="checkbox">CheckBox</string>
+    <string name="Explore">Explore</string>
+    <string name="deleteToolbar">Delete</string>
+    <string name="categoryEditorTextView">Category editor</string>
 </resources>

@@ -7,55 +7,60 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.noteapp.R
 import com.example.noteapp.data.Note
+import com.example.noteapp.databinding.FragmentProfileBinding
 import com.example.noteapp.viewmodels.ProfilViewModel
-import com.example.noteapp.viewmodels.ViewModel
+import com.example.noteapp.viewmodels.NoteViewModel
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.fragment_profile.*
 
 
 class ProfileFragment : Fragment() {
-    private lateinit var viewModel:ViewModel
+    private lateinit var noteViewModel:NoteViewModel
     private lateinit var profilViewModel: ProfilViewModel
     private val fbAuth = FirebaseAuth.getInstance()
     private var notesFromRoom: List<Note>? = null
 
+    private var _binding:FragmentProfileBinding? = null
+    private val binding = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
+        noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
         profilViewModel = ViewModelProvider(requireActivity())[ProfilViewModel::class.java]
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.allNotes.observe(viewLifecycleOwner, Observer {
+        noteViewModel.allNotes.observe(viewLifecycleOwner, Observer {
             notesFromRoom = it
         })
 
-        saveButt.setOnClickListener(object :View.OnClickListener{
+        binding.saveButt.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
 
-                profilViewModel.addNotesToCloud(viewModel.allNotes.value!!)
+                profilViewModel.addNotesToCloud(noteViewModel.allNotes.value!!)
             }
         })
 
-        removeDataFirebase.setOnClickListener(object :View.OnClickListener{
+        binding.removeDataFirebase.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
-                viewModel.allNotes.observe(viewLifecycleOwner, Observer {
+                noteViewModel.allNotes.observe(viewLifecycleOwner, Observer {
                     profilViewModel.deleteDataFromFirebase(it)
                 })
             }
         })
 
-        getFromFirebaseButton.setOnClickListener(object :View.OnClickListener{
+        binding.getFromFirebaseButton.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
                 profilViewModel.notesFromFirebase.observe(viewLifecycleOwner, Observer {
                     it.forEach {
@@ -67,6 +72,11 @@ class ProfileFragment : Fragment() {
     }
 
     fun insertOrUpdate(note: Note){
-        viewModel.insertNote(note)
+        noteViewModel.insertNote(note)
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }

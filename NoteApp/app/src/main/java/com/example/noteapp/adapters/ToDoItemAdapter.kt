@@ -3,51 +3,48 @@ package com.example.noteapp.adapters
 import android.graphics.Color
 import android.graphics.Paint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.example.noteapp.R
 import com.example.noteapp.data.ItemOfList
-import com.example.noteapp.ui.fragments.todo.AddEditToDoFragment
-import com.example.noteapp.viewmodels.ViewModel
-import kotlinx.android.synthetic.main.fragment_add_item_dialog.view.*
-import kotlinx.android.synthetic.main.item_todo.view.*
+import com.example.noteapp.databinding.ItemTodoBinding
 
 class ToDoItemAdapter(private val list: List<ItemOfList>, private val listener: OnItemTodoClickListener): RecyclerView.Adapter<ToDoItemAdapter.ViewHolderItem>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderItem {
-        val layoutInflater:LayoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.item_todo, parent, false)
-        return ViewHolderItem(view)
+        val holderBinding = ItemTodoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolderItem(holderBinding)
     }
 
     override fun onBindViewHolder(holder: ViewHolderItem, position: Int) {
-
-        holder.itemView.todoCheckBox.setText(list[position].nameItem)
-
-        if(list[position].isDone){
-            holder.itemView.todoCheckBox.isChecked = true
-            holder.itemView.todoCheckBox.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-            holder.itemView.todoCheckBox.setTextColor(Color.parseColor("#7B7B7B"))
-        } else{
-            holder.itemView.todoCheckBox.isChecked = false
-        }
-
+        val item = list[position]
+        holder.bind(item)
     }
 
     override fun getItemCount(): Int {
         return list.size
     }
 
-    inner class ViewHolderItem(view: View): RecyclerView.ViewHolder(view){
+    inner class ViewHolderItem(val itemBinding: ItemTodoBinding): RecyclerView.ViewHolder(itemBinding.root) {
         init {
-            view.todoCheckBox.setOnClickListener{
+            itemBinding.todoCheckBox.setOnClickListener {
                 listener.onItemClick(list[adapterPosition], adapterPosition)
             }
-            view.todoCheckBox.setOnLongClickListener{
+            itemBinding.todoCheckBox.setOnLongClickListener {
                 listener.onItemLongClick(list[adapterPosition], adapterPosition)
                 true
+            }
+        }
+
+
+        fun bind(todoItem: ItemOfList) {
+            itemBinding.todoCheckBox.setText(todoItem.nameItem)
+
+            if (todoItem.isDone) {
+                itemBinding.todoCheckBox.isChecked = true
+                itemBinding.todoCheckBox.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                itemBinding.todoCheckBox.setTextColor(Color.parseColor("#7B7B7B"))
+            } else {
+                itemBinding.todoCheckBox.isChecked = false
             }
         }
     }

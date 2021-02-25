@@ -43,6 +43,4 @@
         android:background="@color/colorPrimary_dark"
         android:fontFamily="@font/ubunturegular" />
     </LinearLayout>
-
-
 </LinearLayout>

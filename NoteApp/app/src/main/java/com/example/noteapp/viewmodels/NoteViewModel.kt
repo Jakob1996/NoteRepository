@@ -13,7 +13,7 @@ import com.example.noteapp.data.relations.CategoryWithItems
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 
-class ViewModel(app:Application):AndroidViewModel(app) {
+class NoteViewModel(app:Application):AndroidViewModel(app) {
 
     var stateFragmentMain:Bundle? = null
     var searchStateFragment:Bundle? = null
@@ -21,8 +21,6 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     private val repository = Repository(app)
 
     var search:String?=null
-
-    //Room ViewModel
 
     //NoteViewModel
 
@@ -35,19 +33,6 @@ class ViewModel(app:Application):AndroidViewModel(app) {
     fun setSelectedNote(note: Note?){
         selectedNote.postValue(note)
     }
-
-    /*
-    private val noteBeforeChan = MutableLiveData<Note?>()
-
-    fun getSelectedNoteBeforeChange(): LiveData<Note?> {
-        return noteBeforeChan
-    }
-
-    fun setSelectedNoteBeforeChange(note: Note?){
-        noteBeforeChan.postValue(note)
-    }
-
-     */
 
     var noteBeforeChange:Note? = null
 
@@ -162,117 +147,7 @@ class ViewModel(app:Application):AndroidViewModel(app) {
         CoroutineScope(Dispatchers.IO).launch { repository.clearDatabaseNotes() }
     }
 
-    /*
-    fun findInNotes(text:String): List<Note> {
-        val list = allNotes.value
-         return list!!.filter { note ->
-            note.title.toLowerCase().contains(text.toLowerCase()) || note.message.toUpperCase().contains(text.toUpperCase())
-        }
-    }
-
-     */
-
-    //CategoryViewModel
-
-    var categoryName:String = ""
-    var selectedCategotyItemColor = "#333333"
-    var categoryIsSelected:Boolean = false
-    var categoryDate:Long=0
-    var isFavouriteCategory:Boolean = false
-    var hasPasswordCategory:Boolean = false
-    var passwordCategory:Int = 0
-    var categoryId:Int =0
-
-    val allCategoryItems = repository.getAllCategory()
-
-    private val selectedCategoryItem = MutableLiveData<Category?>()
-
-    fun getSelectedCategotyItem(): LiveData<Category?> = selectedCategoryItem
-
-    fun setSelectedCategotyItem(category: Category?){
-        selectedCategoryItem.postValue(category)
-    }
-
-    /*
-    private var selectedCategoryItemBefore = MutableLiveData<Category?>()
-
-    fun getSelectedCategoryItemBefore():LiveData<Category?> = selectedCategoryItemBefore
-
-    fun setSelectedCategoryItemBefore(category:Category?){
-        selectedCategoryItemBefore.postValue(category)
-    }
-     */
-
-    var categoryItemBeforeChange:Category? = null
-
-    var sortDescCategoryItem = false
-
-
-    val selectedCategoryItems = ArrayList<Category>()
-
-    fun insertCategotyItem (category: Category){
-        CoroutineScope(Dispatchers.IO).launch { repository.insertCategory(category) }
-    }
-
-    fun updateCategoryItem(category: Category){
-        CoroutineScope(Dispatchers.IO).launch { repository.updateCategory(category) }
-    }
-
-    fun deleteCategotyItems(category:List<Category>){
-      repository.deleteCategory(category)
-    }
-
-    fun clearDataBaseCategoryItems(){
-        CoroutineScope(Dispatchers.IO).launch { repository.deleteCategoryDataBase() }
-    }
-
-    fun findCategory(text: String):List<Category>{
-        val categoryItems = allCategoryItems.value
-
-        return categoryItems!!.filter { categoryItem ->
-            categoryItem.categoryName.toLowerCase().contains(text.toLowerCase()) || categoryItem.categoryName.toUpperCase().contains(text.toUpperCase()) }
-    }
-
-    //ItemViewModel
-
-    private lateinit var allItems:LiveData<List<ItemOfList>>
-
-     fun getAllItemsFromCategory(categoryId:Int):LiveData<List<ItemOfList>>{
-        return repository.getAllItems(categoryId)
-}
-
-    private val selectedItem = MutableLiveData<ItemOfList?>()
-
-    fun getSelectedItem(): LiveData<ItemOfList?> = selectedItem
-
-    fun setSelectedItem(item:ItemOfList?){
-        selectedItem.postValue(item)
-    }
-
-    fun insertItem(item:ItemOfList){
-        CoroutineScope(Dispatchers.IO).launch { repository.insertItem(item) }
-    }
-
-    fun updateItem(item: ItemOfList){
-        CoroutineScope(Dispatchers.IO).launch { repository.updateItem(item) }
-    }
-
-    fun deleteItem(item: ItemOfList){
-        CoroutineScope(Dispatchers.IO).launch { repository.deleteItem(item) }
-    }
-
-    fun deleteItems(categoryId: Int){
-        CoroutineScope(Dispatchers.IO).launch { repository.deleteAllITems(categoryId) }
-    }
-
     //State Model
 
     var p:Boolean = true
-
-    /*
-    fun getCategoryWithItems(categoryId:Int):List<CategoryWithItems>{
-        return CoroutineScope(Dispatchers.IO).launch { repository.getCategoryWithItems(categoryId) }
-    }
-
-     */
 }

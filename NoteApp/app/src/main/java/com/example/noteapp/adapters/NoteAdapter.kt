@@ -6,68 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.noteapp.R
 import com.example.noteapp.data.Note
-import kotlinx.android.synthetic.main.note_item.view.*
+import com.example.noteapp.databinding.NoteItemBinding
 
 class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemClickListener): RecyclerView.Adapter <NoteAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val layoutInflater:LayoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.note_item, parent, false)
-        return MyViewHolder(view)
+        val viewBinding = NoteItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyViewHolder(viewBinding)
     }
 
-    @SuppressLint("Range")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        //val imageNote = holder.itemView.imageNote
-        holder.itemView.linear.setBackgroundColor(Color.parseColor(noteList[position].color))
 
-            //Log.d("pps", "${noteList[position].isSelected}")
+        val item = noteList[position]
 
-        if(noteList[position].isSelected){
-            holder.itemView.linear.setBackgroundColor(Color.parseColor("#F0F4D7"))
-        }
-
-        /*
-        else {
-            holder.itemView.delLayout.visibility = View.GONE
-        }
-         */
-
-        if(noteList[position].isFavourite){
-            holder.itemView.favLayItem.visibility = View.VISIBLE
-            holder.itemView.itemsLayout.visibility = View.VISIBLE
-        } else{
-            holder.itemView.favLayItem.visibility = View.GONE
-        }
-
-        if (noteList[position].hasPassword){
-            holder.itemView.delLayItem.visibility = View.VISIBLE
-            holder.itemView.itemsLayout.visibility = View.VISIBLE
-        } else{
-            holder.itemView.delLayItem.visibility = View.GONE
-        }
-
-        if(!noteList[position].hasPassword&&!noteList[position].isFavourite){
-            holder.itemView.itemsLayout.visibility = View.GONE
-        }
-
-        holder.itemView.note_title.text = noteList[position].title
-        holder.itemView.note_message.text = noteList[position].message
-
-        /*
-        if(!noteList[position].imagePaths.isEmpty()){
-
-                Glide
-                        .with(context).load(noteList[position].imagePaths.get(noteList[position].imagePaths.size-1)).placeholder(R.drawable.background_note)
-                        .override(1000, 1000).fitCenter().centerCrop().into(imageNote)
-                holder.itemView.imageNote.visibility = View.VISIBLE
-
-        } else{
-            imageNote.visibility = View.GONE
-        }
-        */
+        holder.bind(item)
 
     }
 
@@ -75,15 +28,46 @@ class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemC
         return noteList.size
     }
 
-    inner class MyViewHolder(view:View):RecyclerView.ViewHolder(view) {
+    inner class MyViewHolder(private val viewBinding:NoteItemBinding):RecyclerView.ViewHolder(viewBinding.root) {
         init {
-            view.setOnClickListener{
+            viewBinding.linear.setOnClickListener{
                 listener.onItemClick(noteList[adapterPosition], adapterPosition)
             }
-            view.setOnLongClickListener{
+            viewBinding.linear.setOnLongClickListener{
                 listener.onItemLongClick(noteList[adapterPosition], adapterPosition)
                 true
             }
+        }
+
+        @SuppressLint("Range")
+        fun bind(note:Note){
+            viewBinding.linear.setBackgroundColor(Color.parseColor(note.color))
+
+            if(note.isSelected){
+                viewBinding.linear.setBackgroundColor(Color.parseColor("#F0F4D7"))
+            }
+
+            if(note.isFavourite){
+
+                viewBinding.favLayItem.visibility = View.VISIBLE
+                viewBinding.itemsLayout.visibility = View.VISIBLE
+            } else{
+                viewBinding.favLayItem.visibility = View.GONE
+            }
+
+            if (note.hasPassword){
+                viewBinding.delLayItem.visibility = View.VISIBLE
+                viewBinding.itemsLayout.visibility = View.VISIBLE
+            } else{
+                viewBinding.delLayItem.visibility = View.GONE
+            }
+
+            if(!note.hasPassword&&!note.isFavourite){
+                viewBinding.itemsLayout.visibility = View.GONE
+            }
+
+            viewBinding.noteTitle.setText(note.title)
+            viewBinding.noteMessage.setText(note.message)
         }
     }
 }

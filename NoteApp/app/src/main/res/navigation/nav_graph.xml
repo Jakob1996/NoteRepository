@@ -13,13 +13,11 @@
         <action
             android:id="@+id/action_mainFramgent_to_BeforeAddEditNoteFragment"
             app:destination="@id/beforeAddEditNoteFragment"
-            app:enterAnim="@anim/from_right_to_left"
             app:exitAnim="@anim/zero_to_zero"
-            app:launchSingleTop="false"
-            app:popEnterAnim="@anim/zero_to_zero"
-            app:popExitAnim="@anim/from_left_to_right"
             app:popUpTo="@id/mainFramgent"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="false"
+            app:launchSingleTop="false"
+            />
 
         <action
             android:id="@+id/action_mainFramgent_to_searchFragment"
@@ -35,9 +33,11 @@
         <action
             android:id="@+id/action_mainFramgent_to_addEditToDoFragment"
             app:destination="@id/addEditToDoFragment"
-            app:exitAnim="@anim/zero_to_zero"
             app:popUpTo="@id/mainFramgent"
-            app:popUpToInclusive="false" />
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:exitAnim="@anim/zero_to_zero"
+            />
         <action
             android:id="@+id/action_mainFramgent_to_addNoteFragment"
             app:destination="@id/addNoteFragment"
@@ -69,8 +69,6 @@
             android:id="@+id/action_mainFramgent_to_fragmentTest"
             app:destination="@id/fragmentTest"
             app:enterAnim="@anim/from_right_to_left"
-
-
             app:exitAnim="@anim/zero_to_zero"
             app:popEnterAnim="@anim/zero_to_zero"
             app:popExitAnim="@anim/from_left_to_right"

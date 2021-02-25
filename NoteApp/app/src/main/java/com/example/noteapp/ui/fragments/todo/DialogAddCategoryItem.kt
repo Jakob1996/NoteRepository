@@ -1,26 +1,25 @@
 package com.example.noteapp.ui.fragments.todo
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.noteapp.R
 import com.example.noteapp.data.Category
-import com.example.noteapp.viewmodels.ViewModel
-import kotlinx.android.synthetic.main.fragment_add_category_dialog.*
+import com.example.noteapp.databinding.FragmentAddCategoryDialogBinding
+import com.example.noteapp.viewmodels.ToDoViewModel
 import java.util.*
 
 class DialogAddCategoryItem:DialogFragment() {
-    private lateinit var viewModel: ViewModel
+    private lateinit var todoViewModel: ToDoViewModel
+
+    private var _binding:FragmentAddCategoryDialogBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
+        todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -28,20 +27,25 @@ class DialogAddCategoryItem:DialogFragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        val rootView: View = inflater.inflate(R.layout.fragment_add_category_dialog, container, false)
-        val save = rootView.findViewById<Button>(R.id.add_category_button)
+        _binding = FragmentAddCategoryDialogBinding.inflate(inflater, container, false)
 
-        save.setOnClickListener(object : View.OnClickListener{
+
+        binding.addCategoryButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
-                if(category_title_editText.text.isEmpty()){
+                if(binding.categoryTitleEditText.text.isEmpty()){
                     dismiss()
                 } else{
-                    val category = Category(category_title_editText.text.toString(), "#333333",false, Calendar.getInstance().timeInMillis)
-                    viewModel.insertCategotyItem(category)
+                    val category = Category(binding.categoryTitleEditText.text.toString(), "#333333",false, Calendar.getInstance().timeInMillis)
+                    todoViewModel.insertCategotyItem(category)
                     dismiss()
                 }
             }
         })
-        return rootView
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }

@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.fragments.main.MainFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/draw_lay"
@@ -41,8 +40,7 @@
                 android:background="@drawable/ripple"
                 android:padding="6dp"
                 android:src="@drawable/ic_menu2"
-                app:tint="@color/colorIcons"
-                />
+                app:tint="@color/colorIcons" />
 
             <TextView
                 android:id="@+id/toolbar_Title"
@@ -51,6 +49,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/robotoligth"
+                android:textStyle="bold"
+
                 android:text="@string/explore"
                 android:textColor="@color/colorIcons"
                 android:textSize="13sp" />
@@ -68,8 +68,7 @@
                     android:padding="6dp"
                     android:src="@drawable/ic_search"
                     app:tint="@color/colorIcons"
-                    tools:ignore="ContentDescription"
-                    />
+                    tools:ignore="ContentDescription" />
 
                 <ImageView
                     android:id="@+id/fav_FB"
@@ -83,8 +82,6 @@
                     android:layout_marginStart="3dp"/>
             </LinearLayout>
         </RelativeLayout>
-
-
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar_layout"
@@ -156,18 +153,16 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_View"
             android:layout_gravity="start"
             android:background="@color/colorSearchBackgoround"
             android:layout_width="300dp"
             android:layout_height="match_parent"
             app:itemTextColor="@color/white">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <include layout="@layout/menu_drawer2"/>
-            </LinearLayout>
+                <include
+                    android:id="@+id/include_menu"
+                    layout="@layout/menu_drawer2"/>
         </com.google.android.material.navigation.NavigationView>
 
     </androidx.drawerlayout.widget.DrawerLayout>

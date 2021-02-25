@@ -5,52 +5,58 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.noteapp.R
 import com.example.noteapp.data.Category
-import kotlinx.android.synthetic.main.category_item.view.*
+import com.example.noteapp.databinding.CategoryItemBinding
 
 class ItemsCategoryTodoAdapter(private val list: List<Category>, private val listener: OnItemCategoryClickListener): RecyclerView.Adapter<ItemsCategoryTodoAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val layoutInflater:LayoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.category_item, parent, false)
-        return MyViewHolder(view)
+        val itemBinding = CategoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.itemView.layout_category_item.setBackgroundColor(Color.parseColor(list[position].color))
 
-        if(list[position].isSelected){
-            holder.itemView.layout_category_item.setBackgroundColor(Color.parseColor("#F0F4D7"))
-        }
+        val cat:Category = list[position]
 
-        if(list[position].isFavoutire){
-            holder.itemView.favLayCatItem.visibility = View.VISIBLE
-        } else{
-            holder.itemView.favLayCatItem.visibility = View.GONE
-        }
-
-        if(list[position].hasPassword){
-            holder.itemView.delLayCatItem.visibility = View.VISIBLE
-        } else{
-            holder.itemView.delLayCatItem.visibility = View.GONE
-        }
-
-        holder.itemView.categoryName_textView.text = list[position].categoryName
+        holder.bind(cat)
     }
 
     override fun getItemCount(): Int {
         return list.size
     }
 
-    inner class MyViewHolder(view:View):RecyclerView.ViewHolder(view){
+    inner class MyViewHolder(private val itemBinding: CategoryItemBinding):RecyclerView.ViewHolder(itemBinding.root){
         init {
-            view.setOnClickListener{
+            itemBinding.layoutCategoryItem.setOnClickListener{
                 listener.onItemClick(list[adapterPosition], adapterPosition)
             }
-            view.setOnLongClickListener{
+            itemBinding.layoutCategoryItem.setOnLongClickListener{
                 listener.onItemLongClick(list[adapterPosition], adapterPosition)
                 true
+            }
+        }
+
+        fun bind(cat: Category){
+
+            itemBinding.categoryNameTextView.setText(cat.categoryName)
+
+            itemBinding.layoutCategoryItem.setBackgroundColor(Color.parseColor(cat.color))
+
+            if(cat.isSelected){
+                itemBinding.layoutCategoryItem.setBackgroundColor(Color.parseColor("#F0F4D7"))
+            }
+
+            if(cat.isFavoutire){
+                itemBinding.favLayCatItem.visibility = View.VISIBLE
+            } else{
+                itemBinding.favLayCatItem.visibility = View.GONE
+            }
+
+            if(cat.hasPassword){
+                itemBinding.delLayCatItem.visibility = View.VISIBLE
+            } else{
+                itemBinding.delLayCatItem.visibility = View.GONE
             }
         }
     }

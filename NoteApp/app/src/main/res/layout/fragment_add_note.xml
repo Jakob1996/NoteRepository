@@ -135,6 +135,8 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <include layout="@layout/note_edit_layout_miscellaneous" />
+    <include
+        android:id="@+id/include_miscellaneous"
+        layout="@layout/note_edit_layout_miscellaneous" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

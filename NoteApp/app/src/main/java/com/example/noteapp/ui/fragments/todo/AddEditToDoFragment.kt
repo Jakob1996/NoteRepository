@@ -9,9 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
@@ -24,37 +21,40 @@ import com.example.noteapp.adapters.OnItemTodoClickListener
 import com.example.noteapp.adapters.ToDoItemAdapter
 import com.example.noteapp.data.Category
 import com.example.noteapp.data.ItemOfList
+import com.example.noteapp.databinding.FragmentAddEditToDoBinding
 import com.example.noteapp.ui.fragments.note.RemovePasswordDialogFragment
-import com.example.noteapp.viewmodels.ViewModel
+import com.example.noteapp.viewmodels.ToDoViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.fragment_add_edit_to_do.*
-import kotlinx.android.synthetic.main.todo_layout_miscellaneous.*
 import java.util.*
 
 class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
-    private lateinit var viewModel: ViewModel
+    private lateinit var todoViewModel: ToDoViewModel
     private var value:Boolean=false
     private lateinit var itemTodoAdapter: ToDoItemAdapter
     private var quit = 1
 
+    private var _binding:FragmentAddEditToDoBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
+        todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
 
         requireActivity().onBackPressedDispatcher.addCallback(
                 this,
                 object : OnBackPressedCallback(true) {
                     override fun handleOnBackPressed() {
-                            //Po naciśnięciu przycisku wstecz sprawdzamy czy lista nie jest pusta
-                            if (title_addEditFragCategory.text.isNotEmpty()) {
-                                val categoryName = title_addEditFragCategory.text.toString()
-                                val date = Calendar.getInstance().timeInMillis
-                                val color= viewModel.selectedCategotyItemColor
 
-                                if (viewModel.getSelectedCategotyItem().value == null) {
+                            //Po naciśnięciu przycisku wstecz sprawdzamy czy lista nie jest pusta
+                            if (binding.titleAddEditFragCategory.text.isNotEmpty()) {
+                                val categoryName = binding.titleAddEditFragCategory.text.toString()
+                                val date = Calendar.getInstance().timeInMillis
+                                val color= todoViewModel.selectedCategotyItemColor
+
+                                if (todoViewModel.getSelectedCategotyItem().value == null) {
                                     val category = Category(categoryName, color, false, date)
-                                    viewModel.insertCategotyItem(category)
+                                    todoViewModel.insertCategotyItem(category)
                                     Toast.makeText(
                                             requireContext(),
                                             "Categoty created",
@@ -63,17 +63,17 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
 
                                     //Jeśli notatka nie jest pusta, ale jest zaznaczona w MainFragment - Aktualizujemy
                                 } else {
-                                    val selectedCategory = viewModel.getSelectedCategotyItem().value!!
-                                    val beforeCategory = viewModel.categoryItemBeforeChange
+                                    val selectedCategory = todoViewModel.getSelectedCategotyItem().value!!
+                                    val beforeCategory = todoViewModel.categoryItemBeforeChange
 
-                                    val colorr = viewModel.selectedCategotyItemColor
-                                    val name = title_addEditFragCategory.text.toString()
-                                    val datee = viewModel.categoryDate
-                                    val isSelectedd = viewModel.categoryIsSelected
-                                    val isFavourite = viewModel.isFavouriteCategory
-                                    val hasPassword = viewModel.hasPasswordCategory
-                                    val password = viewModel.passwordCategory
-                                    val id = viewModel.categoryId
+                                    val colorr = todoViewModel.selectedCategotyItemColor
+                                    val name = binding.titleAddEditFragCategory.text.toString()
+                                    val datee = todoViewModel.categoryDate
+                                    val isSelectedd = todoViewModel.categoryIsSelected
+                                    val isFavourite = todoViewModel.isFavouriteCategory
+                                    val hasPassword = todoViewModel.hasPasswordCategory
+                                    val password = todoViewModel.passwordCategory
+                                    val id = todoViewModel.categoryId
 
                                     if (name !=  beforeCategory!!.categoryName || colorr != beforeCategory.color||hasPassword!=beforeCategory.hasPassword
                                             || isFavourite!=beforeCategory.isFavoutire) {
@@ -81,7 +81,7 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
                                             rowIdCategory = id
                                         }
 
-                                        viewModel.updateCategoryItem(category)
+                                        todoViewModel.updateCategoryItem(category)
                                     }
                                 }
                             }
@@ -89,7 +89,7 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
                             isEnabled = false
                             closeKeyboard()
                             quit = 2
-                        if(viewModel.isSearchEdit==1) {
+                        if(todoViewModel.isSearchEdit==1) {
                             findNavController().navigate(R.id.action_addEditToDoFragment_to_mainFramgent)
                         } else{
                             findNavController().navigate(R.id.action_addEditToDoFragment_to_searchCategoryFragment)
@@ -100,45 +100,48 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_add_edit_to_do, container, false)
+        _binding = FragmentAddEditToDoBinding.inflate(inflater, container, false)
+
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val gradientDrawable:GradientDrawable = todo_viewSubtitleIndicator.background as GradientDrawable
+        val gradientDrawable:GradientDrawable = binding.todoViewSubtitleIndicator.background as GradientDrawable
         initMiscellaneous()
 
-        viewModel.getSelectedCategotyItem().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                title_addEditFragCategory.setText(it?.categoryName)
+        todoViewModel.getSelectedCategotyItem().observe(viewLifecycleOwner, androidx.lifecycle.Observer { it ->
+            binding.titleAddEditFragCategory.setText(it?.categoryName)
 
-                if((title_addEditFragCategory.text.isEmpty())) {
-                    viewModel.selectedCategotyItemColor = "#333333"
-                    gradientDrawable.setColor(Color.parseColor(viewModel.selectedCategotyItemColor))
+                if((binding.titleAddEditFragCategory.text.isEmpty())) {
+                    todoViewModel.selectedCategotyItemColor = "#333333"
+                    gradientDrawable.setColor(Color.parseColor(todoViewModel.selectedCategotyItemColor))
 
                 } else {
-                    val cat = viewModel.getSelectedCategotyItem().value
+                    val cat = todoViewModel.getSelectedCategotyItem().value
 
-                    toolbar_Title_AddEditTodo.text = "Category editor"
+                    binding.toolbarTitleAddEditTodo.text = getString(R.string.categoryEditorTextView)
                     gradientDrawable.setColor(Color.parseColor(it!!.color))
-                    viewModel.selectedCategotyItemColor = it.color
-                    viewModel.categoryName = it.categoryName
-                    viewModel.categoryDate = it.date
-                    viewModel.categoryIsSelected = it.isSelected
-                    viewModel.isFavouriteCategory = it.isFavoutire
-                    viewModel.hasPasswordCategory = it.hasPassword
-                    viewModel.passwordCategory = it.password
-                    viewModel.categoryId = it.rowIdCategory
+                    todoViewModel.selectedCategotyItemColor = it.color
+                    todoViewModel.categoryName = it.categoryName
+                    todoViewModel.categoryDate = it.date
+                    todoViewModel.categoryIsSelected = it.isSelected
+                    todoViewModel.isFavouriteCategory = it.isFavoutire
+                    todoViewModel.hasPasswordCategory = it.hasPassword
+                    todoViewModel.passwordCategory = it.password
+                    todoViewModel.categoryId = it.rowIdCategory
 
-                    setImagePassword(viewModel.hasPasswordCategory)
+                    setImagePassword(todoViewModel.hasPasswordCategory)
 
-                    setFavourite(viewModel.isFavouriteCategory)
+                    setFavourite(todoViewModel.isFavouriteCategory)
 
-                    viewModel.getAllItemsFromCategory(viewModel.getSelectedCategotyItem().value!!.rowIdCategory).observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                    todoViewModel.getAllItemsFromCategory(todoViewModel.getSelectedCategotyItem().value!!.rowIdCategory).observe(viewLifecycleOwner, androidx.lifecycle.Observer {
                         updateItems(it)
                     })
 
-                    when(viewModel.getSelectedCategotyItem().value?.color){
+                    when(todoViewModel.getSelectedCategotyItem().value?.color){
                         "#333333"-> {
                             itemSelected1()
                         }
@@ -167,21 +170,21 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
 
         })
 
-        favouriteImage_category.setOnClickListener(object :View.OnClickListener{
+        binding.includeMiscellaneousTodoItem.favouriteImageCategory.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
-                if(viewModel.isFavouriteCategory){
-                    viewModel.isFavouriteCategory = false
-                    setFavourite(viewModel.isFavouriteCategory)
+                if(todoViewModel.isFavouriteCategory){
+                    todoViewModel.isFavouriteCategory = false
+                    setFavourite(todoViewModel.isFavouriteCategory)
                 } else{
-                    viewModel.isFavouriteCategory = true
-                    setFavourite(viewModel.isFavouriteCategory)
+                    todoViewModel.isFavouriteCategory = true
+                    setFavourite(todoViewModel.isFavouriteCategory)
                 }
             }
         })
 
-        imageViewPassword_category.setOnClickListener(object :View.OnClickListener{
+        binding.includeMiscellaneousTodoItem.imageViewPasswordCategory.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
-                if(viewModel.hasPasswordCategory){
+                if(todoViewModel.hasPasswordCategory){
                     val fm = requireActivity().supportFragmentManager
                     val dialogFragment = RemovePasswordDialogFragment()
                     dialogFragment.show(fm, "ppp")
@@ -191,7 +194,7 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
             }
         })
 
-        addTodo.setOnClickListener(object :View.OnClickListener{
+        binding.addTodo.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
                 val fm = requireActivity().supportFragmentManager
                 val dialogFragment = DialogAddToDoFragment()
@@ -204,127 +207,108 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
     }
 
 
-    fun initMiscellaneous() {
-        val layoutMiscellaneous = requireActivity().findViewById<LinearLayout>(R.id.todoLayoutMiscellaneous)
-        val bottomSheetBehavior = BottomSheetBehavior.from(requireActivity().findViewById(R.id.todoLayoutMiscellaneous))
+    private fun initMiscellaneous() {
+        val layoutMiscellaneous = binding.includeMiscellaneousTodoItem
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.includeMiscellaneousTodoItem.todoLayoutMiscellaneous)
 
-        layoutMiscellaneous.findViewById<TextView>(R.id.todo_textMiscellaneous).setOnClickListener(object : View.OnClickListener {
-            override fun onClick(p0: View?) {
-                if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                } else {
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                }
+        layoutMiscellaneous.todoTextMiscellaneous.setOnClickListener {
+            if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            } else {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
-        })
+        }
 
-        layoutMiscellaneous.findViewById<ImageView>(R.id.todo_imageColor1).setOnClickListener(object : View.OnClickListener {
-            override fun onClick(p0: View?) {
-                viewModel.selectedCategotyItemColor = "#333333"
-                itemSelected1()
-                setSubtitleIndicator()
-            }
-        })
+        layoutMiscellaneous.todoImageColor1.setOnClickListener {
+            todoViewModel.selectedCategotyItemColor = "#333333"
+            itemSelected1()
+            setSubtitleIndicator(this)
+        }
 
-        layoutMiscellaneous.findViewById<ImageView>(R.id.todo_imageColor2).setOnClickListener(object : View.OnClickListener {
-            override fun onClick(p0: View?) {
-                viewModel.selectedCategotyItemColor = "#FDBE3B"
-                itemSelected2()
-                setSubtitleIndicator()
-            }
-        })
+        layoutMiscellaneous.todoImageColor2.setOnClickListener {
+            todoViewModel.selectedCategotyItemColor = "#FDBE3B"
+            itemSelected2()
+            setSubtitleIndicator(this)
+        }
 
-        layoutMiscellaneous.findViewById<ImageView>(R.id.todo_imageColor3).setOnClickListener(object : View.OnClickListener {
-            override fun onClick(p0: View?) {
-                viewModel.selectedCategotyItemColor = "#FF4842"
-                itemSelected3()
-                setSubtitleIndicator()
-            }
-        })
+        layoutMiscellaneous.todoImageColor3.setOnClickListener {
+            todoViewModel.selectedCategotyItemColor = "#FF4842"
+            itemSelected3()
+            setSubtitleIndicator(this)
+        }
 
-        layoutMiscellaneous.findViewById<ImageView>(R.id.todo_imageColor4).setOnClickListener(object : View.OnClickListener {
-            override fun onClick(p0: View?) {
-                viewModel.selectedCategotyItemColor = "#3A52FC"
-                itemSelected4()
-                setSubtitleIndicator()
-            }
-        })
+        layoutMiscellaneous.todoImageColor4.setOnClickListener {
+            todoViewModel.selectedCategotyItemColor = "#3A52FC"
+            itemSelected4()
+            setSubtitleIndicator(this)
+        }
 
-        layoutMiscellaneous.findViewById<ImageView>(R.id.todo_imageColor5).setOnClickListener(object : View.OnClickListener {
-            override fun onClick(p0: View?) {
-                viewModel.selectedCategotyItemColor = "#000000"
-                itemSelected5()
-                setSubtitleIndicator()
-            }
-        })
+        layoutMiscellaneous.todoImageColor5.setOnClickListener {
+            todoViewModel.selectedCategotyItemColor = "#000000"
+            itemSelected5()
+            setSubtitleIndicator(this)
+        }
 
-        layoutMiscellaneous.findViewById<ImageView>(R.id.todo_imageColor6).setOnClickListener(object : View.OnClickListener {
-            override fun onClick(p0: View?) {
-                viewModel.selectedCategotyItemColor = "#ff0266"
-                itemSelected6()
-                setSubtitleIndicator()
-            }
-        })
+        layoutMiscellaneous.todoImageColor6.setOnClickListener {
+            todoViewModel.selectedCategotyItemColor = "#ff0266"
+            itemSelected6()
+            setSubtitleIndicator(this)
+        }
     }
 
-    fun setSubtitleIndicator(){
-        val gradientDrawable: GradientDrawable = todo_viewSubtitleIndicator.background as GradientDrawable
-        gradientDrawable.setColor(Color.parseColor(viewModel.selectedCategotyItemColor))
-    }
-
-        fun itemSelected1() {
-            todo_imageColor1.setImageResource(R.drawable.ic_done)
-            todo_imageColor2.setImageResource(0)
-            todo_imageColor3.setImageResource(0)
-            todo_imageColor6.setImageResource(0)
-            todo_imageColor4.setImageResource(0)
-            todo_imageColor5.setImageResource(0)
+    private fun itemSelected1() {
+            binding.includeMiscellaneousTodoItem.todoImageColor1.setImageResource(R.drawable.ic_done)
+            binding.includeMiscellaneousTodoItem.todoImageColor2.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor3.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor6.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor4.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor5.setImageResource(0)
         }
 
-        fun itemSelected2() {
-            todo_imageColor1.setImageResource(0)
-            todo_imageColor2.setImageResource(R.drawable.ic_done)
-            todo_imageColor3.setImageResource(0)
-            todo_imageColor6.setImageResource(0)
-            todo_imageColor4.setImageResource(0)
-            todo_imageColor5.setImageResource(0)
+        private fun itemSelected2() {
+            binding.includeMiscellaneousTodoItem.todoImageColor1.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor2.setImageResource(R.drawable.ic_done)
+            binding.includeMiscellaneousTodoItem.todoImageColor3.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor6.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor4.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor5.setImageResource(0)
         }
 
-        fun itemSelected3() {
-            todo_imageColor1.setImageResource(0)
-            todo_imageColor2.setImageResource(0)
-            todo_imageColor3.setImageResource(R.drawable.ic_done)
-            todo_imageColor6.setImageResource(0)
-            todo_imageColor4.setImageResource(0)
-            todo_imageColor5.setImageResource(0)
+        private fun itemSelected3() {
+            binding.includeMiscellaneousTodoItem.todoImageColor1.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor2.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor3.setImageResource(R.drawable.ic_done)
+            binding.includeMiscellaneousTodoItem.todoImageColor6.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor4.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor5.setImageResource(0)
         }
 
-        fun itemSelected6() {
-            todo_imageColor1.setImageResource(0)
-            todo_imageColor2.setImageResource(0)
-            todo_imageColor3.setImageResource(0)
-            todo_imageColor6.setImageResource(R.drawable.ic_done)
-            todo_imageColor4.setImageResource(0)
-            todo_imageColor5.setImageResource(0)
+        private fun itemSelected6() {
+            binding.includeMiscellaneousTodoItem.todoImageColor1.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor2.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor3.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor6.setImageResource(R.drawable.ic_done)
+            binding.includeMiscellaneousTodoItem.todoImageColor4.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor5.setImageResource(0)
         }
 
 
-        fun itemSelected4() {
-            todo_imageColor1.setImageResource(0)
-            todo_imageColor2.setImageResource(0)
-            todo_imageColor3.setImageResource(0)
-            todo_imageColor6.setImageResource(0)
-            todo_imageColor4.setImageResource(R.drawable.ic_done)
-            todo_imageColor5.setImageResource(0)
+        private fun itemSelected4() {
+            binding.includeMiscellaneousTodoItem.todoImageColor1.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor2.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor3.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor6.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor4.setImageResource(R.drawable.ic_done)
+            binding.includeMiscellaneousTodoItem.todoImageColor5.setImageResource(0)
         }
 
-        fun itemSelected5() {
-            todo_imageColor1.setImageResource(0)
-            todo_imageColor2.setImageResource(0)
-            todo_imageColor3.setImageResource(0)
-            todo_imageColor6.setImageResource(0)
-            todo_imageColor4.setImageResource(0)
-            todo_imageColor5.setImageResource(R.drawable.ic_done)
+        private fun itemSelected5() {
+            binding.includeMiscellaneousTodoItem.todoImageColor1.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor2.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor3.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor6.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor4.setImageResource(0)
+            binding.includeMiscellaneousTodoItem.todoImageColor5.setImageResource(R.drawable.ic_done)
         }
 
         fun closeKeyboard() {
@@ -337,18 +321,16 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
 
     override fun onItemClick(itemsOfList: ItemOfList, position: Int) {
      if(itemsOfList.isDone){
-         val updateItem = itemsOfList
-         updateItem.isDone = false
-         viewModel.updateItem(updateItem)
+         itemsOfList.isDone = false
+         todoViewModel.updateItem(itemsOfList)
      }   else{
-         val updateItem2 = itemsOfList
-         updateItem2.isDone = true
-         viewModel.updateItem(updateItem2)
+         itemsOfList.isDone = true
+         todoViewModel.updateItem(itemsOfList)
         }
     }
 
     override fun onItemLongClick(itemsOfList: ItemOfList, position: Int) {
-        viewModel.setSelectedItem(itemsOfList)
+        todoViewModel.setSelectedItem(itemsOfList)
 
         val fm = requireActivity().supportFragmentManager
         val dialogFragment = DialogAddToDoFragment()
@@ -357,63 +339,63 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
         itemTodoAdapter.notifyDataSetChanged()
     }
 
-    fun updateItems(list: List<ItemOfList>){
+    private fun updateItems(list: List<ItemOfList>){
         val lm = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
 
-        recyclerViewTodo.layoutManager = lm
+        binding.recyclerViewTodo.layoutManager = lm
 
         itemTodoAdapter = ToDoItemAdapter(list, this)
 
-        recyclerViewTodo.adapter = itemTodoAdapter
+        binding.recyclerViewTodo.adapter = itemTodoAdapter
 
         val item = object :SwipeToDelete(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-               viewModel.deleteItem(itemTodoAdapter.getItemInPosition(viewHolder.adapterPosition))
+               todoViewModel.deleteItem(itemTodoAdapter.getItemInPosition(viewHolder.adapterPosition))
             }
         }
 
         val itemTouchHelper = ItemTouchHelper(item)
 
-        itemTouchHelper.attachToRecyclerView(recyclerViewTodo)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerViewTodo)
 
         itemTodoAdapter.notifyDataSetChanged()
     }
 
-    fun setFavourite(boolean: Boolean){
+    private fun setFavourite(boolean: Boolean){
         if(boolean){
-            favouriteImage_category.setColorFilter(Color.parseColor("#FDBE3B"))
+            binding.includeMiscellaneousTodoItem.favouriteImageCategory.setColorFilter(Color.parseColor("#FDBE3B"))
         } else{
-            favouriteImage_category.setColorFilter(Color.WHITE)
+            binding.includeMiscellaneousTodoItem.favouriteImageCategory.setColorFilter(Color.WHITE)
         }
     }
 
     private fun setImagePassword(hasPassword: Boolean) {
         if(hasPassword){
-            imageViewPassword_category.setColorFilter(Color.parseColor("#FF4343"))
-            imageViewPassword_category.setImageResource(R.drawable.ic_lock_24)
+            binding.includeMiscellaneousTodoItem.imageViewPasswordCategory.setColorFilter(Color.parseColor("#FF4343"))
+            binding.includeMiscellaneousTodoItem.imageViewPasswordCategory.setImageResource(R.drawable.ic_lock_24)
         } else{
-            imageViewPassword_category.setColorFilter(Color.WHITE)
-            imageViewPassword_category.setImageResource(R.drawable.ic_baseline_lock)
+            binding.includeMiscellaneousTodoItem.imageViewPasswordCategory.setColorFilter(Color.WHITE)
+            binding.includeMiscellaneousTodoItem.imageViewPasswordCategory.setImageResource(R.drawable.ic_baseline_lock)
         }
     }
 
     override fun onDestroyView() {
 
-        val color = viewModel.selectedCategotyItemColor
-        val name = title_addEditFragCategory.text.toString()
-        val date = viewModel.categoryDate
-        val isSelected = viewModel.categoryIsSelected
-        val isFavourite = viewModel.isFavouriteCategory
-        val hasPassword = viewModel.hasPassword
-        val password = viewModel.passwordCategory
-        val id = viewModel.categoryId
+        val color = todoViewModel.selectedCategotyItemColor
+        val name = binding.titleAddEditFragCategory.text.toString()
+        val date = todoViewModel.categoryDate
+        val isSelected = todoViewModel.categoryIsSelected
+        val isFavourite = todoViewModel.isFavouriteCategory
+        val hasPassword = todoViewModel.hasPassword
+        val password = todoViewModel.passwordCategory
+        val id = todoViewModel.categoryId
 
 
         val category = Category(name, color, isSelected, date, isFavourite, hasPassword, password).apply {
             rowIdCategory = id
         }
 
-        viewModel.setSelectedCategotyItem(category)
+        todoViewModel.setSelectedCategotyItem(category)
 
         if(quit==2){
             setOffAddEdit()
@@ -422,18 +404,25 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
         super.onDestroyView()
     }
 
-    fun setOffAddEdit(){
+    private fun setOffAddEdit(){
 
-        viewModel.setSelectedCategotyItem(null)
-        viewModel.categoryItemBeforeChange = null
-        viewModel.selectedCategotyItemColor = "#333333"
-        viewModel.categoryName = ""
-        viewModel.categoryDate = 0
-        viewModel.categoryIsSelected = false
-        viewModel.isFavouriteCategory = false
-        viewModel.hasPassword =false
-        viewModel.passwordCategory = 0
-        viewModel.categoryId = 0
-        viewModel.isSearchEdit = 1
+        todoViewModel.setSelectedCategotyItem(null)
+        todoViewModel.categoryItemBeforeChange = null
+        todoViewModel.selectedCategotyItemColor = "#333333"
+        todoViewModel.categoryName = ""
+        todoViewModel.categoryDate = 0
+        todoViewModel.categoryIsSelected = false
+        todoViewModel.isFavouriteCategory = false
+        todoViewModel.hasPassword =false
+        todoViewModel.passwordCategory = 0
+        todoViewModel.categoryId = 0
+        todoViewModel.isSearchEdit = 1
+    }
+
+    companion object {
+        private fun setSubtitleIndicator(addEditToDoFragment: AddEditToDoFragment){
+            val gradientDrawable: GradientDrawable = addEditToDoFragment.binding.todoViewSubtitleIndicator.background as GradientDrawable
+            gradientDrawable.setColor(Color.parseColor(addEditToDoFragment.todoViewModel.selectedCategotyItemColor))
+        }
     }
 }

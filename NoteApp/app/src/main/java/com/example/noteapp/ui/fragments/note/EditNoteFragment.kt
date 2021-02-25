@@ -14,31 +14,35 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
-import com.example.noteapp.viewmodels.ViewModel
-import kotlinx.android.synthetic.main.fragment_edit_note.*
+import com.example.noteapp.databinding.FragmentEditNoteBinding
+import com.example.noteapp.viewmodels.NoteViewModel
 
 
 class EditNoteFragment : Fragment() {
-    private lateinit var viewModel: ViewModel
+    private lateinit var noteViewModel: NoteViewModel
+
+    private var _binding:FragmentEditNoteBinding? = null
+
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
+        noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
+
 
         requireActivity().onBackPressedDispatcher.addCallback(
                 this,
                 object : OnBackPressedCallback(true) {
                     override fun handleOnBackPressed() {
 
-                        //Po naciśnięciu przycisku wstecz sprawdzamy czy notatka nie jest pusta
-                        if (title_editNote.text.isNotEmpty() || mess_EditNote.text.isNotEmpty()) {
-                            val note = viewModel.getSelectedNote().value
-                            val title = title_editNote.text.toString()
-                            val mess = mess_EditNote.text.toString()
+                        if (binding.titleEditNote.text.isNotEmpty() || binding.messEditNote.text.isNotEmpty()) {
+                            val note = noteViewModel.getSelectedNote().value
+                            val title = binding.titleEditNote.text.toString()
+                            val mess = binding.messEditNote.text.toString()
                             note!!.message = mess
                             note.title = title
 
-                            viewModel.setSelectedNote(note)
+                            noteViewModel.setSelectedNote(note)
                         }
                         isEnabled = false
                        findNavController().navigate(R.id.action_editNoteFragment_to_addEditNoteFragment)
@@ -49,7 +53,8 @@ class EditNoteFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        return inflater.inflate(R.layout.fragment_edit_note, container, false)
+        _binding = FragmentEditNoteBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,20 +65,20 @@ class EditNoteFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.getSelectedNote().observe(viewLifecycleOwner, Observer {
+        noteViewModel.getSelectedNote().observe(viewLifecycleOwner, Observer {
 
-            title_editNote.setText(it!!.title)
+            binding.titleEditNote.setText(it!!.title)
             //mess_EditNote.setText(it.message)
             setFontColor(it.fontColor)
             setFontSize(it.fontSize)
         })
 
-        mess_EditNote.setText(viewModel.getSelectedNote().value!!.message)
+        binding.messEditNote.setText(noteViewModel.getSelectedNote().value!!.message)
 
 
         //!!!
-        if(mess_EditNote.text.isNotEmpty()) {
-            mess_EditNote.requestFocus(mess_EditNote.text.length)
+        if(binding.messEditNote.text.isNotEmpty()) {
+            binding.messEditNote.requestFocus(binding.messEditNote.text.length)
         }
 
     }
@@ -90,43 +95,50 @@ class EditNoteFragment : Fragment() {
         imm?.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
     }
 
-    fun setFontColor(colorPath: Int?) {
+    private fun setFontColor(colorPath: Int?) {
         when (colorPath) {
             1 -> {
-                mess_EditNote.setTextColor(Color.parseColor("#FFFFFF"))
+                binding.messEditNote.setTextColor(Color.parseColor("#FFFFFF"))
             }
 
             2 -> {
-                mess_EditNote.setTextColor(Color.parseColor("#959595"))
+                binding.messEditNote.setTextColor(Color.parseColor("#959595"))
             }
 
             3 -> {
-                mess_EditNote.setTextColor(Color.parseColor("#666666"))
+                binding.messEditNote.setTextColor(Color.parseColor("#666666"))
             }
         }
     }
 
-    fun setFontSize(colorSize: Int?) {
+    private fun setFontSize(colorSize: Int?) {
         when (colorSize) {
             1 -> {
-                mess_EditNote.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15F)
+                binding.messEditNote.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15F)
             }
 
             2 -> {
-                mess_EditNote.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+                binding.messEditNote.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
             }
 
             3 -> {
-                mess_EditNote.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25F)
+                binding.messEditNote.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25F)
             }
 
             4 -> {
-                mess_EditNote.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30F)
+                binding.messEditNote.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30F)
             }
 
             5 -> {
-                mess_EditNote.setTextSize(TypedValue.COMPLEX_UNIT_SP, 35F)
+                binding.messEditNote.setTextSize(TypedValue.COMPLEX_UNIT_SP, 35F)
             }
         }
+    }
+
+    override fun onDestroyView() {
+
+        _binding = null
+
+        super.onDestroyView()
     }
 }

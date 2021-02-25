@@ -6,38 +6,50 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.noteapp.R
 import com.example.noteapp.data.Category
 import com.example.noteapp.data.Note
-import com.example.noteapp.viewmodels.ViewModel
-import kotlinx.android.synthetic.main.fragment_remove_password_dialog.*
+import com.example.noteapp.databinding.FragmentRemovePasswordDialogBinding
+import com.example.noteapp.viewmodels.NoteViewModel
+import com.example.noteapp.viewmodels.ToDoViewModel
 
 
 class RemovePasswordDialogFragment : DialogFragment() {
-    private lateinit var viewModel: ViewModel
+    private lateinit var noteViewModel: NoteViewModel
+    private lateinit var todoViewModel: ToDoViewModel
+
+    private var _binding:FragmentRemovePasswordDialogBinding? = null
+
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
+        noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
+        todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_remove_password_dialog, container, false)
+
+        _binding = FragmentRemovePasswordDialogBinding.inflate(inflater, container, false)
+
+
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        noRemovePasswordButton.setOnClickListener(object :View.OnClickListener{
+        binding.noRemovePasswordButton.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
                 dismiss()
             }
         })
 
-        yesRemovePasswordButton.setOnClickListener(object :View.OnClickListener{
+        binding.yesRemovePasswordButton.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
-                if(viewModel.getSelectedNote().value!=null) {
-                    val note = viewModel.getSelectedNote().value
+                if(noteViewModel.getSelectedNote().value!=null) {
+                    val note = noteViewModel.getSelectedNote().value
 
                     val title = note!!.title
                     val message = note.message
@@ -53,10 +65,10 @@ class RemovePasswordDialogFragment : DialogFragment() {
                     val not = Note(title, message, date, isSelected, color, fontColor, fontSize, favourite, hasPassword, password).apply {
                         rowId = rowIdd
                     }
-                    viewModel.setSelectedNote(not)
+                    noteViewModel.setSelectedNote(not)
                     dismiss()
                 } else{
-                    val category = viewModel.getSelectedCategotyItem().value
+                    val category = todoViewModel.getSelectedCategotyItem().value
 
                     val name = category!!.categoryName
                     val color = category.color
@@ -71,10 +83,15 @@ class RemovePasswordDialogFragment : DialogFragment() {
                         rowIdCategory = id
                     }
 
-                    viewModel.setSelectedCategotyItem(cat)
+                    todoViewModel.setSelectedCategotyItem(cat)
                     dismiss()
                 }
             }
         })
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }

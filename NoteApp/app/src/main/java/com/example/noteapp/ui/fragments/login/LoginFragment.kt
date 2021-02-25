@@ -8,32 +8,39 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
+import com.example.noteapp.databinding.FragmentLoginBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.fragment_login.*
 
 
 class LoginFragment : Fragment() {
     private val fbAuth = FirebaseAuth.getInstance()
     private val LOG_DEB = "LOG_DEBUG"
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var _binding:FragmentLoginBinding? = null
+
+    private val binding get() = _binding!!
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        _binding = FragmentLoginBinding.inflate(inflater, container, false )
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        logInButton.setOnClickListener(object :View.OnClickListener{
+        binding.logInButton.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
-                val email = signInEmail.text?.trim().toString()
-                val password = signInPassword.text?.trim().toString()
+                val email = binding.signInEmail.text?.trim().toString()
+                val password = binding.signInPassword.text?.trim().toString()
                 fbAuth.signInWithEmailAndPassword(email, password)
                     .addOnSuccessListener {
                         authRes ->
@@ -49,7 +56,7 @@ class LoginFragment : Fragment() {
             }
         })
 
-        signUpButton.setOnClickListener(object :View.OnClickListener{
+        binding.signUpButton.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
                 findNavController().navigate(R.id.action_loginFragment_to_registrationFragment)
             }

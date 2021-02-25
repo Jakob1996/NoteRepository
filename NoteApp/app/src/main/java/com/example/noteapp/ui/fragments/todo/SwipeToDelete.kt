@@ -12,5 +12,4 @@ abstract class SwipeToDelete(dragDir:Int, swipeDir:Int): ItemTouchHelper.SimpleC
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         viewHolder
     }
-
 }

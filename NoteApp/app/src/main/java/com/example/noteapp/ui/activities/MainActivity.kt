@@ -1,13 +1,16 @@
 package com.example.noteapp.ui.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.R
 import com.example.noteapp.databinding.ActivityMainBinding
-import com.example.noteapp.viewmodels.ViewModel
+import com.example.noteapp.viewmodels.NoteViewModel
+import com.example.noteapp.viewmodels.ToDoViewModel
 
 class MainActivity : AppCompatActivity() {
-    lateinit var viewModel: ViewModel
+    lateinit var noteViewModel: NoteViewModel
+    lateinit var toDoViewModel: ToDoViewModel
     private val SHARED_PREFS = "sharedPrefs"
     private val KEY = "key"
     private var state:Boolean?= null
@@ -19,9 +22,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setTheme(R.style.Theme_NoteApp)
+
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this)[ViewModel::class.java]
+        noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
+        toDoViewModel = ViewModelProvider(this)[ToDoViewModel::class.java]
+
 
         loadData()
     }
@@ -35,16 +41,15 @@ class MainActivity : AppCompatActivity() {
         val sp = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
         state = sp.getBoolean(KEY, false)
         if(state!=null){
-            viewModel.p = state!!
+            noteViewModel.p = state!!
         }
     }
 
     fun saveData(){
-        if(viewModel.getSortDescNote().value!= null) {
+        if(noteViewModel.getSortDescNote().value!= null) {
             val sp = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
             val editor = sp.edit()
-            editor.putBoolean(KEY, viewModel.getSortDescNote().value!!).apply()
+            editor.putBoolean(KEY, noteViewModel.getSortDescNote().value!!).apply()
         }
     }
 }
-

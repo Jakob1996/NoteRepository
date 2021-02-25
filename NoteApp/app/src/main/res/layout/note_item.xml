@@ -10,77 +10,76 @@
     android:layout_margin="7dp"
     app:corner_radius="16dp">
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/note_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="9dp"
+            android:layout_marginBottom="5dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/robotocondensedlight"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:paddingTop="2dp"
+            android:textColor="#EFEFEF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/note_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/note_title"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="9dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/robotocondensedlight"
+            android:includeFontPadding="false"
+            android:maxLines="4"
+            android:textColor="#EFEFEF"
+            android:textSize="13sp"
+            android:textStyle="normal" />
+
         <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:id="@+id/itemsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:padding="3dp"
+            android:visibility="gone">
 
-            <TextView
-                android:id="@+id/note_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="9dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="9dp"
-                android:layout_marginBottom="5dp"
-                android:ellipsize="end"
-                android:fontFamily="@font/robotocondensedlight"
-                android:includeFontPadding="false"
-                android:maxLines="1"
-                android:paddingTop="2dp"
-                android:textColor="#EFEFEF"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/favLayItem"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_baseline_favorite_24"
+                app:tint = "@color/gold"
+                android:visibility="gone"
+                android:layout_marginEnd="3dp"
+                />
 
-            <TextView
-                android:id="@+id/note_message"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/note_title"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="9dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginEnd="9dp"
-                android:layout_marginBottom="8dp"
-                android:ellipsize="end"
-                android:fontFamily="@font/robotocondensedlight"
-                android:includeFontPadding="false"
-                android:maxLines="4"
-                android:textColor="#EFEFEF"
-                android:textSize="13sp"
-                android:textStyle="normal" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:id="@+id/itemsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:padding="3dp"
-                android:visibility="gone">
-
-                <ImageView
-                    android:id="@+id/favLayItem"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_baseline_favorite_24"
-                    app:tint = "@color/gold"
-                    android:visibility="gone"
-                    android:layout_marginEnd="3dp"
-                    />
-
-                <ImageView
-                    android:id="@+id/delLayItem"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_lock_all"
-                    app:tint = "@color/gold"
-                    android:visibility="gone"
-                    android:layout_marginEnd="3dp" />
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/delLayItem"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_lock_all"
+                app:tint = "@color/gold"
+                android:visibility="gone"
+                android:layout_marginEnd="3dp" />
         </LinearLayout>
+    </LinearLayout>
 </com.jcminarro.roundkornerlayout.RoundKornerFrameLayout>
-
 

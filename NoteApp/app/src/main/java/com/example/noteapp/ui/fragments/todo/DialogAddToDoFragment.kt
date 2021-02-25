@@ -4,22 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.noteapp.R
 import com.example.noteapp.data.ItemOfList
-import com.example.noteapp.viewmodels.ViewModel
-import kotlinx.android.synthetic.main.fragment_add_item_dialog.*
+import com.example.noteapp.databinding.FragmentAddItemDialogBinding
+import com.example.noteapp.viewmodels.ToDoViewModel
 
 class DialogAddToDoFragment:DialogFragment() {
-    private lateinit var viewModel: ViewModel
+    private lateinit var todoViewModel: ToDoViewModel
+
+    private var _binding:FragmentAddItemDialogBinding? = null
+
+    private val binding get() =  _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[ViewModel::class.java]
+        todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -27,32 +28,32 @@ class DialogAddToDoFragment:DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView:View = inflater.inflate(R.layout.fragment_add_item_dialog, container, false)
-        val addButton = rootView.findViewById<Button>(R.id.add_button)
 
-        viewModel.getSelectedItem().observe(viewLifecycleOwner, Observer {
-            item_name.setText(it?.nameItem)
+        _binding = FragmentAddItemDialogBinding.inflate(inflater, container, false)
+
+        todoViewModel.getSelectedItem().observe(viewLifecycleOwner, Observer {
+            binding.itemName.setText(it?.nameItem)
         })
 
-        addButton.setOnClickListener(object :View.OnClickListener{
+        binding.addButton.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
 
-                if(viewModel.getSelectedItem().value == null){
-                    if(item_name.text.toString().isNullOrEmpty()){
+                if(todoViewModel.getSelectedItem().value == null){
+                    if(binding.itemName.text.toString().isNullOrEmpty()){
                         dismiss()
                     }else {
-                        val item = ItemOfList(item_name.text.toString(), viewModel.getSelectedCategotyItem().value!!.rowIdCategory)
-                        viewModel.insertItem(item)
+                        val item = ItemOfList(binding.itemName.text.toString(), todoViewModel.getSelectedCategotyItem().value!!.rowIdCategory)
+                        todoViewModel.insertItem(item)
                         dismiss()
                     }
                 } else{
-                    if(item_name.text.toString().isNullOrEmpty()){
+                    if(binding.itemName.text.toString().isNullOrEmpty()){
                         dismiss()
                     } else{
-                        val it = viewModel.getSelectedItem().value
-                        val item = ItemOfList(item_name.text.toString(), it!!.categoryId, false)
+                        val it = todoViewModel.getSelectedItem().value
+                        val item = ItemOfList(binding.itemName.text.toString(), it!!.categoryId, false)
                         item.idItem = it.idItem
-                        viewModel.updateItem(item)
+                        todoViewModel.updateItem(item)
                         dismiss()
                     }
                 }
@@ -78,11 +79,16 @@ class DialogAddToDoFragment:DialogFragment() {
             }
         })
 
-        return rootView
+        return binding.root
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.setSelectedItem(null)
+        todoViewModel.setSelectedItem(null)
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }
