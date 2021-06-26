@@ -9,10 +9,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.data.Category
 import com.example.noteapp.databinding.FragmentAddCategoryDialogBinding
 import com.example.noteapp.viewmodels.ToDoViewModel
+import com.google.firebase.auth.FirebaseAuth
 import java.util.*
 
 class DialogAddCategoryItem:DialogFragment() {
     private lateinit var todoViewModel: ToDoViewModel
+    private val fbAuth = FirebaseAuth.getInstance()
+
 
     private var _binding:FragmentAddCategoryDialogBinding? = null
     private val binding get() = _binding!!
@@ -30,17 +33,24 @@ class DialogAddCategoryItem:DialogFragment() {
         _binding = FragmentAddCategoryDialogBinding.inflate(inflater, container, false)
 
 
-        binding.addCategoryButton.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(v: View?) {
-                if(binding.categoryTitleEditText.text.isEmpty()){
-                    dismiss()
-                } else{
-                    val category = Category(binding.categoryTitleEditText.text.toString(), "#333333",false, Calendar.getInstance().timeInMillis)
-                    todoViewModel.insertCategotyItem(category)
-                    dismiss()
+        binding.addCategoryButton.setOnClickListener {
+            if (binding.categoryTitleEditText.text.isEmpty()) {
+                dismiss()
+            } else {
+                val category = Category(
+                    binding.categoryTitleEditText.text.toString(),
+                    "#333333",
+                    false,
+                    Calendar.getInstance().timeInMillis
+                ).apply { rowIdCategory = Calendar.getInstance().timeInMillis.toInt() }
+
+                if(fbAuth.currentUser!=null){
+                    todoViewModel.saveCategoryInCloud(category)
                 }
+                todoViewModel.insertCategotyItem(category)
+                dismiss()
             }
-        })
+        }
         return binding.root
     }
 

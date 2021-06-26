@@ -10,9 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.data.ItemOfList
 import com.example.noteapp.databinding.FragmentAddItemDialogBinding
 import com.example.noteapp.viewmodels.ToDoViewModel
+import com.google.firebase.auth.FirebaseAuth
+import java.util.*
 
 class DialogAddToDoFragment:DialogFragment() {
     private lateinit var todoViewModel: ToDoViewModel
+    private val auth = FirebaseAuth.getInstance()
 
     private var _binding:FragmentAddItemDialogBinding? = null
 
@@ -35,49 +38,54 @@ class DialogAddToDoFragment:DialogFragment() {
             binding.itemName.setText(it?.nameItem)
         })
 
-        binding.addButton.setOnClickListener(object :View.OnClickListener{
-            override fun onClick(v: View?) {
-
-                if(todoViewModel.getSelectedItem().value == null){
-                    if(binding.itemName.text.toString().isNullOrEmpty()){
-                        dismiss()
-                    }else {
-                        val item = ItemOfList(binding.itemName.text.toString(), todoViewModel.getSelectedCategotyItem().value!!.rowIdCategory)
-                        todoViewModel.insertItem(item)
-                        dismiss()
-                    }
-                } else{
-                    if(binding.itemName.text.toString().isNullOrEmpty()){
-                        dismiss()
-                    } else{
-                        val it = todoViewModel.getSelectedItem().value
-                        val item = ItemOfList(binding.itemName.text.toString(), it!!.categoryId, false)
-                        item.idItem = it.idItem
-                        todoViewModel.updateItem(item)
-                        dismiss()
-                    }
-                }
-
-                /*
-                viewModel.getSelectedItem().observe(viewLifecycleOwner, Observer {note-> note.let {
-
-                    if(it?.nameItem.isNullOrEmpty()){
-                        val item = ItemOfList(item_name.text.toString(), viewModel.getSelectedCategotyItem().value!!.rowIdCategory)
-                        viewModel.insertItem(item)
-                    } else{
-                        val item = ItemOfList(item_name.text.toString(), it!!.categoryId, false)
-                        item.idItem = it.idItem
-                        viewModel.updateItem(item)
-                    }
-                    viewModel.setSelectedItem(null)
+        binding.addButton.setOnClickListener {
+            if (todoViewModel.getSelectedItem().value == null) {
+                if (binding.itemName.text.toString().isEmpty()) {
                     dismiss()
-
+                } else {
+                    val item = ItemOfList(
+                        binding.itemName.text.toString(),
+                        todoViewModel.getSelectedCategotyItem().value!!.rowIdCategory
+                    ).apply {
+                        idItem = Calendar.getInstance().timeInMillis.toInt()
+                    }
+                    if(auth.currentUser!= null){
+                        todoViewModel.saveTodoListInCloud(todoViewModel.getSelectedCategotyItem().value!!.rowIdCategory, listOf(item))
+                    }
+                    todoViewModel.insertItem(item)
+                    dismiss()
                 }
-                })
-
-                 */
+            } else {
+                if (binding.itemName.text.toString().isEmpty()) {
+                    dismiss()
+                } else {
+                    val it = todoViewModel.getSelectedItem().value
+                    val item = ItemOfList(binding.itemName.text.toString(), it!!.categoryId, false)
+                    item.idItem = it.idItem
+                    todoViewModel.updateItem(item)
+                    dismiss()
+                }
             }
-        })
+
+            /*
+                    viewModel.getSelectedItem().observe(viewLifecycleOwner, Observer {note-> note.let {
+
+                        if(it?.nameItem.isNullOrEmpty()){
+                            val item = ItemOfList(item_name.text.toString(), viewModel.getSelectedCategotyItem().value!!.rowIdCategory)
+                            viewModel.insertItem(item)
+                        } else{
+                            val item = ItemOfList(item_name.text.toString(), it!!.categoryId, false)
+                            item.idItem = it.idItem
+                            viewModel.updateItem(item)
+                        }
+                        viewModel.setSelectedItem(null)
+                        dismiss()
+
+                    }
+                    })
+
+                     */
+        }
 
         return binding.root
     }

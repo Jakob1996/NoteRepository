@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragments.search.SearchFragment"
-    android:background="@color/colorPrimary_dark">
+    android:background="@color/colorPrimary_dark"
+    android:clickable="true"
+    android:focusable="true">
 
     <RelativeLayout
         android:id="@+id/toolbar_fragmentAddEdit"
@@ -87,8 +89,19 @@
                 android:textColorHint="@color/colorIcons"
                 android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/close_btn"
                 app:layout_constraintStart_toEndOf="@+id/imageSearch"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/close_btn"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/ic_close"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/editSearcher"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

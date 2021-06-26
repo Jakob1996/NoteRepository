@@ -17,5 +17,6 @@ object DataBaseBuilder {
     }
 
     private fun roomBuild(context: Context) =
-        Room.databaseBuilder(context.applicationContext, DataBase::class.java, "todo_database").allowMainThreadQueries().build()
+        Room.databaseBuilder(context.applicationContext, DataBase::class.java, "todo_database")
+                .allowMainThreadQueries().build()
 }

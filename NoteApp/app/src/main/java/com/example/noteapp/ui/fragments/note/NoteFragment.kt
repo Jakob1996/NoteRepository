@@ -7,19 +7,20 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.noteapp.R
 import com.example.noteapp.adapters.NoteAdapter
-import com.example.noteapp.adapters.OnItemClickListener
 import com.example.noteapp.data.Note
 import com.example.noteapp.databinding.FragmentNoteBinding
+import com.example.noteapp.navigation.Navigation
+import com.example.noteapp.tools.Clic
+import com.example.noteapp.tools.OnItemClickListener
+import com.example.noteapp.ui.fragments.main.ClBk
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.ToDoViewModel
 import kotlinx.coroutines.*
 
-class NoteFragment() : Fragment(), OnItemClickListener{
+class NoteFragment() : Fragment(), OnItemClickListener, Navigation, ClBk {
 
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var todoViewModel: ToDoViewModel
@@ -41,22 +42,14 @@ class NoteFragment() : Fragment(), OnItemClickListener{
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         _binding = FragmentNoteBinding.inflate(inflater, container , false)
 
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         noteViewModel.getSortDescNote().observe(requireActivity(), Observer {
             updateNotes(noteViewModel.allNotes.value!!)
         })
 
         noteViewModel.getNoteFabButtonMode().observe(viewLifecycleOwner, Observer {
-
             updateNotes(noteViewModel.allNotes.value!!)
         })
 
@@ -69,22 +62,30 @@ class NoteFragment() : Fragment(), OnItemClickListener{
             }
         })
 
-        noteViewModel.allNotes.observe(viewLifecycleOwner, Observer {
-                    noteViewModel.allNotes.value?.forEach {
-                        for (i in noteViewModel.selectedNotes) {
-                            if (it.rowId.equals(i.rowId)) {
-                                it.isSelected = true
-                            }
-                        }
+        noteViewModel.allNotes.observe(viewLifecycleOwner, Observer { it ->
+            noteViewModel.allNotes.value?.forEach {
+                for (i in noteViewModel.selectedNotes) {
+                    if (it.rowId == i.rowId) {
+                        it.isSelected = true
                     }
-                    updateNotes(it)
+                }
+            }
+            updateNotes(it)
         })
         checkIsEmpty()
+
+        Log.d("123", "1")
+        GlobalScope.launch(Dispatchers.IO){
+            delay(5000)
+
+        }
+
+        return binding.root
     }
 
     private fun checkIsEmpty() {
         noteViewModel.allNotes.observe(viewLifecycleOwner, Observer {
-            if (noteViewModel.allNotes.value!!.size == 0) {
+            if (noteViewModel.allNotes.value!!.isEmpty()) {
                 binding.emptyTextView.visibility = View.VISIBLE
             } else {
                 binding.emptyTextView.visibility = View.GONE
@@ -100,16 +101,22 @@ class NoteFragment() : Fragment(), OnItemClickListener{
                 selectNote(note, position)
             }
         } else {
-            noteViewModel.setSelectedNote(note)
             noteViewModel.noteBeforeChange = note
+            noteViewModel.setSelectedNote(note)
+            noteViewModel.titleBefore = note.title
+            noteViewModel.messageBefore = note.message
             if(note.hasPassword){
-                lifecycleScope.launch {
-                    withContext(Dispatchers.Main){
-                        findNavController().navigate(R.id.action_mainFramgent_to_checkPasswordFragment)
-                    }
-                }
+                /*
+                val fragManager = requireActivity().supportFragmentManager
+                val frag = CheckPasswordFragment()
+                val transaction = fragManager.beginTransaction()
+                        .setCustomAnimations(R.anim.from_right_to_left, R.anim.zero_to_zero, R.anim.zero_to_zero, R.anim.from_left_to_right)
+                transaction.add(R.id.container_keeper, frag, "noteF").addToBackStack("noteF")
+                transaction.commit()
+                 */
+                     showDialog(CheckPasswordDialogFragment(),"Abc", requireActivity().supportFragmentManager, 1111)
             } else {
-                findNavController().navigate(R.id.action_mainFramgent_to_BeforeAddEditNoteFragment)
+                navigateToFragment(BeforeEditNoteFragment(), "noteF", requireActivity().supportFragmentManager)
             }
         }
     }
@@ -159,7 +166,7 @@ class NoteFragment() : Fragment(), OnItemClickListener{
 
         binding.recyclerView.layoutManager = lm
 
-        var listMod:List<Note> = listOf()
+        val listMod:List<Note>
 
         if(noteViewModel.getNoteFabButtonMode().value==true){
             listMod = list.filter { it.isFavourite == true }
@@ -184,7 +191,6 @@ class NoteFragment() : Fragment(), OnItemClickListener{
 
         binding.recyclerView.adapter = noteAdapter
 
-
         if(noteViewModel.noteState!=null){
             (binding.recyclerView.layoutManager as StaggeredGridLayoutManager).onRestoreInstanceState(noteViewModel.noteState)
         }
@@ -198,5 +204,10 @@ class NoteFragment() : Fragment(), OnItemClickListener{
 
         noteViewModel.noteState = binding.recyclerView.layoutManager?.onSaveInstanceState()
     }
+
+    override fun callBack() {
+        binding.emptyTextView.visibility = View.VISIBLE
+    }
+
 
 }

@@ -5,9 +5,13 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@style/Theme.NoteApp"
+    android:clickable="true"
+    android:focusable="true">
 
     <androidx.fragment.app.FragmentContainerView
+        android:theme="@style/Theme.NoteApp"
         android:id="@+id/fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"

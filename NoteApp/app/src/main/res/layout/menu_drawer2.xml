@@ -2,15 +2,15 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="250dp"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/colorSearchBackgoround">
+    android:background="@drawable/background_menu">
 
     <LinearLayout
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -24,8 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="MyNote"
-            android:textSize="20dp"
-            android:layout_marginLeft="10dp"
+            android:textSize="20sp"
+            android:layout_marginStart="10dp"
             android:textColor="@color/white"
             android:fontFamily="@font/ubunturegular" />
     </LinearLayout>
@@ -55,16 +55,15 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_round_home"
-                android:layout_centerVertical="true"
                 app:tint="@color/colorIcons"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginStart="5dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Home"
                 android:textSize="14sp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/ubunturegular" />
         </LinearLayout>
@@ -81,16 +80,15 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_baseline_favorite_24"
-                android:layout_centerVertical="true"
                 app:tint="@color/colorIcons"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginStart="5dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Favoutiries"
                 android:textSize="14sp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/ubunturegular" />
         </LinearLayout>
@@ -101,14 +99,13 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:gravity="center_vertical"
-            android:layout_marginLeft="5dp">
+            android:layout_marginStart="5dp">
 
             <ImageView
                 android:id="@+id/removedMenuButton"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_outline_removed"
-                android:layout_centerVertical="true"
                 app:tint="@color/colorIcons" />
 
             <TextView
@@ -116,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:text="Removed"
                 android:textSize="14sp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/ubunturegular" />
         </LinearLayout>
@@ -139,7 +136,7 @@
             android:layout_height="wrap_content"
             android:text="Profile"
             android:textColor="@color/white"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:fontFamily="@font/ubunturegular"/>
 
         <LinearLayout
@@ -149,14 +146,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:layout_marginLeft="5dp">
+            android:layout_marginStart="5dp">
 
             <ImageView
                 android:id="@+id/loginMenuImage"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_baseline_login"
-                android:layout_centerVertical="true"
                 app:tint="@color/colorIcons" />
 
             <TextView
@@ -164,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:text="Login"
                 android:textSize="14sp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/ubunturegular" />
         </LinearLayout>
@@ -187,7 +183,7 @@
             android:layout_height="wrap_content"
             android:text="Communicate"
             android:textColor="@color/white"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:fontFamily="@font/ubunturegular"
             />
 
@@ -198,14 +194,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:layout_marginLeft="5dp">
+            android:layout_marginStart="5dp">
 
             <ImageView
                 android:id="@+id/shareImageMenu"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_baseline_share"
-                android:layout_centerVertical="true"
                 app:tint="@color/colorIcons" />
 
             <TextView
@@ -213,7 +208,7 @@
                 android:layout_height="wrap_content"
                 android:text="Share"
                 android:textSize="14sp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/ubunturegular" />
         </LinearLayout>
@@ -224,14 +219,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:layout_marginLeft="5dp">
+            android:layout_marginStart="5dp">
 
             <ImageView
                 android:id="@+id/rateUsMenuImage"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_round_rate"
-                android:layout_centerVertical="true"
                 app:tint="@color/colorIcons" />
 
             <TextView
@@ -239,15 +233,9 @@
                 android:layout_height="wrap_content"
                 android:text="Rate Us"
                 android:textSize="14sp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/ubunturegular" />
         </LinearLayout>
     </LinearLayout>
-
-
-
-
-
-
 </LinearLayout>

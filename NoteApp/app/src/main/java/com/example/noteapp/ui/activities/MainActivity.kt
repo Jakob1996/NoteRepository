@@ -1,7 +1,6 @@
 package com.example.noteapp.ui.activities
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.ViewModel
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.R
 import com.example.noteapp.databinding.ActivityMainBinding
@@ -28,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
         toDoViewModel = ViewModelProvider(this)[ToDoViewModel::class.java]
 
-
         loadData()
     }
 
@@ -45,11 +43,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun saveData(){
-        if(noteViewModel.getSortDescNote().value!= null) {
+    fun saveData() {
+        if (noteViewModel.getSortDescNote().value != null) {
             val sp = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
             val editor = sp.edit()
             editor.putBoolean(KEY, noteViewModel.getSortDescNote().value!!).apply()
         }
     }
+
+   
 }

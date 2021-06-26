@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
+    <solid android:color="@color/colorSearchBackgoround"/>
+    <gradient
+        android:centerX="0"
+        android:centerY="0"
+        android:type="radial"
+        android:gradientRadius="300dp"
+        android:startColor="@color/colorSearchBackgoround"
+        android:endColor="@color/colorSearchBackgoround"
+        android:angle="0"/>
+
+
+</shape>

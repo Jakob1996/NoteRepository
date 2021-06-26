@@ -1,121 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/color_Primary"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent"
+    android:background="@color/color_Primary"
+    android:clickable="true"
+    android:focusable="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/toolbar_fragmentAddEdit"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/color_Primary"
+            android:gravity="center_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_back"
+            app:titleTextColor="@color/white">
+
+            <ImageView
+                android:id="@+id/back_from_editNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_back"
+                app:tint="@color/colorIcons" />
+
+            <TextView
+                android:id="@+id/toolbar_EditNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/robotoligth"
+                android:text="Note editor"
+                android:textColor="@color/colorIcons"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/done_editNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_done_circle"
+                app:tint="@color/colorIcons" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_title_edit"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_fragmentAddEdit">
 
-            <RelativeLayout
-                android:id="@+id/toolbar_fragmentAddEdit"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/color_Primary"
-                android:gravity="center_vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:navigationIcon="@drawable/ic_back"
-                app:titleTextColor="@color/white">
-
-                <ImageView
-                    android:id="@+id/back_from_editNote"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_back"
-                    app:tint="@color/colorIcons" />
-
-                <TextView
-                    android:id="@+id/toolbar_EditNote"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:text="Note editor"
-                    android:textColor="@color/colorIcons"
-                    android:fontFamily="@font/robotoligth"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:id="@+id/done_editNote"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_done_circle"
-                    app:tint="@color/colorIcons" />
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_title_edit"
+            <EditText
+                android:id="@+id/title_editNote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="20dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar_fragmentAddEdit">
-
-                <EditText
-                    android:id="@+id/title_editNote"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/color_Primary"
-                    android:fontFamily="@font/robotoligth"
-                    android:gravity="center_vertical"
-                    android:hint="@string/note_title"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/colorTextHint"
-                    android:textSize="26sp"
-                    android:inputType="text"
-                    android:maxLines="1"/>
-            </LinearLayout>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="16dp"
                 android:background="@color/color_Primary"
-                app:cardBackgroundColor="@color/color_Primary"
-                app:cardElevation="0dp"
+                android:fontFamily="@font/robotoligth"
+                android:gravity="center_vertical"
+                android:hint="@string/note_title"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textColorHint="@color/colorTextHint"
+                android:textSize="26sp" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/color_Primary"
+            android:fadeScrollbars="true"
+            android:paddingRight="10dp"
+            android:scrollbarSize="10dp"
+            android:scrollbarStyle="outsideInset"
+            android:scrollbarThumbVertical="@drawable/custom_scroll_style"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_title_edit">
+
+            <EditText
+                android:id="@+id/mess_EditNote"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_Primary"
+                android:fontFamily="@font/robotoligth"
+                android:hint="@string/type_note_here"
+                android:textColor="@color/white"
+                android:textColorHint="@color/colorTextHint"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_title_edit">
+                app:layout_constraintTop_toBottomOf="@+id/line1" />
+        </ScrollView>
 
-                <EditText
-                    android:id="@+id/mess_EditNote"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/color_Primary"
-                    android:fontFamily="@font/robotoligth"
-                    android:gravity="left"
-                    android:hint="@string/type_note_here"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/colorTextHint"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/line1" />
-            </androidx.cardview.widget.CardView>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

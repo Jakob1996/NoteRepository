@@ -3,6 +3,7 @@ package com.example.noteapp.ui.fragments.note
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,10 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentEditNoteBinding
 import com.example.noteapp.viewmodels.NoteViewModel
 
@@ -27,46 +27,44 @@ class EditNoteFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
-
-
         requireActivity().onBackPressedDispatcher.addCallback(
-                this,
-                object : OnBackPressedCallback(true) {
-                    override fun handleOnBackPressed() {
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(false) {
+                override fun handleOnBackPressed() {
+                    Log.d("checkn", "closeEditNote")
+                    Log.d("checkn", "${noteViewModel.noteBeforeChange?.message}1")
+                    if (binding.titleEditNote.text.isNotEmpty() || binding.messEditNote.text.isNotEmpty()) {
+                        val note = noteViewModel.getSelectedNote().value
+                        val title = binding.titleEditNote.text.toString()
+                        val mess = binding.messEditNote.text.toString()
+                        Log.d("checkn", "${noteViewModel.noteBeforeChange?.message}2")
+                        note!!.message = mess
+                        note.title = title
+                        Log.d("checkn", "${noteViewModel.noteBeforeChange?.message}3")
 
-                        if (binding.titleEditNote.text.isNotEmpty() || binding.messEditNote.text.isNotEmpty()) {
-                            val note = noteViewModel.getSelectedNote().value
-                            val title = binding.titleEditNote.text.toString()
-                            val mess = binding.messEditNote.text.toString()
-                            note!!.message = mess
-                            note.title = title
-
-                            noteViewModel.setSelectedNote(note)
-                        }
-                        isEnabled = false
-                       findNavController().navigate(R.id.action_editNoteFragment_to_addEditNoteFragment)
+                        noteViewModel.setSelectedNote(note)
+                        Log.d("checkn", "${noteViewModel.noteBeforeChange?.message}4")
                     }
-                })
+                    isEnabled = false
+                    exitTransaction()
+                }
+            })
+        noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         _binding = FragmentEditNoteBinding.inflate(inflater, container, false)
+
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        noteViewModel.getSelectedNote().observe(viewLifecycleOwner, Observer {
-
+        noteViewModel.getSelectedNote().observe(viewLifecycleOwner, {
+            Log.d("checkn", "${noteViewModel.noteBeforeChange?.message}")
             binding.titleEditNote.setText(it!!.title)
             //mess_EditNote.setText(it.message)
             setFontColor(it.fontColor)
@@ -136,9 +134,16 @@ class EditNoteFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        Log.d("checkn", "${noteViewModel.noteBeforeChange?.message}ddd")
 
         _binding = null
 
         super.onDestroyView()
+    }
+
+    private fun exitTransaction(){
+        val sm = requireActivity().supportFragmentManager
+        sm.popBackStackImmediate("BEN", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        sm.beginTransaction().addToBackStack("abc").commit()
     }
 }

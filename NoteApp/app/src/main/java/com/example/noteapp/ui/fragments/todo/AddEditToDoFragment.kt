@@ -3,6 +3,7 @@ package com.example.noteapp.ui.fragments.todo
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,7 +12,9 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +28,8 @@ import com.example.noteapp.databinding.FragmentAddEditToDoBinding
 import com.example.noteapp.ui.fragments.note.RemovePasswordDialogFragment
 import com.example.noteapp.viewmodels.ToDoViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.*
 import java.util.*
 
 class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
@@ -32,6 +37,7 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
     private var value:Boolean=false
     private lateinit var itemTodoAdapter: ToDoItemAdapter
     private var quit = 1
+    private val auth = FirebaseAuth.getInstance()
 
     private var _binding:FragmentAddEditToDoBinding? = null
     private val binding get() = _binding!!
@@ -77,7 +83,7 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
 
                                     if (name !=  beforeCategory!!.categoryName || colorr != beforeCategory.color||hasPassword!=beforeCategory.hasPassword
                                             || isFavourite!=beforeCategory.isFavoutire) {
-                                        val category = Category(name, colorr, isSelectedd, datee, isFavourite, hasPassword, password, ).apply {
+                                        val category = Category(name, colorr, isSelectedd, datee, isFavourite, hasPassword, password).apply {
                                             rowIdCategory = id
                                         }
 
@@ -90,7 +96,7 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
                             closeKeyboard()
                             quit = 2
                         if(todoViewModel.isSearchEdit==1) {
-                            findNavController().navigate(R.id.action_addEditToDoFragment_to_mainFramgent)
+                            backTransaction()
                         } else{
                             findNavController().navigate(R.id.action_addEditToDoFragment_to_searchCategoryFragment)
                         }
@@ -137,9 +143,20 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
 
                     setFavourite(todoViewModel.isFavouriteCategory)
 
-                    todoViewModel.getAllItemsFromCategory(todoViewModel.getSelectedCategotyItem().value!!.rowIdCategory).observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                        updateItems(it)
-                    })
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.Main){
+                            delay(300)
+                            todoViewModel.getAllItemsFromCategory(todoViewModel.getSelectedCategotyItem().value!!.rowIdCategory)
+                                .observe(viewLifecycleOwner, {
+                                    updateItems(it)
+                                    binding.pbar.visibility = View.GONE
+                                })
+                        }
+                    }
+
+//                    GlobalScope.launch(Dispatchers.IO){
+//
+//                    }
 
                     when(todoViewModel.getSelectedCategotyItem().value?.color){
                         "#333333"-> {
@@ -170,40 +187,33 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
 
         })
 
-        binding.includeMiscellaneousTodoItem.favouriteImageCategory.setOnClickListener(object :View.OnClickListener{
-            override fun onClick(v: View?) {
-                if(todoViewModel.isFavouriteCategory){
-                    todoViewModel.isFavouriteCategory = false
-                    setFavourite(todoViewModel.isFavouriteCategory)
-                } else{
-                    todoViewModel.isFavouriteCategory = true
-                    setFavourite(todoViewModel.isFavouriteCategory)
-                }
+        binding.includeMiscellaneousTodoItem.favouriteImageCategory.setOnClickListener {
+            if (todoViewModel.isFavouriteCategory) {
+                todoViewModel.isFavouriteCategory = false
+                setFavourite(todoViewModel.isFavouriteCategory)
+            } else {
+                todoViewModel.isFavouriteCategory = true
+                setFavourite(todoViewModel.isFavouriteCategory)
             }
-        })
+        }
 
-        binding.includeMiscellaneousTodoItem.imageViewPasswordCategory.setOnClickListener(object :View.OnClickListener{
-            override fun onClick(v: View?) {
-                if(todoViewModel.hasPasswordCategory){
-                    val fm = requireActivity().supportFragmentManager
-                    val dialogFragment = RemovePasswordDialogFragment()
-                    dialogFragment.show(fm, "ppp")
-                } else{
-                    findNavController().navigate(R.id.action_addEditToDoFragment_to_passwordNoteFragment)
-                }
-            }
-        })
-
-        binding.addTodo.setOnClickListener(object :View.OnClickListener{
-            override fun onClick(v: View?) {
+        binding.includeMiscellaneousTodoItem.imageViewPasswordCategory.setOnClickListener {
+            if (todoViewModel.hasPasswordCategory) {
                 val fm = requireActivity().supportFragmentManager
-                val dialogFragment = DialogAddToDoFragment()
-                dialogFragment.show(fm, "Abc")
-
-                itemTodoAdapter.notifyDataSetChanged()
-
+                val dialogFragment = RemovePasswordDialogFragment()
+                dialogFragment.show(fm, "ppp")
+            } else {
+                findNavController().navigate(R.id.action_addEditToDoFragment_to_passwordNoteFragment)
             }
-        })
+        }
+
+        binding.addTodo.setOnClickListener {
+            val fm = requireActivity().supportFragmentManager
+            val dialogFragment = DialogAddToDoFragment()
+            dialogFragment.show(fm, "Abc")
+
+            itemTodoAdapter.notifyDataSetChanged()
+        }
     }
 
 
@@ -424,5 +434,12 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener {
             val gradientDrawable: GradientDrawable = addEditToDoFragment.binding.todoViewSubtitleIndicator.background as GradientDrawable
             gradientDrawable.setColor(Color.parseColor(addEditToDoFragment.todoViewModel.selectedCategotyItemColor))
         }
+    }
+
+    private fun backTransaction() {
+        val sm = requireActivity().supportFragmentManager
+        val trans = sm.beginTransaction()
+        sm.popBackStackImmediate("CatFrag", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        trans.commit()
     }
 }

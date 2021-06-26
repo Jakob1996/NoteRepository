@@ -1,122 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:id="@+id/addEditToDoItems"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/addEditToDoItems"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_Primary">
+    android:layout_gravity="center"
+    android:background="@color/color_Primary"
+    android:clickable="true"
+    android:focusable="true">
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:clipToPadding="false"
-        android:paddingBottom="10dp">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:animateLayoutChanges="true">
+            android:clipToPadding="false"
+            android:paddingBottom="35dp">
 
-            <RelativeLayout
-                android:id="@+id/toolbar_fragmentAddEditTodo"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/color_Primary"
-                android:gravity="center_vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:navigationIcon="@drawable/ic_back"
-                app:titleTextColor="@color/white">
-
-                <ImageView
-                    android:id="@+id/back_from_addEditTodo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_back"
-                    app:tint="@color/colorIcons" />
-
-                <TextView
-                    android:id="@+id/toolbar_Title_AddEditTodo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:text="Todo List creator"
-                    android:textColor="@color/colorIcons" />
-
-                <ImageView
-                    android:id="@+id/addTodo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_add_circle"
-                    app:tint="@color/colorIcons" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/line1Todo"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="20dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar_fragmentAddEditTodo">
+                android:animateLayoutChanges="true">
 
-                <View
-                    android:id="@+id/todo_viewSubtitleIndicator"
-                    android:layout_width="7dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/background_subtitle_indicator" />
+                <RelativeLayout
+                    android:id="@+id/toolbar_fragmentAddEditTodo"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@color/color_Primary"
+                    android:gravity="center_vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:navigationIcon="@drawable/ic_back"
+                    app:titleTextColor="@color/white">
 
-                <EditText
-                    android:id="@+id/title_addEditFragCategory"
+                    <ImageView
+                        android:id="@+id/back_from_addEditTodo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_back"
+                        app:tint="@color/colorIcons" />
+
+                    <TextView
+                        android:id="@+id/toolbar_Title_AddEditTodo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:text="Todo List creator"
+                        android:textColor="@color/colorIcons" />
+
+                    <ImageView
+                        android:id="@+id/addTodo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_add_circle"
+                        app:tint="@color/colorIcons" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/line1Todo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:background="@color/color_Primary"
-                    android:fontFamily="@font/ubuntubold"
-                    android:gravity="center_vertical"
-                    android:hint="Category name"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/colorTextHint"
-                    android:textSize="26sp"
-                    android:maxLines="1"
-                    android:maxEms="1"
-                    android:scrollHorizontally="true"
-                    android:inputType="text"
-                    />
-            </LinearLayout>
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/toolbar_fragmentAddEditTodo">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewTodo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="12dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/line1Todo" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <View
+                        android:id="@+id/todo_viewSubtitleIndicator"
+                        android:layout_width="7dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/background_subtitle_indicator" />
 
-    </androidx.core.widget.NestedScrollView>
+                    <EditText
+                        android:id="@+id/title_addEditFragCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@color/color_Primary"
+                        android:fontFamily="@font/ubuntubold"
+                        android:gravity="center_vertical"
+                        android:hint="Category name"
+                        android:inputType="text"
+                        android:maxEms="1"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/colorTextHint"
+                        android:textSize="26sp" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewTodo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginEnd="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line1Todo" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <ProgressBar
+            android:id="@+id/pbar"
+            style="@style/stt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="250dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/nestedScrollView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
         android:id="@+id/include_miscellaneous_todoItem"
         layout="@layout/todo_layout_miscellaneous" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

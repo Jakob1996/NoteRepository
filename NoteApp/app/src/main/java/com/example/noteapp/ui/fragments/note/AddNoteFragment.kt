@@ -28,6 +28,7 @@ import java.util.*
 class AddNoteFragment : Fragment() {
 
     private var _binding:FragmentAddNoteBinding? = null
+
     private val binding get() = _binding!!
 
     private lateinit var noteViewModel: NoteViewModel
@@ -85,7 +86,7 @@ class AddNoteFragment : Fragment() {
                     quit = 2
                     isEnabled = false
                     closeKeyboard()
-                    findNavController().navigate(R.id.action_addNoteFragment_to_mainFramgent)
+                    requireActivity().supportFragmentManager.popBackStack()
                 }
             })
 
@@ -96,80 +97,64 @@ class AddNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initMiscellaneous()
+
         val gradientDrawable: GradientDrawable =
             binding.addNoteViewSubtitleIndicator.background as GradientDrawable
 
-        initMiscellaneous()
-
-        binding.includeMiscellaneous.fontSizeL.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                ++noteViewModel.selectedFontSize
-                if (noteViewModel.selectedFontSize > 5) {
-                    noteViewModel.selectedFontSize = 1
-                }
-                setFontSize(noteViewModel.selectedFontSize)
-                noteViewModel.selectedFontSize + 1
-
-                if (noteViewModel.selectedFontSize > 5) {
-                    noteViewModel.selectedFontSize = 1
-                }
+        binding.includeMiscellaneous.fontSizeL.setOnClickListener {
+            ++noteViewModel.selectedFontSize
+            if (noteViewModel.selectedFontSize > 5) {
+                noteViewModel.selectedFontSize = 1
             }
-        })
+            setFontSize(noteViewModel.selectedFontSize)
+            noteViewModel.selectedFontSize + 1
 
-        binding.includeMiscellaneous.colorFontL.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                ++noteViewModel.selectedFontNote
-
-                if (noteViewModel.selectedFontNote > 3) {
-                    noteViewModel.selectedFontNote = 1
-                }
-
-                setFontColor(noteViewModel.selectedFontNote)
-                noteViewModel.selectedFontNote + 1
-
-                if (noteViewModel.selectedFontNote > 3) {
-                    noteViewModel.selectedFontNote = 1
-                }
+            if (noteViewModel.selectedFontSize > 5) {
+                noteViewModel.selectedFontSize = 1
             }
-        })
+        }
 
-        binding.backFromAddNote.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                requireActivity().onBackPressed()
+        binding.includeMiscellaneous.colorFontL.setOnClickListener {
+            ++noteViewModel.selectedFontNote
+
+            if (noteViewModel.selectedFontNote > 3) {
+                noteViewModel.selectedFontNote = 1
             }
-        })
 
-        binding.includeMiscellaneous.favouriteNoteButton.setOnClickListener(object :View.OnClickListener{
-            override fun onClick(v: View?) {
-                if(noteViewModel.isFavourite){
-                    noteViewModel.isFavourite = false
-                    setFavourite(noteViewModel.isFavourite)
-                } else{
-                    noteViewModel.isFavourite = true
-                    setFavourite(noteViewModel.isFavourite)
-                }
+            setFontColor(noteViewModel.selectedFontNote)
+            noteViewModel.selectedFontNote + 1
+
+            if (noteViewModel.selectedFontNote > 3) {
+                noteViewModel.selectedFontNote = 1
             }
-        })
+        }
 
-        binding.includeMiscellaneous.layoutPasswordImage.setOnClickListener(object :View.OnClickListener{
-            override fun onClick(v: View?) {
-                if(noteViewModel.hasPassword){
-                    val fm = requireActivity().supportFragmentManager
-                    val dialogFragment = RemovePasswordDialogFragment()
-                    dialogFragment.show(fm, "abcc")
-                } else{
-                    findNavController().navigate(R.id.action_addNoteFragment_to_passwordNoteFragment)
-                }
+        binding.backFromAddNote.setOnClickListener { requireActivity().onBackPressed() }
+
+        binding.includeMiscellaneous.favouriteNoteButton.setOnClickListener {
+            if (noteViewModel.isFavourite) {
+                noteViewModel.isFavourite = false
+            } else {
+                noteViewModel.isFavourite = true
             }
-        })
+        }
 
+        binding.includeMiscellaneous.layoutPasswordImage.setOnClickListener {
+            if (noteViewModel.hasPassword) {
+                val fm = requireActivity().supportFragmentManager
+                val dialogFragment = RemovePasswordDialogFragment()
+                dialogFragment.show(fm, "abcc")
+            } else {
+                findNavController().navigate(R.id.action_addNoteFragment_to_passwordNoteFragment)
+            }
+        }
 
         noteViewModel.getSelectedNote().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
             if(noteViewModel.getSelectedNote().value==null) {
                 noteViewModel.selectedNoteColor = "#333333"
                 gradientDrawable.setColor(Color.parseColor(noteViewModel.selectedNoteColor))
-                setFavourite(noteViewModel.isFavourite)
 
             } else{
                 noteViewModel.noteTitle = it!!.title
@@ -238,15 +223,13 @@ class AddNoteFragment : Fragment() {
         val layoutMiscellaneous = binding.includeMiscellaneous
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.includeMiscellaneous.layoutMiscellaneous)
 
-        binding.includeMiscellaneous.textMiscellaneous.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(p0: View?) {
-                if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                } else {
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                }
+        binding.includeMiscellaneous.textMiscellaneous.setOnClickListener {
+            if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            } else {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
-        })
+        }
 
         layoutMiscellaneous.imageColor1.setOnClickListener {
             noteViewModel.selectedNoteColor = "#333333"
@@ -283,7 +266,6 @@ class AddNoteFragment : Fragment() {
             itemSelected6()
             setSubtitleIndicator()
         }
-
     }
 
     private fun itemSelected1() {
@@ -376,25 +358,27 @@ class AddNoteFragment : Fragment() {
     }
 
     private fun setFontSize(colorSize: Int?) {
-        when (colorSize) {
-            1 -> {
-                binding.messAddNoteFrag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15F)
-            }
+        binding.messAddNoteFrag.run {
+            when (colorSize) {
+                1 -> {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 15F)
+                }
 
-            2 -> {
-                binding.messAddNoteFrag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
-            }
+                2 -> {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+                }
 
-            3 -> {
-                binding.messAddNoteFrag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25F)
-            }
+                3 -> {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 25F)
+                }
 
-            4 -> {
-                binding.messAddNoteFrag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30F)
-            }
+                4 -> {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 30F)
+                }
 
-            5 -> {
-                binding.messAddNoteFrag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 35F)
+                5 -> {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 35F)
+                }
             }
         }
     }
@@ -444,14 +428,6 @@ class AddNoteFragment : Fragment() {
         noteViewModel.password = 0
     }
 
-    private fun setFavourite(boolean: Boolean){
-        if(boolean){
-            binding.includeMiscellaneous.favouriteImage.setColorFilter(Color.parseColor("#FDBE3B"))
-        } else{
-            binding.includeMiscellaneous.favouriteImage.setColorFilter(Color.WHITE)
-        }
-    }
-
     private fun setImagePassword(hasPassword: Boolean) {
         if(hasPassword){
             binding.includeMiscellaneous.imageViewPassword.setColorFilter(Color.parseColor("#FF4343"))
@@ -473,6 +449,5 @@ class AddNoteFragment : Fragment() {
             .setIsUseDetailView(false)
             .startAlbum()
     }
-
      */
 }
