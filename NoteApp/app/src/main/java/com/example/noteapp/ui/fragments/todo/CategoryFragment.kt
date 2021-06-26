@@ -17,12 +17,13 @@ import com.example.noteapp.adapters.OnItemCategoryClickListener
 import com.example.noteapp.data.Category
 import com.example.noteapp.databinding.CategoryItemBinding
 import com.example.noteapp.databinding.FragmentTodoListBinding
+import com.example.noteapp.navigation.Navigation
 import com.example.noteapp.ui.fragments.sort.SortDialogFragment
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.ToDoViewModel
 
 class CategoryFragment : Fragment(), OnItemCategoryClickListener,
-    SortDialogFragment.OnItemClickDialogListener {
+    SortDialogFragment.OnItemClickDialogListener, Navigation {
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var todoViewModel: ToDoViewModel
     private lateinit var toDoCategoryAdapter: ItemsCategoryTodoAdapter
@@ -55,12 +56,12 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        noteViewModel.getSortDescCategory().observe(requireActivity(), Observer {
+        noteViewModel.getSortDescCategory().observe(requireActivity(), {
             updateItems(todoViewModel.allCategoryItems.value!!)
         })
 
 
-        noteViewModel.getCategoryFabButtonMode().observe(requireActivity(), Observer {
+        noteViewModel.getCategoryFabButtonMode().observe(requireActivity(), {
             /*
             if(it==true){
                 updateItems(viewModel.allCategoryItems.value!!.filter {
@@ -73,7 +74,7 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
             updateItems(todoViewModel.allCategoryItems.value!!)
         })
 
-        noteViewModel.getNotifyDataCategory().observe(viewLifecycleOwner, Observer {
+        noteViewModel.getNotifyDataCategory().observe(viewLifecycleOwner, {
             if(it==true){
                 todoViewModel.allCategoryItems.value?.forEach { it.isSelected = false }
                 updateItems(todoViewModel.allCategoryItems.value!!)
@@ -82,7 +83,7 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
             }
         })
 
-        todoViewModel.allCategoryItems.observe(viewLifecycleOwner, Observer {
+        todoViewModel.allCategoryItems.observe(viewLifecycleOwner, {
 
             todoViewModel.allCategoryItems.value?.forEach { for (i in todoViewModel.selectedCategoryItems){ if(it.rowIdCategory.equals(i.rowIdCategory)){
                 it.isSelected=true
@@ -103,9 +104,9 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
             todoViewModel.setSelectedCategotyItem(category)
             todoViewModel.categoryItemBeforeChange = category
             if(category.hasPassword){
-                findNavController().navigate(R.id.action_mainFramgent_to_checkPasswordFragment)
+
             } else{
-                findNavController().navigate(R.id.action_mainFramgent_to_addEditToDoFragment)
+                navigateToFragment(AddEditToDoFragment(), "CatFrag", requireActivity().supportFragmentManager)
             }
         }
     }
@@ -193,8 +194,8 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
     }
 
     private fun checkIsEmpty() {
-        todoViewModel.allCategoryItems.observe(viewLifecycleOwner, Observer {
-            if(todoViewModel.allCategoryItems.value!!.size==0){
+        todoViewModel.allCategoryItems.observe(viewLifecycleOwner, {
+            if(todoViewModel.allCategoryItems.value!!.isEmpty()){
                 binding.emptyTextViewTodo.visibility = View.VISIBLE
             } else{
                 binding.emptyTextViewTodo.visibility = View.GONE

@@ -26,6 +26,8 @@ class NoteViewModel(app:Application):AndroidViewModel(app) {
 
     val allNotes = repository.getAllNotes()
 
+    fun getAllN(): LiveData<List<Note>> = repository.getAllNotes()
+
     private val selectedNote = MutableLiveData<Note?>()
 
     fun getSelectedNote(): LiveData<Note?> = selectedNote
@@ -35,6 +37,8 @@ class NoteViewModel(app:Application):AndroidViewModel(app) {
     }
 
     var noteBeforeChange:Note? = null
+    var titleBefore:String? =null
+    var messageBefore:String? =null
 
     private var searchMode = MutableLiveData<Boolean?>()
 
@@ -56,7 +60,6 @@ class NoteViewModel(app:Application):AndroidViewModel(app) {
     var searchInNote:String = ""
     var noteState:Parcelable? = null
     var categoryToDoState:Parcelable? = null
-
     var selectedNoteColor = "#333333"
     var selectedFontNote:Int = 1
     var selectedFontSize:Int = 3
@@ -76,7 +79,6 @@ class NoteViewModel(app:Application):AndroidViewModel(app) {
     fun setSortDescNote(boolean: Boolean){
         sortDescNote.postValue(boolean)
     }
-
 
     private val multiSelectMode = MutableLiveData<Boolean?>()
     init {
@@ -101,6 +103,7 @@ class NoteViewModel(app:Application):AndroidViewModel(app) {
     }
 
     fun getNotifyDataNote():LiveData<Boolean?> = notifyDataNote
+
     fun setNotifyDataNote(boolean: Boolean?){
         notifyDataNote.postValue(boolean)
     }
@@ -119,6 +122,7 @@ class NoteViewModel(app:Application):AndroidViewModel(app) {
     }
 
     fun getNotifyDataCategory():LiveData<Boolean?> = notifyDataCategory
+
     fun setNotifyDataCategory(boolean: Boolean?){
         notifyDataCategory.postValue(boolean)
     }
@@ -139,6 +143,7 @@ class NoteViewModel(app:Application):AndroidViewModel(app) {
          repository.deleteNotes(listNotes)
     }
 
+    /*
     fun deleteOneNote(note: Note?){
         CoroutineScope(Dispatchers.IO).launch { repository.deleteOneNote(note) }
     }
@@ -147,6 +152,8 @@ class NoteViewModel(app:Application):AndroidViewModel(app) {
         CoroutineScope(Dispatchers.IO).launch { repository.clearDatabaseNotes() }
     }
 
+
+     */
     //State Model
 
     var p:Boolean = true

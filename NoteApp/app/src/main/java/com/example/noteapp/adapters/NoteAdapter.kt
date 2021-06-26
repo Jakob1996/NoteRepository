@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.noteapp.data.Note
 import com.example.noteapp.databinding.NoteItemBinding
+import com.example.noteapp.tools.OnItemClickListener
 
 class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemClickListener): RecyclerView.Adapter <NoteAdapter.MyViewHolder>() {
 
@@ -21,7 +22,6 @@ class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemC
         val item = noteList[position]
 
         holder.bind(item)
-
     }
 
     override fun getItemCount(): Int {
@@ -41,14 +41,13 @@ class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemC
 
         @SuppressLint("Range")
         fun bind(note:Note){
-            viewBinding.linear.setBackgroundColor(Color.parseColor(note.color))
+            viewBinding.linear.setBackgroundColor(Color.parseColor("#303030"))
 
             if(note.isSelected){
                 viewBinding.linear.setBackgroundColor(Color.parseColor("#F0F4D7"))
             }
 
             if(note.isFavourite){
-
                 viewBinding.favLayItem.visibility = View.VISIBLE
                 viewBinding.itemsLayout.visibility = View.VISIBLE
             } else{
@@ -66,13 +65,8 @@ class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemC
                 viewBinding.itemsLayout.visibility = View.GONE
             }
 
-            viewBinding.noteTitle.setText(note.title)
-            viewBinding.noteMessage.setText(note.message)
+            viewBinding.noteTitle.text = note.title
+            viewBinding.noteMessage.text = note.message
         }
     }
-}
-
-interface OnItemClickListener{
-    fun onItemClick(note: Note, position:Int)
-    fun onItemLongClick(note: Note, position: Int)
 }

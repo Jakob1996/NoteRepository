@@ -1,5 +1,6 @@
 package com.example.noteapp.ui.fragments.search
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -71,11 +73,9 @@ class SearchCategoryFragment : Fragment(), OnItemCategoryClickListener {
             binding.editSearcherCategory.requestFocus(binding.editSearcherCategory.text.length)
         }
 
-        binding.icBackInSearchFragment.setOnClickListener(object:View.OnClickListener{
-            override fun onClick(v: View?) {
-                findNavController().navigate(R.id.action_searchFragment_to_mainFramgent)
-            }
-        })
+        binding.icBackInSearchFragment.setOnClickListener{
+            findNavController().navigate(R.id.action_searchFragment_to_mainFramgent)
+        }
 
         binding.editSearcherCategory.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -92,11 +92,6 @@ class SearchCategoryFragment : Fragment(), OnItemCategoryClickListener {
             override fun afterTextChanged(s: Editable?) {
             }
         } )
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-            super.onActivityCreated(savedInstanceState)
-
     }
 
     private fun updateCategory(list:List<Category>, search:String) {

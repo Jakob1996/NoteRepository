@@ -10,13 +10,12 @@ import com.example.noteapp.data.ItemOfList
 import com.example.noteapp.data.Note
 import com.example.noteapp.db.DataBaseBuilder
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
+import com.squareup.okhttp.Dispatcher
+import kotlinx.coroutines.*
 
-class Repository (app:Application) {
+class Repository(app: Application) {
     private val REPO_DEBUG = "REPO_DEBUG"
 
     //Firebase Repository
@@ -24,65 +23,133 @@ class Repository (app:Application) {
     private val auth = FirebaseAuth.getInstance()
     private val cloud = FirebaseFirestore.getInstance()
 
-
-    fun getUserData(): LiveData<List<Note>> {
+    //Note firebase
+    fun getUserNotesData(): LiveData<List<Note>> {
         val cloudResult = MutableLiveData<List<Note>>()
         val uid = auth.currentUser?.uid
-        //if(auth.currentUser!=null) {
+        if(auth.currentUser!=null) {
+            Log.d("adddd", "0")
             cloud.collection("users")
                 .document(uid!!)
                 .collection("notes")
-                .addSnapshotListener(object :EventListener<QuerySnapshot>{
-                    override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
-                        val res = value?.toObjects(Note::class.java)
-                        cloudResult.postValue(res!!)
-                    }
-                })
-                    /*
+                //addSnapshotListener { value, _ ->
+                .get()
+                .addOnSuccessListener {
+                    Log.d("adddd", "1")
+                    val res = it?.toObjects(Note::class.java)
+                    cloudResult.value = res!!
+                }.addOnFailureListener {
+                    Log.d(REPO_DEBUG, it.message.toString())
                 }
-        } else {
-            cloudResult = MutableLiveData<List<Note>>()
         }
 
-                     */
         return cloudResult
     }
 
-    fun saveNotesToCloud(notes:List<Note>){
+    fun getUserCategoryFromFirebase():LiveData<List<Category>> {
+        val cloudResult = MutableLiveData<List<Category>>()
         val uid = auth.currentUser?.uid
+        if(auth.currentUser!=null) {
+            cloud.collection("users")
+                .document(uid!!)
+                .collection("todoList")
+                //addSnapshotListener { value, _ ->
+                .get()
+                .addOnSuccessListener {
+                    Log.d("adddd", "1")
+                    val res = it?.toObjects(Category::class.java)
+                    cloudResult.value = res!!
+                }.addOnFailureListener {
+                    Log.d(REPO_DEBUG, it.message.toString())
+                }
+        }
+        return cloudResult
+    }
 
-        val ref = storage.reference.child("users").child("uid")
+    fun saveNotesToCloud(notes: List<Note>) {
         notes.forEach {
-
+            val uid = auth.currentUser?.uid
 
             cloud.collection("users")
-                    .document(uid!!)
-                    .collection("notes")
-                    .document("${it.rowId}")
-                    .set(it)
-                    .addOnSuccessListener {
-                        Log.d("TAG", "Successfully!!!")
-                    }
-                    .addOnFailureListener {
-                        Log.d(REPO_DEBUG, it.message.toString())
-                    }
+                .document(uid!!)
+                .collection("notes")
+                .document("${it.rowId}")
+                .set(it)
+                .addOnSuccessListener {
+
+                    Log.d("TAG", "Successfully!!!")
+                }
+                .addOnFailureListener {
+                    Log.d(REPO_DEBUG, it.message.toString())
+                }
         }
     }
 
-    fun clearDataFromFirebase(notes:List<Note>){
+    fun updateNoteInCloud(note: Note) {
+
         val uid = auth.currentUser?.uid
-        notes.forEach {
+
             cloud.collection("users")
-                    .document(uid!!)
-                    .collection("notes")
-                    .document("${it.rowId}")
-                    .delete()
-                    .addOnSuccessListener {
-                        Log.d("Deletedd", "Deleted successed!")
-                    }
-                    .addOnFailureListener{
-                        Log.d("Deletedd", "Deleted failure!")
-                    }
+                .document(uid!!)
+                .collection("notes")
+                .document("${note.rowId}")
+                .set(note)
+                .addOnSuccessListener {
+
+                    Log.d("TAG", "Successfully!!!")
+                }
+                .addOnFailureListener {
+                    Log.d(REPO_DEBUG, it.message.toString())
+                }
+
+    }
+
+    fun clearDataFromFirebase(notes: List<Note>) {
+        notes.forEach {
+            val uid = auth.currentUser?.uid
+
+            cloud.collection("users")
+                .document(uid!!)
+                .collection("notes")
+                .document("${it.rowId}")
+                .delete()
+                .addOnSuccessListener {
+                    Log.d("Deletedd", "Deleted successed!")
+                }
+                .addOnFailureListener {
+                    Log.d("Deletedd", "Deleted failure!")
+                }
+        }
+    }
+
+    //TodoList Firebase
+    fun saveCategoryToCloud(category: Category) {
+        val uid = auth.currentUser?.uid
+
+        cloud.collection("users")
+            .document(uid!!)
+            .collection("todoList")
+            .document("${category.rowIdCategory}")
+            .set(category)
+            .addOnSuccessListener {
+                Log.d("TAG", "Successfully!!!")
+            }
+            .addOnFailureListener {
+                Log.d(REPO_DEBUG, it.message.toString())
+            }
+    }
+
+    fun saveTodoListToCloud(categoryId: Int, todoList: List<ItemOfList>) {
+        val uid = auth.currentUser?.uid
+
+        todoList.forEach {
+            cloud.collection("users")
+                .document(uid!!)
+                .collection("todoList")
+                .document("$categoryId")
+                .collection("listCategory")
+                .document("${it.idItem}")
+                .set(it)
         }
     }
 
@@ -94,23 +161,23 @@ class Repository (app:Application) {
 
 
     //Note repository
-    suspend fun insertNote(note: Note){
+    suspend fun insertNote(note: Note) {
         notesDao.insertNote(note)
     }
 
-    suspend fun updateNote(note:Note){
+    suspend fun updateNote(note: Note) {
         notesDao.updateNote(note)
     }
 
-     fun deleteNotes(list: List<Note>){
+    fun deleteNotes(list: List<Note>) {
         notesDao.deleteNotes(list)
     }
 
-    suspend fun deleteOneNote(note: Note?){
+    suspend fun deleteOneNote(note: Note?) {
         notesDao.deleteOneNote(note)
     }
 
-    suspend fun clearDatabaseNotes(){
+    suspend fun clearDatabaseNotes() {
         notesDao.clearDatabaseNotes()
     }
 
@@ -118,64 +185,68 @@ class Repository (app:Application) {
         return notesDao.getAllNotes().asLiveData()
     }
 
-    //Category repository
+//Category repository
 
-    suspend fun insertCategory(category: Category){
+    suspend fun insertCategory(category: Category) {
         categoryDao.insertCategory(category)
     }
 
-    suspend fun updateCategory(category: Category){
+    suspend fun updateCategory(category: Category) {
         categoryDao.updateCategory(category)
     }
 
-     fun deleteCategory(category:List<Category>){
+    fun deleteCategory(category: List<Category>) {
         categoryDao.deleteCategory(category)
     }
 
-    suspend fun deleteCategoryDataBase(){
+    suspend fun deleteCategoryDataBase() {
         categoryDao.clearDataBaseCategory()
     }
 
-    fun getAllCategory():LiveData<List<Category>>{
+    fun getAllCategory(): LiveData<List<Category>> {
         return categoryDao.getAllCategory().asLiveData()
     }
 
-    //Items repository
+//Items repository
 
-    suspend fun insertItem(item: ItemOfList){
+    suspend fun insertItem(item: ItemOfList) {
         itemDao.insertItem(item)
     }
 
-    suspend fun deleteItem(item: ItemOfList){
+    suspend fun deleteItem(item: ItemOfList) {
 
         itemDao.deleteItem(item)
     }
 
-    suspend fun deleteItems(items:List<ItemOfList>){
+    suspend fun deleteItems(items: List<ItemOfList>) {
         itemDao.deleteItems(items)
     }
 
-    suspend fun updateItem(item: ItemOfList){
+    suspend fun updateItem(item: ItemOfList) {
         itemDao.updateItem(item)
     }
 
-     fun getAllItems(categoryId: Int):LiveData<List<ItemOfList>>{
-        return itemDao.getAllItems(categoryId).asLiveData()
+     fun getAllItems(categoryId: Int): LiveData<List<ItemOfList>> {
+
+        val ddd = itemDao.getAllItems(categoryId).asLiveData()
+//        val d:LiveData<List<ItemOfList>>
+//        CoroutineScope(Dispatchers.IO).launch {
+//           val n  =  d
+//        }
+
+        return ddd
     }
 
-     fun deleteAllITems(categoryId: Int){
+    fun deleteAllITems(categoryId: Int) {
         itemDao.deleteAllItems(categoryId)
     }
 
-    fun getAllI():LiveData<List<ItemOfList>>{
+    fun getAllI(): LiveData<List<ItemOfList>> {
         return itemDao.getAllI().asLiveData()
     }
-
-    /*
-    suspend fun getCategoryWithItems(categoryId:Int):LiveData<List<CategoryWithItems>>{
-        return categoryDao.getCategoryWithItems(categoryId)
-    }
-
-     */
-
 }
+
+
+//suspend fun getCategoryWithItems(categoryId:Int):LiveData<List<CategoryWithItems>>{
+//return categoryDao.getCategoryWithItems(categoryId)
+//}

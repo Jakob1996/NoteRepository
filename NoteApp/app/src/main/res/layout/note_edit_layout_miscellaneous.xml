@@ -130,16 +130,19 @@
 
             <View
                 android:layout_width="47dp"
-                android:layout_height="47dp" />
+                android:layout_height="47dp"
+                android:layout_gravity="center"
+                />
 
-            <ImageView
+            <CheckBox
                 android:id="@+id/favouriteImage"
                 android:layout_width="47dp"
                 android:layout_height="47dp"
                 android:contentDescription="@string/app_name"
                 android:padding="11dp"
-                app:tint="@color/white"
-                android:src="@drawable/ic_baseline_favorite_24"/>
+                android:drawableRight="@drawable/checkbox_favourite_selector"
+                android:button="@null"
+/>
 
         </FrameLayout>
 

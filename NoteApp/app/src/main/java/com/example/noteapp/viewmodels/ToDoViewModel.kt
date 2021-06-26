@@ -15,17 +15,11 @@ class ToDoViewModel(app:Application):AndroidViewModel(app) {
     var hasPassword: Boolean = false
     private val repository = Repository(app)
 
-
     var search:String?=null
 
     private val multiSelectMode = MutableLiveData<Boolean?>()
     init {
         multiSelectMode.value = false
-    }
-
-    fun getMultiSelectMode(): LiveData<Boolean?> = multiSelectMode
-    fun setMutliSelectMode(boolean: Boolean?){
-        multiSelectMode.postValue(boolean)
     }
 
     var categoryName:String = ""
@@ -47,6 +41,14 @@ class ToDoViewModel(app:Application):AndroidViewModel(app) {
         selectedCategoryItem.postValue(category)
     }
 
+    fun saveCategoryInCloud(category: Category){
+        repository.saveCategoryToCloud(category)
+    }
+
+    fun saveTodoListInCloud(categoryId: Int, list:List<ItemOfList>){
+        repository.saveTodoListToCloud(categoryId, list)
+    }
+
     var categoryItemBeforeChange: Category? = null
 
     var sortDescCategoryItem = false
@@ -66,6 +68,7 @@ class ToDoViewModel(app:Application):AndroidViewModel(app) {
         repository.deleteCategory(category)
     }
 
+    /*
     fun clearDataBaseCategoryItems(){
         CoroutineScope(Dispatchers.IO).launch { repository.deleteCategoryDataBase() }
     }
@@ -77,11 +80,13 @@ class ToDoViewModel(app:Application):AndroidViewModel(app) {
             categoryItem.categoryName.toLowerCase().contains(text.toLowerCase()) || categoryItem.categoryName.toUpperCase().contains(text.toUpperCase()) }
     }
 
+     */
+
     //ItemViewModel
 
     private lateinit var allItems:LiveData<List<ItemOfList>>
 
-    fun getAllItemsFromCategory(categoryId:Int):LiveData<List<ItemOfList>>{
+     fun getAllItemsFromCategory(categoryId:Int):LiveData<List<ItemOfList>>{
         return repository.getAllItems(categoryId)
     }
 

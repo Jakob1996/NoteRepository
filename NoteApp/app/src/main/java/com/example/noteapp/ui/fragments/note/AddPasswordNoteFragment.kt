@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
 import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.data.Category
 import com.example.noteapp.data.Note
@@ -35,6 +37,12 @@ class AddPasswordNoteFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         _binding = FragmentPasswordNoteBinding.inflate(inflater, container, false)
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+        })
 
         return binding.root
     }
@@ -42,48 +50,46 @@ class AddPasswordNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.addPasswordButton.setOnClickListener(object :View.OnClickListener{
-            override fun onClick(v: View?) {
-                if(noteViewModel.getSelectedNote().value!= null){
-                    val note = noteViewModel.getSelectedNote().value
+        binding.addPasswordButton.setOnClickListener {
+            if (noteViewModel.getSelectedNote().value != null) {
+                val note = noteViewModel.getSelectedNote().value
 
-                    val title = note!!.title
-                    val message = note.message
-                    val date = note.date
-                    val color = note.color
-                    val fontColor = note.fontColor
-                    val fontSize = note.fontSize
-                    val favourite = note.isFavourite
-                    val isSelected = note.isSelected
-                    val rowIdd = note.rowId
-                    val hasPassword = true
-                    val password = binding.passwordEditText.text.toString().toInt()
-                    val not = Note(title, message, date, isSelected, color, fontColor, fontSize, favourite, hasPassword, password).apply {
-                        rowId = rowIdd
-                    }
-
-                    noteViewModel.setSelectedNote(not)
-                    requireActivity().onBackPressed()
-                } else {
-                    val category = todoViewModel.getSelectedCategotyItem().value
-
-                    val name = category!!.categoryName
-                    val color = category.color
-                    val date = category.date
-                    val isSelected = category.isSelected
-                    val isFavourite = category.isFavoutire
-                    val hasPassword = true
-                    val password = binding.passwordEditText.text.toString().toInt()
-                    val id = category.rowIdCategory
-
-                    val cat = Category(name, color, isSelected, date, isFavourite, hasPassword, password).apply {
-                        rowIdCategory = id
-                    }
-
-                    todoViewModel.setSelectedCategotyItem(cat)
-                    requireActivity().onBackPressed()
+                val title = note!!.title
+                val message = note.message
+                val date = note.date
+                val color = note.color
+                val fontColor = note.fontColor
+                val fontSize = note.fontSize
+                val favourite = note.isFavourite
+                val isSelected = note.isSelected
+                val rowIdd = note.rowId
+                val hasPassword = true
+                val password = binding.passwordEditText.text.toString().toInt()
+                val not = Note(title, message, date, isSelected, color, fontColor, fontSize, favourite, hasPassword, password).apply {
+                    rowId = rowIdd
                 }
+
+                noteViewModel.setSelectedNote(not)
+                requireActivity().onBackPressed()
+            } else {
+                val category = todoViewModel.getSelectedCategotyItem().value
+
+                val name = category!!.categoryName
+                val color = category.color
+                val date = category.date
+                val isSelected = category.isSelected
+                val isFavourite = category.isFavoutire
+                val hasPassword = true
+                val password = binding.passwordEditText.text.toString().toInt()
+                val id = category.rowIdCategory
+
+                val cat = Category(name, color, isSelected, date, isFavourite, hasPassword, password).apply {
+                    rowIdCategory = id
+                }
+
+                todoViewModel.setSelectedCategotyItem(cat)
+                requireActivity().onBackPressed()
             }
-        })
+        }
     }
 }

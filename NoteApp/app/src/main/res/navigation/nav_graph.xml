@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFramgent">
+    app:startDestination="@id/fragmentsKeeper">
 
     <fragment
         android:id="@+id/mainFramgent"
@@ -224,7 +224,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.noteapp.ui.profile.ProfileFragment"
+        android:name="com.example.noteapp.ui.fragments.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
@@ -253,4 +253,9 @@
             android:id="@+id/action_fragmentTest_to_mainFramgent"
             app:destination="@id/mainFramgent" />
     </fragment>
+    <fragment
+        android:id="@+id/fragmentsKeeper"
+        android:name="com.example.noteapp.ui.fragments.main.FragmentsKeeper"
+        android:label="fragment_fragments_keeper"
+        tools:layout="@layout/fragment_fragments_keeper" />
 </navigation>

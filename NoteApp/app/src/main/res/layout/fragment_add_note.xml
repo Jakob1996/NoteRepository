@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/add_note_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_Primary">
+    android:background="@color/color_Primary"
+    android:clickable="true"
+    android:focusable="true">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -37,26 +39,26 @@
                     android:id="@+id/back_from_addNote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_back"
                     android:layout_centerVertical="true"
+                    android:src="@drawable/ic_back"
                     app:tint="@color/colorIcons" />
 
                 <TextView
                     android:id="@+id/toolbar_Title_AddNote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Note creator"
-                    android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="Note creator"
                     android:textColor="@color/colorIcons" />
 
                 <ImageView
                     android:id="@+id/doneButton_addNote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_done_circle"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:src="@drawable/ic_done"
                     app:tint="@color/colorIcons" />
             </RelativeLayout>
 
@@ -89,12 +91,11 @@
                     android:fontFamily="@font/robotoligth"
                     android:gravity="center_vertical"
                     android:hint="@string/note_title"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/colorTextHint"
-                    android:textSize="26sp"
                     android:inputType="text"
                     android:maxLines="1"
-                    />
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/colorTextHint"
+                    android:textSize="26sp" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -112,25 +113,31 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addNoteline1" />
 
-            <EditText
-                android:id="@+id/mess_addNoteFrag"
-                android:layout_width="0dp"
+            <ScrollView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="20dp"
-                android:background="@color/color_Primary"
-                android:fontFamily="@font/robotoligth"
-                android:gravity="left"
-                android:hint="@string/type_note_here"
-                android:textColor="@color/white"
-                android:textColorHint="@color/colorTextHint"
-                android:textSize="20sp"
+                android:fillViewport="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerViewImageAddNoteFrag" />
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewImageAddNoteFrag">
 
+                <EditText
+                    android:id="@+id/mess_addNoteFrag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/color_Primary"
+                    android:fontFamily="@font/robotoligth"
+                    android:gravity="left"
+                    android:hint="@string/type_note_here"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/colorTextHint"
+                    android:textSize="20sp" />
+
+            </ScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
