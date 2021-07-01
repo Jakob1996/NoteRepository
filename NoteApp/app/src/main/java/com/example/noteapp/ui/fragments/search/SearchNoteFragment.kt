@@ -4,32 +4,29 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.noteapp.R
 import com.example.noteapp.adapters.NoteAdapter
 import com.example.noteapp.data.Note
-import com.example.noteapp.databinding.FragmentSearchBinding
-import com.example.noteapp.navigation.Navigation
+import com.example.noteapp.databinding.FragmentSearchNoteBinding
 import com.example.noteapp.tools.OnItemClickListener
+import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
 import com.example.noteapp.ui.fragments.note.BeforeEditNoteFragment
 import com.example.noteapp.viewmodels.NoteViewModel
 
-class SearchFragment : Fragment(), OnItemClickListener, Navigation {
+class SearchNoteFragment : BaseFragment(), OnItemClickListener {
 
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var noteAdapter: NoteAdapter
 
-    private var _binding:FragmentSearchBinding? = null
+    private var _binding:FragmentSearchNoteBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +35,6 @@ class SearchFragment : Fragment(), OnItemClickListener, Navigation {
 
         requireActivity().onBackPressedDispatcher.addCallback(this, object :OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                Log.d("onDDD", "oBP")
                 noteViewModel.search = null
                 requireActivity().supportFragmentManager.popBackStack()
                 isEnabled = false
@@ -49,7 +45,7 @@ class SearchFragment : Fragment(), OnItemClickListener, Navigation {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchNoteBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -60,7 +56,7 @@ class SearchFragment : Fragment(), OnItemClickListener, Navigation {
 
         binding.editSearcher.requestFocus()
 
-        noteViewModel.allNotes.observe(viewLifecycleOwner, Observer {
+        noteViewModel.allNotes.observe(viewLifecycleOwner, {
             if(noteViewModel.search!=null){
                 updateNotes(it, noteViewModel.search!!)
             } else{

@@ -1,6 +1,5 @@
 package com.example.noteapp.ui.fragments.search
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,9 +17,10 @@ import com.example.noteapp.adapters.ItemsCategoryTodoAdapter
 import com.example.noteapp.adapters.OnItemCategoryClickListener
 import com.example.noteapp.data.Category
 import com.example.noteapp.databinding.FragmentSearchCategoryBinding
+import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
 import com.example.noteapp.viewmodels.ToDoViewModel
 
-class SearchCategoryFragment : Fragment(), OnItemCategoryClickListener {
+class SearchCategoryFragment: BaseFragment(), OnItemCategoryClickListener {
 
     private lateinit var todoViewModel: ToDoViewModel
     private lateinit var categoryAdapter: ItemsCategoryTodoAdapter
@@ -38,7 +37,9 @@ class SearchCategoryFragment : Fragment(), OnItemCategoryClickListener {
         requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
                 todoViewModel.search = null
+
                 findNavController().navigate(R.id.action_searchCategoryFragment_to_mainFramgent)
+                popBackStack("SCF", requireActivity().supportFragmentManager, false)
                 isEnabled = false
             }
         })
@@ -53,7 +54,6 @@ class SearchCategoryFragment : Fragment(), OnItemCategoryClickListener {
                               savedInstanceState: Bundle?): View? {
 
         _binding = FragmentSearchCategoryBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
         return binding.root
     }
 

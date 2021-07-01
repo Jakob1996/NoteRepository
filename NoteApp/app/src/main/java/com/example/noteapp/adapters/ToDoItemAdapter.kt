@@ -24,13 +24,14 @@ class ToDoItemAdapter(private val list: List<ItemOfList>, private val listener: 
         return list.size
     }
 
-    inner class ViewHolderItem(val itemBinding: ItemTodoBinding): RecyclerView.ViewHolder(itemBinding.root) {
+    inner class ViewHolderItem(val itemBinding: ItemTodoBinding)
+        : RecyclerView.ViewHolder(itemBinding.root) {
         init {
             itemBinding.todoCheckBox.setOnClickListener {
-                listener.onItemClick(list[adapterPosition], adapterPosition)
+                listener.onItemClick(list[bindingAdapterPosition], bindingAdapterPosition)
             }
             itemBinding.todoCheckBox.setOnLongClickListener {
-                listener.onItemLongClick(list[adapterPosition], adapterPosition)
+                listener.onItemLongClick(list[bindingAdapterPosition], bindingAdapterPosition)
                 true
             }
         }

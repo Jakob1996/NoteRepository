@@ -14,11 +14,10 @@ import com.example.noteapp.R
 import com.example.noteapp.adapters.ViewPagerAdapter
 import com.example.noteapp.databinding.FragmentMainBinding
 import com.example.noteapp.navigation.Navigation
-import com.example.noteapp.tools.Clic
 import com.example.noteapp.ui.fragments.login.LoginFragment
 import com.example.noteapp.ui.fragments.note.AddNoteFragment
 import com.example.noteapp.ui.fragments.search.SearchCategoryFragment
-import com.example.noteapp.ui.fragments.search.SearchFragment
+import com.example.noteapp.ui.fragments.search.SearchNoteFragment
 import com.example.noteapp.ui.fragments.sort.SortDialogFragment
 import com.example.noteapp.ui.fragments.todo.DialogAddCategoryItem
 import com.example.noteapp.ui.fragments.profile.ProfileFragment
@@ -36,7 +35,6 @@ class MainFragment: Fragment(), SortDialogFragment.OnItemClickDialogListener, Na
     private lateinit var profileViewModel: ProfilViewModel
     private val fbAuth = FirebaseAuth.getInstance()
     private val request_code = 123
-    lateinit var clBk:ClBk
 
     override fun onDestroyView() {
         _binding = null
@@ -76,12 +74,11 @@ class MainFragment: Fragment(), SortDialogFragment.OnItemClickDialogListener, Na
 
         binding.favFB.setOnClickListener {
             if (noteViewModel.getNoteFabButtonMode().value == true) {
-                noteViewModel.setNoteFabButtonMode(false)
-                noteViewModel.setCategoryFabButtonMode(false)
-            } else {
-                if(noteViewModel.getAllN().value.isNullOrEmpty()){
-                    clBk.callBack()
+                noteViewModel.run {
+                    setNoteFabButtonMode(false)
+                    setCategoryFabButtonMode(false)
                 }
+            } else {
                 noteViewModel.setNoteFabButtonMode(true)
                 noteViewModel.setCategoryFabButtonMode(true)
             }
@@ -155,7 +152,7 @@ class MainFragment: Fragment(), SortDialogFragment.OnItemClickDialogListener, Na
 
             } else {
                 if (binding.viewPager.currentItem == 0) {
-                    navigateToFragment(SearchFragment(), "SF", requireActivity().supportFragmentManager)
+                    navigateToFragment(SearchNoteFragment(), "SF", requireActivity().supportFragmentManager)
                 } else {
                     navigateToFragment(SearchCategoryFragment(), "SCF", parentFragmentManager)
                 }
@@ -191,12 +188,16 @@ class MainFragment: Fragment(), SortDialogFragment.OnItemClickDialogListener, Na
 
     private fun exitMultiSelectMode() {
         binding.searchIcon.setImageResource(R.drawable.ic_search)
-        if(noteViewModel.getNoteFabButtonMode().value == false){
-            binding.floatingActionMenu.visibility = View.VISIBLE
-        } else if(noteViewModel.getNoteFabButtonMode().value == true){
-            binding.floatingActionMenu.visibility = View.GONE
-        } else{
-            binding.floatingActionMenu.visibility = View.VISIBLE
+        when (noteViewModel.getNoteFabButtonMode().value) {
+            false -> {
+                binding.floatingActionMenu.visibility = View.VISIBLE
+            }
+            true -> {
+                binding.floatingActionMenu.visibility = View.GONE
+            }
+            else -> {
+                binding.floatingActionMenu.visibility = View.VISIBLE
+            }
         }
         binding.menuButton.visibility = View.VISIBLE
         binding.menuButton.setImageResource(R.drawable.ic_menu2)
@@ -218,8 +219,4 @@ class MainFragment: Fragment(), SortDialogFragment.OnItemClickDialogListener, Na
         binding.menuButton.setImageResource(R.drawable.ic_round_arrow_back_ios)
         binding.favFB.visibility = View.GONE
     }
-}
-
-interface ClBk{
-    fun callBack()
 }

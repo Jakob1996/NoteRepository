@@ -31,10 +31,10 @@ class NoteAdapter(private val noteList:List<Note>, private val listener: OnItemC
     inner class MyViewHolder(private val viewBinding:NoteItemBinding):RecyclerView.ViewHolder(viewBinding.root) {
         init {
             viewBinding.linear.setOnClickListener{
-                listener.onItemClick(noteList[adapterPosition], adapterPosition)
+                listener.onItemClick(noteList[bindingAdapterPosition], bindingAdapterPosition)
             }
             viewBinding.linear.setOnLongClickListener{
-                listener.onItemLongClick(noteList[adapterPosition], adapterPosition)
+                listener.onItemLongClick(noteList[bindingAdapterPosition], bindingAdapterPosition)
                 true
             }
         }

@@ -60,18 +60,14 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener,
             updateItems(todoViewModel.allCategoryItems.value!!)
         })
 
-
         noteViewModel.getCategoryFabButtonMode().observe(requireActivity(), {
-            /*
-            if(it==true){
-                updateItems(viewModel.allCategoryItems.value!!.filter {
-                    it.isFavoutire == true
-                })
-            } else{
-                updateItems(viewModel.allCategoryItems.value!!)
-            }
-             */
             updateItems(todoViewModel.allCategoryItems.value!!)
+            if(todoViewModel.allCategoryItems.value!!.none { it.isFavoutire }
+                &&noteViewModel.getNoteFabButtonMode().value ==true){
+                binding.fragmentTodoEmptyFavouriteTv.visibility = View.VISIBLE
+            } else{
+                binding.fragmentTodoEmptyFavouriteTv.visibility = View.INVISIBLE
+            }
         })
 
         noteViewModel.getNotifyDataCategory().observe(viewLifecycleOwner, {

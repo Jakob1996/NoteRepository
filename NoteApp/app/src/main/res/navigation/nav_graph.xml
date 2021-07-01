@@ -8,36 +8,33 @@
     <fragment
         android:id="@+id/mainFramgent"
         android:name="com.example.noteapp.ui.fragments.main.MainFragment"
-        tools:layout="@layout/fragment_main" >
+        tools:layout="@layout/fragment_main">
 
         <action
             android:id="@+id/action_mainFramgent_to_BeforeAddEditNoteFragment"
             app:destination="@id/beforeAddEditNoteFragment"
             app:exitAnim="@anim/zero_to_zero"
-            app:popUpTo="@id/mainFramgent"
-            app:popUpToInclusive="false"
             app:launchSingleTop="false"
-            />
+            app:popUpTo="@id/mainFramgent"
+            app:popUpToInclusive="false" />
 
         <action
             android:id="@+id/action_mainFramgent_to_searchFragment"
             app:destination="@id/searchFragment"
             app:enterAnim="@anim/from_down_to_up"
             app:exitAnim="@anim/zero_to_zero"
+            app:launchSingleTop="true"
             app:popEnterAnim="@anim/zero_to_zero"
             app:popExitAnim="@anim/from_up_to_down"
             app:popUpTo="@id/mainFramgent"
-            app:popUpToInclusive="false"
-            app:launchSingleTop="true"
-            />
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_mainFramgent_to_addEditToDoFragment"
             app:destination="@id/addEditToDoFragment"
-            app:popUpTo="@id/mainFramgent"
-            app:launchSingleTop="false"
-            app:popUpToInclusive="false"
             app:exitAnim="@anim/zero_to_zero"
-            />
+            app:launchSingleTop="false"
+            app:popUpTo="@id/mainFramgent"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_mainFramgent_to_addNoteFragment"
             app:destination="@id/addNoteFragment"
@@ -63,16 +60,7 @@
             app:destination="@id/profileFragment" />
         <action
             android:id="@+id/action_mainFramgent_to_searchCategoryFragment"
-            app:destination="@id/searchCategoryFragment"
-            />
-        <action
-            android:id="@+id/action_mainFramgent_to_fragmentTest"
-            app:destination="@id/fragmentTest"
-            app:enterAnim="@anim/from_right_to_left"
-            app:exitAnim="@anim/zero_to_zero"
-            app:popEnterAnim="@anim/zero_to_zero"
-            app:popExitAnim="@anim/from_left_to_right"
-            app:popUpTo="@id/mainFramgent" />
+            app:destination="@id/searchCategoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/beforeAddEditNoteFragment"
@@ -100,9 +88,9 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.noteapp.ui.fragments.search.SearchFragment"
+        android:name="com.example.noteapp.ui.fragments.search.SearchNoteFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" >
+        tools:layout="@layout/fragment_search_note">
         <action
             android:id="@+id/action_searchFragment_to_mainFramgent"
             app:popUpTo="@id/mainFramgent" />
@@ -118,17 +106,15 @@
             android:id="@+id/action_searchFragment_to_beforeAddEditNoteFragment"
             app:destination="@id/beforeAddEditNoteFragment"
             app:exitAnim="@anim/zero_to_zero"
-            app:popExitAnim="@anim/zero_to_zero"
             app:launchSingleTop="true"
-            />
+            app:popExitAnim="@anim/zero_to_zero" />
     </fragment>
 
     <fragment
         android:id="@+id/addEditToDoFragment"
         android:name="com.example.noteapp.ui.fragments.todo.AddEditToDoFragment"
         android:label="AddEditToDoFragment"
-        tools:layout="@layout/fragment_add_edit_to_do"
-        >
+        tools:layout="@layout/fragment_add_edit_to_do">
         <action
             android:id="@+id/action_addEditToDoFragment_to_mainFramgent"
             app:popUpTo="@id/mainFramgent" />
@@ -144,8 +130,7 @@
         android:id="@+id/editNoteFragment"
         android:name="com.example.noteapp.ui.fragments.note.EditNoteFragment"
         android:label="EditNoteFragment"
-        tools:layout="@layout/fragment_edit_note"
-        >
+        tools:layout="@layout/fragment_edit_note">
         <action
             android:id="@+id/action_editNoteFragment_to_addEditNoteFragment"
             app:destination="@id/beforeAddEditNoteFragment" />
@@ -154,8 +139,7 @@
         android:id="@+id/addNoteFragment"
         android:name="com.example.noteapp.ui.fragments.note.AddNoteFragment"
         android:label="AddNoteFragment"
-        tools:layout="@layout/fragment_add_note"
-        >
+        tools:layout="@layout/fragment_add_note">
         <action
             android:id="@+id/action_addNoteFragment_to_mainFramgent"
             app:popUpTo="@id/mainFramgent" />
@@ -168,8 +152,7 @@
         android:id="@+id/passwordNoteFragment"
         android:name="com.example.noteapp.ui.fragments.note.AddPasswordNoteFragment"
         android:label="PasswordNoteFragment"
-        tools:layout="@layout/fragment_password_note"
-        >
+        tools:layout="@layout/fragment_password_note">
         <action
             android:id="@+id/action_passwordNoteFragment_to_addNoteFragment"
             app:destination="@id/addNoteFragment" />
@@ -187,8 +170,7 @@
         android:id="@+id/checkPasswordFragment"
         android:name="com.example.noteapp.ui.fragments.note.CheckPasswordFragment"
         android:label="CheckPasswordFragment"
-        tools:layout="@layout/fragment_check_password"
-        >
+        tools:layout="@layout/fragment_check_password">
         <action
             android:id="@+id/action_checkPasswordFragment_to_mainFramgent"
             app:destination="@id/mainFramgent" />
@@ -204,8 +186,7 @@
         android:id="@+id/registrationFragment"
         android:name="com.example.noteapp.ui.fragments.registration.RegistrationFragment"
         android:label="RegistrationFragment"
-        tools:layout="@layout/fragment_registration"
-        >
+        tools:layout="@layout/fragment_registration">
         <action
             android:id="@+id/action_registrationFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
@@ -214,7 +195,7 @@
         android:id="@+id/loginFragment"
         android:name="com.example.noteapp.ui.fragments.login.LoginFragment"
         android:label="fragment_registration"
-        tools:layout="@layout/fragment_registration" >
+        tools:layout="@layout/fragment_registration">
         <action
             android:id="@+id/action_loginFragment_to_registrationFragment"
             app:destination="@id/registrationFragment" />
@@ -231,8 +212,7 @@
         android:id="@+id/searchCategoryFragment"
         android:name="com.example.noteapp.ui.fragments.search.SearchCategoryFragment"
         android:label="SearchCategoryFragment"
-        tools:layout="@layout/fragment_search_category"
-        >
+        tools:layout="@layout/fragment_search_category">
         <action
             android:id="@+id/action_searchCategoryFragment_to_addEditToDoFragment"
             app:destination="@id/addEditToDoFragment" />
@@ -244,15 +224,7 @@
             android:id="@+id/action_searchCategoryFragment_to_checkPasswordFragment"
             app:destination="@id/checkPasswordFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/fragmentTest"
-        android:name="com.example.noteapp.ui.fragments.note.FragmentTest"
-        android:label="fragment_test"
-        tools:layout="@layout/fragment_test" >
-        <action
-            android:id="@+id/action_fragmentTest_to_mainFramgent"
-            app:destination="@id/mainFramgent" />
-    </fragment>
+
     <fragment
         android:id="@+id/fragmentsKeeper"
         android:name="com.example.noteapp.ui.fragments.main.FragmentsKeeper"

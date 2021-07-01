@@ -7,7 +7,7 @@ import com.example.noteapp.R
 
 interface Navigation {
     fun navigateToFragment(fragment:Fragment, name:String, fm:FragmentManager){
-        val transaction = fm.beginTransaction().setCustomAnimations(
+        fm.beginTransaction().setCustomAnimations(
             R.anim.animation_into, R.anim.animation_zero,
             R.anim.animation_zero, R.anim.animation_backto
         ).add(R.id.container_keeper,

@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.search.SearchFragment"
     android:background="@color/colorPrimary_dark"
     android:clickable="true"
     android:focusable="true"
-    >
+    tools:context=".ui.fragments.search.SearchNoteFragment">
 
     <RelativeLayout
         android:id="@+id/toolbar_fragmentAddEdit"
@@ -28,17 +27,17 @@
             android:id="@+id/icBackInSearchFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_back"
             android:layout_centerVertical="true"
+            android:src="@drawable/ic_back"
             app:tint="@color/colorIcons" />
 
         <TextView
             android:id="@+id/toolbar_Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Find your category"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="Find your category"
             android:textColor="@color/colorIcons" />
 
     </RelativeLayout>
@@ -68,11 +67,11 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
+                android:focusable="true"
                 android:src="@drawable/ic_search"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:focusable="true"
 
                 />
 

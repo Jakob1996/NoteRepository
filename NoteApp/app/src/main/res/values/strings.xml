@@ -15,4 +15,5 @@
     <string name="Explore">Explore</string>
     <string name="deleteToolbar">Delete</string>
     <string name="categoryEditorTextView">Category editor</string>
+    <string name="favourite_empty_list">Favourite list is empty</string>
 </resources>

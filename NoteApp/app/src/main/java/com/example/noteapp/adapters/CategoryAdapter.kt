@@ -8,17 +8,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.noteapp.data.Category
 import com.example.noteapp.databinding.CategoryItemBinding
 
-class ItemsCategoryTodoAdapter(private val list: List<Category>, private val listener: OnItemCategoryClickListener): RecyclerView.Adapter<ItemsCategoryTodoAdapter.MyViewHolder>() {
+class ItemsCategoryTodoAdapter(
+    private val list: List<Category>, private val listener: OnItemCategoryClickListener
+) : RecyclerView.Adapter<ItemsCategoryTodoAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemBinding = CategoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val itemBinding =
+            CategoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-
-        val cat:Category = list[position]
-
+        val cat: Category = list[position]
         holder.bind(cat)
     }
 
@@ -26,43 +27,44 @@ class ItemsCategoryTodoAdapter(private val list: List<Category>, private val lis
         return list.size
     }
 
-    inner class MyViewHolder(private val itemBinding: CategoryItemBinding):RecyclerView.ViewHolder(itemBinding.root){
+    inner class MyViewHolder(private val itemBinding: CategoryItemBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
         init {
-            itemBinding.layoutCategoryItem.setOnClickListener{
-                listener.onItemClick(list[adapterPosition], adapterPosition)
+            itemBinding.layoutCategoryItem.setOnClickListener {
+                listener.onItemClick(list[bindingAdapterPosition], bindingAdapterPosition)
             }
-            itemBinding.layoutCategoryItem.setOnLongClickListener{
-                listener.onItemLongClick(list[adapterPosition], adapterPosition)
+            itemBinding.layoutCategoryItem.setOnLongClickListener {
+                listener.onItemLongClick(list[bindingAdapterPosition], bindingAdapterPosition)
                 true
             }
         }
 
-        fun bind(cat: Category){
+        fun bind(cat: Category) {
 
-            itemBinding.categoryNameTextView.setText(cat.categoryName)
+            itemBinding.categoryNameTextView.text = cat.categoryName
 
             itemBinding.layoutCategoryItem.setBackgroundColor(Color.parseColor(cat.color))
 
-            if(cat.isSelected){
+            if (cat.isSelected) {
                 itemBinding.layoutCategoryItem.setBackgroundColor(Color.parseColor("#F0F4D7"))
             }
 
-            if(cat.isFavoutire){
+            if (cat.isFavoutire) {
                 itemBinding.favLayCatItem.visibility = View.VISIBLE
-            } else{
+            } else {
                 itemBinding.favLayCatItem.visibility = View.GONE
             }
 
-            if(cat.hasPassword){
+            if (cat.hasPassword) {
                 itemBinding.delLayCatItem.visibility = View.VISIBLE
-            } else{
+            } else {
                 itemBinding.delLayCatItem.visibility = View.GONE
             }
         }
     }
 }
 
-interface OnItemCategoryClickListener{
-    fun onItemClick(category: Category, position:Int)
+interface OnItemCategoryClickListener {
+    fun onItemClick(category: Category, position: Int)
     fun onItemLongClick(category: Category, position: Int)
 }

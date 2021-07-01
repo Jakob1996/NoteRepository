@@ -1,50 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/infoNoteDialog"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/infoNoteDialog"
     android:layout_width="200dp"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layout_gravity="center_horizontal"
     android:background="@color/colorQuickActionsBackground"
     android:clickable="true"
     android:focusable="true"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal"
         android:layout_gravity="center"
-        android:background="@color/colorQuickActionsBackground">
+        android:background="@color/colorQuickActionsBackground"
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/searchNote_editText"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:backgroundTint="@color/colorNoteColor2"
+            android:fontFamily="@font/ubunturegular"
             android:gravity="bottom"
             android:hint="Title"
-            android:textColorHint="@color/colorIcons"
             android:textColor="@color/white"
-            android:fontFamily="@font/ubunturegular"
-            android:backgroundTint="@color/colorNoteColor2" />
+            android:textColorHint="@color/colorIcons" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/colorPrimary_dark"
-        >
+        android:background="@color/colorPrimary_dark">
+
         <Button
             android:id="@+id/searchNote_Button"
             android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:text="Search..."
-            android:textColor="@color/colorNoteColor2"
             android:background="@color/colorPrimary_dark"
-            android:fontFamily="@font/ubunturegular" />
+            android:fontFamily="@font/ubunturegular"
+            android:text="Search..."
+            android:textColor="@color/colorNoteColor2" />
     </LinearLayout>
 
 

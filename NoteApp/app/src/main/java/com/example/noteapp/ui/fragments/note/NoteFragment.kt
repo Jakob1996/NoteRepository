@@ -8,19 +8,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.noteapp.R
 import com.example.noteapp.adapters.NoteAdapter
 import com.example.noteapp.data.Note
 import com.example.noteapp.databinding.FragmentNoteBinding
 import com.example.noteapp.navigation.Navigation
-import com.example.noteapp.tools.Clic
 import com.example.noteapp.tools.OnItemClickListener
-import com.example.noteapp.ui.fragments.main.ClBk
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.ToDoViewModel
 import kotlinx.coroutines.*
 
-class NoteFragment() : Fragment(), OnItemClickListener, Navigation, ClBk {
+class NoteFragment() : Fragment(), OnItemClickListener, Navigation {
 
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var todoViewModel: ToDoViewModel
@@ -45,12 +42,18 @@ class NoteFragment() : Fragment(), OnItemClickListener, Navigation, ClBk {
         _binding = FragmentNoteBinding.inflate(inflater, container , false)
 
 
-        noteViewModel.getSortDescNote().observe(requireActivity(), Observer {
+        noteViewModel.getSortDescNote().observe(requireActivity(), {
             updateNotes(noteViewModel.allNotes.value!!)
         })
 
-        noteViewModel.getNoteFabButtonMode().observe(viewLifecycleOwner, Observer {
+        noteViewModel.getNoteFabButtonMode().observe(viewLifecycleOwner, {
             updateNotes(noteViewModel.allNotes.value!!)
+            if(noteViewModel.allNotes.value!!.none { it.isFavourite }
+                &&noteViewModel.getNoteFabButtonMode().value ==true){
+                binding.fragmentNoteEmptyFavouriteTv.visibility = View.VISIBLE
+            } else{
+                binding.fragmentNoteEmptyFavouriteTv.visibility = View.INVISIBLE
+            }
         })
 
         noteViewModel.getNotifyDataNote().observe(viewLifecycleOwner, Observer {
@@ -204,10 +207,4 @@ class NoteFragment() : Fragment(), OnItemClickListener, Navigation, ClBk {
 
         noteViewModel.noteState = binding.recyclerView.layoutManager?.onSaveInstanceState()
     }
-
-    override fun callBack() {
-        binding.emptyTextView.visibility = View.VISIBLE
-    }
-
-
 }
