@@ -27,28 +27,7 @@ class EditNoteFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(false) {
-                override fun handleOnBackPressed() {
-                    Log.d("checkn", "closeEditNote")
-                    Log.d("checkn", "${noteViewModel.noteBeforeChange?.message}1")
-                    if (binding.titleEditNote.text.isNotEmpty() || binding.messEditNote.text.isNotEmpty()) {
-                        val note = noteViewModel.getSelectedNote().value
-                        val title = binding.titleEditNote.text.toString()
-                        val mess = binding.messEditNote.text.toString()
-                        Log.d("checkn", "${noteViewModel.noteBeforeChange?.message}2")
-                        note!!.message = mess
-                        note.title = title
-                        Log.d("checkn", "${noteViewModel.noteBeforeChange?.message}3")
 
-                        noteViewModel.setSelectedNote(note)
-                        Log.d("checkn", "${noteViewModel.noteBeforeChange?.message}4")
-                    }
-                    isEnabled = false
-                    exitTransaction()
-                }
-            })
         noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
     }
 
@@ -57,6 +36,24 @@ class EditNoteFragment : Fragment() {
 
         _binding = FragmentEditNoteBinding.inflate(inflater, container, false)
 
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(false) {
+                override fun handleOnBackPressed() {
+                    if (binding.titleEditNote.text.isNotEmpty() || binding.messEditNote.text.isNotEmpty()) {
+                        val note = noteViewModel.getSelectedNote().value
+                        val title = binding.titleEditNote.text.toString()
+                        val mess = binding.messEditNote.text.toString()
+                        note!!.message = mess
+                        note.title = title
+
+                        noteViewModel.updateNote(note)
+                    }
+                    isEnabled = false
+                    exitTransaction()
+                }
+            })
+
         return binding.root
     }
 
@@ -64,9 +61,7 @@ class EditNoteFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         noteViewModel.getSelectedNote().observe(viewLifecycleOwner, {
-            Log.d("checkn", "${noteViewModel.noteBeforeChange?.message}")
             binding.titleEditNote.setText(it!!.title)
-            //mess_EditNote.setText(it.message)
             setFontColor(it.fontColor)
             setFontSize(it.fontSize)
         })
@@ -134,8 +129,6 @@ class EditNoteFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        Log.d("checkn", "${noteViewModel.noteBeforeChange?.message}ddd")
-
         _binding = null
 
         super.onDestroyView()

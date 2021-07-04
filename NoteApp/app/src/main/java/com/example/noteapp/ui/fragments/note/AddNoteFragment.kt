@@ -133,11 +133,7 @@ class AddNoteFragment : Fragment() {
         binding.backFromAddNote.setOnClickListener { requireActivity().onBackPressed() }
 
         binding.includeMiscellaneous.favouriteNoteButton.setOnClickListener {
-            if (noteViewModel.isFavourite) {
-                noteViewModel.isFavourite = false
-            } else {
-                noteViewModel.isFavourite = true
-            }
+            noteViewModel.isFavourite = !noteViewModel.isFavourite
         }
 
         binding.includeMiscellaneous.layoutPasswordImage.setOnClickListener {

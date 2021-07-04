@@ -5,11 +5,9 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
@@ -29,6 +27,7 @@ import java.util.*
 class BeforeEditNoteFragment : Fragment(), Navigation {
 
     private lateinit var noteViewModel: NoteViewModel
+
     private lateinit var profileViewModel: ProfilViewModel
 
     private var value: Boolean = false
@@ -47,152 +46,104 @@ class BeforeEditNoteFragment : Fragment(), Navigation {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-
+    ): View {
         closeKeyboard()
+        setViewModels()
 
-        _binding = FragmentBeforeEditNoteBinding.inflate(layoutInflater, container, false)
-
-        noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
-
-        profileViewModel = ViewModelProvider(requireActivity())[ProfilViewModel::class.java]
-
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(false) {
-                override fun handleOnBackPressed() {
-                    if (noteViewModel.getSearchMode().value == true && binding.messAddEditFrag.text.isNotEmpty()) {
-                        textHighLighter
-                            .setForegroundColor(binding.messAddEditFrag.currentTextColor)
-                            .setBackgroundColor(Color.TRANSPARENT)
-                            .invalidate(TextHighlighter.BASE_MATCHER)
-                        noteViewModel.setSearchMode(false)
-
-                    } else {
-                        val title = binding.titleAddEditFrag.text.toString()
-                        val message = binding.messAddEditFrag.text.toString()
-                        val date = Calendar.getInstance().timeInMillis
-                        val color = noteViewModel.selectedNoteColor
-                        val fontSize = noteViewModel.selectedFontSize
-                        val fontColor = noteViewModel.selectedFontNote
-                        val favourite = noteViewModel.isFavourite
-                        val hasPassword = noteViewModel.hasPassword
-                        val password = noteViewModel.password
-
-                        val noteBefore = noteViewModel.noteBeforeChange
-                        val titleBefore = noteViewModel.titleBefore
-                        val messBefore = noteViewModel.messageBefore
-
-                        if (titleBefore != title
-                            || messBefore != message
-                            || noteBefore?.color != color
-                            || fontSize != noteBefore.fontSize
-                            || fontColor != noteBefore.fontColor
-                            || noteBefore.title.length != title.length
-                            || noteBefore.message.length != message.length
-                            || noteBefore.isFavourite != favourite
-                            || noteBefore.hasPassword != hasPassword
-                        ) {
-
-                            val note = Note(
-                                title, message, date, false, color,
-                                fontColor, fontSize, favourite, hasPassword, password
-                            ).apply {
-                                rowId = noteViewModel.getSelectedNote().value!!.rowId
-                            }
-
-                            if (fbAuth.currentUser != null) {
-                                profileViewModel.updateNoteInCloud(note)
-                            }
-                            noteViewModel.updateNote(note)
-                            noteViewModel.noteState = null
-                        }
-                        quit = 2
-                        isEnabled = false
-                        closeKeyboard()
-                    }
-                    requireActivity().supportFragmentManager.popBackStack()
-                    if (noteViewModel.isSearchEdit == 1) {
-                        //requireActivity().overridePendingTransition(R.anim.zero_to_zero, R.anim.from_left_to_right)
-                        //requireActivity().onBackPressed()
-                        backTransaction()
-                    } else {
-                        //findNavController().navigate(R.id.action_beforeAddEditNoteFragment_to_searchFragment2)
-                    }
-                }
-            }
-        )
+        _binding = FragmentBeforeEditNoteBinding
+            .inflate(layoutInflater, container, false)
 
         return binding.root
     }
 
+    private fun setViewModels() {
+        noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
+        profileViewModel = ViewModelProvider(requireActivity())[ProfilViewModel::class.java]
+    }
+
     @SuppressLint("Range")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("ahc", "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
 
-        val gradientDrawable: GradientDrawable =
-            binding.viewSubtitleIndicator.background as GradientDrawable
-
-        Log.d("checkn", "${noteViewModel.noteBeforeChange?.message}")
         initMiscellaneous()
+        setSearchInMessageListener()
+        setPasswordListener()
+        setEditNoteListener()
+        setDoubleClickListener()
+        setFontSizeListener()
+        setFontColorListener()
+        setInfoListener()
+        setBackButtonListener()
+        setOnClickFavouriteBtnListener()
+        getSearchModeObserver()
+        getSelectedNoteObserver()
+    }
 
-        binding.includeMiscellaneousBeforeAddEdit.searchInMessageNote.setOnClickListener {
+    override fun onDestroyView() {
+        saveStateOrQuit()
+
+        _binding = null
+
+        super.onDestroyView()
+    }
+
+    private fun saveStateOrQuit() {
+//        if (quit == 2) {
+//            Log.d("mmm", "quit")
+//            onBackPressedListener()
+//            setOffAddEdit()
+//        } else {
+//            Log.d("mmm", "else")
+//            noteViewModel.run {
+//                val note = Note(
+//                    binding.titleAddEditFrag.text.toString(),
+//                    binding.messAddEditFrag.text.toString(),
+//                    noteDate,
+//                    false,
+//                    selectedNoteColor,
+//                    selectedFontNote,
+//                    selectedFontSize,
+//                    isFavourite,
+//                    hasPassword,
+//                    password
+//                )
+//                note.rowId = idNote
+//
+//                noteViewModel.setSelectedNote(note)
+//            }
+//        }
+        onBackPressedListener()
+        setOffAddEdit()
+    }
+
+    private fun setBackButtonListener() {
+        binding.backFromAddEdit.setOnClickListener { backTransaction() }
+    }
+
+    private fun setInfoListener() {
+        binding.includeMiscellaneousBeforeAddEdit.layoutInfo.setOnClickListener {
             val fm = requireActivity().supportFragmentManager
-            val dialogSearchFrag = SearchInNoteDialogFragment()
-            dialogSearchFrag.show(fm, "ab")
+            val infoDialogFrag = InfoDialogFragment()
+            infoDialogFrag.show(fm, "hhh")
         }
+    }
 
-        binding.includeMiscellaneousBeforeAddEdit.layoutPasswordImage.setOnClickListener {
-            if (noteViewModel.hasPassword) {
-                val fm = requireActivity().supportFragmentManager
-                val dialogFrag = RemovePasswordDialogFragment()
-                dialogFrag.show(fm, "Ab")
-            } else {
-                val sm = requireActivity().supportFragmentManager
-                sm.beginTransaction().add(R.id.container_keeper, AddPasswordNoteFragment())
-                    .addToBackStack("bF").commit()
+    private fun setFontColorListener() {
+        binding.includeMiscellaneousBeforeAddEdit.colorFontL.setOnClickListener {
+            ++noteViewModel.selectedFontNote
+            if (noteViewModel.selectedFontNote > 3) {
+                noteViewModel.selectedFontNote = 1
+            }
+            setFontColor(noteViewModel.selectedFontNote)
+            noteViewModel.selectedFontNote + 1
+
+            if (noteViewModel.selectedFontNote > 3) {
+                noteViewModel.selectedFontNote = 1
             }
         }
+    }
 
-        binding.editNote.setOnClickListener {
-            val ft = requireActivity().supportFragmentManager.beginTransaction()
-                .add(
-                    R.id.container_keeper, EditNoteFragment()
-                ).addToBackStack("BEN").commit()
-
-        }
-
-        binding.beforeLayout.setOnClickListener(
-            DoubleClickListener(
-                callback = object : DoubleClickListener.Callback {
-                    override fun doubleClicked() {
-                        navigateToFragment(
-                            EditNoteFragment(),
-                            "BEN",
-                            requireActivity().supportFragmentManager
-                        )
-                    }
-                }
-            )
-        )
-
-        binding.messAddEditFrag.setOnClickListener(
-            DoubleClickListener(
-                callback = object : DoubleClickListener.Callback {
-                    override fun doubleClicked() {
-                        navigateToFragment(
-                            EditNoteFragment(),
-                            "BEN",
-                            requireActivity().supportFragmentManager
-                        )
-                    }
-                }
-            )
-        )
-
-
-
+    private fun setFontSizeListener() {
         binding.includeMiscellaneousBeforeAddEdit.fontSizeL.setOnClickListener {
             ++noteViewModel.selectedFontSize
             if (noteViewModel.selectedFontSize > 5) {
@@ -206,35 +157,63 @@ class BeforeEditNoteFragment : Fragment(), Navigation {
                 noteViewModel.selectedFontSize = 1
             }
         }
+    }
 
-        binding.includeMiscellaneousBeforeAddEdit.colorFontL.setOnClickListener(object :
-            View.OnClickListener {
-            override fun onClick(v: View?) {
-                ++noteViewModel.selectedFontNote
-                if (noteViewModel.selectedFontNote > 3) {
-                    noteViewModel.selectedFontNote = 1
+    private fun setDoubleClickListener() {
+        binding.beforeLayout.setOnClickListener(
+            DoubleClickListener(
+                callback = object : DoubleClickListener.Callback {
+                    override fun doubleClicked() {
+                        navigateToFragment(
+                            EditNoteFragment(),
+                            "BEN",
+                            requireActivity().supportFragmentManager
+                        )
+                    }
                 }
-                setFontColor(noteViewModel.selectedFontNote)
-                noteViewModel.selectedFontNote + 1
+            )
+        )
+    }
 
-                if (noteViewModel.selectedFontNote > 3) {
-                    noteViewModel.selectedFontNote = 1
-                }
-            }
-        })
+    private fun setEditNoteListener() {
+        binding.editNote.setOnClickListener {
+            val ft = requireActivity().supportFragmentManager.beginTransaction()
+                .add(
+                    R.id.container_keeper, EditNoteFragment()
+                ).addToBackStack("BEN").commit()
 
-        binding.includeMiscellaneousBeforeAddEdit.layoutInfo.setOnClickListener {
-            val fm = requireActivity().supportFragmentManager
-            val infoDialogFrag = InfoDialogFragment()
-            infoDialogFrag.show(fm, "hhh")
         }
+    }
 
-        binding.backFromAddEdit.setOnClickListener { backTransaction() }
+    private fun setPasswordListener() {
+        binding.includeMiscellaneousBeforeAddEdit.layoutPasswordImage.setOnClickListener {
+            if (noteViewModel.hasPassword) {
+                val fm = requireActivity().supportFragmentManager
+                val dialogFrag = RemovePasswordDialogFragment()
+                dialogFrag.show(fm, "Ab")
+            } else {
+                val sm = requireActivity().supportFragmentManager
+                sm.beginTransaction().add(R.id.container_keeper, AddPasswordNoteFragment())
+                    .addToBackStack("bF").commit()
+            }
+        }
+    }
 
+    private fun setSearchInMessageListener() {
+        binding.includeMiscellaneousBeforeAddEdit.searchInMessageNote.setOnClickListener {
+            val fm = requireActivity().supportFragmentManager
+            val dialogSearchFrag = SearchInNoteDialogFragment()
+            dialogSearchFrag.show(fm, "ab")
+        }
+    }
+
+    private fun setOnClickFavouriteBtnListener() {
         binding.includeMiscellaneousBeforeAddEdit.favouriteNoteButton.setOnClickListener {
             noteViewModel.isFavourite = !noteViewModel.isFavourite
         }
+    }
 
+    private fun getSearchModeObserver() {
         noteViewModel.getSearchMode().observe(viewLifecycleOwner, Observer {
             if (noteViewModel.getSearchMode().value == true) {
                 textHighLighter
@@ -243,23 +222,30 @@ class BeforeEditNoteFragment : Fragment(), Navigation {
                     .highlight(noteViewModel.searchInNote, TextHighlighter.BASE_MATCHER)
             }
         })
+    }
 
-        noteViewModel.getSelectedNote().observe(viewLifecycleOwner, Observer {
+    private fun getSelectedNoteObserver() {
+        noteViewModel.getSelectedNote().observe(viewLifecycleOwner, {
+
+            val gradientDrawable: GradientDrawable =
+                binding.viewSubtitleIndicator.background as GradientDrawable
 
             if (noteViewModel.getSelectedNote().value == null) {
                 noteViewModel.selectedNoteColor = "#333333"
                 gradientDrawable.setColor(Color.parseColor(noteViewModel.selectedNoteColor))
             } else {
-                noteViewModel.noteTitle = it!!.title
-                noteViewModel.noteMessage = it.message
-                noteViewModel.noteDate = it.date
-                noteViewModel.selectedNoteColor = it.color
-                noteViewModel.selectedFontSize = it.fontSize
-                noteViewModel.selectedFontNote = it.fontColor
-                noteViewModel.idNote = it.rowId
-                noteViewModel.isFavourite = it.isFavourite
-                noteViewModel.hasPassword = it.hasPassword
-                noteViewModel.password = it.password
+                noteViewModel.run {
+                    noteTitle = it!!.title
+                    noteMessage = it.message
+                    noteDate = it.date
+                    selectedNoteColor = it.color
+                    selectedFontSize = it.fontSize
+                    selectedFontNote = it.fontColor
+                    idNote = it.rowId
+                    isFavourite = it.isFavourite
+                    hasPassword = it.hasPassword
+                    password = it.password
+                }
 
                 setImagePassword(noteViewModel.hasPassword)
 
@@ -376,57 +362,70 @@ class BeforeEditNoteFragment : Fragment(), Navigation {
      */
 
     private fun itemSelected1() {
-        binding.includeMiscellaneousBeforeAddEdit.imageColor1.setImageResource(R.drawable.ic_done)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor2.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor3.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor6.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor4.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor5.setImageResource(0)
+        binding.includeMiscellaneousBeforeAddEdit.run {
+            imageColor1.setImageResource(R.drawable.ic_done)
+            imageColor2.setImageResource(0)
+            imageColor3.setImageResource(0)
+            imageColor6.setImageResource(0)
+            imageColor4.setImageResource(0)
+            imageColor5.setImageResource(0)
+        }
+
     }
 
     private fun itemSelected2() {
-        binding.includeMiscellaneousBeforeAddEdit.imageColor1.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor2.setImageResource(R.drawable.ic_done)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor3.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor6.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor4.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor5.setImageResource(0)
+        binding.includeMiscellaneousBeforeAddEdit.run {
+            imageColor1.setImageResource(0)
+            imageColor2.setImageResource(R.drawable.ic_done)
+            imageColor3.setImageResource(0)
+            imageColor6.setImageResource(0)
+            imageColor4.setImageResource(0)
+            imageColor5.setImageResource(0)
+        }
     }
 
     private fun itemSelected3() {
-        binding.includeMiscellaneousBeforeAddEdit.imageColor1.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor2.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor3.setImageResource(R.drawable.ic_done)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor6.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor4.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor5.setImageResource(0)
+        binding.includeMiscellaneousBeforeAddEdit.run {
+            imageColor1.setImageResource(0)
+            imageColor2.setImageResource(0)
+            imageColor3.setImageResource(R.drawable.ic_done)
+            imageColor6.setImageResource(0)
+            imageColor4.setImageResource(0)
+            imageColor5.setImageResource(0)
+        }
     }
 
     private fun itemSelected6() {
-        binding.includeMiscellaneousBeforeAddEdit.imageColor1.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor2.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor3.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor6.setImageResource(R.drawable.ic_done)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor4.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor5.setImageResource(0)
+        binding.includeMiscellaneousBeforeAddEdit.run {
+            imageColor1.setImageResource(0)
+            imageColor2.setImageResource(0)
+            imageColor3.setImageResource(0)
+            imageColor6.setImageResource(R.drawable.ic_done)
+            imageColor4.setImageResource(0)
+            imageColor5.setImageResource(0)
+        }
     }
 
     private fun itemSelected4() {
-        binding.includeMiscellaneousBeforeAddEdit.imageColor1.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor2.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor3.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor6.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor4.setImageResource(R.drawable.ic_done)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor5.setImageResource(0)
+        binding.includeMiscellaneousBeforeAddEdit.run {
+            imageColor1.setImageResource(0)
+            imageColor2.setImageResource(0)
+            imageColor3.setImageResource(0)
+            imageColor6.setImageResource(0)
+            imageColor4.setImageResource(R.drawable.ic_done)
+            imageColor5.setImageResource(0)
+        }
     }
 
     private fun itemSelected5() {
-        binding.includeMiscellaneousBeforeAddEdit.imageColor1.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor2.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor3.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor6.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor4.setImageResource(0)
-        binding.includeMiscellaneousBeforeAddEdit.imageColor5.setImageResource(R.drawable.ic_done)
+        binding.includeMiscellaneousBeforeAddEdit.run {
+            imageColor1.setImageResource(0)
+            imageColor2.setImageResource(0)
+            imageColor3.setImageResource(0)
+            imageColor6.setImageResource(0)
+            imageColor4.setImageResource(0)
+            imageColor5.setImageResource(R.drawable.ic_done)
+        }
     }
 
     /*
@@ -496,44 +495,6 @@ class BeforeEditNoteFragment : Fragment(), Navigation {
         }
     }
 
-    override fun onDestroyView() {
-
-        val title = binding.titleAddEditFrag.text
-        val message = binding.messAddEditFrag.text
-        val fontSize = noteViewModel.selectedFontSize
-        val fontColor = noteViewModel.selectedFontNote
-        val date = noteViewModel.noteDate
-        val color = noteViewModel.selectedNoteColor
-        val id = noteViewModel.idNote
-        val isFavourite = noteViewModel.isFavourite
-        val hasPassword = noteViewModel.hasPassword
-        val password = noteViewModel.password
-
-        val note = Note(
-            title.toString(),
-            message.toString(),
-            date,
-            false,
-            color,
-            fontColor,
-            fontSize,
-            isFavourite,
-            hasPassword,
-            password
-        )
-        note.rowId = id
-
-        noteViewModel.setSelectedNote(note)
-
-        if (quit == 2) {
-            setOffAddEdit()
-        }
-
-        _binding = null
-
-        super.onDestroyView()
-    }
-
     private fun setOffAddEdit() {
         selectedImagePath = ""
         binding.titleAddEditFrag.text = ""
@@ -576,4 +537,67 @@ class BeforeEditNoteFragment : Fragment(), Navigation {
         sm.popBackStackImmediate("noteF", FragmentManager.POP_BACK_STACK_INCLUSIVE)
         trans.commit()
     }
+
+    private fun onBackPressedListener() {
+        if (noteViewModel.getSearchMode().value == true && binding.messAddEditFrag.text.isNotEmpty()) {
+            textHighLighter
+                .setForegroundColor(binding.messAddEditFrag.currentTextColor)
+                .setBackgroundColor(Color.TRANSPARENT)
+                .invalidate(TextHighlighter.BASE_MATCHER)
+            noteViewModel.setSearchMode(false)
+        } else {
+            val title = binding.titleAddEditFrag.text.toString()
+            val message = binding.messAddEditFrag.text.toString()
+            val date = Calendar.getInstance().timeInMillis
+            val color = noteViewModel.selectedNoteColor
+            val fontSize = noteViewModel.selectedFontSize
+            val fontColor = noteViewModel.selectedFontNote
+            val favourite = noteViewModel.isFavourite
+            val hasPassword = noteViewModel.hasPassword
+            val password = noteViewModel.password
+
+            val noteBefore = noteViewModel.noteBeforeChange
+            val titleBefore = noteViewModel.titleBefore
+            val messBefore = noteViewModel.messageBefore
+
+            if (titleBefore != title
+                || messBefore != message
+                || noteBefore?.color != color
+                || fontSize != noteBefore.fontSize
+                || fontColor != noteBefore.fontColor
+                || noteBefore.title.length != title.length
+                || noteBefore.message.length != message.length
+                || noteBefore.isFavourite != favourite
+                || noteBefore.hasPassword != hasPassword
+            ) {
+                val rowId = noteViewModel.getSelectedNote().value?.rowId
+                val note = Note(
+                    title, message, date, false, color,
+                    fontColor, fontSize, favourite, hasPassword, password
+                )
+                note.let {
+                    if (rowId != null) {
+                        note.rowId = rowId
+                    }
+                }
+
+                if (fbAuth.currentUser != null) {
+                    profileViewModel.updateNoteInCloud(note)
+                }
+
+                noteViewModel.updateNote(note)
+                noteViewModel.noteState = null
+            }
+
+            quit = 2
+            closeKeyboard()
+        }
+        if (noteViewModel.isSearchEdit == 1) {
+            //requireActivity().overridePendingTransition(R.anim.zero_to_zero, R.anim.from_left_to_right)
+            //requireActivity().onBackPressed()
+        } else {
+            //findNavController().navigate(R.id.action_beforeAddEditNoteFragment_to_searchFragment2)
+        }
+    }
+
 }

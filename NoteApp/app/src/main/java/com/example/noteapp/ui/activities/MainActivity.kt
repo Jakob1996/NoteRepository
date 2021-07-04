@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
     }
 
-    fun loadData(){
+    private fun loadData(){
         val sp = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
         state = sp.getBoolean(KEY, false)
         if(state!=null){
@@ -43,13 +43,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun saveData() {
+    private fun saveData() {
         if (noteViewModel.getSortDescNote().value != null) {
             val sp = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
             val editor = sp.edit()
             editor.putBoolean(KEY, noteViewModel.getSortDescNote().value!!).apply()
         }
     }
-
-   
 }

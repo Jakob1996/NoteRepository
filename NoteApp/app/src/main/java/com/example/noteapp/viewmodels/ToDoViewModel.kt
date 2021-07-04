@@ -102,7 +102,7 @@ class ToDoViewModel(app:Application):AndroidViewModel(app) {
         CoroutineScope(Dispatchers.IO).launch { repository.insertItem(item) }
     }
 
-    fun updateItem(item: ItemOfList){
+    suspend fun updateItem(item: ItemOfList){
         CoroutineScope(Dispatchers.IO).launch { repository.updateItem(item) }
     }
 

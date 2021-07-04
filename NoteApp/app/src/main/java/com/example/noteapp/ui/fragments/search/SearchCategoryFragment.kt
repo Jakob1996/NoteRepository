@@ -37,8 +37,6 @@ class SearchCategoryFragment: BaseFragment(), OnItemCategoryClickListener {
         requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
                 todoViewModel.search = null
-
-                findNavController().navigate(R.id.action_searchCategoryFragment_to_mainFramgent)
                 popBackStack("SCF", requireActivity().supportFragmentManager, false)
                 isEnabled = false
             }

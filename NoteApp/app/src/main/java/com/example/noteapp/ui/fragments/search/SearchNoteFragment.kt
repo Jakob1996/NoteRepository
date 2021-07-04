@@ -36,7 +36,7 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
         requireActivity().onBackPressedDispatcher.addCallback(this, object :OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
                 noteViewModel.search = null
-                requireActivity().supportFragmentManager.popBackStack()
+                popBackStack("SF", requireActivity().supportFragmentManager, false)
                 isEnabled = false
             }
         })
