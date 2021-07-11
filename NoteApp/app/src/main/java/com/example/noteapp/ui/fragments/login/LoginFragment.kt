@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.data.Note
 import com.example.noteapp.databinding.FragmentLoginBinding
+import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
 import com.example.noteapp.ui.fragments.profile.ProfileFragment
 import com.example.noteapp.ui.fragments.registration.RegistrationFragment
 import com.example.noteapp.viewmodels.NoteViewModel
@@ -17,9 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 
 
-class LoginFragment : Fragment(), com.example.noteapp.navigation.Navigation {
-
-    private val fbAuth = FirebaseAuth.getInstance()
+class LoginFragment : BaseFragment() {
 
     private val LOG_DEB = "LOG_DEBUG"
 
@@ -34,6 +33,10 @@ class LoginFragment : Fragment(), com.example.noteapp.navigation.Navigation {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    override fun onBackPress() {
+
     }
 
     override fun onCreateView(

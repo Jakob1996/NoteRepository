@@ -46,7 +46,7 @@ class AddNoteFragment : Fragment() {
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentAddNoteBinding.inflate(inflater, container, false)
 
@@ -86,7 +86,7 @@ class AddNoteFragment : Fragment() {
                     quit = 2
                     isEnabled = false
                     closeKeyboard()
-                    requireActivity().supportFragmentManager.popBackStack()
+
                 }
             })
 

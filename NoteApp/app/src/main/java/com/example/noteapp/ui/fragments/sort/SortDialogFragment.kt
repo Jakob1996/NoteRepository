@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.RadioGroup
 import androidx.fragment.app.DialogFragment
 import com.example.noteapp.R
+import com.example.noteapp.ui.interfaces.OnItemClickDialogListener
 
 class SortDialogFragment: DialogFragment() {
     private lateinit var listener: OnItemClickDialogListener
@@ -39,9 +40,5 @@ class SortDialogFragment: DialogFragment() {
         } catch (e: TypeCastException){
             throw TypeCastException()
         }
-    }
-
-    interface OnItemClickDialogListener{
-        fun onItemClickDialog(sortDesc:Boolean){}
     }
 }

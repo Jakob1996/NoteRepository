@@ -48,6 +48,11 @@ class SearchCategoryFragment: BaseFragment(), OnItemCategoryClickListener {
         super.onDestroyView()
     }
 
+    override fun onBackPress() {
+        //TODO
+    }
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 

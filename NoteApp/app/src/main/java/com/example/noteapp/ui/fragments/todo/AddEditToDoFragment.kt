@@ -22,6 +22,7 @@ import com.example.noteapp.data.Category
 import com.example.noteapp.data.ItemOfList
 import com.example.noteapp.databinding.FragmentAddEditToDoBinding
 import com.example.noteapp.navigation.Navigation
+import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
 import com.example.noteapp.ui.fragments.note.RemovePasswordDialogFragment
 import com.example.noteapp.viewmodels.ToDoViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -29,7 +30,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.*
 import java.util.*
 
-class AddEditToDoFragment : Fragment(), OnItemTodoClickListener, Navigation {
+class AddEditToDoFragment : BaseFragment(), OnItemTodoClickListener, Navigation {
     private lateinit var todoViewModel: ToDoViewModel
     private var value: Boolean = false
     private lateinit var itemTodoAdapter: ToDoItemAdapter
@@ -45,16 +46,11 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener, Navigation {
         todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAddEditToDoBinding.inflate(inflater, container, false)
-
 
         return binding.root
     }
@@ -278,7 +274,7 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener, Navigation {
         }
     }
 
-    fun closeKeyboard() {
+    private fun closeKeyboard() {
         val view = requireActivity().currentFocus
         if (view != null) {
             val imm =
@@ -357,8 +353,7 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener, Navigation {
         }
     }
 
-    override fun onDestroyView() {
-
+    override fun onBackPress() {
         val color = todoViewModel.selectedCategotyItemColor
         val name = binding.titleAddEditFragCategory.text.toString()
         val date = todoViewModel.categoryDate
@@ -381,7 +376,6 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener, Navigation {
         }
 
         quit()
-        super.onDestroyView()
     }
 
     private fun setOffAddEdit() {
@@ -464,6 +458,10 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener, Navigation {
             }
         }
 
+        abc {
+            print(it)
+        }
+
         closeKeyboard()
         quit = 2
         if (todoViewModel.isSearchEdit == 1) {
@@ -471,5 +469,9 @@ class AddEditToDoFragment : Fragment(), OnItemTodoClickListener, Navigation {
         } else {
             findNavController().navigate(R.id.action_addEditToDoFragment_to_searchCategoryFragment)
         }
+    }
+
+    private fun abc(action: (Boolean)->Unit){
+        action(false)
     }
 }

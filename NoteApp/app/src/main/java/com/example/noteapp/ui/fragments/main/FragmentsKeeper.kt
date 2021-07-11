@@ -13,14 +13,14 @@ class FragmentsKeeper : Fragment() {
         private val binding get() = _binding!!
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                                  savedInstanceState: Bundle?): View? {
+                                  savedInstanceState: Bundle?): View {
             _binding = FragmentFragmentsKeeperBinding.inflate(inflater, container, false)
 
             val fm = requireActivity().supportFragmentManager
             val fragmentTransaction = fm.beginTransaction()
 
             val mainFragment = MainFragment()
-            fragmentTransaction.add(R.id.container_keeper, mainFragment)
+            fragmentTransaction.add(R.id.container_keeper, mainFragment,"FK")
 
             fragmentTransaction.commit()
 

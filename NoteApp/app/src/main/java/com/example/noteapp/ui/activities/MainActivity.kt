@@ -1,9 +1,11 @@
 package com.example.noteapp.ui.activities
+import android.os.BaseBundle
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.R
 import com.example.noteapp.databinding.ActivityMainBinding
+import com.example.noteapp.ui.interfaces.BackPressedListener
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.ToDoViewModel
 
@@ -48,6 +50,17 @@ class MainActivity : AppCompatActivity() {
             val sp = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
             val editor = sp.edit()
             editor.putBoolean(KEY, noteViewModel.getSortDescNote().value!!).apply()
+        }
+    }
+
+
+    override fun onBackPressed() {
+        val currentFragment = supportFragmentManager.fragments[supportFragmentManager.fragments.size-1]
+
+        if(currentFragment is BackPressedListener){
+            (currentFragment as BackPressedListener).onBackPress()
+        } else{
+            super.onBackPressed()
         }
     }
 }

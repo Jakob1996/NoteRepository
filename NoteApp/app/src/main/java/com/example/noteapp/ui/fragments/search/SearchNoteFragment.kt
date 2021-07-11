@@ -138,13 +138,18 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
     }
 
     override fun onItemLongClick(note: Note, position: Int) {
-
+        //TODO
     }
 
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
     }
+
+    override fun onBackPress() {
+        //TODO
+    }
+
 
     private fun showSoftKeyboard(){
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?

@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutMiscellaneous"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/background_miscallaneous"
-    app:behavior_peekHeight = "@dimen/bottom_sheet_behavior"
+    android:orientation="vertical"
+    app:behavior_peekHeight="@dimen/bottom_sheet_behavior"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
     <TextView
@@ -16,21 +14,21 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:fontFamily="@font/ubuntumedium"
+        android:gravity="center"
         android:includeFontPadding="false"
-        android:textColor="@color/white"
-        android:textSize="14sp"
         android:text="Castomizer"
-        android:gravity="center"/>
+        android:textColor="@color/white"
+        android:textSize="14sp" />
 
     <LinearLayout
+        android:id="@+id/customPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/customPanel"
-        android:orientation="horizontal"
         android:layout_marginLeft="13dp"
-        android:layout_marginRight="13dp"
         android:layout_marginTop="7dp"
-        android:gravity="center_vertical">
+        android:layout_marginRight="13dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
@@ -43,10 +41,10 @@
 
         <FrameLayout
             android:id="@+id/colorFontL"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1">
 
             <View
                 android:layout_width="47dp"
@@ -57,15 +55,15 @@
                 android:layout_height="47dp"
                 android:contentDescription="@string/app_name"
                 android:padding="11dp"
-                app:tint="@color/white"
-                android:src="@drawable/ic_round_color_text_24"/>
+                android:src="@drawable/ic_round_color_text_24"
+                app:tint="@color/white" />
         </FrameLayout>
 
         <FrameLayout
             android:id="@+id/fontSizeL"
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
             <View
                 android:layout_width="47dp"
@@ -77,15 +75,16 @@
                 android:contentDescription="@string/app_name"
                 android:padding="11dp"
                 android:src="@drawable/ic_round_size_text"
-                app:tint="@color/white"/>
+                app:tint="@color/white" />
 
         </FrameLayout>
 
         <FrameLayout
             android:id="@+id/searchInMessageNote"
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
             <View
                 android:layout_width="47dp"
                 android:layout_height="47dp" />
@@ -95,16 +94,16 @@
                 android:layout_height="47dp"
                 android:contentDescription="@string/app_name"
                 android:padding="11dp"
-                app:tint="@color/white"
-                android:src="@drawable/ic_search" />
+                android:src="@drawable/ic_search"
+                app:tint="@color/white" />
 
         </FrameLayout>
 
         <FrameLayout
             android:id="@+id/layoutPasswordImage"
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
             <View
                 android:layout_width="47dp"
@@ -116,69 +115,65 @@
                 android:layout_height="47dp"
                 android:contentDescription="@string/app_name"
                 android:padding="11dp"
-                app:tint="@color/white"
                 android:src="@drawable/ic_baseline_lock"
-                />
+                app:tint="@color/white" />
 
         </FrameLayout>
 
         <FrameLayout
             android:id="@+id/favouriteNoteButton"
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
             <View
                 android:layout_width="47dp"
                 android:layout_height="47dp"
-                android:layout_gravity="center"
-                />
+                android:layout_gravity="center" />
 
             <CheckBox
                 android:id="@+id/favouriteImage"
                 android:layout_width="47dp"
                 android:layout_height="47dp"
-                android:contentDescription="@string/app_name"
-                android:padding="11dp"
-                android:drawableRight="@drawable/checkbox_favourite_selector"
                 android:button="@null"
-/>
+                android:contentDescription="@string/app_name"
+                android:drawableRight="@drawable/checkbox_favourite_selector"
+                android:padding="11dp" />
 
         </FrameLayout>
 
         <FrameLayout
             android:id="@+id/layoutInfo"
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
             <View
                 android:layout_width="47dp"
-                android:layout_height="47dp"
-                />
+                android:layout_height="47dp" />
 
             <ImageView
                 android:layout_width="47dp"
                 android:layout_height="47dp"
                 android:contentDescription="@string/app_name"
                 android:padding="11dp"
-                app:tint="@color/white"
-                android:src="@drawable/ic_outline_info"/>
+                android:src="@drawable/ic_outline_info"
+                app:tint="@color/white" />
 
         </FrameLayout>
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layoutNoteColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/layoutNoteColor"
         android:layout_marginLeft="13dp"
-        android:layout_marginRight="13dp"
         android:layout_marginTop="7dp"
+        android:layout_marginRight="13dp"
         android:layout_marginBottom="13dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
@@ -187,37 +182,35 @@
             android:includeFontPadding="false"
             android:text="Note color"
             android:textColor="@color/white"
-            android:textSize="14sp"
-            />
-
-    <FrameLayout
-        android:layout_marginLeft="20dp"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content">
-
-        <View
-            android:id="@+id/vievColor1"
-            android:layout_width="33dp"
-            android:layout_height="33dp"
-            android:background="@drawable/background_note_color_1"
-            />
-
-        <ImageView
-            android:id="@+id/imageColor1"
-            android:layout_width="33dp"
-            android:layout_height="33dp"
-            android:contentDescription="@string/app_name"
-            android:padding="11dp"
-            android:src="@drawable/ic_done"
-            app:tint="@color/white"/>
-
-    </FrameLayout>
+            android:textSize="14sp" />
 
         <FrameLayout
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1">
+
+            <View
+                android:id="@+id/vievColor1"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:background="@drawable/background_note_color_1" />
+
+            <ImageView
+                android:id="@+id/imageColor1"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:contentDescription="@string/app_name"
+                android:padding="11dp"
+                android:src="@drawable/ic_done"
+                app:tint="@color/white" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
             <View
                 android:id="@+id/vievColor2"
@@ -231,21 +224,20 @@
                 android:layout_height="33dp"
                 android:contentDescription="@string/app_name"
                 android:padding="11dp"
-                app:tint="@color/white"/>
+                app:tint="@color/white" />
 
         </FrameLayout>
 
         <FrameLayout
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
             <View
                 android:id="@+id/vievColor3"
                 android:layout_width="33dp"
                 android:layout_height="33dp"
-                android:background="@drawable/background_note_color_3"
-                />
+                android:background="@drawable/background_note_color_3" />
 
             <ImageView
                 android:id="@+id/imageColor3"
@@ -253,13 +245,14 @@
                 android:layout_height="33dp"
                 android:contentDescription="@string/app_name"
                 android:padding="11dp"
-                app:tint="@color/white"/>
+                app:tint="@color/white" />
         </FrameLayout>
 
         <FrameLayout
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
             <View
                 android:id="@+id/vievColor6"
                 android:layout_width="33dp"
@@ -272,21 +265,20 @@
                 android:layout_height="33dp"
                 android:contentDescription="@string/app_name"
                 android:padding="11dp"
-                app:tint="@color/white"/>
+                app:tint="@color/white" />
 
         </FrameLayout>
 
         <FrameLayout
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
             <View
                 android:id="@+id/vievColor4"
                 android:layout_width="33dp"
                 android:layout_height="33dp"
-                android:background="@drawable/background_note_color_4"
-                />
+                android:background="@drawable/background_note_color_4" />
 
             <ImageView
                 android:id="@+id/imageColor4"
@@ -294,21 +286,20 @@
                 android:layout_height="33dp"
                 android:contentDescription="@string/app_name"
                 android:padding="11dp"
-                app:tint="@color/white"/>
+                app:tint="@color/white" />
 
         </FrameLayout>
 
         <FrameLayout
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
             <View
                 android:id="@+id/vievColor5"
                 android:layout_width="33dp"
                 android:layout_height="33dp"
-                android:background="@drawable/background_note_color_5"
-                />
+                android:background="@drawable/background_note_color_5" />
 
             <ImageView
                 android:id="@+id/imageColor5"
@@ -316,9 +307,8 @@
                 android:layout_height="33dp"
                 android:contentDescription="@string/app_name"
                 android:padding="11dp"
-                app:tint="@color/white"/>
+                app:tint="@color/white" />
 
         </FrameLayout>
-
     </LinearLayout>
 </LinearLayout>

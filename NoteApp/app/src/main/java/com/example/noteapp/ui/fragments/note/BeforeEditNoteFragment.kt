@@ -8,23 +8,21 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.R
 import com.example.noteapp.data.Note
 import com.example.noteapp.databinding.FragmentBeforeEditNoteBinding
-import com.example.noteapp.navigation.Navigation
 import com.example.noteapp.tools.DoubleClickListener
+import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.ProfilViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.firebase.auth.FirebaseAuth
 import com.xeoh.android.texthighlighter.TextHighlighter
 import java.util.*
 
-class BeforeEditNoteFragment : Fragment(), Navigation {
+class BeforeEditNoteFragment : BaseFragment() {
 
     private lateinit var noteViewModel: NoteViewModel
 
@@ -42,11 +40,10 @@ class BeforeEditNoteFragment : Fragment(), Navigation {
 
     private val binding get() = _binding!!
 
-    private val fbAuth = FirebaseAuth.getInstance()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+
         closeKeyboard()
         setViewModels()
 
@@ -80,7 +77,7 @@ class BeforeEditNoteFragment : Fragment(), Navigation {
     }
 
     override fun onDestroyView() {
-        saveStateOrQuit()
+//        saveStateOrQuit()
 
         _binding = null
 
@@ -497,8 +494,6 @@ class BeforeEditNoteFragment : Fragment(), Navigation {
 
     private fun setOffAddEdit() {
         selectedImagePath = ""
-        binding.titleAddEditFrag.text = ""
-        binding.messAddEditFrag.text = ""
         noteViewModel.setSelectedNote(null)
         noteViewModel.noteBeforeChange = null
         noteViewModel.noteTitle = ""
@@ -600,4 +595,8 @@ class BeforeEditNoteFragment : Fragment(), Navigation {
         }
     }
 
+    override fun onBackPress() {
+        backTransaction()
+        saveStateOrQuit()
+    }
 }

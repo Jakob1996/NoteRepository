@@ -22,8 +22,7 @@ import com.example.noteapp.ui.fragments.sort.SortDialogFragment
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.ToDoViewModel
 
-class CategoryFragment : Fragment(), OnItemCategoryClickListener,
-    SortDialogFragment.OnItemClickDialogListener, Navigation {
+class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var todoViewModel: ToDoViewModel
     private lateinit var toDoCategoryAdapter: ItemsCategoryTodoAdapter
