@@ -5,8 +5,11 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
@@ -24,13 +27,17 @@ import java.util.*
 
 class BeforeEditNoteFragment : BaseFragment() {
 
+    companion object{
+        var sDisableFragmentAnimations = false
+    }
+
     private lateinit var noteViewModel: NoteViewModel
 
     private lateinit var profileViewModel: ProfilViewModel
 
     private var value: Boolean = false
 
-    private var selectedImagePath: String = ""
+    private var selectedImagePath = ""
 
     private var quit = 1
 
@@ -43,7 +50,6 @@ class BeforeEditNoteFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-
         closeKeyboard()
         setViewModels()
 
@@ -70,7 +76,6 @@ class BeforeEditNoteFragment : BaseFragment() {
         setFontSizeListener()
         setFontColorListener()
         setInfoListener()
-        setBackButtonListener()
         setOnClickFavouriteBtnListener()
         getSearchModeObserver()
         getSelectedNoteObserver()
@@ -111,10 +116,6 @@ class BeforeEditNoteFragment : BaseFragment() {
 //        }
         onBackPressedListener()
         setOffAddEdit()
-    }
-
-    private fun setBackButtonListener() {
-        binding.backFromAddEdit.setOnClickListener { backTransaction() }
     }
 
     private fun setInfoListener() {
@@ -255,26 +256,26 @@ class BeforeEditNoteFragment : BaseFragment() {
                 gradientDrawable.setColor(Color.parseColor(selectedNoteColor))
                 noteViewModel.selectedNoteColor = noteViewModel.getSelectedNote().value!!.color
 
-                when (noteViewModel.getSelectedNote().value?.color) {
-                    "#333333" -> {
-                        itemSelected1()
-                    }
-                    "#FDBE3B" -> {
-                        itemSelected2()
-                    }
-                    "#FF4842" -> {
-                        itemSelected3()
-                    }
-                    "#ff0266" -> {
-                        itemSelected6()
-                    }
-                    "#3A52FC" -> {
-                        itemSelected4()
-                    }
-                    "#000000" -> {
-                        itemSelected5()
-                    }
-                }
+//                when (noteViewModel.getSelectedNote().value?.color) {
+//                    "#333333" -> {
+//                        itemSelected1()
+//                    }
+//                    "#FDBE3B" -> {
+//                        itemSelected2()
+//                    }
+//                    "#FF4842" -> {
+//                        itemSelected3()
+//                    }
+//                    "#ff0266" -> {
+//                        itemSelected6()
+//                    }
+//                    "#3A52FC" -> {
+//                        itemSelected4()
+//                    }
+//                    "#000000" -> {
+//                        itemSelected5()
+//                    }
+//                }
             }
         })
     }
@@ -307,41 +308,41 @@ class BeforeEditNoteFragment : BaseFragment() {
             }
         }
 
-        layoutMiscellaneous.imageColor1.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#333333"
-            itemSelected1()
-            setSubtitleIndicator()
-        }
-
-        layoutMiscellaneous.imageColor2.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#FDBE3B"
-            itemSelected2()
-            setSubtitleIndicator()
-        }
-
-        layoutMiscellaneous.imageColor3.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#FF4842"
-            itemSelected3()
-            setSubtitleIndicator()
-        }
-
-        layoutMiscellaneous.imageColor4.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#3A52FC"
-            itemSelected4()
-            setSubtitleIndicator()
-        }
-
-        layoutMiscellaneous.imageColor5.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#000000"
-            itemSelected5()
-            setSubtitleIndicator()
-        }
-
-        layoutMiscellaneous.imageColor6.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#ff0266"
-            itemSelected6()
-            setSubtitleIndicator()
-        }
+//        layoutMiscellaneous.imageColor1.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#333333"
+//            itemSelected1()
+//            setSubtitleIndicator()
+//        }
+//
+//        layoutMiscellaneous.imageColor2.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#FDBE3B"
+//            itemSelected2()
+//            setSubtitleIndicator()
+//        }
+//
+//        layoutMiscellaneous.imageColor3.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#FF4842"
+//            itemSelected3()
+//            setSubtitleIndicator()
+//        }
+//
+//        layoutMiscellaneous.imageColor4.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#3A52FC"
+//            itemSelected4()
+//            setSubtitleIndicator()
+//        }
+//
+//        layoutMiscellaneous.imageColor5.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#000000"
+//            itemSelected5()
+//            setSubtitleIndicator()
+//        }
+//
+//        layoutMiscellaneous.imageColor6.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#ff0266"
+//            itemSelected6()
+//            setSubtitleIndicator()
+//        }
     }
 
     /*
@@ -358,72 +359,72 @@ class BeforeEditNoteFragment : BaseFragment() {
 
      */
 
-    private fun itemSelected1() {
-        binding.includeMiscellaneousBeforeAddEdit.run {
-            imageColor1.setImageResource(R.drawable.ic_done)
-            imageColor2.setImageResource(0)
-            imageColor3.setImageResource(0)
-            imageColor6.setImageResource(0)
-            imageColor4.setImageResource(0)
-            imageColor5.setImageResource(0)
-        }
-
-    }
-
-    private fun itemSelected2() {
-        binding.includeMiscellaneousBeforeAddEdit.run {
-            imageColor1.setImageResource(0)
-            imageColor2.setImageResource(R.drawable.ic_done)
-            imageColor3.setImageResource(0)
-            imageColor6.setImageResource(0)
-            imageColor4.setImageResource(0)
-            imageColor5.setImageResource(0)
-        }
-    }
-
-    private fun itemSelected3() {
-        binding.includeMiscellaneousBeforeAddEdit.run {
-            imageColor1.setImageResource(0)
-            imageColor2.setImageResource(0)
-            imageColor3.setImageResource(R.drawable.ic_done)
-            imageColor6.setImageResource(0)
-            imageColor4.setImageResource(0)
-            imageColor5.setImageResource(0)
-        }
-    }
-
-    private fun itemSelected6() {
-        binding.includeMiscellaneousBeforeAddEdit.run {
-            imageColor1.setImageResource(0)
-            imageColor2.setImageResource(0)
-            imageColor3.setImageResource(0)
-            imageColor6.setImageResource(R.drawable.ic_done)
-            imageColor4.setImageResource(0)
-            imageColor5.setImageResource(0)
-        }
-    }
-
-    private fun itemSelected4() {
-        binding.includeMiscellaneousBeforeAddEdit.run {
-            imageColor1.setImageResource(0)
-            imageColor2.setImageResource(0)
-            imageColor3.setImageResource(0)
-            imageColor6.setImageResource(0)
-            imageColor4.setImageResource(R.drawable.ic_done)
-            imageColor5.setImageResource(0)
-        }
-    }
-
-    private fun itemSelected5() {
-        binding.includeMiscellaneousBeforeAddEdit.run {
-            imageColor1.setImageResource(0)
-            imageColor2.setImageResource(0)
-            imageColor3.setImageResource(0)
-            imageColor6.setImageResource(0)
-            imageColor4.setImageResource(0)
-            imageColor5.setImageResource(R.drawable.ic_done)
-        }
-    }
+//    private fun itemSelected1() {
+//        binding.includeMiscellaneousBeforeAddEdit.run {
+//            imageColor1.setImageResource(R.drawable.ic_done)
+//            imageColor2.setImageResource(0)
+//            imageColor3.setImageResource(0)
+//            imageColor6.setImageResource(0)
+//            imageColor4.setImageResource(0)
+//            imageColor5.setImageResource(0)
+//        }
+//
+//    }
+//
+//    private fun itemSelected2() {
+//        binding.includeMiscellaneousBeforeAddEdit.run {
+//            imageColor1.setImageResource(0)
+//            imageColor2.setImageResource(R.drawable.ic_done)
+//            imageColor3.setImageResource(0)
+//            imageColor6.setImageResource(0)
+//            imageColor4.setImageResource(0)
+//            imageColor5.setImageResource(0)
+//        }
+//    }
+//
+//    private fun itemSelected3() {
+//        binding.includeMiscellaneousBeforeAddEdit.run {
+//            imageColor1.setImageResource(0)
+//            imageColor2.setImageResource(0)
+//            imageColor3.setImageResource(R.drawable.ic_done)
+//            imageColor6.setImageResource(0)
+//            imageColor4.setImageResource(0)
+//            imageColor5.setImageResource(0)
+//        }
+//    }
+//
+//    private fun itemSelected6() {
+//        binding.includeMiscellaneousBeforeAddEdit.run {
+//            imageColor1.setImageResource(0)
+//            imageColor2.setImageResource(0)
+//            imageColor3.setImageResource(0)
+//            imageColor6.setImageResource(R.drawable.ic_done)
+//            imageColor4.setImageResource(0)
+//            imageColor5.setImageResource(0)
+//        }
+//    }
+//
+//    private fun itemSelected4() {
+//        binding.includeMiscellaneousBeforeAddEdit.run {
+//            imageColor1.setImageResource(0)
+//            imageColor2.setImageResource(0)
+//            imageColor3.setImageResource(0)
+//            imageColor6.setImageResource(0)
+//            imageColor4.setImageResource(R.drawable.ic_done)
+//            imageColor5.setImageResource(0)
+//        }
+//    }
+//
+//    private fun itemSelected5() {
+//        binding.includeMiscellaneousBeforeAddEdit.run {
+//            imageColor1.setImageResource(0)
+//            imageColor2.setImageResource(0)
+//            imageColor3.setImageResource(0)
+//            imageColor6.setImageResource(0)
+//            imageColor4.setImageResource(0)
+//            imageColor5.setImageResource(R.drawable.ic_done)
+//        }
+//    }
 
     /*
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -525,14 +526,6 @@ class BeforeEditNoteFragment : BaseFragment() {
         }
     }
 
-    private fun backTransaction() {
-        val sm = requireActivity().supportFragmentManager
-        val trans = sm.beginTransaction()
-        //trans.remove(sm.findFragmentByTag("fragCheck")!!)
-        sm.popBackStackImmediate("noteF", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        trans.commit()
-    }
-
     private fun onBackPressedListener() {
         if (noteViewModel.getSearchMode().value == true && binding.messAddEditFrag.text.isNotEmpty()) {
             textHighLighter
@@ -587,16 +580,26 @@ class BeforeEditNoteFragment : BaseFragment() {
             quit = 2
             closeKeyboard()
         }
-        if (noteViewModel.isSearchEdit == 1) {
-            //requireActivity().overridePendingTransition(R.anim.zero_to_zero, R.anim.from_left_to_right)
-            //requireActivity().onBackPressed()
-        } else {
-            //findNavController().navigate(R.id.action_beforeAddEditNoteFragment_to_searchFragment2)
-        }
     }
 
     override fun onBackPress() {
-        backTransaction()
         saveStateOrQuit()
+        backStack()
+    }
+
+    private fun backStack(){
+        sDisableFragmentAnimations = true
+        popBackStack("CheckPasswordFragment", requireActivity().supportFragmentManager, false)
+        sDisableFragmentAnimations = false
+    }
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        return if(noteViewModel.n){
+            val a: Animation = object : Animation() {}
+            a.duration = 0
+            return a
+        } else{
+            super.onCreateAnimation(transit, enter, nextAnim)
+        }
     }
 }

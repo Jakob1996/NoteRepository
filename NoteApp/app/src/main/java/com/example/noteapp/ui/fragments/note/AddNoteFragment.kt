@@ -173,31 +173,31 @@ class AddNoteFragment : Fragment() {
                 gradientDrawable.setColor(Color.parseColor(selectedColor))
                 noteViewModel.selectedNoteColor = noteViewModel.getSelectedNote().value!!.color
 
-                when (noteViewModel.getSelectedNote().value?.color) {
-                    "#333333" -> {
-                        itemSelected1()
-                    }
-
-                    "#FDBE3B" -> {
-                        itemSelected2()
-                    }
-
-                    "#FF4842" -> {
-                        itemSelected3()
-                    }
-
-                    "#ff0266" -> {
-                        itemSelected6()
-                    }
-
-                    "#3A52FC" -> {
-                        itemSelected4()
-                    }
-
-                    "#000000" -> {
-                        itemSelected5()
-                    }
-                }
+//                when (noteViewModel.getSelectedNote().value?.color) {
+//                    "#333333" -> {
+//                        itemSelected1()
+//                    }
+//
+//                    "#FDBE3B" -> {
+//                        itemSelected2()
+//                    }
+//
+//                    "#FF4842" -> {
+//                        itemSelected3()
+//                    }
+//
+//                    "#ff0266" -> {
+//                        itemSelected6()
+//                    }
+//
+//                    "#3A52FC" -> {
+//                        itemSelected4()
+//                    }
+//
+//                    "#000000" -> {
+//                        itemSelected5()
+//                    }
+//                }
             }
         })
     }
@@ -227,96 +227,96 @@ class AddNoteFragment : Fragment() {
             }
         }
 
-        layoutMiscellaneous.imageColor1.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#333333"
-            itemSelected1()
-            setSubtitleIndicator()
-        }
-
-        layoutMiscellaneous.imageColor2.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#FDBE3B"
-            itemSelected2()
-            setSubtitleIndicator()
-        }
-
-        layoutMiscellaneous.imageColor3.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#FF4842"
-            itemSelected3()
-            setSubtitleIndicator()
-        }
-
-        layoutMiscellaneous.imageColor4.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#3A52FC"
-            itemSelected4()
-            setSubtitleIndicator()
-        }
-
-        layoutMiscellaneous.imageColor5.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#000000"
-            itemSelected5()
-            setSubtitleIndicator()
-        }
-
-        layoutMiscellaneous.imageColor6.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#ff0266"
-            itemSelected6()
-            setSubtitleIndicator()
-        }
+//        layoutMiscellaneous.imageColor1.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#333333"
+//            itemSelected1()
+//            setSubtitleIndicator()
+//        }
+//
+//        layoutMiscellaneous.imageColor2.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#FDBE3B"
+//            itemSelected2()
+//            setSubtitleIndicator()
+//        }
+//
+//        layoutMiscellaneous.imageColor3.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#FF4842"
+//            itemSelected3()
+//            setSubtitleIndicator()
+//        }
+//
+//        layoutMiscellaneous.imageColor4.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#3A52FC"
+//            itemSelected4()
+//            setSubtitleIndicator()
+//        }
+//
+//        layoutMiscellaneous.imageColor5.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#000000"
+//            itemSelected5()
+//            setSubtitleIndicator()
+//        }
+//
+//        layoutMiscellaneous.imageColor6.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#ff0266"
+//            itemSelected6()
+//            setSubtitleIndicator()
+//        }
     }
-
-    private fun itemSelected1() {
-        binding.includeMiscellaneous.imageColor1.setImageResource(R.drawable.ic_done)
-        binding.includeMiscellaneous.imageColor2.setImageResource(0)
-        binding.includeMiscellaneous.imageColor3.setImageResource(0)
-        binding.includeMiscellaneous.imageColor6.setImageResource(0)
-        binding.includeMiscellaneous.imageColor4.setImageResource(0)
-        binding.includeMiscellaneous.imageColor5.setImageResource(0)
-    }
-
-    private fun itemSelected2() {
-        binding.includeMiscellaneous.imageColor1.setImageResource(0)
-        binding.includeMiscellaneous.imageColor2.setImageResource(R.drawable.ic_done)
-        binding.includeMiscellaneous.imageColor3.setImageResource(0)
-        binding.includeMiscellaneous.imageColor6.setImageResource(0)
-        binding.includeMiscellaneous.imageColor4.setImageResource(0)
-        binding.includeMiscellaneous.imageColor5.setImageResource(0)
-    }
-
-    private fun itemSelected3() {
-        binding.includeMiscellaneous.imageColor1.setImageResource(0)
-        binding.includeMiscellaneous.imageColor2.setImageResource(0)
-        binding.includeMiscellaneous.imageColor3.setImageResource(R.drawable.ic_done)
-        binding.includeMiscellaneous.imageColor6.setImageResource(0)
-        binding.includeMiscellaneous.imageColor4.setImageResource(0)
-        binding.includeMiscellaneous.imageColor5.setImageResource(0)
-    }
-
-    private fun itemSelected6() {
-        binding.includeMiscellaneous.imageColor1.setImageResource(0)
-        binding.includeMiscellaneous.imageColor2.setImageResource(0)
-        binding.includeMiscellaneous.imageColor3.setImageResource(0)
-        binding.includeMiscellaneous.imageColor6.setImageResource(R.drawable.ic_done)
-        binding.includeMiscellaneous.imageColor4.setImageResource(0)
-        binding.includeMiscellaneous.imageColor5.setImageResource(0)
-    }
-
-    private fun itemSelected4() {
-        binding.includeMiscellaneous.imageColor1.setImageResource(0)
-        binding.includeMiscellaneous.imageColor2.setImageResource(0)
-        binding.includeMiscellaneous.imageColor3.setImageResource(0)
-        binding.includeMiscellaneous.imageColor6.setImageResource(0)
-        binding.includeMiscellaneous.imageColor4.setImageResource(R.drawable.ic_done)
-        binding.includeMiscellaneous.imageColor5.setImageResource(0)
-    }
-
-    private fun itemSelected5() {
-        binding.includeMiscellaneous.imageColor1.setImageResource(0)
-        binding.includeMiscellaneous.imageColor2.setImageResource(0)
-        binding.includeMiscellaneous.imageColor3.setImageResource(0)
-        binding.includeMiscellaneous.imageColor6.setImageResource(0)
-        binding.includeMiscellaneous.imageColor4.setImageResource(0)
-        binding.includeMiscellaneous.imageColor5.setImageResource(R.drawable.ic_done)
-    }
+//
+//    private fun itemSelected1() {
+//        binding.includeMiscellaneous.imageColor1.setImageResource(R.drawable.ic_done)
+//        binding.includeMiscellaneous.imageColor2.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor3.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor6.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor4.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor5.setImageResource(0)
+//    }
+//
+//    private fun itemSelected2() {
+//        binding.includeMiscellaneous.imageColor1.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor2.setImageResource(R.drawable.ic_done)
+//        binding.includeMiscellaneous.imageColor3.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor6.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor4.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor5.setImageResource(0)
+//    }
+//
+//    private fun itemSelected3() {
+//        binding.includeMiscellaneous.imageColor1.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor2.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor3.setImageResource(R.drawable.ic_done)
+//        binding.includeMiscellaneous.imageColor6.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor4.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor5.setImageResource(0)
+//    }
+//
+//    private fun itemSelected6() {
+//        binding.includeMiscellaneous.imageColor1.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor2.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor3.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor6.setImageResource(R.drawable.ic_done)
+//        binding.includeMiscellaneous.imageColor4.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor5.setImageResource(0)
+//    }
+//
+//    private fun itemSelected4() {
+//        binding.includeMiscellaneous.imageColor1.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor2.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor3.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor6.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor4.setImageResource(R.drawable.ic_done)
+//        binding.includeMiscellaneous.imageColor5.setImageResource(0)
+//    }
+//
+//    private fun itemSelected5() {
+//        binding.includeMiscellaneous.imageColor1.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor2.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor3.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor6.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor4.setImageResource(0)
+//        binding.includeMiscellaneous.imageColor5.setImageResource(R.drawable.ic_done)
+//    }
 
     /*
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

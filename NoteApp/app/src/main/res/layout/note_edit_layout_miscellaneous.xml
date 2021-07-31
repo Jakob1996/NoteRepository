@@ -164,151 +164,152 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutNoteColor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="13dp"
-        android:layout_marginTop="7dp"
-        android:layout_marginRight="13dp"
-        android:layout_marginBottom="13dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/layoutNoteColor"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="13dp"-->
+<!--        android:layout_marginTop="7dp"-->
+<!--        android:layout_marginRight="13dp"-->
+<!--        android:layout_marginBottom="13dp"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:orientation="horizontal">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/ubuntumedium"
-            android:includeFontPadding="false"
-            android:text="Note color"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:fontFamily="@font/ubuntumedium"-->
+<!--            android:includeFontPadding="false"-->
+<!--            android:text="Note color"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="14sp" />-->
 
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1">
+<!--        <FrameLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="20dp"-->
+<!--            android:layout_weight="1"-->
+<!--            >-->
 
-            <View
-                android:id="@+id/vievColor1"
-                android:layout_width="33dp"
-                android:layout_height="33dp"
-                android:background="@drawable/background_note_color_1" />
+<!--            <View-->
+<!--                android:id="@+id/vievColor1"-->
+<!--                android:layout_width="50dp"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:background="@drawable/background_note_color_1" />-->
 
-            <ImageView
-                android:id="@+id/imageColor1"
-                android:layout_width="33dp"
-                android:layout_height="33dp"
-                android:contentDescription="@string/app_name"
-                android:padding="11dp"
-                android:src="@drawable/ic_done"
-                app:tint="@color/white" />
+<!--            <ImageView-->
+<!--                android:id="@+id/imageColor1"-->
+<!--                android:layout_width="40dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:contentDescription="@string/app_name"-->
+<!--                android:padding="11dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:src="@drawable/ic_done"-->
+<!--                app:tint="@color/white" />-->
 
-        </FrameLayout>
+<!--        </FrameLayout>-->
 
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+<!--        <FrameLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1">-->
 
-            <View
-                android:id="@+id/vievColor2"
-                android:layout_width="33dp"
-                android:layout_height="33dp"
-                android:background="@drawable/background_note_color_2" />
+<!--            <View-->
+<!--                android:id="@+id/vievColor2"-->
+<!--                android:layout_width="33dp"-->
+<!--                android:layout_height="33dp"-->
+<!--                android:background="@drawable/background_note_color_2" />-->
 
-            <ImageView
-                android:id="@+id/imageColor2"
-                android:layout_width="33dp"
-                android:layout_height="33dp"
-                android:contentDescription="@string/app_name"
-                android:padding="11dp"
-                app:tint="@color/white" />
+<!--            <ImageView-->
+<!--                android:id="@+id/imageColor2"-->
+<!--                android:layout_width="33dp"-->
+<!--                android:layout_height="33dp"-->
+<!--                android:contentDescription="@string/app_name"-->
+<!--                android:padding="11dp"-->
+<!--                app:tint="@color/white" />-->
 
-        </FrameLayout>
+<!--        </FrameLayout>-->
 
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+<!--        <FrameLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1">-->
 
-            <View
-                android:id="@+id/vievColor3"
-                android:layout_width="33dp"
-                android:layout_height="33dp"
-                android:background="@drawable/background_note_color_3" />
+<!--            <View-->
+<!--                android:id="@+id/vievColor3"-->
+<!--                android:layout_width="33dp"-->
+<!--                android:layout_height="33dp"-->
+<!--                android:background="@drawable/background_note_color_3" />-->
 
-            <ImageView
-                android:id="@+id/imageColor3"
-                android:layout_width="33dp"
-                android:layout_height="33dp"
-                android:contentDescription="@string/app_name"
-                android:padding="11dp"
-                app:tint="@color/white" />
-        </FrameLayout>
+<!--            <ImageView-->
+<!--                android:id="@+id/imageColor3"-->
+<!--                android:layout_width="33dp"-->
+<!--                android:layout_height="33dp"-->
+<!--                android:contentDescription="@string/app_name"-->
+<!--                android:padding="11dp"-->
+<!--                app:tint="@color/white" />-->
+<!--        </FrameLayout>-->
 
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+<!--        <FrameLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1">-->
 
-            <View
-                android:id="@+id/vievColor6"
-                android:layout_width="33dp"
-                android:layout_height="33dp"
-                android:background="@drawable/background_note_color_6" />
+<!--            <View-->
+<!--                android:id="@+id/vievColor6"-->
+<!--                android:layout_width="33dp"-->
+<!--                android:layout_height="33dp"-->
+<!--                android:background="@drawable/background_note_color_6" />-->
 
-            <ImageView
-                android:id="@+id/imageColor6"
-                android:layout_width="33dp"
-                android:layout_height="33dp"
-                android:contentDescription="@string/app_name"
-                android:padding="11dp"
-                app:tint="@color/white" />
+<!--            <ImageView-->
+<!--                android:id="@+id/imageColor6"-->
+<!--                android:layout_width="33dp"-->
+<!--                android:layout_height="33dp"-->
+<!--                android:contentDescription="@string/app_name"-->
+<!--                android:padding="11dp"-->
+<!--                app:tint="@color/white" />-->
 
-        </FrameLayout>
+<!--        </FrameLayout>-->
 
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+<!--        <FrameLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1">-->
 
-            <View
-                android:id="@+id/vievColor4"
-                android:layout_width="33dp"
-                android:layout_height="33dp"
-                android:background="@drawable/background_note_color_4" />
+<!--            <View-->
+<!--                android:id="@+id/vievColor4"-->
+<!--                android:layout_width="33dp"-->
+<!--                android:layout_height="33dp"-->
+<!--                android:background="@drawable/background_note_color_4" />-->
 
-            <ImageView
-                android:id="@+id/imageColor4"
-                android:layout_width="33dp"
-                android:layout_height="33dp"
-                android:contentDescription="@string/app_name"
-                android:padding="11dp"
-                app:tint="@color/white" />
+<!--            <ImageView-->
+<!--                android:id="@+id/imageColor4"-->
+<!--                android:layout_width="33dp"-->
+<!--                android:layout_height="33dp"-->
+<!--                android:contentDescription="@string/app_name"-->
+<!--                android:padding="11dp"-->
+<!--                app:tint="@color/white" />-->
 
-        </FrameLayout>
+<!--        </FrameLayout>-->
 
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+<!--        <FrameLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1">-->
 
-            <View
-                android:id="@+id/vievColor5"
-                android:layout_width="33dp"
-                android:layout_height="33dp"
-                android:background="@drawable/background_note_color_5" />
+<!--            <View-->
+<!--                android:id="@+id/vievColor5"-->
+<!--                android:layout_width="33dp"-->
+<!--                android:layout_height="33dp"-->
+<!--                android:background="@drawable/background_note_color_5" />-->
 
-            <ImageView
-                android:id="@+id/imageColor5"
-                android:layout_width="33dp"
-                android:layout_height="33dp"
-                android:contentDescription="@string/app_name"
-                android:padding="11dp"
-                app:tint="@color/white" />
-
-        </FrameLayout>
-    </LinearLayout>
+<!--            <ImageView-->
+<!--                android:id="@+id/imageColor5"-->
+<!--                android:layout_width="33dp"-->
+<!--                android:layout_height="33dp"-->
+<!--                android:contentDescription="@string/app_name"-->
+<!--                android:padding="11dp"-->
+<!--                app:tint="@color/white" />-->
+<!--        </FrameLayout>-->
+<!--    </LinearLayout>-->
 </LinearLayout>

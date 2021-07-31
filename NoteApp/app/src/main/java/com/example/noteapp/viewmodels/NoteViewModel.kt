@@ -15,9 +15,6 @@ import kotlinx.coroutines.flow.collect
 
 class NoteViewModel(app:Application):AndroidViewModel(app) {
 
-    var stateFragmentMain:Bundle? = null
-    var searchStateFragment:Bundle? = null
-
     private val repository = Repository(app)
 
     var search:String?=null
@@ -25,8 +22,6 @@ class NoteViewModel(app:Application):AndroidViewModel(app) {
     //NoteViewModel
 
     val allNotes = repository.getAllNotes()
-
-    fun getAllN(): LiveData<List<Note>> = repository.getAllNotes()
 
     private val selectedNote = MutableLiveData<Note?>()
 
@@ -143,18 +138,9 @@ class NoteViewModel(app:Application):AndroidViewModel(app) {
          repository.deleteNotes(listNotes)
     }
 
-    /*
-    fun deleteOneNote(note: Note?){
-        CoroutineScope(Dispatchers.IO).launch { repository.deleteOneNote(note) }
-    }
-
-    fun clearDatabaseNotes(){
-        CoroutineScope(Dispatchers.IO).launch { repository.clearDatabaseNotes() }
-    }
-
-
-     */
     //State Model
 
     var p:Boolean = true
+
+    var n = false
 }

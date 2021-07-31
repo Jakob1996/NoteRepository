@@ -54,7 +54,7 @@ open class FragmentMiscellaneous : BaseFragment() {
         //todo
     }
 
-    fun initMiscellaneous() {
+    private fun initMiscellaneous() {
         val layoutMiscellaneous = binding
         val bottomSheetBehavior = BottomSheetBehavior
             .from(binding.layoutMiscellaneous)
@@ -67,109 +67,109 @@ open class FragmentMiscellaneous : BaseFragment() {
             }
         }
 
-        layoutMiscellaneous.imageColor1.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#333333"
-            itemSelected1()
-            setSubtitleIndicator.onSubtitleClick()
-        }
-
-        layoutMiscellaneous.imageColor2.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#FDBE3B"
-            itemSelected2()
-            setSubtitleIndicator.onSubtitleClick()
-        }
-
-        layoutMiscellaneous.imageColor3.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#FF4842"
-            itemSelected3()
-            setSubtitleIndicator.onSubtitleClick()
-        }
-
-        layoutMiscellaneous.imageColor4.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#3A52FC"
-            itemSelected4()
-            setSubtitleIndicator.onSubtitleClick()
-        }
-
-        layoutMiscellaneous.imageColor5.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#000000"
-            itemSelected5()
-            setSubtitleIndicator.onSubtitleClick()
-        }
-
-        layoutMiscellaneous.imageColor6.setOnClickListener {
-            noteViewModel.selectedNoteColor = "#ff0266"
-            itemSelected6()
-            setSubtitleIndicator.onSubtitleClick()
-        }
+//        layoutMiscellaneous.imageColor1.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#333333"
+//            itemSelected1()
+//            setSubtitleIndicator.onSubtitleClick()
+//        }
+//
+//        layoutMiscellaneous.imageColor2.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#FDBE3B"
+//            itemSelected2()
+//            setSubtitleIndicator.onSubtitleClick()
+//        }
+//
+//        layoutMiscellaneous.imageColor3.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#FF4842"
+//            itemSelected3()
+//            setSubtitleIndicator.onSubtitleClick()
+//        }
+//
+//        layoutMiscellaneous.imageColor4.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#3A52FC"
+//            itemSelected4()
+//            setSubtitleIndicator.onSubtitleClick()
+//        }
+//
+//        layoutMiscellaneous.imageColor5.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#000000"
+//            itemSelected5()
+//            setSubtitleIndicator.onSubtitleClick()
+//        }
+//
+//        layoutMiscellaneous.imageColor6.setOnClickListener {
+//            noteViewModel.selectedNoteColor = "#ff0266"
+//            itemSelected6()
+//            setSubtitleIndicator.onSubtitleClick()
+//        }
     }
 
-    fun itemSelected1() {
-        binding.run {
-            imageColor1.setImageResource(R.drawable.ic_done)
-            imageColor2.setImageResource(0)
-            imageColor3.setImageResource(0)
-            imageColor6.setImageResource(0)
-            imageColor4.setImageResource(0)
-            imageColor5.setImageResource(0)
-        }
-
-    }
-
-    fun itemSelected2() {
-        binding.run {
-            imageColor1.setImageResource(0)
-            imageColor2.setImageResource(R.drawable.ic_done)
-            imageColor3.setImageResource(0)
-            imageColor6.setImageResource(0)
-            imageColor4.setImageResource(0)
-            imageColor5.setImageResource(0)
-        }
-    }
-
-    fun itemSelected3() {
-        binding.run {
-            imageColor1.setImageResource(0)
-            imageColor2.setImageResource(0)
-            imageColor3.setImageResource(R.drawable.ic_done)
-            imageColor6.setImageResource(0)
-            imageColor4.setImageResource(0)
-            imageColor5.setImageResource(0)
-        }
-    }
-
-    fun itemSelected6() {
-        binding.run {
-            imageColor1.setImageResource(0)
-            imageColor2.setImageResource(0)
-            imageColor3.setImageResource(0)
-            imageColor6.setImageResource(R.drawable.ic_done)
-            imageColor4.setImageResource(0)
-            imageColor5.setImageResource(0)
-        }
-    }
-
-    fun itemSelected4() {
-        binding.run {
-            imageColor1.setImageResource(0)
-            imageColor2.setImageResource(0)
-            imageColor3.setImageResource(0)
-            imageColor6.setImageResource(0)
-            imageColor4.setImageResource(R.drawable.ic_done)
-            imageColor5.setImageResource(0)
-        }
-    }
-
-    fun itemSelected5() {
-        binding.run {
-            imageColor1.setImageResource(0)
-            imageColor2.setImageResource(0)
-            imageColor3.setImageResource(0)
-            imageColor6.setImageResource(0)
-            imageColor4.setImageResource(0)
-            imageColor5.setImageResource(R.drawable.ic_done)
-        }
-    }
+//    fun itemSelected1() {
+//        binding.run {
+//            imageColor1.setImageResource(R.drawable.ic_done)
+//            imageColor2.setImageResource(0)
+//            imageColor3.setImageResource(0)
+//            imageColor6.setImageResource(0)
+//            imageColor4.setImageResource(0)
+//            imageColor5.setImageResource(0)
+//        }
+//
+//    }
+//
+//    fun itemSelected2() {
+//        binding.run {
+//            imageColor1.setImageResource(0)
+//            imageColor2.setImageResource(R.drawable.ic_done)
+//            imageColor3.setImageResource(0)
+//            imageColor6.setImageResource(0)
+//            imageColor4.setImageResource(0)
+//            imageColor5.setImageResource(0)
+//        }
+//    }
+//
+//    fun itemSelected3() {
+//        binding.run {
+//            imageColor1.setImageResource(0)
+//            imageColor2.setImageResource(0)
+//            imageColor3.setImageResource(R.drawable.ic_done)
+//            imageColor6.setImageResource(0)
+//            imageColor4.setImageResource(0)
+//            imageColor5.setImageResource(0)
+//        }
+//    }
+//
+//    fun itemSelected6() {
+//        binding.run {
+//            imageColor1.setImageResource(0)
+//            imageColor2.setImageResource(0)
+//            imageColor3.setImageResource(0)
+//            imageColor6.setImageResource(R.drawable.ic_done)
+//            imageColor4.setImageResource(0)
+//            imageColor5.setImageResource(0)
+//        }
+//    }
+//
+//    fun itemSelected4() {
+//        binding.run {
+//            imageColor1.setImageResource(0)
+//            imageColor2.setImageResource(0)
+//            imageColor3.setImageResource(0)
+//            imageColor6.setImageResource(0)
+//            imageColor4.setImageResource(R.drawable.ic_done)
+//            imageColor5.setImageResource(0)
+//        }
+//    }
+//
+//    fun itemSelected5() {
+//        binding.run {
+//            imageColor1.setImageResource(0)
+//            imageColor2.setImageResource(0)
+//            imageColor3.setImageResource(0)
+//            imageColor6.setImageResource(0)
+//            imageColor4.setImageResource(0)
+//            imageColor5.setImageResource(R.drawable.ic_done)
+//        }
+//    }
 //
 //    private fun setFontColor(colorPath: Int?) {
 //        when (colorPath) {

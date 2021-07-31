@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
@@ -239,5 +240,15 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener, Navigation {
         binding.searchIcon.setImageResource(R.drawable.ic_round_delete_outline)
         binding.menuButton.setImageResource(R.drawable.ic_round_arrow_back_ios)
         binding.favFB.visibility = View.GONE
+    }
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        return if (noteViewModel.n) {
+            val a: Animation = object : Animation() {}
+            a.duration = 0
+            return a
+        } else {
+            super.onCreateAnimation(transit, enter, nextAnim)
+        }
     }
 }
