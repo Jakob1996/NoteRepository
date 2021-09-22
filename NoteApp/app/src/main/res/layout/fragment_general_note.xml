@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:id="@+id/beforeLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragmentGeneralNoteCrl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_Primary"
     android:clickable="true"
-    android:focusable="true"
-    android:background="@color/color_Primary">
+    android:focusable="true">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -22,7 +21,7 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:id="@+id/toolbar_fragmentAddEdit"
+                android:id="@+id/fragmentSearchCategoryToolbarRl"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
@@ -37,34 +36,34 @@
                 app:titleTextColor="@color/white">
 
                 <ImageView
-                    android:id="@+id/back_from_addEdit"
+                    android:id="@+id/fragmentGeneralNoteToolbarBackIv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_back"
                     android:layout_centerVertical="true"
+                    android:src="@drawable/ic_back"
                     app:tint="@color/colorIcons" />
 
                 <TextView
-                    android:id="@+id/toolbar_Title_AddEdit"
+                    android:id="@+id/fragmentGeneralNoteToolbarTitleTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Your note"
-                    android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/your_note"
                     android:textColor="@color/colorIcons" />
 
                 <ImageView
-                    android:id="@+id/editNote"
+                    android:id="@+id/fragmentGeneralNoteToolbarEditIv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_edit"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:src="@drawable/ic_edit"
                     app:tint="@color/colorIcons" />
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/line1"
+                android:id="@+id/fragmentGeneralNoteTitleLl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -73,35 +72,35 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar_fragmentAddEdit">
+                app:layout_constraintTop_toBottomOf="@+id/fragmentSearchCategoryToolbarRl">
 
                 <View
-                    android:id="@+id/viewSubtitleIndicator"
+                    android:id="@+id/fragmentGeneralNoteSubtitleIndicatorV"
                     android:layout_width="7dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/background_subtitle_indicator" />
 
                 <TextView
-                    android:id="@+id/title_addEditFrag"
+                    android:id="@+id/fragmentGeneralNoteTitleTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="5dp"
                     android:background="@color/color_Primary"
+                    android:ellipsize="end"
                     android:fontFamily="@font/robotoligth"
                     android:gravity="center_vertical"
                     android:hint="@string/note_title"
+                    android:maxLines="1"
+                    android:scrollHorizontally="true"
                     android:textColor="@color/white"
                     android:textColorHint="@color/colorTextHint"
-                    android:textSize="26sp"
-                    android:scrollHorizontally="true"
-                    android:maxLines="1"
-                    android:ellipsize="end" />
+                    android:textSize="26sp" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewImageBeforeFrag"
+                android:id="@+id/fragmentGeneralNoteRv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -113,15 +112,16 @@
                 android:maxHeight="80dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/line1" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentGeneralNoteTitleLl" />
 
             <TextView
-                android:id="@+id/mess_addEditFrag"
+                android:id="@+id/fragmentGeneralNoteDescriptionTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="20dp"
+                android:autoLink="all"
                 android:background="@color/color_Primary"
                 android:fontFamily="@font/robotoligth"
                 android:gravity="left"
@@ -129,19 +129,17 @@
                 android:textColor="@color/white"
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="20sp"
-                android:autoLink="all"
-                android:clickable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerViewImageBeforeFrag" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentGeneralNoteRv" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
 
     <include
-        android:id="@+id/include_miscellaneous_beforeAddEdit"
-        layout="@layout/note_edit_layout_miscellaneous" />
+        android:id="@+id/fragmentGeneralNoteCastomizer"
+        layout="@layout/note_castomizer" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

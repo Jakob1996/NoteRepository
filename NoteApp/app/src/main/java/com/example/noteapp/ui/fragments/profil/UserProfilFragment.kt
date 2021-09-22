@@ -1,4 +1,4 @@
-package com.example.noteapp.ui.fragments.profile
+package com.example.noteapp.ui.fragments.profil
 
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.data.Category
 import com.example.noteapp.data.Note
-import com.example.noteapp.databinding.FragmentProfileBinding
+import com.example.noteapp.databinding.FragmentProfilBinding
 import com.example.noteapp.navigation.Navigation
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.ProfilViewModel
@@ -19,8 +19,8 @@ import com.example.noteapp.viewmodels.ToDoViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 
-class ProfileFragment : Fragment(), Navigation {
-    private lateinit var noteViewModel:NoteViewModel
+class UserProfilFragment : Fragment(), Navigation {
+    private lateinit var noteViewModel: NoteViewModel
 
     private lateinit var todoViewModel: ToDoViewModel
 
@@ -28,7 +28,7 @@ class ProfileFragment : Fragment(), Navigation {
 
     private val fbAuth = FirebaseAuth.getInstance()
 
-    private var _binding:FragmentProfileBinding? = null
+    private var _binding: FragmentProfilBinding? = null
 
     private val binding get() = _binding!!
 
@@ -39,10 +39,12 @@ class ProfileFragment : Fragment(), Navigation {
         profilViewModel = ViewModelProvider(requireActivity())[ProfilViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        _binding = FragmentProfilBinding.inflate(inflater, container, false)
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -60,30 +62,28 @@ class ProfileFragment : Fragment(), Navigation {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.saveButt.setOnClickListener {
-            profilViewModel.addNotesToCloud(noteViewModel.allNotes.value!!)
+        binding.fragmentProfilSaveBtn.setOnClickListener {
+            profilViewModel.addNotesToCloud(noteViewModel.getAllNotes.value!!)
         }
 
-        binding.removeDataFirebase.setOnClickListener {
-            val a  = noteViewModel.allNotes.value
-                a?.let {
-                        it1 -> profilViewModel.deleteDataFromFirebase(it1)
-                }
+        binding.fragmentProfilRemoveFirebaseBtn.setOnClickListener {
+            val a = noteViewModel.getAllNotes.value
+            a?.let { it1 ->
+                profilViewModel.deleteDataFromFirebase(it1)
+            }
         }
 
-        binding.LogoutButton.setOnClickListener {
+        binding.fragmentProfilLogoutBtn.setOnClickListener {
             fbAuth.signOut()
             Toast.makeText(activity, "Logged out successfully!!", Toast.LENGTH_LONG).show()
             popBackStack("main", requireActivity().supportFragmentManager, true)
         }
 
-        binding.getFromFirebaseButton.setOnClickListener {
-            Log.d("abcccer", "getFromBtn")
-
-            profilViewModel.addNotesToCloud(noteViewModel.allNotes.value!!)
+        binding.fragmentProfilGetFirebaseBtn.setOnClickListener {
+            profilViewModel.addNotesToCloud(noteViewModel.getAllNotes.value!!)
 
             profilViewModel.getNotesFromFirebase().observe(viewLifecycleOwner, {
-                val allNotes = noteViewModel.allNotes
+                val allNotes = noteViewModel.getAllNotes
                 it.forEach { note ->
                     insertOrUpdateNotes(note)
                 }
@@ -96,12 +96,12 @@ class ProfileFragment : Fragment(), Navigation {
         }
     }
 
-    private fun insertOrUpdateNotes(note: Note){
+    private fun insertOrUpdateNotes(note: Note) {
 
         noteViewModel.insertNote(note)
     }
 
-    private fun insertOrUpdateCategory(category: Category){
+    private fun insertOrUpdateCategory(category: Category) {
         //todoViewModel.insertCategotyItem(category)
     }
 

@@ -32,27 +32,11 @@ class EditNoteFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
+
+        saveNoteState()
 
         _binding = FragmentEditNoteBinding.inflate(inflater, container, false)
-
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(false) {
-                override fun handleOnBackPressed() {
-                    if (binding.titleEditNote.text.isNotEmpty() || binding.messEditNote.text.isNotEmpty()) {
-                        val note = noteViewModel.getSelectedNote().value
-                        val title = binding.titleEditNote.text.toString()
-                        val mess = binding.messEditNote.text.toString()
-                        note!!.message = mess
-                        note.title = title
-
-                        noteViewModel.updateNote(note)
-                    }
-                    isEnabled = false
-                    exitTransaction()
-                }
-            })
 
         return binding.root
     }
@@ -61,19 +45,18 @@ class EditNoteFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         noteViewModel.getSelectedNote().observe(viewLifecycleOwner, {
-            binding.titleEditNote.setText(it!!.title)
+            binding.fragmentEditNoteTitleEt.setText(it!!.title)
             setFontColor(it.fontColor)
             setFontSize(it.fontSize)
         })
 
-        binding.messEditNote.setText(noteViewModel.getSelectedNote().value!!.message)
+        binding.fragmentEditNoteDescriptionEt.setText(noteViewModel.getSelectedNote().value!!.message)
 
 
         //!!!
-        if(binding.messEditNote.text.isNotEmpty()) {
-            binding.messEditNote.requestFocus(binding.messEditNote.text.length)
+        if(binding.fragmentEditNoteDescriptionEt.text.isNotEmpty()) {
+            binding.fragmentEditNoteDescriptionEt.requestFocus(binding.fragmentEditNoteDescriptionEt.text.length)
         }
-
     }
 
     override fun onStart() {
@@ -91,15 +74,15 @@ class EditNoteFragment : Fragment() {
     private fun setFontColor(colorPath: Int?) {
         when (colorPath) {
             1 -> {
-                binding.messEditNote.setTextColor(Color.parseColor("#FFFFFF"))
+                binding.fragmentEditNoteDescriptionEt.setTextColor(Color.parseColor("#FFFFFF"))
             }
 
             2 -> {
-                binding.messEditNote.setTextColor(Color.parseColor("#959595"))
+                binding.fragmentEditNoteDescriptionEt.setTextColor(Color.parseColor("#959595"))
             }
 
             3 -> {
-                binding.messEditNote.setTextColor(Color.parseColor("#666666"))
+                binding.fragmentEditNoteDescriptionEt.setTextColor(Color.parseColor("#666666"))
             }
         }
     }
@@ -107,23 +90,23 @@ class EditNoteFragment : Fragment() {
     private fun setFontSize(colorSize: Int?) {
         when (colorSize) {
             1 -> {
-                binding.messEditNote.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15F)
+                binding.fragmentEditNoteDescriptionEt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15F)
             }
 
             2 -> {
-                binding.messEditNote.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+                binding.fragmentEditNoteDescriptionEt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
             }
 
             3 -> {
-                binding.messEditNote.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25F)
+                binding.fragmentEditNoteDescriptionEt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25F)
             }
 
             4 -> {
-                binding.messEditNote.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30F)
+                binding.fragmentEditNoteDescriptionEt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30F)
             }
 
             5 -> {
-                binding.messEditNote.setTextSize(TypedValue.COMPLEX_UNIT_SP, 35F)
+                binding.fragmentEditNoteDescriptionEt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 35F)
             }
         }
     }
@@ -135,8 +118,27 @@ class EditNoteFragment : Fragment() {
     }
 
     private fun exitTransaction(){
-        val sm = requireActivity().supportFragmentManager
-        sm.popBackStackImmediate("BEN", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        sm.beginTransaction().addToBackStack("abc").commit()
+        requireActivity().supportFragmentManager.popBackStack()
+    }
+
+    private fun saveNoteState(){
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+
+                    if (binding.fragmentEditNoteTitleEt.text.isNotEmpty() || binding.fragmentEditNoteDescriptionEt.text.isNotEmpty()) {
+                        val note = noteViewModel.getSelectedNote().value
+                        val title = binding.fragmentEditNoteTitleEt.text.toString()
+                        val mess = binding.fragmentEditNoteDescriptionEt.text.toString()
+                        note!!.message = mess
+                        note.title = title
+
+                        noteViewModel.updateNote(note)
+                    }
+                    isEnabled = false
+                    exitTransaction()
+                }
+            })
     }
 }

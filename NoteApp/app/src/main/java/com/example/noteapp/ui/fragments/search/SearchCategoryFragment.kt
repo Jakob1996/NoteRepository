@@ -20,12 +20,12 @@ import com.example.noteapp.databinding.FragmentSearchCategoryBinding
 import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
 import com.example.noteapp.viewmodels.ToDoViewModel
 
-class SearchCategoryFragment: BaseFragment(), OnItemCategoryClickListener {
+class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
 
     private lateinit var todoViewModel: ToDoViewModel
     private lateinit var categoryAdapter: ItemsCategoryTodoAdapter
 
-    private var _binding:FragmentSearchCategoryBinding? = null
+    private var _binding: FragmentSearchCategoryBinding? = null
     private val binding get() = _binding!!
 
 
@@ -34,13 +34,15 @@ class SearchCategoryFragment: BaseFragment(), OnItemCategoryClickListener {
 
         todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
 
-        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                todoViewModel.search = null
-                popBackStack("SCF", requireActivity().supportFragmentManager, false)
-                isEnabled = false
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    todoViewModel.search = null
+                    popBackStack("SCF", requireActivity().supportFragmentManager, false)
+                    isEnabled = false
+                }
+            })
     }
 
     override fun onDestroyView() {
@@ -53,8 +55,10 @@ class SearchCategoryFragment: BaseFragment(), OnItemCategoryClickListener {
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         _binding = FragmentSearchCategoryBinding.inflate(inflater, container, false)
         return binding.root
@@ -64,76 +68,76 @@ class SearchCategoryFragment: BaseFragment(), OnItemCategoryClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         todoViewModel.allCategoryItems.observe(viewLifecycleOwner, Observer {
-            if(todoViewModel.search!=null){
+            if (todoViewModel.search != null) {
                 updateCategory(it, todoViewModel.search!!)
-            } else{
+            } else {
                 updateCategoryEmpty()
             }
         })
 
-        if(todoViewModel.search!=null) {
-            binding.editSearcherCategory.setText(todoViewModel.search)
-            binding.editSearcherCategory.requestFocus(binding.editSearcherCategory.text.length)
+        if (todoViewModel.search != null) {
+            binding.fragmentSearchCategorySearchEt.setText(todoViewModel.search)
+            binding.fragmentSearchCategorySearchEt.requestFocus(binding.fragmentSearchCategorySearchEt.text.length)
         }
 
-        binding.icBackInSearchFragment.setOnClickListener{
+        binding.fragmentSearchCategoryToolbarBackIv.setOnClickListener {
             findNavController().navigate(R.id.action_searchFragment_to_mainFramgent)
         }
 
-        binding.editSearcherCategory.addTextChangedListener(object : TextWatcher {
+        binding.fragmentSearchCategorySearchEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
-                if(!s.isNullOrEmpty()) {
+                if (!s.isNullOrEmpty()) {
                     updateCategory(todoViewModel.allCategoryItems.value!!, s.toString())
-                    todoViewModel.search = binding.editSearcherCategory.text.toString()
+                    todoViewModel.search = binding.fragmentSearchCategorySearchEt.text.toString()
                 } else updateCategoryEmpty()
             }
 
             override fun afterTextChanged(s: Editable?) {
             }
-        } )
+        })
     }
 
-    private fun updateCategory(list:List<Category>, search:String) {
+    private fun updateCategory(list: List<Category>, search: String) {
         val lm = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-        binding.recyclerViewInSearchCategory.layoutManager = lm
+        binding.fragmentSearchCategoryRv.layoutManager = lm
 
 
-        val listMod = list.filter {  it ->
+        val listMod = list.filter { it ->
             it.categoryName.toLowerCase().contains(search.toLowerCase())
         }
 
         categoryAdapter = ItemsCategoryTodoAdapter(listMod, this)
-        binding.recyclerViewInSearchCategory.adapter = categoryAdapter
+        binding.fragmentSearchCategoryRv.adapter = categoryAdapter
         categoryAdapter.notifyDataSetChanged()
     }
 
     private fun updateCategoryEmpty() {
         val lm = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
 
-        binding.recyclerViewInSearchCategory.layoutManager = lm
+        binding.fragmentSearchCategoryRv.layoutManager = lm
 
         categoryAdapter = ItemsCategoryTodoAdapter(emptyList(), this)
-        binding.recyclerViewInSearchCategory.adapter = categoryAdapter
+        binding.fragmentSearchCategoryRv.adapter = categoryAdapter
         categoryAdapter.notifyDataSetChanged()
     }
 
     override fun onItemClick(category: Category, position: Int) {
         todoViewModel.setSelectedCategotyItem(category)
         todoViewModel.categoryItemBeforeChange = category
-        if(category.hasPassword){
+        if (category.hasPassword) {
             todoViewModel.isSearchEdit = 2
             findNavController().navigate(R.id.action_searchCategoryFragment_to_checkPasswordFragment)
-        } else
-        {   todoViewModel.isSearchEdit = 2
+        } else {
+            todoViewModel.isSearchEdit = 2
             findNavController().navigate(R.id.action_searchCategoryFragment_to_addEditToDoFragment)
         }
     }
 
     override fun onItemLongClick(category: Category, position: Int) {
-
+        //NOT YET!
     }
 }

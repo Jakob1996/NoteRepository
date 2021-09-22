@@ -1,4 +1,4 @@
-package com.example.noteapp.ui.fragments.note
+package com.example.noteapp.ui.fragments.password
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.data.Category
 import com.example.noteapp.data.Note
-import com.example.noteapp.databinding.FragmentRemovePasswordDialogBinding
+import com.example.noteapp.databinding.RemovePasswordDialogBinding
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.ToDoViewModel
 
@@ -17,7 +17,7 @@ class RemovePasswordDialogFragment : DialogFragment() {
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var todoViewModel: ToDoViewModel
 
-    private var _binding:FragmentRemovePasswordDialogBinding? = null
+    private var _binding:RemovePasswordDialogBinding? = null
 
     private val binding get() = _binding!!
 
@@ -30,7 +30,7 @@ class RemovePasswordDialogFragment : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        _binding = FragmentRemovePasswordDialogBinding.inflate(inflater, container, false)
+        _binding = RemovePasswordDialogBinding.inflate(inflater, container, false)
 
 
 

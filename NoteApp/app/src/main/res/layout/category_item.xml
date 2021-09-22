@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.jcminarro.roundkornerlayout.RoundKornerLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/layout_category_item"
+    android:id="@+id/categoryItemLl"
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:layout_margin="9dp"
@@ -15,7 +15,7 @@
     app:corner_radius="11dp">
 
     <TextView
-        android:id="@+id/categoryName_textView"
+        android:id="@+id/categoryItemTitleTv"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -36,7 +36,7 @@
         android:gravity="right">
 
         <ImageView
-            android:id="@+id/favLayCatItem"
+            android:id="@+id/categoryItemFavouriteIv"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginEnd="3dp"
@@ -45,7 +45,7 @@
             app:tint="@color/gold" />
 
         <ImageView
-            android:id="@+id/delLayCatItem"
+            android:id="@+id/categoryItemLockIv"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginEnd="3dp"

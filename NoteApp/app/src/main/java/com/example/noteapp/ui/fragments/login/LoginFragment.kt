@@ -5,17 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.noteapp.R
 import com.example.noteapp.data.Note
 import com.example.noteapp.databinding.FragmentLoginBinding
 import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
-import com.example.noteapp.ui.fragments.profile.ProfileFragment
-import com.example.noteapp.ui.fragments.registration.RegistrationFragment
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.ProfilViewModel
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
 
 
 class LoginFragment : BaseFragment() {
@@ -54,15 +52,15 @@ class LoginFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.logInButton.setOnClickListener {
-            val email = binding.signInEmail.text?.trim().toString()
-            val password = binding.signInPassword.text?.trim().toString()
+        binding.fragmentLoginLoginBtn.setOnClickListener {
+            val email = binding.fragmentLoginEmailEt.text?.trim().toString()
+            val password = binding.fragmentLoginPasswordEt.text?.trim().toString()
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 fbAuth.signInWithEmailAndPassword(email, password)
                     .addOnSuccessListener { authRes ->
                         Log.d("logd", "${authRes.user}")
                         if (fbAuth.currentUser != null) {
-                            profilViewModel.addNotesToCloud(noteViewModel.allNotes.value!!)
+                            profilViewModel.addNotesToCloud(noteViewModel.getAllNotes.value!!)
                             Log.d("logd", "${fbAuth.currentUser}")
                             profilViewModel.getNotesFromFirebase().observe(viewLifecycleOwner, {
 
@@ -74,9 +72,7 @@ class LoginFragment : BaseFragment() {
                                 .show()
 
                             navigateToFragment(
-                                ProfileFragment(),
-                                "ProfFrag",
-                                requireActivity().supportFragmentManager
+                                findNavController(), R.id.action_loginFragment_to_profileFragment
                             )
                         }
                     }
@@ -87,12 +83,10 @@ class LoginFragment : BaseFragment() {
             }
         }
 
-        binding.signUpButton.setOnClickListener {
+        binding.fragmentLoginRegisterBtn.setOnClickListener {
 
             navigateToFragment(
-                RegistrationFragment(),
-                "RegFrag",
-                requireActivity().supportFragmentManager
+                findNavController(), R.id.registrationFragment
             )
         }
     }

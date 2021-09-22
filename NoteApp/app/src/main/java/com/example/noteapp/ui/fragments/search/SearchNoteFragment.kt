@@ -18,7 +18,6 @@ import com.example.noteapp.data.Note
 import com.example.noteapp.databinding.FragmentSearchNoteBinding
 import com.example.noteapp.tools.OnItemClickListener
 import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
-import com.example.noteapp.ui.fragments.note.BeforeEditNoteFragment
 import com.example.noteapp.viewmodels.NoteViewModel
 
 class SearchNoteFragment : BaseFragment(), OnItemClickListener {
@@ -26,24 +25,28 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var noteAdapter: NoteAdapter
 
-    private var _binding:FragmentSearchNoteBinding? = null
+    private var _binding: FragmentSearchNoteBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
+        super.onCreate(savedInstanceState)
+        noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
 
-        requireActivity().onBackPressedDispatcher.addCallback(this, object :OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                noteViewModel.search = null
-                popBackStack("SF", requireActivity().supportFragmentManager, false)
-                isEnabled = false
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    noteViewModel.search = null
+                    popBackStack("SF", requireActivity().supportFragmentManager, false)
+                    isEnabled = false
+                }
+            })
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         _binding = FragmentSearchNoteBinding.inflate(inflater, container, false)
         return binding.root
@@ -56,44 +59,44 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
 
         binding.editSearcher.requestFocus()
 
-        noteViewModel.allNotes.observe(viewLifecycleOwner, {
-            if(noteViewModel.search!=null){
+        noteViewModel.getAllNotes.observe(viewLifecycleOwner, {
+            if (noteViewModel.search != null) {
                 updateNotes(it, noteViewModel.search!!)
-            } else{
-              updateNotesEmpty()
+            } else {
+                updateNotesEmpty()
             }
         })
 
-        if(noteViewModel.search!=null) {
+        if (noteViewModel.search != null) {
             binding.editSearcher.setText(noteViewModel.search)
             binding.editSearcher.requestFocus(binding.editSearcher.text.length)
         }
 
-        binding.icBackInSearchFragment.setOnClickListener {
+        binding.fragmentSearchCategoryToolbarBackIv.setOnClickListener {
             noteViewModel.search = null
             requireActivity().supportFragmentManager.popBackStack()
         }
 
-        binding.editSearcher.addTextChangedListener(object : TextWatcher{
+        binding.editSearcher.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
-                if(!s.isNullOrEmpty()) {
-                    updateNotes(noteViewModel.allNotes.value!!, s.toString())
+                if (!s.isNullOrEmpty()) {
+                    updateNotes(noteViewModel.getAllNotes.value!!, s.toString())
                     noteViewModel.search = binding.editSearcher.text.toString()
                 } else updateNotesEmpty()
             }
 
             override fun afterTextChanged(s: Editable?) {
             }
-        } )
+        })
 
         binding.closeBtn.setOnClickListener {
-            if(binding.editSearcher.text.isNotEmpty()){
+            if (binding.editSearcher.text.isNotEmpty()) {
                 binding.editSearcher.text.clear()
-            } else{
+            } else {
                 noteViewModel.search = null
                 closeKeyboard()
                 requireActivity().supportFragmentManager.popBackStack()
@@ -101,13 +104,14 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
         }
     }
 
-    private fun updateNotes(list:List<Note>, search:String) {
+    private fun updateNotes(list: List<Note>, search: String) {
         val lm = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
         binding.recyclerViewInSearch.layoutManager = lm
 
-        val listMod = list.filter {  it ->
-            it.title.toLowerCase().contains(search.toLowerCase()) || it.message.toUpperCase().contains(search.toUpperCase())
+        val listMod = list.filter {
+            it.title.toLowerCase().contains(search.toLowerCase()) || it.message.toUpperCase()
+                .contains(search.toUpperCase())
         }
 
         noteAdapter = NoteAdapter(listMod, this)
@@ -128,17 +132,17 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
     override fun onItemClick(note: Note, position: Int) {
         noteViewModel.setSelectedNote(note)
         noteViewModel.noteBeforeChange = note
-        if(note.hasPassword){
+        if (note.hasPassword) {
             noteViewModel.isSearchEdit = 2
             findNavController().navigate(R.id.action_searchFragment_to_checkPasswordFragment)
-        } else
-        {   noteViewModel.isSearchEdit = 2
-            navigateToFragment(BeforeEditNoteFragment(), "ENF", requireActivity().supportFragmentManager)
+        } else {
+            noteViewModel.isSearchEdit = 2
+            navigateToFragment(findNavController(), R.id.beforeAddEditNoteFragment)
         }
     }
 
     override fun onItemLongClick(note: Note, position: Int) {
-        //TODO
+        //NOT HERE
     }
 
     override fun onDestroyView() {
@@ -147,20 +151,21 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
     }
 
     override fun onBackPress() {
-        //TODO
+
     }
 
 
-    private fun showSoftKeyboard(){
-        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-
+    private fun showSoftKeyboard() {
+        val imm =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         imm?.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
     }
 
     private fun closeKeyboard() {
         val view = requireActivity().currentFocus
         if (view != null) {
-            val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm =
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }

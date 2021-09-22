@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.data.Category
-import com.example.noteapp.databinding.FragmentAddCategoryDialogBinding
+import com.example.noteapp.databinding.AddItemDialogBinding
 import com.example.noteapp.viewmodels.ToDoViewModel
 import com.google.firebase.auth.FirebaseAuth
 import java.util.*
@@ -17,7 +17,7 @@ class DialogAddCategoryItem:DialogFragment() {
     private val fbAuth = FirebaseAuth.getInstance()
 
 
-    private var _binding:FragmentAddCategoryDialogBinding? = null
+    private var _binding:AddItemDialogBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,15 +30,15 @@ class DialogAddCategoryItem:DialogFragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentAddCategoryDialogBinding.inflate(inflater, container, false)
+        _binding = AddItemDialogBinding.inflate(inflater, container, false)
 
 
-        binding.addCategoryButton.setOnClickListener {
-            if (binding.categoryTitleEditText.text.isEmpty()) {
+        binding.addItemDialogAddBtn.setOnClickListener {
+            if (binding.addItemDialogTitleTv.text.isEmpty()) {
                 dismiss()
             } else {
                 val category = Category(
-                    binding.categoryTitleEditText.text.toString(),
+                    binding.addItemDialogTitleTv.text.toString(),
                     "#333333",
                     false,
                     Calendar.getInstance().timeInMillis

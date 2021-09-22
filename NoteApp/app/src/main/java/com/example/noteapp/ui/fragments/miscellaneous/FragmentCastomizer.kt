@@ -5,20 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.example.noteapp.R
-import com.example.noteapp.databinding.NoteEditLayoutMiscellaneousBinding
+import com.example.noteapp.databinding.NoteCastomizerBinding
 import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
-import com.example.noteapp.ui.fragments.note.AddPasswordNoteFragment
-import com.example.noteapp.ui.fragments.note.InfoDialogFragment
-import com.example.noteapp.ui.fragments.note.RemovePasswordDialogFragment
+import com.example.noteapp.ui.fragments.info.InfoDialogFragment
+import com.example.noteapp.ui.fragments.password.RemovePasswordDialogFragment
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
-open class FragmentMiscellaneous : BaseFragment() {
+open class FragmentCastomizer : BaseFragment() {
 
     private lateinit var noteViewModel: NoteViewModel
 
-    private var _binding: NoteEditLayoutMiscellaneousBinding? = null
+    private var _binding: NoteCastomizerBinding? = null
 
     private val binding get() = _binding!!
 
@@ -32,7 +30,7 @@ open class FragmentMiscellaneous : BaseFragment() {
 
         noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
 
-        _binding = NoteEditLayoutMiscellaneousBinding.inflate(layoutInflater, container, true)
+        _binding = NoteCastomizerBinding.inflate(layoutInflater, container, true)
 
         return binding.root
     }
@@ -57,9 +55,9 @@ open class FragmentMiscellaneous : BaseFragment() {
     private fun initMiscellaneous() {
         val layoutMiscellaneous = binding
         val bottomSheetBehavior = BottomSheetBehavior
-            .from(binding.layoutMiscellaneous)
+            .from(binding.noteCastomizerLl)
 
-        layoutMiscellaneous.textMiscellaneous.setOnClickListener {
+        layoutMiscellaneous.noteCastomizerTitleTv.setOnClickListener {
             if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             } else {
@@ -220,7 +218,7 @@ open class FragmentMiscellaneous : BaseFragment() {
 //    }
 
     private fun setInfoListener() {
-        binding.layoutInfo.setOnClickListener {
+        binding.noteCastomizerInfoFl.setOnClickListener {
             val fm = requireActivity().supportFragmentManager
             val infoDialogFrag = InfoDialogFragment()
             infoDialogFrag.show(fm, "hhh")
@@ -259,15 +257,13 @@ open class FragmentMiscellaneous : BaseFragment() {
 //    }
 
     private fun setPasswordListener() {
-        binding.layoutPasswordImage.setOnClickListener {
+        binding.noteCastomizerLockFl.setOnClickListener {
             if (noteViewModel.hasPassword) {
                 val fm = requireActivity().supportFragmentManager
                 val dialogFrag = RemovePasswordDialogFragment()
                 dialogFrag.show(fm, "Ab")
             } else {
-                val sm = requireActivity().supportFragmentManager
-                sm.beginTransaction().add(R.id.container_keeper, AddPasswordNoteFragment())
-                    .addToBackStack("bF").commit()
+
             }
         }
     }

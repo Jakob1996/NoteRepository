@@ -1,19 +1,23 @@
 package com.example.noteapp.viewmodels
 
 import android.app.Application
-import android.os.Bundle
 import android.os.Parcelable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.noteapp.data.Category
-import com.example.noteapp.data.ItemOfList
 import com.example.noteapp.data.Note
-import com.example.noteapp.data.relations.CategoryWithItems
+import com.example.noteapp.databinding.FragmentGeneralNoteBinding
+import com.example.noteapp.databinding.FragmentMainBinding
+import com.example.noteapp.databinding.FragmentNotesListBinding
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 
 class NoteViewModel(app:Application):AndroidViewModel(app) {
+
+    var view: FragmentMainBinding?=null
+
+    var view2: FragmentGeneralNoteBinding?=null
+
+    var view3: FragmentNotesListBinding?=null
 
     private val repository = Repository(app)
 
@@ -21,7 +25,7 @@ class NoteViewModel(app:Application):AndroidViewModel(app) {
 
     //NoteViewModel
 
-    val allNotes = repository.getAllNotes()
+    val getAllNotes = repository.getAllNotes()
 
     private val selectedNote = MutableLiveData<Note?>()
 
@@ -142,5 +146,20 @@ class NoteViewModel(app:Application):AndroidViewModel(app) {
 
     var p:Boolean = true
 
-    var n = false
+
+    fun setDefaultNoteState(){
+        setSelectedNote(null)
+        noteBeforeChange = null
+        noteTitle = ""
+        noteMessage = ""
+        noteDate = 1
+        pathImage = arrayListOf()
+        selectedFontSize = 3
+        selectedFontNote = 1
+        selectedNoteColor = "#333333"
+        idNote = -1
+        isFavourite = false
+        hasPassword = false
+        password = 0
+    }
 }

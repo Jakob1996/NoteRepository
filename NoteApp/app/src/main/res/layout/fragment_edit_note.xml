@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
-            android:id="@+id/toolbar_fragmentAddEdit"
+            android:id="@+id/fragmentSearchCategoryToolbarRl"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
@@ -24,11 +24,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/ic_back"
             app:titleTextColor="@color/white">
 
             <ImageView
-                android:id="@+id/back_from_editNote"
+                android:id="@+id/fragmentEditNoteToolbarBackIv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -36,18 +35,18 @@
                 app:tint="@color/colorIcons" />
 
             <TextView
-                android:id="@+id/toolbar_EditNote"
+                android:id="@+id/fragmentEditNoteToolbarTitleTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/robotoligth"
-                android:text="Note editor"
+                android:text="@string/note_editor"
                 android:textColor="@color/colorIcons"
                 android:textSize="14sp" />
 
             <ImageView
-                android:id="@+id/done_editNote"
+                android:id="@+id/fragmentEditNoteToolbarSaveIv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -58,7 +57,7 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/layout_title_edit"
+            android:id="@+id/fragmentEditNoteTitleLl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -67,10 +66,10 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar_fragmentAddEdit">
+            app:layout_constraintTop_toBottomOf="@+id/fragmentSearchCategoryToolbarRl">
 
             <EditText
-                android:id="@+id/title_editNote"
+                android:id="@+id/fragmentEditNoteTitleEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_Primary"
@@ -99,12 +98,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_title_edit">
+            app:layout_constraintTop_toBottomOf="@+id/fragmentEditNoteTitleLl">
 
             <EditText
-                android:id="@+id/mess_EditNote"
+                android:id="@+id/fragmentEditNoteDescriptionEt"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/color_Primary"
                 android:fontFamily="@font/robotoligth"
                 android:hint="@string/type_note_here"
@@ -114,7 +113,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/line1" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentGeneralNoteTitleLl" />
         </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.login.LoginFragment"
     android:background="@color/colorSearchBackgoround"
     android:clickable="true"
     android:focusable="true"
-    >
+    tools:context=".ui.fragments.login.LoginFragment">
 
     <Button
-        android:id="@+id/saveButt"
+        android:id="@+id/fragmentProfilSaveBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="70dp"
         android:background="@color/colorTextHint"
-        android:text="SAVE BUTTON"
+        android:text="@string/save_button"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/getFromFirebaseButton"
+        android:id="@+id/fragmentProfilGetFirebaseBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
@@ -37,10 +35,10 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saveButt" />
+        app:layout_constraintTop_toBottomOf="@+id/fragmentProfilSaveBtn" />
 
     <Button
-        android:id="@+id/removeDataFirebase"
+        android:id="@+id/fragmentProfilRemoveFirebaseBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
@@ -51,18 +49,19 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/getFromFirebaseButton" />
+        app:layout_constraintTop_toBottomOf="@+id/fragmentProfilGetFirebaseBtn" />
 
     <Button
-        android:id="@+id/LogoutButton"
+        android:id="@+id/fragmentProfilLogoutBtn"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:text="LOGOUT"
-        android:background="@color/colorTextHint"
-        android:textColor="@color/white"
         android:layout_marginStart="70dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="70dp"
+        android:background="@color/colorTextHint"
+        android:text="@string/logout"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/removeDataFirebase" /></androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@+id/fragmentProfilRemoveFirebaseBtn" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,20 +5,19 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
 import com.example.noteapp.data.Note
 import com.example.noteapp.databinding.FragmentAddNoteBinding
+import com.example.noteapp.ui.fragments.password.RemovePasswordDialogFragment
 import com.example.noteapp.viewmodels.ProfilViewModel
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -27,25 +26,23 @@ import java.util.*
 
 class AddNoteFragment : Fragment() {
 
-    private var _binding:FragmentAddNoteBinding? = null
+    private var _binding: FragmentAddNoteBinding? = null
 
     private val binding get() = _binding!!
 
     private lateinit var noteViewModel: NoteViewModel
 
-    private lateinit var profileViewModel:ProfilViewModel
+    private lateinit var profileViewModel: ProfilViewModel
 
     private val fbAuth = FirebaseAuth.getInstance()
-
-    private var value: Boolean = false
 
     private var selectedImagePath: String = ""
 
     private var quit = 1
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
 
         _binding = FragmentAddNoteBinding.inflate(inflater, container, false)
@@ -56,8 +53,9 @@ class AddNoteFragment : Fragment() {
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    val title = binding.titleAddNoteFrag.text.toString()
-                    val message = binding.messAddNoteFrag.text.toString()
+                    val title = binding.fragmentAddNoteTitleEt.text.toString()
+                    val description = binding.fragmentAddNoteDescriptionEt.text.toString()
+
                     val date = Calendar.getInstance().timeInMillis
                     val color = noteViewModel.selectedNoteColor
                     val fontSize = noteViewModel.selectedFontSize
@@ -66,17 +64,20 @@ class AddNoteFragment : Fragment() {
                     val hasPassword = noteViewModel.hasPassword
                     val password = noteViewModel.password
 
-                    if (title.isNotEmpty()||message.isNotEmpty()) {
-
-                        val note = Note(title, message, date, isSelected = false, color,
-                            fontColor, fontSize, favourite, hasPassword, password).apply {
-                            rowId = title.hashCode()+message.hashCode()+date.hashCode()*color.hashCode()
+                    if (title.isNotEmpty() || description.isNotEmpty()) {
+                        val note = Note(
+                            title, description, date, isSelected = false, color,
+                            fontColor, fontSize, favourite, hasPassword, password
+                        ).apply {
+                            rowId =
+                                title.hashCode() + description.hashCode() + date.hashCode() * color.hashCode()
                         }
 
                         noteViewModel.insertNote(note)
 
-                        if(fbAuth.currentUser!=null) {
-                            profileViewModel = ViewModelProvider(requireActivity())[ProfilViewModel::class.java]
+                        if (fbAuth.currentUser != null) {
+                            profileViewModel =
+                                ViewModelProvider(requireActivity())[ProfilViewModel::class.java]
                             val noteAsList = listOf(note)
                             profileViewModel.addNotesToCloud(noteAsList)
                         }
@@ -100,9 +101,9 @@ class AddNoteFragment : Fragment() {
         initMiscellaneous()
 
         val gradientDrawable: GradientDrawable =
-            binding.addNoteViewSubtitleIndicator.background as GradientDrawable
+            binding.fragmentAddNoteSubtitleIndicatorV.background as GradientDrawable
 
-        binding.includeMiscellaneous.fontSizeL.setOnClickListener {
+        binding.fragmentAddNoteCastomizer.noteCastomizerFontSizeFl.setOnClickListener {
             ++noteViewModel.selectedFontSize
             if (noteViewModel.selectedFontSize > 5) {
                 noteViewModel.selectedFontSize = 1
@@ -115,7 +116,7 @@ class AddNoteFragment : Fragment() {
             }
         }
 
-        binding.includeMiscellaneous.colorFontL.setOnClickListener {
+        binding.fragmentAddNoteCastomizer.noteCastomizerFontColorFl.setOnClickListener {
             ++noteViewModel.selectedFontNote
 
             if (noteViewModel.selectedFontNote > 3) {
@@ -130,13 +131,13 @@ class AddNoteFragment : Fragment() {
             }
         }
 
-        binding.backFromAddNote.setOnClickListener { requireActivity().onBackPressed() }
+        binding.fragmentAddNoteToolbarBackButtonIv.setOnClickListener { requireActivity().onBackPressed() }
 
-        binding.includeMiscellaneous.favouriteNoteButton.setOnClickListener {
+        binding.fragmentAddNoteCastomizer.noteCastomizerFavouriteFl.setOnClickListener {
             noteViewModel.isFavourite = !noteViewModel.isFavourite
         }
 
-        binding.includeMiscellaneous.layoutPasswordImage.setOnClickListener {
+        binding.fragmentAddNoteCastomizer.noteCastomizerLockIv.setOnClickListener {
             if (noteViewModel.hasPassword) {
                 val fm = requireActivity().supportFragmentManager
                 val dialogFragment = RemovePasswordDialogFragment()
@@ -148,11 +149,11 @@ class AddNoteFragment : Fragment() {
 
         noteViewModel.getSelectedNote().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
-            if(noteViewModel.getSelectedNote().value==null) {
+            if (noteViewModel.getSelectedNote().value == null) {
                 noteViewModel.selectedNoteColor = "#333333"
                 gradientDrawable.setColor(Color.parseColor(noteViewModel.selectedNoteColor))
 
-            } else{
+            } else {
                 noteViewModel.noteTitle = it!!.title
                 noteViewModel.noteMessage = it.message
                 noteViewModel.noteDate = it.date
@@ -164,8 +165,8 @@ class AddNoteFragment : Fragment() {
                 noteViewModel.password = it.password
 
                 setImagePassword(noteViewModel.hasPassword)
-                binding.titleAddNoteFrag.setText(noteViewModel.noteTitle)
-                binding.messAddNoteFrag.setText(noteViewModel.noteMessage)
+                binding.fragmentAddNoteTitleEt.setText(noteViewModel.noteTitle)
+                binding.fragmentAddNoteDescriptionEt.setText(noteViewModel.noteMessage)
                 setFontColor(noteViewModel.selectedFontNote)
                 setFontSize(noteViewModel.selectedFontSize)
 
@@ -205,21 +206,24 @@ class AddNoteFragment : Fragment() {
     private fun closeKeyboard() {
         val view = requireActivity().currentFocus
         if (view != null) {
-            val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm =
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 
     private fun setSubtitleIndicator() {
-        val gradientDrawable: GradientDrawable = binding.addNoteViewSubtitleIndicator.background as GradientDrawable
+        val gradientDrawable: GradientDrawable =
+            binding.fragmentAddNoteSubtitleIndicatorV.background as GradientDrawable
         gradientDrawable.setColor(Color.parseColor(noteViewModel.selectedNoteColor))
     }
 
     private fun initMiscellaneous() {
-        val layoutMiscellaneous = binding.includeMiscellaneous
-        val bottomSheetBehavior = BottomSheetBehavior.from(binding.includeMiscellaneous.layoutMiscellaneous)
+        val layoutMiscellaneous = binding.fragmentAddNoteCastomizer
+        val bottomSheetBehavior =
+            BottomSheetBehavior.from(binding.fragmentAddNoteCastomizer.noteCastomizerLl)
 
-        binding.includeMiscellaneous.textMiscellaneous.setOnClickListener {
+        binding.fragmentAddNoteCastomizer.noteCastomizerTitleTv.setOnClickListener {
             if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             } else {
@@ -340,97 +344,105 @@ class AddNoteFragment : Fragment() {
     private fun setFontColor(colorPath: Int?) {
         when (colorPath) {
             1 -> {
-                binding.messAddNoteFrag.setTextColor(Color.parseColor("#FFFFFF"))
+                binding.fragmentAddNoteDescriptionEt.setTextColor(Color.parseColor("#FFFFFF"))
             }
 
             2 -> {
-                binding.messAddNoteFrag.setTextColor(Color.parseColor("#959595"))
+                binding.fragmentAddNoteDescriptionEt.setTextColor(Color.parseColor("#959595"))
             }
 
             3 -> {
-                binding.messAddNoteFrag.setTextColor(Color.parseColor("#666666"))
+                binding.fragmentAddNoteDescriptionEt.setTextColor(Color.parseColor("#666666"))
             }
         }
     }
 
     private fun setFontSize(colorSize: Int?) {
-        binding.messAddNoteFrag.run {
+        binding.fragmentAddNoteDescriptionEt.run {
+            val complexUnitSp = TypedValue.COMPLEX_UNIT_SP
             when (colorSize) {
                 1 -> {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 15F)
+                    setTextSize(complexUnitSp, 15F)
                 }
 
                 2 -> {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+                    setTextSize(complexUnitSp, 20F)
                 }
 
                 3 -> {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 25F)
+                    setTextSize(complexUnitSp, 25F)
                 }
 
                 4 -> {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 30F)
+                    setTextSize(complexUnitSp, 30F)
                 }
 
                 5 -> {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 35F)
+                    setTextSize(complexUnitSp, 35F)
                 }
             }
         }
     }
 
     override fun onDestroyView() {
-
-        if(quit==2){
-            setOffAddEdit()
+        if (quit == 2) {
+            setDefaultState()
         }
 
-        val title = binding.titleAddNoteFrag.text
-        val message = binding.messAddNoteFrag.text
-        val fontSize = noteViewModel.selectedFontSize
-        val fontColor = noteViewModel.selectedFontNote
-        val date = noteViewModel.noteDate
-        val color = noteViewModel.selectedNoteColor
-        val id = noteViewModel.idNote
-        val isFavourite = noteViewModel.isFavourite
-        val hasPassword = noteViewModel.hasPassword
-        val password = noteViewModel.password
-
-        val note = Note(title.toString(), message.toString(), date, false, color, fontColor, fontSize, isFavourite, hasPassword, password)
-        note.rowId = id
-
-        noteViewModel.setSelectedNote(note)
+        saveNote()
 
         _binding = null
         super.onDestroyView()
     }
 
-    private fun setOffAddEdit(){
+    private fun setDefaultState() {
         selectedImagePath = ""
-        binding.titleAddNoteFrag.setText("")
-        binding.messAddNoteFrag.setText("")
-        noteViewModel.setSelectedNote(null)
-        noteViewModel.noteBeforeChange = null
-        noteViewModel.noteTitle = ""
-        noteViewModel.noteMessage=""
-        noteViewModel.noteDate = 1
-        noteViewModel.pathImage = arrayListOf()
-        noteViewModel.selectedFontSize = 3
-        noteViewModel.selectedFontNote = 1
-        noteViewModel.selectedNoteColor = "#333333"
-        noteViewModel.idNote = -1
-        noteViewModel.isFavourite = false
-        noteViewModel.hasPassword = false
-        noteViewModel.password = 0
+        binding.fragmentAddNoteTitleEt.setText("")
+        binding.fragmentAddNoteDescriptionEt.setText("")
+        noteViewModel.setDefaultNoteState()
+    }
+
+    private fun saveNote() {
+        val title = binding.fragmentAddNoteTitleEt.text
+        val message = binding.fragmentAddNoteDescriptionEt.text
+
+        noteViewModel.run {
+            val fontSize = selectedFontSize
+            val fontColor = selectedFontNote
+            val date = noteDate
+            val color = selectedNoteColor
+            val id = idNote
+            val isFavourite = isFavourite
+            val hasPassword = hasPassword
+            val password = password
+
+            val note = Note(
+                title.toString(),
+                message.toString(),
+                date,
+                false,
+                color,
+                fontColor,
+                fontSize,
+                isFavourite,
+                hasPassword,
+                password
+            )
+
+            note.rowId = id
+            noteViewModel.setSelectedNote(note)
+        }
     }
 
     private fun setImagePassword(hasPassword: Boolean) {
-        if(hasPassword){
-            binding.includeMiscellaneous.imageViewPassword.setColorFilter(Color.parseColor("#FF4343"))
-            binding.includeMiscellaneous.imageViewPassword.setImageResource(R.drawable.ic_lock_24)
-        } else{
-            binding.includeMiscellaneous.imageViewPassword.setColorFilter(Color.WHITE)
-            binding.includeMiscellaneous.imageViewPassword.setImageResource(R.drawable.ic_baseline_lock)
+        binding.fragmentAddNoteCastomizer.noteCastomizerLockIv.run {
+            if (hasPassword) {
+                setColorFilter(Color.parseColor("#FF4343"))
+                setImageResource(R.drawable.ic_lock_24)
+            } else {
+                setColorFilter(Color.WHITE)
+                setImageResource(R.drawable.ic_baseline_lock)
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.noteapp.ui.activities
 import android.os.BaseBundle
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.R
@@ -58,8 +59,10 @@ class MainActivity : AppCompatActivity() {
         val currentFragment = supportFragmentManager.fragments[supportFragmentManager.fragments.size-1]
 
         if(currentFragment is BackPressedListener){
+            Log.d("nenn", "eee")
             (currentFragment as BackPressedListener).onBackPress()
         } else{
+            Log.d("nenn", "eeeeee")
             super.onBackPressed()
         }
     }

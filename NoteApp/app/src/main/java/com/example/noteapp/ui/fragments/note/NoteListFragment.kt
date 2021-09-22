@@ -5,20 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.noteapp.R
 import com.example.noteapp.adapters.NoteAdapter
 import com.example.noteapp.data.Note
-import com.example.noteapp.databinding.FragmentNoteBinding
+import com.example.noteapp.databinding.FragmentNotesListBinding
 import com.example.noteapp.navigation.Navigation
 import com.example.noteapp.tools.OnItemClickListener
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.ToDoViewModel
 
-class NoteFragment() : Fragment(), OnItemClickListener, Navigation {
+class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
 
     private lateinit var noteViewModel: NoteViewModel
 
@@ -26,7 +26,8 @@ class NoteFragment() : Fragment(), OnItemClickListener, Navigation {
 
     private lateinit var noteAdapter: NoteAdapter
 
-    private var _binding: FragmentNoteBinding? = null
+    private var _binding: FragmentNotesListBinding? = null
+
     private val binding get() = _binding!!
 
     override fun onDestroyView() {
@@ -46,34 +47,33 @@ class NoteFragment() : Fragment(), OnItemClickListener, Navigation {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentNoteBinding.inflate(inflater, container, false)
-
+        _binding = FragmentNotesListBinding.inflate(inflater, container, false)
 
         noteViewModel.getSortDescNote().observe(requireActivity(), {
-            updateNotes(noteViewModel.allNotes.value!!)
+            updateNotes(noteViewModel.getAllNotes.value!!)
         })
 
         noteViewModel.getNoteFabButtonMode().observe(viewLifecycleOwner, {
-            updateNotes(noteViewModel.allNotes.value!!)
-            if (noteViewModel.allNotes.value!!.none { it.isFavourite }
+            updateNotes(noteViewModel.getAllNotes.value!!)
+            if (noteViewModel.getAllNotes.value!!.none { it.isFavourite }
                 && noteViewModel.getNoteFabButtonMode().value == true) {
-                binding.fragmentNoteEmptyFavouriteTv.visibility = View.VISIBLE
+                binding.fragmentNotesListEmptyFavouritiesTv.visibility = View.VISIBLE
             } else {
-                binding.fragmentNoteEmptyFavouriteTv.visibility = View.INVISIBLE
+                binding.fragmentNotesListEmptyFavouritiesTv.visibility = View.INVISIBLE
             }
         })
 
-        noteViewModel.getNotifyDataNote().observe(viewLifecycleOwner, Observer {
+        noteViewModel.getNotifyDataNote().observe(viewLifecycleOwner, {
             if (it == true) {
-                noteViewModel.allNotes.value?.forEach { it.isSelected = false }
-                updateNotes(noteViewModel.allNotes.value!!)
+                noteViewModel.getAllNotes.value?.forEach { it.isSelected = false }
+                updateNotes(noteViewModel.getAllNotes.value!!)
                 exitMultiSelectMode()
                 noteViewModel.setNotifyDataNote(false)
             }
         })
 
-        noteViewModel.allNotes.observe(viewLifecycleOwner, Observer { it ->
-            noteViewModel.allNotes.value?.forEach {
+        noteViewModel.getAllNotes.observe(viewLifecycleOwner, { it ->
+            noteViewModel.getAllNotes.value?.forEach {
                 for (i in noteViewModel.selectedNotes) {
                     if (it.rowId == i.rowId) {
                         it.isSelected = true
@@ -88,11 +88,11 @@ class NoteFragment() : Fragment(), OnItemClickListener, Navigation {
     }
 
     private fun checkIsEmpty() {
-        noteViewModel.allNotes.observe(viewLifecycleOwner, Observer {
-            if (noteViewModel.allNotes.value!!.isEmpty()) {
-                binding.emptyTextView.visibility = View.VISIBLE
+        noteViewModel.getAllNotes.observe(viewLifecycleOwner, {
+            if (noteViewModel.getAllNotes.value!!.isEmpty()) {
+                binding.fragmentNotesListEmptyTv.visibility = View.VISIBLE
             } else {
-                binding.emptyTextView.visibility = View.GONE
+                binding.fragmentNotesListEmptyTv.visibility = View.GONE
             }
         })
     }
@@ -119,15 +119,11 @@ class NoteFragment() : Fragment(), OnItemClickListener, Navigation {
                 transaction.commit()
                  */
                 navigateToFragment(
-                    CheckPasswordFragment(),
-                    "CheckPasswordFragment",
-                    requireActivity().supportFragmentManager
+                    findNavController(), R.id.actionCheckPasswordFragment
                 )
             } else {
                 navigateToFragment(
-                    BeforeEditNoteFragment(),
-                    "CheckPasswordFragment",
-                    requireActivity().supportFragmentManager
+                    findNavController(),R.id.actionToBeforeAddEditFragment
                 )
             }
         }
@@ -176,7 +172,7 @@ class NoteFragment() : Fragment(), OnItemClickListener, Navigation {
             StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
         }
 
-        binding.recyclerView.layoutManager = lm
+        binding.fragmentNotesListRv.layoutManager = lm
 
         val listMod: List<Note>
 
@@ -200,10 +196,10 @@ class NoteFragment() : Fragment(), OnItemClickListener, Navigation {
             }
         }
 
-        binding.recyclerView.adapter = noteAdapter
+        binding.fragmentNotesListRv.adapter = noteAdapter
 
         if (noteViewModel.noteState != null) {
-            (binding.recyclerView.layoutManager as StaggeredGridLayoutManager).onRestoreInstanceState(
+            (binding.fragmentNotesListRv.layoutManager as StaggeredGridLayoutManager).onRestoreInstanceState(
                 noteViewModel.noteState
             )
         }
@@ -215,16 +211,6 @@ class NoteFragment() : Fragment(), OnItemClickListener, Navigation {
     override fun onPause() {
         super.onPause()
 
-        noteViewModel.noteState = binding.recyclerView.layoutManager?.onSaveInstanceState()
-    }
-
-    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
-        return if (noteViewModel.n) {
-            val a: Animation = object : Animation() {}
-            a.duration = 0
-            return a
-        } else {
-            super.onCreateAnimation(transit, enter, nextAnim)
-        }
+        noteViewModel.noteState = binding.fragmentNotesListRv.layoutManager?.onSaveInstanceState()
     }
 }

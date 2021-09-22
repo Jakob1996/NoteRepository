@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/addEditToDoItems"
+    android:id="@+id/fragmentGeneralTodoCrl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
-            android:id="@+id/nestedScrollView"
+            android:id="@+id/fragmentGeneralTodoNsv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
@@ -26,7 +26,7 @@
                 android:animateLayoutChanges="true">
 
                 <RelativeLayout
-                    android:id="@+id/toolbar_fragmentAddEditTodo"
+                    android:id="@+id/fragmentGeneralTodoToolbarRl"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="16dp"
@@ -41,7 +41,7 @@
                     app:titleTextColor="@color/white">
 
                     <ImageView
-                        android:id="@+id/back_from_addEditTodo"
+                        android:id="@+id/fragmentGeneralTodoToolbarBackIv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -49,16 +49,16 @@
                         app:tint="@color/colorIcons" />
 
                     <TextView
-                        android:id="@+id/toolbar_Title_AddEditTodo"
+                        android:id="@+id/fragmentGeneralTodoToolbarTitleTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
-                        android:text="Todo List creator"
+                        android:text="@string/todo_list_creator"
                         android:textColor="@color/colorIcons" />
 
                     <ImageView
-                        android:id="@+id/addTodo"
+                        android:id="@+id/fragmentGeneralTodoToolbarSaveIv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -68,7 +68,7 @@
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/line1Todo"
+                    android:id="@+id/fragmentGeneralTodoTitleLl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -77,17 +77,17 @@
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/toolbar_fragmentAddEditTodo">
+                    app:layout_constraintTop_toBottomOf="@+id/fragmentGeneralTodoToolbarRl">
 
                     <View
-                        android:id="@+id/todo_viewSubtitleIndicator"
+                        android:id="@+id/fragmentGeneralTodoSubtitleIndicatorV"
                         android:layout_width="7dp"
                         android:layout_height="32dp"
                         android:layout_gravity="center_vertical"
                         android:background="@drawable/background_subtitle_indicator" />
 
                     <EditText
-                        android:id="@+id/title_addEditFragCategory"
+                        android:id="@+id/fragmentGeneralTodoTitleEt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -95,7 +95,7 @@
                         android:background="@color/color_Primary"
                         android:fontFamily="@font/ubuntubold"
                         android:gravity="center_vertical"
-                        android:hint="Category name"
+                        android:hint="@string/category_name"
                         android:inputType="text"
                         android:maxEms="1"
                         android:maxLines="1"
@@ -106,7 +106,7 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewTodo"
+                    android:id="@+id/fragmentGeneralTodoRv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -115,15 +115,15 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/line1Todo" />
+                    app:layout_constraintTop_toBottomOf="@+id/fragmentGeneralTodoTitleLl" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
 
         <ProgressBar
-            android:id="@+id/pbar"
-            style="@style/stt"
+            android:id="@+id/fragmentGeneralTodoPb"
+            style="@style/ProgressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="250dp"
@@ -131,12 +131,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/nestedScrollView" />
+            app:layout_constraintTop_toTopOf="@+id/fragmentGeneralTodoNsv" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
-        android:id="@+id/include_miscellaneous_todoItem"
-        layout="@layout/todo_layout_miscellaneous" />
+        android:id="@+id/fragmentGeneralTodoCastomizer"
+        layout="@layout/todo_castomizer" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

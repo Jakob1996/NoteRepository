@@ -2,7 +2,7 @@
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/add_note_layout"
+    android:id="@+id/fragmentAddNoteCrl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_Primary"
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:id="@+id/toolbar_fragmentAddNote"
+                android:id="@+id/fragmentAddNoteToolbarRl"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
@@ -36,7 +36,7 @@
                 app:titleTextColor="@color/white">
 
                 <ImageView
-                    android:id="@+id/back_from_addNote"
+                    android:id="@+id/fragmentAddNoteToolbarBackButtonIv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -44,7 +44,7 @@
                     app:tint="@color/colorIcons" />
 
                 <TextView
-                    android:id="@+id/toolbar_Title_AddNote"
+                    android:id="@+id/fragmentAddNoteToolbarTitleTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -53,7 +53,7 @@
                     android:textColor="@color/colorIcons" />
 
                 <ImageView
-                    android:id="@+id/doneButton_addNote"
+                    android:id="@+id/fragmentAddNoteToolbarSaveIv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -63,7 +63,7 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/addNoteline1"
+                android:id="@+id/fragmentAddNoteTitleLv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -72,17 +72,17 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar_fragmentAddNote">
+                app:layout_constraintTop_toBottomOf="@+id/fragmentAddNoteToolbarRl">
 
                 <View
-                    android:id="@+id/addNote_viewSubtitleIndicator"
+                    android:id="@+id/fragmentAddNoteSubtitleIndicatorV"
                     android:layout_width="7dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/background_subtitle_indicator" />
 
                 <EditText
-                    android:id="@+id/title_addNoteFrag"
+                    android:id="@+id/fragmentAddNoteTitleEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -99,7 +99,7 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewImageAddNoteFrag"
+                android:id="@+id/fragmentAddNoteRv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -111,7 +111,7 @@
                 android:maxHeight="80dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addNoteline1" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentAddNoteTitleLv" />
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -120,10 +120,10 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerViewImageAddNoteFrag">
+                app:layout_constraintTop_toBottomOf="@+id/fragmentAddNoteRv">
 
                 <EditText
-                    android:id="@+id/mess_addNoteFrag"
+                    android:id="@+id/fragmentAddNoteDescriptionEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -143,7 +143,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <include
-        android:id="@+id/include_miscellaneous"
-        layout="@layout/note_edit_layout_miscellaneous" />
+        android:id="@+id/fragmentAddNoteCastomizer"
+        layout="@layout/note_castomizer" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

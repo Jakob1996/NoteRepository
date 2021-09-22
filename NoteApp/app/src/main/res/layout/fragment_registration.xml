@@ -1,98 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    >
+    android:fillViewport="true">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorLoginBackground"
-    android:clickable="true"
-    android:focusable="true"
-    tools:context=".ui.fragments.login.LoginFragment">
-
-
-    <TextView
-        android:id="@+id/signUptextView"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="32dp"
-        android:gravity="center"
-        android:text="SIGN UP"
-        android:textColor="@color/white"
-        android:textSize="35sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@color/colorLoginBackground"
+        android:clickable="true"
+        android:focusable="true"
+        tools:context=".ui.fragments.login.LoginFragment">
+
+        <TextView
+            android:id="@+id/fragmentRegistrationTitleTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center"
+            android:text="@string/sign_up"
+            android:textColor="@color/white"
+            android:textSize="35sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    <EditText
-        android:id="@+id/emailInRegistrationFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginEnd="32dp"
-        style="@style/StyleEt"
-        android:ems="10"
-        android:hint="EMAIL *"
-        android:inputType="textEmailAddress"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUptextView" />
+        <EditText
+            android:id="@+id/fragmentRegistrationEmailEt"
+            style="@style/StyleEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="200dp"
+            android:layout_marginEnd="32dp"
+            android:ems="10"
+            android:hint="@string/email_star"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRegistrationTitleTv" />
 
-    <EditText
-        android:id="@+id/passwordInRegistrationFragment"
-        style="@style/StyleEt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_weight="1"
-        android:ems="10"
-        android:hint="PASSWORD *"
-        android:inputType="textPassword"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/emailInRegistrationFragment"
-        app:layout_constraintStart_toStartOf="@+id/emailInRegistrationFragment"
-        app:layout_constraintTop_toBottomOf="@+id/emailInRegistrationFragment" />
+        <EditText
+            android:id="@+id/fragmentRegistrationPasswordEt"
+            style="@style/StyleEt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/password_star"
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@+id/fragmentRegistrationEmailEt"
+            app:layout_constraintStart_toStartOf="@+id/fragmentRegistrationEmailEt"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRegistrationEmailEt" />
 
-    <EditText
-        android:id="@+id/repeatPassword"
-        style="@style/StyleEt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:ems="10"
-        android:hint="REPEAT PASSWORD *"
-        android:inputType="textPassword"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/passwordInRegistrationFragment"
-        app:layout_constraintStart_toStartOf="@+id/passwordInRegistrationFragment"
-        app:layout_constraintTop_toBottomOf="@+id/passwordInRegistrationFragment" />
+        <EditText
+            android:id="@+id/fragmentRegistrationPasswordRepeatEt"
+            style="@style/StyleEt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:ems="10"
+            android:hint="@string/repeat_password_star"
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@+id/fragmentRegistrationPasswordEt"
+            app:layout_constraintStart_toStartOf="@+id/fragmentRegistrationPasswordEt"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRegistrationPasswordEt" />
 
-
-    <Button
-        android:id="@+id/signUpButtonInSignUpFragment"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/white_button_style"
-        android:text="SIGN UP"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/repeatPassword"
-        app:layout_constraintStart_toStartOf="@+id/repeatPassword"
-        app:layout_constraintTop_toBottomOf="@+id/repeatPassword"
-        app:layout_constraintVertical_bias="0.0" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/fragmentRegistrationRegistrationBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/white_button_style"
+            android:text="@string/sign_up"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/fragmentRegistrationPasswordRepeatEt"
+            app:layout_constraintStart_toStartOf="@+id/fragmentRegistrationPasswordRepeatEt"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRegistrationPasswordRepeatEt"
+            app:layout_constraintVertical_bias="0.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

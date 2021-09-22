@@ -10,7 +10,7 @@
     tools:context=".ui.fragments.search.SearchNoteFragment">
 
     <RelativeLayout
-        android:id="@+id/toolbar_fragmentAddEdit"
+        android:id="@+id/fragmentSearchCategoryToolbarRl"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
@@ -24,7 +24,7 @@
         app:titleTextColor="@color/white">
 
         <ImageView
-            android:id="@+id/icBackInSearchFragment"
+            android:id="@+id/fragmentSearchCategoryToolbarBackIv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -32,7 +32,7 @@
             app:tint="@color/colorIcons" />
 
         <TextView
-            android:id="@+id/toolbar_Title"
+            android:id="@+id/fragmentSearchCategoryToolbarTitleTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -43,7 +43,7 @@
     </RelativeLayout>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/fragmentSearchCategoryCv"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
@@ -53,14 +53,14 @@
         app:cardCornerRadius="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_fragmentAddEdit">
+        app:layout_constraintTop_toBottomOf="@+id/fragmentSearchCategoryToolbarRl">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imageSearch"
+                android:id="@+id/fragmentSearchCategorySearchIv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -90,7 +90,7 @@
                 android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/close_btn"
-                app:layout_constraintStart_toEndOf="@+id/imageSearch"
+                app:layout_constraintStart_toEndOf="@+id/fragmentSearchCategorySearchIv"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
@@ -118,7 +118,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentSearchCategoryCv"
         app:spanCount="2"
         tools:listitem="@layout/note_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>

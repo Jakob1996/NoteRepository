@@ -1,4 +1,4 @@
-package com.example.noteapp.ui.fragments.note
+package com.example.noteapp.ui.fragments.info
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.noteapp.databinding.FragmentInfoDialogBinding
+import com.example.noteapp.databinding.InfoDialogBinding
 import com.example.noteapp.viewmodels.NoteViewModel
 
 class InfoDialogFragment : DialogFragment() {
     private lateinit var noteViewModel:NoteViewModel
 
-    private var _binding:FragmentInfoDialogBinding? = null
+    private var _binding:InfoDialogBinding? = null
 
     private val binding get() = _binding!!
 
@@ -25,7 +25,7 @@ class InfoDialogFragment : DialogFragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
 
-        _binding = FragmentInfoDialogBinding.inflate(inflater, container, false)
+        _binding = InfoDialogBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -34,7 +34,7 @@ class InfoDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val value = noteViewModel.getSelectedNote().value!!.message.length
-        binding.textLenghtValue.text = value.toString()
+        binding.infoDialogLenghtTv.text = value.toString()
     }
 
     override fun onDestroyView() {

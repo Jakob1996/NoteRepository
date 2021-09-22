@@ -34,7 +34,7 @@
         <item name="corner_radius">4dp</item>
     </style>
 
-    <style name="stt">
+    <style name="ProgressBarStyle">
         <item name="colorAccent">@color/white</item>
         <item name="colorPrimaryDark">@color/gold</item>
         <item name="colorPrimary">@color/colorDelete</item>

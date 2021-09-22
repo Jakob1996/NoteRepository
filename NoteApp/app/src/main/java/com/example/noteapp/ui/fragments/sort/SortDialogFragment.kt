@@ -17,15 +17,15 @@ class SortDialogFragment: DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireContext())
         val inflater = requireActivity().layoutInflater
-        val view: View = inflater.inflate(R.layout.fragment_dialog_sort, null)
+        val view: View = inflater.inflate(R.layout.sort_dialog, null)
 
-        radioGroup = view.findViewById(R.id.sort_RG)
+        radioGroup = view.findViewById(R.id.fragmentDialogRg)
         builder.setView(view)
                 .setTitle("Sort date:")
                 .setPositiveButton("OK"){di, i ->
                     when(radioGroup.checkedRadioButtonId){
-                        R.id.sort_desc_RB -> {listener.onItemClickDialog(true)}
-                        R.id.sort_asc_RB -> {listener.onItemClickDialog(false)}
+                        R.id.fragmentDialogDescRg -> {listener.onItemClickDialog(true)}
+                        R.id.fragmentDialogAscRg -> {listener.onItemClickDialog(false)}
                     }
                 }
                 .setNegativeButton("Cancel"){ di, i: Int -> }

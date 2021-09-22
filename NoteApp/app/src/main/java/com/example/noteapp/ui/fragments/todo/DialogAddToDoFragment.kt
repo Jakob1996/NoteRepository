@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.data.ItemOfList
-import com.example.noteapp.databinding.FragmentAddItemDialogBinding
+import com.example.noteapp.databinding.AddItemDialogBinding
 import com.example.noteapp.viewmodels.ToDoViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
@@ -21,7 +21,7 @@ class DialogAddToDoFragment : DialogFragment() {
 
     private val auth = FirebaseAuth.getInstance()
 
-    private var _binding: FragmentAddItemDialogBinding? = null
+    private var _binding: AddItemDialogBinding? = null
 
     private val binding get() = _binding!!
 
@@ -36,19 +36,19 @@ class DialogAddToDoFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentAddItemDialogBinding.inflate(inflater, container, false)
+        _binding = AddItemDialogBinding.inflate(inflater, container, false)
 
         todoViewModel.getSelectedItem().observe(viewLifecycleOwner, {
-            binding.itemName.setText(it?.nameItem)
+            binding.addItemDialogTitleTv.setText(it?.nameItem)
         })
 
-        binding.addButton.setOnClickListener {
+        binding.addItemDialogAddBtn.setOnClickListener {
             if (todoViewModel.getSelectedItem().value == null) {
-                if (binding.itemName.text.toString().isEmpty()) {
+                if (binding.addItemDialogTitleTv.text.toString().isEmpty()) {
                     dismiss()
                 } else {
                     val item = ItemOfList(
-                        binding.itemName.text.toString(),
+                        binding.addItemDialogTitleTv.text.toString(),
                         todoViewModel.getSelectedCategotyItem().value!!.rowIdCategory
                     ).apply {
                         idItem = Calendar.getInstance().timeInMillis.toInt()
@@ -63,13 +63,13 @@ class DialogAddToDoFragment : DialogFragment() {
                     dismiss()
                 }
             } else {
-                if (binding.itemName.text.toString().isEmpty()) {
+                if (binding.addItemDialogTitleTv.text.toString().isEmpty()) {
                     dismiss()
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {
                         val it = todoViewModel.getSelectedItem().value
                         val item =
-                            ItemOfList(binding.itemName.text.toString(), it!!.categoryId, false)
+                            ItemOfList(binding.addItemDialogTitleTv.text.toString(), it!!.categoryId, false)
                         item.idItem = it.idItem
                         todoViewModel.updateItem(item)
                         dismiss()

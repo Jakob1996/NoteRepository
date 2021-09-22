@@ -2,7 +2,7 @@
 <com.jcminarro.roundkornerlayout.RoundKornerFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/lin"
+    android:id="@+id/imageItemRkl"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -11,7 +11,7 @@
     app:corner_radius="16dp">
 
     <LinearLayout
-        android:id="@+id/image_linearLayout"
+        android:id="@+id/imageItemLl"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:orientation="vertical">

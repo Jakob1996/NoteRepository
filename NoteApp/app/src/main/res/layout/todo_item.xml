@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/todoItemLl"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="3dp"
+    android:background="@color/color_Primary"
+    android:orientation="vertical"
+    app:corner_radius="11dp">
+
+    <CheckBox
+        android:id="@+id/todoItemCb"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="3dp"
+        android:buttonTint="@color/colorNoteColor2"
+        android:ellipsize="end"
+        android:fontFamily="@font/robotoligth"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:paddingLeft="7dp"
+        android:text="@string/checkbox"
+        android:textColor="@color/white"
+        android:textSize="17sp" />
+
+</LinearLayout>

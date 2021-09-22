@@ -3,11 +3,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragmentMainRv"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
     <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/draw_lay"
+        android:id="@+id/fragmentMainDl"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -18,7 +19,7 @@
             tools:context=".ui.fragments.main.MainFragment">
 
             <RelativeLayout
-                android:id="@+id/toolbar_fragmentAddEdit"
+                android:id="@+id/fragmentSearchCategoryToolbarRl"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:background="@color/color_Primary"
@@ -29,7 +30,7 @@
                 app:titleTextColor="@color/white">
 
                 <ImageButton
-                    android:id="@+id/menuButton"
+                    android:id="@+id/fragmentMainToolbarMenuIb"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_centerVertical="true"
@@ -38,7 +39,7 @@
                     android:src="@drawable/ic_menu2" />
 
                 <TextView
-                    android:id="@+id/toolbar_Title"
+                    android:id="@+id/fragmentSearchCategoryToolbarTitleTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -57,7 +58,7 @@
                     android:layout_marginEnd="10dp">
 
                     <ImageButton
-                        android:id="@+id/searchIcon"
+                        android:id="@+id/fragmentMainToolbarSearchIb"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_centerVertical="true"
@@ -66,16 +67,15 @@
                         tools:ignore="ContentDescription" />
 
                     <CheckBox
-                        android:id="@+id/fav_FB"
+                        android:id="@+id/fragmentMainToolbarFavouriteCb"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:layout_centerVertical="true"
                         android:button="@drawable/checkbox_favourite_selector" />
                 </LinearLayout>
             </RelativeLayout>
 
             <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appbar_layout"
+                android:id="@+id/fragmentMainAbl"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="16dp"
@@ -86,10 +86,10 @@
                 app:elevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar_fragmentAddEdit">
+                app:layout_constraintTop_toBottomOf="@+id/fragmentSearchCategoryToolbarRl">
 
                 <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabsLayout"
+                    android:id="@+id/fragmentMainTl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/color_Primary"
@@ -101,17 +101,17 @@
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.viewpager.widget.ViewPager
-                android:id="@+id/viewPager"
+                android:id="@+id/fragmentMainVp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appbar_layout" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentMainAbl" />
 
             <com.github.clans.fab.FloatingActionMenu
-                android:id="@+id/floatingActionMenu"
+                android:id="@+id/fragmentMainFam"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -122,7 +122,7 @@
                 app:menu_colorPressed="@color/gold">
 
                 <com.github.clans.fab.FloatingActionButton
-                    android:id="@+id/addNote_FB"
+                    android:id="@+id/fragmentMainAddNoteFab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_baseline_bookmark_add"
@@ -131,7 +131,7 @@
                     app:fab_label="Add Note" />
 
                 <com.github.clans.fab.FloatingActionButton
-                    android:id="@+id/sort_FB"
+                    android:id="@+id/fragmentMainSortNoteFab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_sort"
@@ -143,7 +143,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_View"
+            android:id="@+id/fragmentMainNv"
             android:layout_width="230dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
@@ -151,8 +151,8 @@
             app:itemTextColor="@color/white">
 
             <include
-                android:id="@+id/include_menu"
-                layout="@layout/menu_drawer2" />
+                android:id="@+id/fragmentMainMenu"
+                layout="@layout/menu_drawer" />
         </com.google.android.material.navigation.NavigationView>
     </androidx.drawerlayout.widget.DrawerLayout>
 </RelativeLayout>

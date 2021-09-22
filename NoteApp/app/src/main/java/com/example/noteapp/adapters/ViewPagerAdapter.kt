@@ -3,7 +3,7 @@ package com.example.noteapp.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.example.noteapp.ui.fragments.note.NoteFragment
+import com.example.noteapp.ui.fragments.note.NoteListFragment
 import com.example.noteapp.ui.fragments.todo.CategoryFragment
 
 class ViewPagerAdapter(supportFragmentManager:FragmentManager) : FragmentPagerAdapter(supportFragmentManager ) {
@@ -18,14 +18,14 @@ class ViewPagerAdapter(supportFragmentManager:FragmentManager) : FragmentPagerAd
     override fun getItem(position: Int): Fragment {
         when(position){
             0->{
-                return NoteFragment()
+                return NoteListFragment()
             }
 
             1-> {
                 return CategoryFragment()
             }
 
-            else -> { return NoteFragment()}
+            else -> { return NoteListFragment()}
         }
     }
 
@@ -42,6 +42,4 @@ class ViewPagerAdapter(supportFragmentManager:FragmentManager) : FragmentPagerAd
         }
         return super.getPageTitle(position)
     }
-
-
 }

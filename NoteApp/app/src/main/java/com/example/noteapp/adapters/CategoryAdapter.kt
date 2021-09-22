@@ -30,10 +30,10 @@ class ItemsCategoryTodoAdapter(
     inner class MyViewHolder(private val itemBinding: CategoryItemBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
         init {
-            itemBinding.layoutCategoryItem.setOnClickListener {
+            itemBinding.categoryItemLl.setOnClickListener {
                 listener.onItemClick(list[bindingAdapterPosition], bindingAdapterPosition)
             }
-            itemBinding.layoutCategoryItem.setOnLongClickListener {
+            itemBinding.categoryItemLl.setOnLongClickListener {
                 listener.onItemLongClick(list[bindingAdapterPosition], bindingAdapterPosition)
                 true
             }
@@ -41,24 +41,24 @@ class ItemsCategoryTodoAdapter(
 
         fun bind(cat: Category) {
 
-            itemBinding.categoryNameTextView.text = cat.categoryName
+            itemBinding.categoryItemTitleTv.text = cat.categoryName
 
-            itemBinding.layoutCategoryItem.setBackgroundColor(Color.parseColor(cat.color))
+            itemBinding.categoryItemLl.setBackgroundColor(Color.parseColor(cat.color))
 
             if (cat.isSelected) {
-                itemBinding.layoutCategoryItem.setBackgroundColor(Color.parseColor("#F0F4D7"))
+                itemBinding.categoryItemLl.setBackgroundColor(Color.parseColor("#F0F4D7"))
             }
 
             if (cat.isFavoutire) {
-                itemBinding.favLayCatItem.visibility = View.VISIBLE
+                itemBinding.categoryItemFavouriteIv.visibility = View.VISIBLE
             } else {
-                itemBinding.favLayCatItem.visibility = View.GONE
+                itemBinding.categoryItemFavouriteIv.visibility = View.GONE
             }
 
             if (cat.hasPassword) {
-                itemBinding.delLayCatItem.visibility = View.VISIBLE
+                itemBinding.categoryItemLockIv.visibility = View.VISIBLE
             } else {
-                itemBinding.delLayCatItem.visibility = View.GONE
+                itemBinding.categoryItemLockIv.visibility = View.GONE
             }
         }
     }
