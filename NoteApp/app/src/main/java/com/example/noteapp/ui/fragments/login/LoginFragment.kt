@@ -72,7 +72,7 @@ class LoginFragment : BaseFragment() {
                                 .show()
 
                             navigateToFragment(
-                                findNavController(), R.id.action_loginFragment_to_profileFragment
+                                findNavController(), R.id.action_login_fragment_to_user_profil_fragment
                             )
                         }
                     }

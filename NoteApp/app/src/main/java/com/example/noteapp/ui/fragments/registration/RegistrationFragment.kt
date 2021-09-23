@@ -58,7 +58,7 @@ class RegistrationFragment : Fragment(), Navigation {
                     .addOnSuccessListener { authRes ->
                         if (authRes.user != null) {
                             navigateToFragment(
-                                findNavController(), R.id.profileFragment
+                                findNavController(), R.id.userProfileFragment
                             )
                         }
                     }

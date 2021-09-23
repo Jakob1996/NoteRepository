@@ -145,7 +145,7 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
                 val dialogFragment = RemovePasswordDialogFragment()
                 dialogFragment.show(fm, "ppp")
             } else {
-                findNavController().navigate(R.id.action_addEditToDoFragment_to_passwordNoteFragment)
+                findNavController().navigate(R.id.action_general_todo_fragment_to_add_password_fragment)
             }
         }
 
@@ -470,7 +470,7 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
         if (todoViewModel.isSearchEdit == 1) {
             backTransaction()
         } else {
-            findNavController().navigate(R.id.action_addEditToDoFragment_to_searchCategoryFragment)
+            findNavController().navigate(R.id.action_general_todo_fragment_to_search_category_fragment)
         }
     }
 

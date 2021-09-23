@@ -1,11 +1,9 @@
 package com.example.noteapp.ui.fragments.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
@@ -14,7 +12,6 @@ import com.example.noteapp.adapters.ViewPagerAdapter
 import com.example.noteapp.databinding.FragmentMainBinding
 import com.example.noteapp.ui.interfaces.OnItemClickDialogListener
 import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
-import com.example.noteapp.ui.fragments.sort.SortDialogFragment
 import com.example.noteapp.ui.fragments.todo.DialogAddCategoryItem
 import com.example.noteapp.viewmodels.ProfilViewModel
 import com.example.noteapp.viewmodels.NoteViewModel
@@ -92,12 +89,12 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
         binding.fragmentMainMenu.menuDrawerLoginLl.setOnClickListener {
             if (fbAuth.currentUser != null) {
                 navigateToFragment(
-                    findNavController(),R.id.profileFragment
+                    findNavController(),R.id.userProfileFragment
 
                 )
             } else {
                 navigateToFragment(
-                    findNavController(),R.id.actionToLoginFragment
+                    findNavController(),R.id.action_to_login_fragment
                 )
             }
             binding.fragmentMainDl.close()
@@ -168,7 +165,7 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
             } else {
                 if (binding.fragmentMainVp.currentItem == 0) {
                     navigateToFragment(
-                        findNavController(),R.id.searchFragment
+                        findNavController(),R.id.searchNoteFragment
                     )
                 } else {
                     navigateToFragment( findNavController(),R.id.searchCategoryFragment)

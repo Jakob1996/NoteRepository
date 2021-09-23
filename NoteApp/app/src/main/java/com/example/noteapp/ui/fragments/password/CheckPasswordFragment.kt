@@ -63,7 +63,7 @@ class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
                     if (binding.fragmentCheckPasswordPasswordEt.text.isNotEmpty()) {
                         if (binding.fragmentCheckPasswordPasswordEt.text.toString().toInt() == password) {
                             val fragManager = requireActivity().supportFragmentManager
-                            navigateToFragment( findNavController(),R.id.beforeAddEditNoteFragment)
+                            navigateToFragment( findNavController(),R.id.generalNoteFragment)
                             closeKeyboard()
                         } else {
                             Toast.makeText(
@@ -85,7 +85,7 @@ class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
                 val password = todoViewModel.getSelectedCategotyItem().value!!.password
                 if (binding.fragmentCheckPasswordPasswordEt.text.isNotEmpty()) {
                     if (binding.fragmentCheckPasswordPasswordEt.text.toString().toInt() == password) {
-                        findNavController().navigate(R.id.action_checkPasswordFragment_to_addEditToDoFragment)
+                        findNavController().navigate(R.id.action_check_password_fragment_to_general_todo_fragment)
                     } else {
                         Toast.makeText(
                             requireContext(),

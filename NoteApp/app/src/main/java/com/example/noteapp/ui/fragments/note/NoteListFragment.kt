@@ -119,11 +119,11 @@ class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
                 transaction.commit()
                  */
                 navigateToFragment(
-                    findNavController(), R.id.actionCheckPasswordFragment
+                    findNavController(), R.id.action_to_check_password_fragment
                 )
             } else {
                 navigateToFragment(
-                    findNavController(),R.id.actionToBeforeAddEditFragment
+                    findNavController(),R.id.action_to_general_note_fragment
                 )
             }
         }

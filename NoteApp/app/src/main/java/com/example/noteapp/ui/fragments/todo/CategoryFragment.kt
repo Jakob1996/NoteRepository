@@ -106,7 +106,7 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
             if (category.hasPassword) {
 
             } else {
-                navigateToFragment(findNavController(), R.id.actionToEditTodoItem)
+                navigateToFragment(findNavController(), R.id.action_to_general_todo_fragment)
             }
         }
     }

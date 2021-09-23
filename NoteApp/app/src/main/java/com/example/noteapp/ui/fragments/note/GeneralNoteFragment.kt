@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -241,7 +240,7 @@ class GeneralNoteFragment : BaseFragment() {
 
     private fun setEditNoteListener() {
         binding.fragmentGeneralNoteToolbarEditIv.setOnClickListener {
-            navigateToFragment(findNavController(), R.id.actionEditNoteFragment)
+            navigateToFragment(findNavController(), R.id.action_to_edit_note_fragment)
         }
     }
 
@@ -254,7 +253,7 @@ class GeneralNoteFragment : BaseFragment() {
             } else {
                 navigateToFragment(
                     findNavController(),
-                    R.id.action_beforeAddEditNoteFragment_to_passwordNoteFragment
+                    R.id.action_general_note_fragment_to_add_password_fragment
                 )
             }
         }

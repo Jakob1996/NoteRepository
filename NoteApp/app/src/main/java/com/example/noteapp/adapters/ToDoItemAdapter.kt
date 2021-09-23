@@ -28,7 +28,7 @@ class ToDoItemAdapter(
         return list.size
     }
 
-    inner class ViewHolderItem(val itemBinding: TodoItemBinding) :
+    inner class ViewHolderItem(private val itemBinding: TodoItemBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
         init {
             itemBinding.todoItemCb.setOnClickListener {
@@ -42,7 +42,7 @@ class ToDoItemAdapter(
 
 
         fun bind(todoItem: ItemOfList) {
-            itemBinding.todoItemCb.setText(todoItem.nameItem)
+            itemBinding.todoItemCb.text = todoItem.nameItem
 
             if (todoItem.isDone) {
                 itemBinding.todoItemCb.isChecked = true
@@ -57,7 +57,6 @@ class ToDoItemAdapter(
     fun getItemInPosition(position: Int): ItemOfList {
         return list[position]
     }
-
 }
 
 interface OnItemTodoClickListener {

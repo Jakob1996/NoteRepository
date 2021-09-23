@@ -3,7 +3,6 @@ package com.example.noteapp.ui.fragments.search
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -81,7 +80,7 @@ class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
         }
 
         binding.fragmentSearchCategoryToolbarBackIv.setOnClickListener {
-            findNavController().navigate(R.id.action_searchFragment_to_mainFramgent)
+            findNavController().navigate(R.id.action_search_note_fragment_to_mainFramgent)
         }
 
         binding.fragmentSearchCategorySearchEt.addTextChangedListener(object : TextWatcher {
@@ -130,10 +129,10 @@ class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
         todoViewModel.categoryItemBeforeChange = category
         if (category.hasPassword) {
             todoViewModel.isSearchEdit = 2
-            findNavController().navigate(R.id.action_searchCategoryFragment_to_checkPasswordFragment)
+            findNavController().navigate(R.id.action_search_category_fragment_to_check_password_fragment)
         } else {
             todoViewModel.isSearchEdit = 2
-            findNavController().navigate(R.id.action_searchCategoryFragment_to_addEditToDoFragment)
+            findNavController().navigate(R.id.action_search_category_fragment_to_general_todo_fragment)
         }
     }
 

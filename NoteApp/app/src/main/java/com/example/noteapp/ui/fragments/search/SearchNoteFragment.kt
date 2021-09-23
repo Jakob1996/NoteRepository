@@ -134,10 +134,10 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
         noteViewModel.noteBeforeChange = note
         if (note.hasPassword) {
             noteViewModel.isSearchEdit = 2
-            findNavController().navigate(R.id.action_searchFragment_to_checkPasswordFragment)
+            findNavController().navigate(R.id.action_search_note_fragment_to_check_password_fragment)
         } else {
             noteViewModel.isSearchEdit = 2
-            navigateToFragment(findNavController(), R.id.beforeAddEditNoteFragment)
+            navigateToFragment(findNavController(), R.id.generalNoteFragment)
         }
     }
 

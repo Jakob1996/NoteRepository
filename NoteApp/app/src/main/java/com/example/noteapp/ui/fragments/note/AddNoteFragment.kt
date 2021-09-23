@@ -143,7 +143,7 @@ class AddNoteFragment : Fragment() {
                 val dialogFragment = RemovePasswordDialogFragment()
                 dialogFragment.show(fm, "abcc")
             } else {
-                findNavController().navigate(R.id.action_addNoteFragment_to_passwordNoteFragment)
+                findNavController().navigate(R.id.action_add_note_fragment_to_add_password_fragment)
             }
         }
 
