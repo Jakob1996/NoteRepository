@@ -12,7 +12,7 @@ interface ItemDao {
     suspend fun insertItem(item: ItemOfList)
 
     @Delete
-    suspend fun deleteItems(items:List<ItemOfList>)
+    suspend fun deleteItems(items: List<ItemOfList>)
 
     @Delete
     suspend fun deleteItem(item: ItemOfList)
@@ -20,12 +20,12 @@ interface ItemDao {
     @Update
     suspend fun updateItem(item: ItemOfList)
 
-    @Query ("SELECT * FROM item_table WHERE categoryId = :categoryId")
-    fun getAllItems(categoryId: Int):Flow<List<ItemOfList>>
+    @Query("SELECT * FROM item_table WHERE categoryId = :categoryId")
+    fun getAllItems(categoryId: Int): Flow<List<ItemOfList>>
 
-    @Query ("DELETE FROM item_table WHERE categoryId = :categoryId")
+    @Query("DELETE FROM item_table WHERE categoryId = :categoryId")
     fun deleteAllItems(categoryId: Int)
 
     @Query("SELECT * FROM item_table")
-    fun getAllI():Flow<List<ItemOfList>>
+    fun getAllI(): Flow<List<ItemOfList>>
 }

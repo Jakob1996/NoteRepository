@@ -27,7 +27,7 @@ class Repository(app: Application) {
     fun getUserNotesData(): LiveData<List<Note>> {
         val cloudResult = MutableLiveData<List<Note>>()
         val uid = auth.currentUser?.uid
-        if(auth.currentUser!=null) {
+        if (auth.currentUser != null) {
             Log.d("adddd", "0")
             cloud.collection("users")
                 .document(uid!!)
@@ -46,10 +46,10 @@ class Repository(app: Application) {
         return cloudResult
     }
 
-    fun getUserCategoryFromFirebase():LiveData<List<Category>> {
+    fun getUserCategoryFromFirebase(): LiveData<List<Category>> {
         val cloudResult = MutableLiveData<List<Category>>()
         val uid = auth.currentUser?.uid
-        if(auth.currentUser!=null) {
+        if (auth.currentUser != null) {
             cloud.collection("users")
                 .document(uid!!)
                 .collection("todoList")
@@ -89,18 +89,18 @@ class Repository(app: Application) {
 
         val uid = auth.currentUser?.uid
 
-            cloud.collection("users")
-                .document(uid!!)
-                .collection("notes")
-                .document("${note.rowId}")
-                .set(note)
-                .addOnSuccessListener {
+        cloud.collection("users")
+            .document(uid!!)
+            .collection("notes")
+            .document("${note.rowId}")
+            .set(note)
+            .addOnSuccessListener {
 
-                    Log.d("TAG", "Successfully!!!")
-                }
-                .addOnFailureListener {
-                    Log.d(REPO_DEBUG, it.message.toString())
-                }
+                Log.d("TAG", "Successfully!!!")
+            }
+            .addOnFailureListener {
+                Log.d(REPO_DEBUG, it.message.toString())
+            }
 
     }
 
@@ -226,7 +226,7 @@ class Repository(app: Application) {
         itemDao.updateItem(item)
     }
 
-     fun getAllItems(categoryId: Int): LiveData<List<ItemOfList>> {
+    fun getAllItems(categoryId: Int): LiveData<List<ItemOfList>> {
 
         val ddd = itemDao.getAllItems(categoryId).asLiveData()
 //        val d:LiveData<List<ItemOfList>>
@@ -245,7 +245,6 @@ class Repository(app: Application) {
         return itemDao.getAllI().asLiveData()
     }
 }
-
 
 //suspend fun getCategoryWithItems(categoryId:Int):LiveData<List<CategoryWithItems>>{
 //return categoryDao.getCategoryWithItems(categoryId)

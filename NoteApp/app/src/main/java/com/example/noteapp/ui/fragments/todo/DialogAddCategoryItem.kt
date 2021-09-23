@@ -12,12 +12,14 @@ import com.example.noteapp.viewmodels.ToDoViewModel
 import com.google.firebase.auth.FirebaseAuth
 import java.util.*
 
-class DialogAddCategoryItem:DialogFragment() {
+class DialogAddCategoryItem : DialogFragment() {
+
     private lateinit var todoViewModel: ToDoViewModel
+
     private val fbAuth = FirebaseAuth.getInstance()
 
+    private var _binding: AddItemDialogBinding? = null
 
-    private var _binding:AddItemDialogBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,9 +28,9 @@ class DialogAddCategoryItem:DialogFragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         _binding = AddItemDialogBinding.inflate(inflater, container, false)
 
@@ -44,7 +46,7 @@ class DialogAddCategoryItem:DialogFragment() {
                     Calendar.getInstance().timeInMillis
                 ).apply { rowIdCategory = Calendar.getInstance().timeInMillis.toInt() }
 
-                if(fbAuth.currentUser!=null){
+                if (fbAuth.currentUser != null) {
                     todoViewModel.saveCategoryInCloud(category)
                 }
                 todoViewModel.insertCategotyItem(category)

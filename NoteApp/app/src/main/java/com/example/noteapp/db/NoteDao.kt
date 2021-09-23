@@ -11,21 +11,21 @@ interface NoteDao {
     //suspend - asynchronicznosc, zawieszenie. Piszemy to po to aby komputer
     // wiedział aby nie wykonywac tego na wątku głównym
 
-    @Insert (onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNote(note: Note)
 
     @Update
     suspend fun updateNote(note: Note)
 
     @Delete
-    fun deleteNotes(notes:List<Note>)
+    fun deleteNotes(notes: List<Note>)
 
     @Delete
     suspend fun deleteOneNote(note: Note?)
 
-    @Query("SELECT*FROM NOTE_TABLE ORDER BY date DESC" )
+    @Query("SELECT*FROM NOTE_TABLE ORDER BY date DESC")
     fun getAllNotes(): Flow<List<Note>>
 
-    @Query ("DELETE FROM note_table")
+    @Query("DELETE FROM note_table")
     suspend fun clearDatabaseNotes()
 }

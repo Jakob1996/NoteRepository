@@ -20,7 +20,9 @@ import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.ToDoViewModel
 
 class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
+
     private lateinit var noteViewModel: NoteViewModel
+
     private lateinit var todoViewModel: ToDoViewModel
     private var quit: Int = 1
 
@@ -33,14 +35,16 @@ class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
         noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
         todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
 
-        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
 
-                Log.d("dfds", "fsdf")
-                requireActivity().supportFragmentManager.popBackStack()
-                isEnabled = false
-            }
-        })
+                    Log.d("dfds", "fsdf")
+                    requireActivity().supportFragmentManager.popBackStack()
+                    isEnabled = false
+                }
+            })
     }
 
     override fun onCreateView(
@@ -61,9 +65,11 @@ class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
                 val password = noteViewModel.getSelectedNote().value!!.password
                 if (it != null) {
                     if (binding.fragmentCheckPasswordPasswordEt.text.isNotEmpty()) {
-                        if (binding.fragmentCheckPasswordPasswordEt.text.toString().toInt() == password) {
+                        if (binding.fragmentCheckPasswordPasswordEt.text.toString()
+                                .toInt() == password
+                        ) {
                             val fragManager = requireActivity().supportFragmentManager
-                            navigateToFragment( findNavController(),R.id.generalNoteFragment)
+                            navigateToFragment(findNavController(), R.id.generalNoteFragment)
                             closeKeyboard()
                         } else {
                             Toast.makeText(
@@ -84,7 +90,9 @@ class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
             } else {
                 val password = todoViewModel.getSelectedCategotyItem().value!!.password
                 if (binding.fragmentCheckPasswordPasswordEt.text.isNotEmpty()) {
-                    if (binding.fragmentCheckPasswordPasswordEt.text.toString().toInt() == password) {
+                    if (binding.fragmentCheckPasswordPasswordEt.text.toString()
+                            .toInt() == password
+                    ) {
                         findNavController().navigate(R.id.action_check_password_fragment_to_general_todo_fragment)
                     } else {
                         Toast.makeText(
@@ -107,7 +115,7 @@ class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
     }
 
     override fun onDestroyView() {
-        Log.d("fdfsd","onDestroy CheckPaas")
+        Log.d("fdfsd", "onDestroy CheckPaas")
 
         binding.root.removeAllViewsInLayout()
 

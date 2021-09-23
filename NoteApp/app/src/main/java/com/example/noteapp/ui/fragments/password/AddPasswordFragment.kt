@@ -14,7 +14,9 @@ import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.ToDoViewModel
 
 class AddPasswordFragment : Fragment() {
+
     private lateinit var noteViewModel: NoteViewModel
+
     private lateinit var todoViewModel: ToDoViewModel
 
     private var _binding: FragmentAddPasswordBinding? = null
@@ -32,16 +34,20 @@ class AddPasswordFragment : Fragment() {
         todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         _binding = FragmentAddPasswordBinding.inflate(inflater, container, false)
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
 
-                requireActivity().supportFragmentManager.popBackStack()
-            }
-        })
+                    requireActivity().supportFragmentManager.popBackStack()
+                }
+            })
 
         return binding.root
     }
@@ -64,7 +70,18 @@ class AddPasswordFragment : Fragment() {
                 val rowIdd = note.rowId
                 val hasPassword = true
                 val password = binding.fragmentAddPasswordPasswordEt.text.toString().toInt()
-                val not = Note(title, message, date, isSelected, color, fontColor, fontSize, favourite, hasPassword, password).apply {
+                val not = Note(
+                    title,
+                    message,
+                    date,
+                    isSelected,
+                    color,
+                    fontColor,
+                    fontSize,
+                    favourite,
+                    hasPassword,
+                    password
+                ).apply {
                     rowId = rowIdd
                 }
 
@@ -82,7 +99,15 @@ class AddPasswordFragment : Fragment() {
                 val password = binding.fragmentAddPasswordPasswordEt.text.toString().toInt()
                 val id = category.rowIdCategory
 
-                val cat = Category(name, color, isSelected, date, isFavourite, hasPassword, password).apply {
+                val cat = Category(
+                    name,
+                    color,
+                    isSelected,
+                    date,
+                    isFavourite,
+                    hasPassword,
+                    password
+                ).apply {
                     rowIdCategory = id
                 }
 

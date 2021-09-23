@@ -3,7 +3,6 @@ package com.example.noteapp.ui.fragments.note
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,17 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.databinding.FragmentEditNoteBinding
 import com.example.noteapp.viewmodels.NoteViewModel
 
 
 class EditNoteFragment : Fragment() {
+
     private lateinit var noteViewModel: NoteViewModel
 
-    private var _binding:FragmentEditNoteBinding? = null
+    private var _binding: FragmentEditNoteBinding? = null
 
     private val binding get() = _binding!!
 
@@ -31,8 +29,10 @@ class EditNoteFragment : Fragment() {
         noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         saveNoteState()
 
@@ -54,7 +54,7 @@ class EditNoteFragment : Fragment() {
 
 
         //!!!
-        if(binding.fragmentEditNoteDescriptionEt.text.isNotEmpty()) {
+        if (binding.fragmentEditNoteDescriptionEt.text.isNotEmpty()) {
             binding.fragmentEditNoteDescriptionEt.requestFocus(binding.fragmentEditNoteDescriptionEt.text.length)
         }
     }
@@ -65,8 +65,9 @@ class EditNoteFragment : Fragment() {
         showSoftKeyboard()
     }
 
-    private fun showSoftKeyboard(){
-        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+    private fun showSoftKeyboard() {
+        val imm =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
 
         imm?.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
     }
@@ -117,11 +118,11 @@ class EditNoteFragment : Fragment() {
         super.onDestroyView()
     }
 
-    private fun exitTransaction(){
+    private fun exitTransaction() {
         requireActivity().supportFragmentManager.popBackStack()
     }
 
-    private fun saveNoteState(){
+    private fun saveNoteState() {
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {

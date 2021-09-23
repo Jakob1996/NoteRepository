@@ -10,8 +10,10 @@ import androidx.fragment.app.DialogFragment
 import com.example.noteapp.R
 import com.example.noteapp.ui.interfaces.OnItemClickDialogListener
 
-class SortDialogFragment: DialogFragment() {
+class SortDialogFragment : DialogFragment() {
+
     private lateinit var listener: OnItemClickDialogListener
+
     private lateinit var radioGroup: RadioGroup
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -21,23 +23,27 @@ class SortDialogFragment: DialogFragment() {
 
         radioGroup = view.findViewById(R.id.fragmentDialogRg)
         builder.setView(view)
-                .setTitle("Sort date:")
-                .setPositiveButton("OK"){di, i ->
-                    when(radioGroup.checkedRadioButtonId){
-                        R.id.fragmentDialogDescRg -> {listener.onItemClickDialog(true)}
-                        R.id.fragmentDialogAscRg -> {listener.onItemClickDialog(false)}
+            .setTitle("Sort date:")
+            .setPositiveButton("OK") { di, i ->
+                when (radioGroup.checkedRadioButtonId) {
+                    R.id.fragmentDialogDescRg -> {
+                        listener.onItemClickDialog(true)
+                    }
+                    R.id.fragmentDialogAscRg -> {
+                        listener.onItemClickDialog(false)
                     }
                 }
-                .setNegativeButton("Cancel"){ di, i: Int -> }
+            }
+            .setNegativeButton("Cancel") { di, i: Int -> }
         return builder.create()
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         listener = try {
-        targetFragment as OnItemClickDialogListener
+            targetFragment as OnItemClickDialogListener
 
-        } catch (e: TypeCastException){
+        } catch (e: TypeCastException) {
             throw TypeCastException()
         }
     }

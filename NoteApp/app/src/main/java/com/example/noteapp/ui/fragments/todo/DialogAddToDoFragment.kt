@@ -69,7 +69,11 @@ class DialogAddToDoFragment : DialogFragment() {
                     CoroutineScope(Dispatchers.IO).launch {
                         val it = todoViewModel.getSelectedItem().value
                         val item =
-                            ItemOfList(binding.addItemDialogTitleTv.text.toString(), it!!.categoryId, false)
+                            ItemOfList(
+                                binding.addItemDialogTitleTv.text.toString(),
+                                it!!.categoryId,
+                                false
+                            )
                         item.idItem = it.idItem
                         todoViewModel.updateItem(item)
                         dismiss()
@@ -77,21 +81,21 @@ class DialogAddToDoFragment : DialogFragment() {
                 }
             }
 
-        /*
-                    viewModel.getSelectedItem().observe(viewLifecycleOwner, Observer { note-> note.let {
-                        if(it?.nameItem.isNullOrEmpty()){
-                            val item = ItemOfList(item_name.text.toString(), viewModel.getSelectedCategotyItem().value!!.rowIdCategory)
-                            viewModel.insertItem(item)
-                        } else{
-                            val item = ItemOfList(item_name.text.toString(), it!!.categoryId, false)
-                            item.idItem = it.idItem
-                            viewModel.updateItem(item)
+            /*
+                        viewModel.getSelectedItem().observe(viewLifecycleOwner, Observer { note-> note.let {
+                            if(it?.nameItem.isNullOrEmpty()){
+                                val item = ItemOfList(item_name.text.toString(), viewModel.getSelectedCategotyItem().value!!.rowIdCategory)
+                                viewModel.insertItem(item)
+                            } else{
+                                val item = ItemOfList(item_name.text.toString(), it!!.categoryId, false)
+                                item.idItem = it.idItem
+                                viewModel.updateItem(item)
+                            }
+                            viewModel.setSelectedItem(null)
+                            dismiss()
                         }
-                        viewModel.setSelectedItem(null)
-                        dismiss()
-                    }
-                    })
-        */
+                        })
+            */
         }
 
         return binding.root

@@ -1,5 +1,6 @@
 package com.example.noteapp.ui.interfaces
 
-interface OnItemClickDialogListener{
-    fun onItemClickDialog(sortDesc:Boolean)
+interface OnItemClickDialogListener {
+
+    fun onItemClickDialog(sortDesc: Boolean)
 }

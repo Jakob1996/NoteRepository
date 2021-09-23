@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 class UserProfilFragment : Fragment(), Navigation {
+
     private lateinit var noteViewModel: NoteViewModel
 
     private lateinit var todoViewModel: ToDoViewModel

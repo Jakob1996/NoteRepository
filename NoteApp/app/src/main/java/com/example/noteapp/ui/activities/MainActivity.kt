@@ -1,4 +1,5 @@
 package com.example.noteapp.ui.activities
+
 import android.os.BaseBundle
 import android.os.Bundle
 import android.util.Log
@@ -11,11 +12,17 @@ import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.ToDoViewModel
 
 class MainActivity : AppCompatActivity() {
+
     lateinit var noteViewModel: NoteViewModel
+
     lateinit var toDoViewModel: ToDoViewModel
+
     private val SHARED_PREFS = "sharedPrefs"
+
     private val KEY = "key"
-    private var state:Boolean?= null
+
+    private var state: Boolean? = null
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,15 +40,15 @@ class MainActivity : AppCompatActivity() {
         loadData()
     }
 
-    override fun onStop(){
+    override fun onStop() {
         saveData()
         super.onStop()
     }
 
-    private fun loadData(){
+    private fun loadData() {
         val sp = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
         state = sp.getBoolean(KEY, false)
-        if(state!=null){
+        if (state != null) {
             noteViewModel.p = state!!
         }
     }
@@ -56,12 +63,13 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onBackPressed() {
-        val currentFragment = supportFragmentManager.fragments[supportFragmentManager.fragments.size-1]
+        val currentFragment =
+            supportFragmentManager.fragments[supportFragmentManager.fragments.size - 1]
 
-        if(currentFragment is BackPressedListener){
+        if (currentFragment is BackPressedListener) {
             Log.d("nenn", "eee")
             (currentFragment as BackPressedListener).onBackPress()
-        } else{
+        } else {
             Log.d("nenn", "eeeeee")
             super.onBackPressed()
         }

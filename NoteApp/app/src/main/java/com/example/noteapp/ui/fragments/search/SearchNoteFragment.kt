@@ -23,9 +23,11 @@ import com.example.noteapp.viewmodels.NoteViewModel
 class SearchNoteFragment : BaseFragment(), OnItemClickListener {
 
     private lateinit var noteViewModel: NoteViewModel
+
     private lateinit var noteAdapter: NoteAdapter
 
     private var _binding: FragmentSearchNoteBinding? = null
+
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {

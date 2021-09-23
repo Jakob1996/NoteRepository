@@ -54,7 +54,7 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
 
         _binding = noteViewModel.view
 
-        if(_binding==null){
+        if (_binding == null) {
             _binding = FragmentMainBinding.inflate(inflater, container, false)
             setUpTabs()
         }
@@ -89,12 +89,12 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
         binding.fragmentMainMenu.menuDrawerLoginLl.setOnClickListener {
             if (fbAuth.currentUser != null) {
                 navigateToFragment(
-                    findNavController(),R.id.userProfileFragment
+                    findNavController(), R.id.userProfileFragment
 
                 )
             } else {
                 navigateToFragment(
-                    findNavController(),R.id.action_to_login_fragment
+                    findNavController(), R.id.action_to_login_fragment
                 )
             }
             binding.fragmentMainDl.close()
@@ -165,10 +165,10 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
             } else {
                 if (binding.fragmentMainVp.currentItem == 0) {
                     navigateToFragment(
-                        findNavController(),R.id.searchNoteFragment
+                        findNavController(), R.id.searchNoteFragment
                     )
                 } else {
-                    navigateToFragment( findNavController(),R.id.searchCategoryFragment)
+                    navigateToFragment(findNavController(), R.id.searchCategoryFragment)
                 }
             }
         }
@@ -178,7 +178,7 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
                 noteViewModel.newNote = true
                 binding.fragmentMainFam.close(true)
                 navigateToFragment(
-                    findNavController(),R.id.addNoteFragment
+                    findNavController(), R.id.addNoteFragment
                 )
             } else if (binding.fragmentMainAddNoteFab.labelText == "Add Category") {
                 val fm = requireActivity().supportFragmentManager

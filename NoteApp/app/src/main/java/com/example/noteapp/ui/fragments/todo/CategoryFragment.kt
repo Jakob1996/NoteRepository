@@ -20,8 +20,11 @@ import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.ToDoViewModel
 
 class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
+
     private lateinit var noteViewModel: NoteViewModel
+
     private lateinit var todoViewModel: ToDoViewModel
+
     private lateinit var toDoCategoryAdapter: ItemsCategoryTodoAdapter
 
     private var _binding: FragmentTodoListBinding? = null

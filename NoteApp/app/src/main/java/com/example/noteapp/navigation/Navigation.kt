@@ -10,7 +10,7 @@ import com.example.noteapp.ui.fragments.sort.SortDialogFragment
 
 interface Navigation {
 
-    fun navigateToFragment(navController:NavController, idAction:Int) {
+    fun navigateToFragment(navController: NavController, idAction: Int) {
         navController.navigate(idAction)
     }
 

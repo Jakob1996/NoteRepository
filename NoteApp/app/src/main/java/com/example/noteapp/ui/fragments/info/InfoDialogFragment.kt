@@ -10,9 +10,9 @@ import com.example.noteapp.databinding.InfoDialogBinding
 import com.example.noteapp.viewmodels.NoteViewModel
 
 class InfoDialogFragment : DialogFragment() {
-    private lateinit var noteViewModel:NoteViewModel
+    private lateinit var noteViewModel: NoteViewModel
 
-    private var _binding:InfoDialogBinding? = null
+    private var _binding: InfoDialogBinding? = null
 
     private val binding get() = _binding!!
 
@@ -21,8 +21,10 @@ class InfoDialogFragment : DialogFragment() {
         noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
 
         _binding = InfoDialogBinding.inflate(inflater, container, false)

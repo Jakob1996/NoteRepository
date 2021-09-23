@@ -17,8 +17,11 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 class RegistrationFragment : Fragment(), Navigation {
+
     private val REG_DEB = "LOG_DEBUG"
+
     private val fbAuth = FirebaseAuth.getInstance()
+
     private lateinit var profilViewModel: ProfilViewModel
 
     private var _binding: FragmentRegistrationBinding? = null

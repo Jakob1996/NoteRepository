@@ -123,7 +123,7 @@ class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
                 )
             } else {
                 navigateToFragment(
-                    findNavController(),R.id.action_to_general_note_fragment
+                    findNavController(), R.id.action_to_general_note_fragment
                 )
             }
         }

@@ -10,7 +10,8 @@ import com.example.noteapp.databinding.SearchNoteDialogBinding
 import com.example.noteapp.viewmodels.NoteViewModel
 
 class SearchDialogFragment : DialogFragment() {
-    private lateinit var noteViewModel:NoteViewModel
+
+    private lateinit var noteViewModel: NoteViewModel
 
     private var _binding: SearchNoteDialogBinding? = null
 
@@ -25,7 +26,7 @@ class SearchDialogFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = SearchNoteDialogBinding.inflate(inflater, container ,false)
+        _binding = SearchNoteDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
 

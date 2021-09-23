@@ -10,26 +10,30 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ToDoViewModel(app:Application):AndroidViewModel(app) {
+class ToDoViewModel(app: Application) : AndroidViewModel(app) {
+
     var isSearchEdit: Int = 1
+
     var hasPassword: Boolean = false
+
     private val repository = Repository(app)
 
-    var search:String?=null
+    var search: String? = null
 
     private val multiSelectMode = MutableLiveData<Boolean?>()
+
     init {
         multiSelectMode.value = false
     }
 
-    var categoryName:String = ""
+    var categoryName: String = ""
     var selectedCategotyItemColor = "#333333"
-    var categoryIsSelected:Boolean = false
-    var categoryDate:Long=0
-    var isFavouriteCategory:Boolean = false
-    var hasPasswordCategory:Boolean = false
-    var passwordCategory:Int = 0
-    var categoryId:Int =0
+    var categoryIsSelected: Boolean = false
+    var categoryDate: Long = 0
+    var isFavouriteCategory: Boolean = false
+    var hasPasswordCategory: Boolean = false
+    var passwordCategory: Int = 0
+    var categoryId: Int = 0
 
     val allCategoryItems = repository.getAllCategory()
 
@@ -37,15 +41,15 @@ class ToDoViewModel(app:Application):AndroidViewModel(app) {
 
     fun getSelectedCategotyItem(): LiveData<Category?> = selectedCategoryItem
 
-    fun setSelectedCategotyItem(category: Category?){
+    fun setSelectedCategotyItem(category: Category?) {
         selectedCategoryItem.postValue(category)
     }
 
-    fun saveCategoryInCloud(category: Category){
+    fun saveCategoryInCloud(category: Category) {
         repository.saveCategoryToCloud(category)
     }
 
-    fun saveTodoListInCloud(categoryId: Int, list:List<ItemOfList>){
+    fun saveTodoListInCloud(categoryId: Int, list: List<ItemOfList>) {
         repository.saveTodoListToCloud(categoryId, list)
     }
 
@@ -56,15 +60,15 @@ class ToDoViewModel(app:Application):AndroidViewModel(app) {
 
     val selectedCategoryItems = ArrayList<Category>()
 
-    fun insertCategotyItem (category: Category){
+    fun insertCategotyItem(category: Category) {
         CoroutineScope(Dispatchers.IO).launch { repository.insertCategory(category) }
     }
 
-    fun updateCategoryItem(category: Category){
+    fun updateCategoryItem(category: Category) {
         CoroutineScope(Dispatchers.IO).launch { repository.updateCategory(category) }
     }
 
-    fun deleteCategotyItems(category:List<Category>){
+    fun deleteCategotyItems(category: List<Category>) {
         repository.deleteCategory(category)
     }
 
@@ -84,9 +88,9 @@ class ToDoViewModel(app:Application):AndroidViewModel(app) {
 
     //ItemViewModel
 
-    private lateinit var allItems:LiveData<List<ItemOfList>>
+    private lateinit var allItems: LiveData<List<ItemOfList>>
 
-     fun getAllItemsFromCategory(categoryId:Int):LiveData<List<ItemOfList>>{
+    fun getAllItemsFromCategory(categoryId: Int): LiveData<List<ItemOfList>> {
         return repository.getAllItems(categoryId)
     }
 
@@ -94,26 +98,26 @@ class ToDoViewModel(app:Application):AndroidViewModel(app) {
 
     fun getSelectedItem(): LiveData<ItemOfList?> = selectedItem
 
-    fun setSelectedItem(item: ItemOfList?){
+    fun setSelectedItem(item: ItemOfList?) {
         selectedItem.postValue(item)
     }
 
-    fun insertItem(item: ItemOfList){
+    fun insertItem(item: ItemOfList) {
         CoroutineScope(Dispatchers.IO).launch { repository.insertItem(item) }
     }
 
-    suspend fun updateItem(item: ItemOfList){
+    suspend fun updateItem(item: ItemOfList) {
         CoroutineScope(Dispatchers.IO).launch { repository.updateItem(item) }
     }
 
-    fun deleteItem(item: ItemOfList){
+    fun deleteItem(item: ItemOfList) {
         CoroutineScope(Dispatchers.IO).launch { repository.deleteItem(item) }
     }
 
-    fun deleteItems(categoryId: Int){
+    fun deleteItems(categoryId: Int) {
         CoroutineScope(Dispatchers.IO).launch { repository.deleteAllITems(categoryId) }
     }
 
     //State Model
-    var p:Boolean = true
+    var p: Boolean = true
 }

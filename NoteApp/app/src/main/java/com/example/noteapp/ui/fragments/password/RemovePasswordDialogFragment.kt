@@ -14,10 +14,12 @@ import com.example.noteapp.viewmodels.ToDoViewModel
 
 
 class RemovePasswordDialogFragment : DialogFragment() {
+
     private lateinit var noteViewModel: NoteViewModel
+
     private lateinit var todoViewModel: ToDoViewModel
 
-    private var _binding:RemovePasswordDialogBinding? = null
+    private var _binding: RemovePasswordDialogBinding? = null
 
     private val binding get() = _binding!!
 
@@ -27,12 +29,12 @@ class RemovePasswordDialogFragment : DialogFragment() {
         todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         _binding = RemovePasswordDialogBinding.inflate(inflater, container, false)
-
-
 
         return binding.root
     }
@@ -40,15 +42,15 @@ class RemovePasswordDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.noRemovePasswordButton.setOnClickListener(object :View.OnClickListener{
+        binding.noRemovePasswordButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 dismiss()
             }
         })
 
-        binding.yesRemovePasswordButton.setOnClickListener(object :View.OnClickListener{
+        binding.yesRemovePasswordButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                if(noteViewModel.getSelectedNote().value!=null) {
+                if (noteViewModel.getSelectedNote().value != null) {
                     val note = noteViewModel.getSelectedNote().value
 
                     val title = note!!.title
@@ -62,12 +64,23 @@ class RemovePasswordDialogFragment : DialogFragment() {
                     val rowIdd = note.rowId
                     val hasPassword = false
                     val password = 0
-                    val not = Note(title, message, date, isSelected, color, fontColor, fontSize, favourite, hasPassword, password).apply {
+                    val not = Note(
+                        title,
+                        message,
+                        date,
+                        isSelected,
+                        color,
+                        fontColor,
+                        fontSize,
+                        favourite,
+                        hasPassword,
+                        password
+                    ).apply {
                         rowId = rowIdd
                     }
                     noteViewModel.setSelectedNote(not)
                     dismiss()
-                } else{
+                } else {
                     val category = todoViewModel.getSelectedCategotyItem().value
 
                     val name = category!!.categoryName
@@ -79,7 +92,15 @@ class RemovePasswordDialogFragment : DialogFragment() {
                     val password = 0
                     val id = category.rowIdCategory
 
-                    val cat = Category(name, color, isSelected, date, isFavourite, hasPassword, password).apply {
+                    val cat = Category(
+                        name,
+                        color,
+                        isSelected,
+                        date,
+                        isFavourite,
+                        hasPassword,
+                        password
+                    ).apply {
                         rowIdCategory = id
                     }
 

@@ -34,12 +34,17 @@ import java.util.*
 class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation {
 
     private lateinit var todoViewModel: ToDoViewModel
+
     private var value: Boolean = false
+
     private lateinit var itemTodoAdapter: ToDoItemAdapter
+
     private var quit = 1
+
     private val auth = FirebaseAuth.getInstance()
 
     private var _binding: FragmentGeneralTodoBinding? = null
+
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {

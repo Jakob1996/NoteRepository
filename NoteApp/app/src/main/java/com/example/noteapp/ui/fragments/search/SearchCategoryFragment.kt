@@ -22,9 +22,11 @@ import com.example.noteapp.viewmodels.ToDoViewModel
 class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
 
     private lateinit var todoViewModel: ToDoViewModel
+
     private lateinit var categoryAdapter: ItemsCategoryTodoAdapter
 
     private var _binding: FragmentSearchCategoryBinding? = null
+
     private val binding get() = _binding!!
 
 

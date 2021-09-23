@@ -8,9 +8,9 @@ import com.example.noteapp.data.*
 
 @Database(entities = [Category::class, ItemOfList::class, Note::class], version = 1)
 @TypeConverters()
-abstract class DataBase:RoomDatabase() {
+abstract class DataBase : RoomDatabase() {
 
-    abstract fun categoryDao():CategoryDao
-    abstract fun itemDao():ItemDao
-    abstract fun notesDao():NoteDao
+    abstract fun categoryDao(): CategoryDao
+    abstract fun itemDao(): ItemDao
+    abstract fun notesDao(): NoteDao
 }
