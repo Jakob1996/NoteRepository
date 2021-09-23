@@ -1,7 +1,6 @@
 package com.example.noteapp.ui.fragments.login
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,16 +57,16 @@ class LoginFragment : BaseFragment() {
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 fbAuth.signInWithEmailAndPassword(email, password)
                     .addOnSuccessListener { authRes ->
-                        Log.d("logd", "${authRes.user}")
                         if (fbAuth.currentUser != null) {
                             profilViewModel.addNotesToCloud(noteViewModel.getAllNotes.value!!)
-                            Log.d("logd", "${fbAuth.currentUser}")
-                            profilViewModel.getNotesFromFirebase().observe(viewLifecycleOwner, {
 
-                                it.forEach {
-                                    insertOrUpdate(it)
-                                }
-                            })
+                            profilViewModel.getNotesFromFirebase()
+                                .observe(viewLifecycleOwner, { list ->
+
+                                    list.forEach {
+                                        insertOrUpdate(it)
+                                    }
+                                })
                             Snackbar.make(requireView(), "Cloud updated", Snackbar.LENGTH_LONG)
                                 .show()
 
@@ -79,7 +78,6 @@ class LoginFragment : BaseFragment() {
                     }
                     .addOnFailureListener { exc ->
                         Snackbar.make(requireView(), "Upss", Snackbar.LENGTH_SHORT).show()
-                        Log.d(LOG_DEB, exc.message.toString())
                     }
             }
         }

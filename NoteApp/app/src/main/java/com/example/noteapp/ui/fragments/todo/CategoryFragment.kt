@@ -34,8 +34,6 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.d("hh", "onCreateCategoryFrag")
-
         noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
         todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
     }

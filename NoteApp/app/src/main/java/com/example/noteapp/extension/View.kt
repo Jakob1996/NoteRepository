@@ -3,7 +3,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.annotation.DrawableRes
-import androidx.appcompat.content.res.AppCompatResources
 
 private const val FADE_DURATION = 500L
 private const val ALPHA_VISIBLE = 1.0f

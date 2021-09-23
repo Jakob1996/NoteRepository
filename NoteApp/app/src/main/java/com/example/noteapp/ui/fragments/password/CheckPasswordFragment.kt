@@ -39,8 +39,6 @@ class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-
-                    Log.d("dfds", "fsdf")
                     requireActivity().supportFragmentManager.popBackStack()
                     isEnabled = false
                 }
@@ -115,8 +113,6 @@ class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
     }
 
     override fun onDestroyView() {
-        Log.d("fdfsd", "onDestroy CheckPaas")
-
         binding.root.removeAllViewsInLayout()
 
         _binding = null

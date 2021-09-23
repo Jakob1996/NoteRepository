@@ -12,8 +12,6 @@ import com.example.noteapp.db.DataBaseBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.squareup.okhttp.Dispatcher
-import kotlinx.coroutines.*
 
 class Repository(app: Application) {
     private val REPO_DEBUG = "REPO_DEBUG"
@@ -28,14 +26,12 @@ class Repository(app: Application) {
         val cloudResult = MutableLiveData<List<Note>>()
         val uid = auth.currentUser?.uid
         if (auth.currentUser != null) {
-            Log.d("adddd", "0")
             cloud.collection("users")
                 .document(uid!!)
                 .collection("notes")
                 //addSnapshotListener { value, _ ->
                 .get()
                 .addOnSuccessListener {
-                    Log.d("adddd", "1")
                     val res = it?.toObjects(Note::class.java)
                     cloudResult.value = res!!
                 }.addOnFailureListener {
@@ -56,7 +52,6 @@ class Repository(app: Application) {
                 //addSnapshotListener { value, _ ->
                 .get()
                 .addOnSuccessListener {
-                    Log.d("adddd", "1")
                     val res = it?.toObjects(Category::class.java)
                     cloudResult.value = res!!
                 }.addOnFailureListener {
