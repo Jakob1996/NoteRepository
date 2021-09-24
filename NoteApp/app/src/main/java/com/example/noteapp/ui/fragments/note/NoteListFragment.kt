@@ -16,13 +16,13 @@ import com.example.noteapp.databinding.FragmentNotesListBinding
 import com.example.noteapp.navigation.Navigation
 import com.example.noteapp.tools.OnItemClickListener
 import com.example.noteapp.viewmodels.NoteViewModel
-import com.example.noteapp.viewmodels.ToDoViewModel
+import com.example.noteapp.viewmodels.TodoViewModel
 
 class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
 
     private lateinit var noteViewModel: NoteViewModel
 
-    private lateinit var todoViewModel: ToDoViewModel
+    private lateinit var todoViewModel: TodoViewModel
 
     private lateinit var noteAdapter: NoteAdapter
 
@@ -39,14 +39,15 @@ class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
         super.onCreate(savedInstanceState)
 
         noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
-        todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
+
+        todoViewModel = ViewModelProvider(requireActivity())[TodoViewModel::class.java]
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentNotesListBinding.inflate(inflater, container, false)
 
         noteViewModel.getSortDescNote().observe(requireActivity(), {
@@ -110,14 +111,6 @@ class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
             noteViewModel.titleBefore = note.title
             noteViewModel.messageBefore = note.message
             if (note.hasPassword) {
-                /*
-                val fragManager = requireActivity().supportFragmentManager
-                val frag = CheckPasswordFragment()
-                val transaction = fragManager.beginTransaction()
-                        .setCustomAnimations(R.anim.from_right_to_left, R.anim.zero_to_zero, R.anim.zero_to_zero, R.anim.from_left_to_right)
-                transaction.add(R.id.container_keeper, frag, "noteF").addToBackStack("noteF")
-                transaction.commit()
-                 */
                 navigateToFragment(
                     findNavController(), R.id.action_to_check_password_fragment
                 )

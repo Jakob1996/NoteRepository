@@ -32,10 +32,6 @@ class LoginFragment : BaseFragment() {
         super.onDestroyView()
     }
 
-    override fun onBackPress() {
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

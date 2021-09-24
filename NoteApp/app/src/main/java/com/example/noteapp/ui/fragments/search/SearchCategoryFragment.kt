@@ -17,11 +17,11 @@ import com.example.noteapp.adapters.OnItemCategoryClickListener
 import com.example.noteapp.data.Category
 import com.example.noteapp.databinding.FragmentSearchCategoryBinding
 import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
-import com.example.noteapp.viewmodels.ToDoViewModel
+import com.example.noteapp.viewmodels.TodoViewModel
 
 class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
 
-    private lateinit var todoViewModel: ToDoViewModel
+    private lateinit var todoViewModel: TodoViewModel
 
     private lateinit var categoryAdapter: ItemsCategoryTodoAdapter
 
@@ -33,7 +33,7 @@ class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
+        todoViewModel = ViewModelProvider(requireActivity())[TodoViewModel::class.java]
 
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
@@ -42,6 +42,7 @@ class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
                     todoViewModel.search = null
                     popBackStack("SCF", requireActivity().supportFragmentManager, false)
                     isEnabled = false
+                    requireActivity().onBackPressed()
                 }
             })
     }
@@ -50,11 +51,6 @@ class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
         _binding = null
         super.onDestroyView()
     }
-
-    override fun onBackPress() {
-        //TODO
-    }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

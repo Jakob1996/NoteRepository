@@ -1,7 +1,6 @@
 package com.example.noteapp.ui.fragments.profil
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,7 @@ import com.example.noteapp.databinding.FragmentProfilBinding
 import com.example.noteapp.navigation.Navigation
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.ProfilViewModel
-import com.example.noteapp.viewmodels.ToDoViewModel
+import com.example.noteapp.viewmodels.TodoViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -23,7 +22,7 @@ class UserProfilFragment : Fragment(), Navigation {
 
     private lateinit var noteViewModel: NoteViewModel
 
-    private lateinit var todoViewModel: ToDoViewModel
+    private lateinit var todoViewModel: TodoViewModel
 
     private lateinit var profilViewModel: ProfilViewModel
 
@@ -36,7 +35,7 @@ class UserProfilFragment : Fragment(), Navigation {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
-        todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
+        todoViewModel = ViewModelProvider(requireActivity())[TodoViewModel::class.java]
         profilViewModel = ViewModelProvider(requireActivity())[ProfilViewModel::class.java]
     }
 

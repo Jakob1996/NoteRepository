@@ -1,219 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/todoLayoutMiscellaneous"
-    android:orientation="vertical"
+    android:id="@+id/todoCastomizerLl"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/background_miscallaneous"
-    app:behavior_peekHeight = "@dimen/bottom_sheet_behavior"
+    android:orientation="vertical"
+    app:behavior_peekHeight="@dimen/bottom_sheet_behavior"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
     <TextView
-        android:id="@+id/todo_textMiscellaneous"
+        android:id="@+id/todoCastomizerTitleTv"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:fontFamily="@font/ubuntumedium"
+        android:gravity="center"
         android:includeFontPadding="false"
+        android:text="@string/castomizer"
         android:textColor="@color/white"
-        android:textSize="14sp"
-        android:text="Castomizer"
-        android:gravity="center"/>
+        android:textSize="14sp" />
+
     <LinearLayout
+        android:id="@+id/todoCastomizerPanelLl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/favourtieLay_category"
-        android:orientation="horizontal"
         android:layout_marginLeft="13dp"
-        android:layout_marginRight="13dp"
         android:layout_marginTop="7dp"
-        android:gravity="center_vertical">
+        android:layout_marginRight="13dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/ubuntumedium"
             android:includeFontPadding="false"
-            android:text="Options"
+            android:text="@string/options"
             android:textColor="@color/white"
             android:textSize="14sp" />
-        <ImageView
-            android:id="@+id/favouriteImage_category"
+
+        <CheckBox
+            android:id="@+id/todoCastomizerFavoutiteCb"
             android:layout_width="47dp"
             android:layout_height="47dp"
-            android:contentDescription="@string/app_name"
-            android:padding="11dp"
-            app:tint="@color/white"
-            android:src="@drawable/ic_baseline_favorite_24"
             android:layout_marginStart="10dp"
-            />
+            android:button="@null"
+            android:contentDescription="@string/app_name"
+            android:drawableRight="@drawable/checkbox_favourite_selector"
+            android:padding="11dp" />
 
         <ImageView
-            android:id="@+id/imageViewPassword_category"
+            android:id="@+id/todoCastomizerLockIv"
             android:layout_width="47dp"
             android:layout_height="47dp"
             android:contentDescription="@string/app_name"
             android:padding="11dp"
-            app:tint="@color/white"
-            android:src="@drawable/ic_baseline_lock" />
+            android:src="@drawable/ic_baseline_lock"
+            app:tint="@color/white" />
 
         <ImageView
-            android:id="@+id/infoImage_category"
+            android:id="@+id/todoCastomizerInfoIv"
             android:layout_width="47dp"
             android:layout_height="47dp"
             android:contentDescription="@string/app_name"
             android:padding="11dp"
-            app:tint="@color/white"
-            android:src="@drawable/ic_outline_info"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/todo_layoutNoteColor"
-
-        android:layout_margin="13dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/ubuntumedium"
-            android:includeFontPadding="false"
-            android:text="Category color"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            />
-
-        <FrameLayout
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-
-            <View
-                android:id="@+id/todo_vievColor1"
-                android:layout_width="37dp"
-                android:layout_height="37dp"
-                android:background="@drawable/background_note_color_1"
-                />
-
-            <ImageView
-                android:id="@+id/todo_imageColor1"
-                android:layout_width="37dp"
-                android:layout_height="37dp"
-                android:contentDescription="@string/app_name"
-                android:padding="11dp"
-                android:src="@drawable/ic_done"
-                app:tint="@color/white"/>
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-
-            <View
-                android:id="@+id/todo_vievColor2"
-                android:layout_width="37dp"
-                android:layout_height="37dp"
-                android:background="@drawable/background_note_color_2" />
-
-            <ImageView
-                android:id="@+id/todo_imageColor2"
-                android:layout_width="37dp"
-                android:layout_height="37dp"
-                android:contentDescription="@string/app_name"
-                android:padding="11dp"
-                app:tint="@color/white"/>
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-
-            <View
-                android:id="@+id/todo_vievColor3"
-                android:layout_width="37dp"
-                android:layout_height="37dp"
-                android:background="@drawable/background_note_color_3"
-                />
-
-            <ImageView
-                android:id="@+id/todo_imageColor3"
-                android:layout_width="37dp"
-                android:layout_height="37dp"
-                android:contentDescription="@string/app_name"
-                android:padding="11dp"
-                app:tint="@color/white"/>
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-            <View
-                android:id="@+id/todo_vievColor6"
-                android:layout_width="37dp"
-                android:layout_height="37dp"
-                android:background="@drawable/background_note_color_6" />
-
-            <ImageView
-                android:id="@+id/todo_imageColor6"
-                android:layout_width="37dp"
-                android:layout_height="37dp"
-                android:contentDescription="@string/app_name"
-                android:padding="11dp"
-                app:tint="@color/white"/>
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-
-            <View
-                android:id="@+id/todo_vievColor4"
-                android:layout_width="37dp"
-                android:layout_height="37dp"
-                android:background="@drawable/background_note_color_4"
-                />
-
-            <ImageView
-                android:id="@+id/todo_imageColor4"
-                android:layout_width="37dp"
-                android:layout_height="37dp"
-                android:contentDescription="@string/app_name"
-                android:padding="11dp"
-                app:tint="@color/white"/>
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-
-            <View
-                android:id="@+id/todo_vievColor5"
-                android:layout_width="37dp"
-                android:layout_height="37dp"
-                android:background="@drawable/background_note_color_5"
-                />
-
-            <ImageView
-                android:id="@+id/todo_imageColor5"
-                android:layout_width="37dp"
-                android:layout_height="37dp"
-                android:contentDescription="@string/app_name"
-                android:padding="11dp"
-                app:tint="@color/white"/>
-        </FrameLayout>
+            android:src="@drawable/ic_outline_info"
+            app:tint="@color/white" />
     </LinearLayout>
 </LinearLayout>

@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ToDoViewModel(app: Application) : AndroidViewModel(app) {
+class TodoViewModel(app: Application) : AndroidViewModel(app) {
 
     var isSearchEdit: Int = 1
 
@@ -119,5 +119,19 @@ class ToDoViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     //State Model
-    var p: Boolean = true
+    internal var p: Boolean = true
+
+    internal fun setDefaultTodoState(){
+        setSelectedCategotyItem(null)
+        categoryItemBeforeChange = null
+        selectedCategotyItemColor = "#333333"
+        categoryName = ""
+        categoryDate = 0
+        categoryIsSelected = false
+        isFavouriteCategory = false
+        hasPassword = false
+        passwordCategory = 0
+        categoryId = 0
+        isSearchEdit = 1
+    }
 }

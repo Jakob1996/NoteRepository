@@ -8,13 +8,13 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.data.Category
 import com.example.noteapp.databinding.AddItemDialogBinding
-import com.example.noteapp.viewmodels.ToDoViewModel
+import com.example.noteapp.viewmodels.TodoViewModel
 import com.google.firebase.auth.FirebaseAuth
 import java.util.*
 
 class DialogAddCategoryItem : DialogFragment() {
 
-    private lateinit var todoViewModel: ToDoViewModel
+    private lateinit var todoViewModel: TodoViewModel
 
     private val fbAuth = FirebaseAuth.getInstance()
 
@@ -24,7 +24,7 @@ class DialogAddCategoryItem : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
+        todoViewModel = ViewModelProvider(requireActivity())[TodoViewModel::class.java]
     }
 
     override fun onCreateView(

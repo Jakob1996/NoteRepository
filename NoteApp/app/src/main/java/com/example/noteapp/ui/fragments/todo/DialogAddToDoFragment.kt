@@ -8,7 +8,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.data.ItemOfList
 import com.example.noteapp.databinding.AddItemDialogBinding
-import com.example.noteapp.viewmodels.ToDoViewModel
+import com.example.noteapp.viewmodels.TodoViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +17,7 @@ import java.util.*
 
 class DialogAddToDoFragment : DialogFragment() {
 
-    private lateinit var todoViewModel: ToDoViewModel
+    private lateinit var todoViewModel: TodoViewModel
 
     private val auth = FirebaseAuth.getInstance()
 
@@ -27,7 +27,7 @@ class DialogAddToDoFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
+        todoViewModel = ViewModelProvider(requireActivity())[TodoViewModel::class.java]
     }
 
     override fun onCreateView(

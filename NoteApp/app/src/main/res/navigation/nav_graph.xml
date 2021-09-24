@@ -12,7 +12,8 @@
         app:exitAnim="@anim/zero_to_zero"
         app:popEnterAnim="@anim/zero_to_zero"
         app:popExitAnim="@anim/animation_backto"
-        app:popUpTo="@id/mainFramgent" />
+        app:popUpTo="@id/mainFramgent"
+        app:popUpToInclusive="false" />
 
     <action
         android:id="@+id/action_to_login_fragment"
@@ -21,7 +22,8 @@
         app:exitAnim="@anim/zero_to_zero"
         app:popEnterAnim="@anim/zero_to_zero"
         app:popExitAnim="@anim/from_zero_to_minus_hundred"
-        app:popUpTo="@id/mainFramgent" />
+        app:popUpTo="@id/mainFramgent"
+        app:popUpToInclusive="false" />
 
     <action
         android:id="@+id/action_to_general_todo_fragment"
@@ -38,7 +40,9 @@
         app:exitAnim="@anim/zero_to_zero"
         app:popEnterAnim="@anim/zero_to_zero"
         app:popExitAnim="@anim/animation_backto"
-        app:popUpTo="@id/mainFramgent" />
+        app:popUpTo="@id/mainFramgent"
+        app:popUpToInclusive="false"
+        />
 
     <action
         android:id="@+id/action_to_edit_note_fragment"
@@ -57,7 +61,7 @@
         <action
             android:id="@+id/action_main_framgent_to_general_note_fragment"
             app:destination="@id/generalNoteFragment"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="true" />
 
         <action
             android:id="@+id/action_main_fragment_to_search_note_fragment"
@@ -120,7 +124,8 @@
             app:destination="@id/addPasswordFragment" />
         <action
             android:id="@+id/action_general_note_fragment_to_main_fragment"
-            app:popUpTo="@id/mainFramgent" />
+            app:popUpTo="@id/mainFramgent"
+            app:popUpToInclusive="true" />
 
         <action
             android:id="@+id/action_general_note_fragment_to_search_note_fragment"
@@ -217,10 +222,21 @@
         <action
             android:id="@+id/action_check_password_fragment_to_general_note_fragment"
             app:destination="@id/generalNoteFragment"
-            app:exitAnim="@anim/zero_to_zero" />
+            app:enterAnim="@anim/animation_into"
+            app:exitAnim="@anim/zero_to_zero"
+            app:popEnterAnim="@anim/zero_to_zero"
+            app:popExitAnim="@anim/animation_backto"
+            app:popUpTo="@id/mainFramgent"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_check_password_fragment_to_general_todo_fragment"
-            app:destination="@id/generalTodoFragment" />
+            app:destination="@id/generalTodoFragment"
+            app:enterAnim="@anim/animation_into"
+            app:exitAnim="@anim/zero_to_zero"
+            app:popEnterAnim="@anim/zero_to_zero"
+            app:popExitAnim="@anim/animation_backto"
+            app:popUpToInclusive="false"
+            app:popUpTo="@id/mainFramgent" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"

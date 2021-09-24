@@ -48,10 +48,6 @@ open class FragmentCastomizer : BaseFragment() {
         setInfoListener()
     }
 
-    override fun onBackPress() {
-        //todo
-    }
-
     private fun initMiscellaneous() {
         val layoutMiscellaneous = binding
         val bottomSheetBehavior = BottomSheetBehavior

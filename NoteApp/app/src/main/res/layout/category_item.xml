@@ -40,7 +40,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginEnd="3dp"
-            android:src="@drawable/ic_baseline_favorite_24"
+            android:src="@drawable/ic_baseline_turned_in_24"
             android:visibility="gone"
             app:tint="@color/gold" />
 

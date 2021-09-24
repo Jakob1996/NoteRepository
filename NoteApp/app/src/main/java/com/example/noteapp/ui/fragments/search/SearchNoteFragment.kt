@@ -39,8 +39,8 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     noteViewModel.search = null
-                    popBackStack("SF", requireActivity().supportFragmentManager, false)
                     isEnabled = false
+                    requireActivity().onBackPressed()
                 }
             })
     }
@@ -144,18 +144,13 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
     }
 
     override fun onItemLongClick(note: Note, position: Int) {
-        //NOT HERE
+        //NOT YET
     }
 
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
     }
-
-    override fun onBackPress() {
-
-    }
-
 
     private fun showSoftKeyboard() {
         val imm =

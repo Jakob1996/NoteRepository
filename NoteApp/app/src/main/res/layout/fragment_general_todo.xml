@@ -79,19 +79,10 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/fragmentGeneralTodoToolbarRl">
 
-                    <View
-                        android:id="@+id/fragmentGeneralTodoSubtitleIndicatorV"
-                        android:layout_width="7dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="center_vertical"
-                        android:background="@drawable/background_subtitle_indicator" />
-
                     <EditText
                         android:id="@+id/fragmentGeneralTodoTitleEt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginLeft="5dp"
                         android:background="@color/color_Primary"
                         android:fontFamily="@font/ubuntubold"
                         android:gravity="center_vertical"

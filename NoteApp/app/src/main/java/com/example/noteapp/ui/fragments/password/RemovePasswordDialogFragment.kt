@@ -10,14 +10,14 @@ import com.example.noteapp.data.Category
 import com.example.noteapp.data.Note
 import com.example.noteapp.databinding.RemovePasswordDialogBinding
 import com.example.noteapp.viewmodels.NoteViewModel
-import com.example.noteapp.viewmodels.ToDoViewModel
+import com.example.noteapp.viewmodels.TodoViewModel
 
 
 class RemovePasswordDialogFragment : DialogFragment() {
 
     private lateinit var noteViewModel: NoteViewModel
 
-    private lateinit var todoViewModel: ToDoViewModel
+    private lateinit var todoViewModel: TodoViewModel
 
     private var _binding: RemovePasswordDialogBinding? = null
 
@@ -26,7 +26,7 @@ class RemovePasswordDialogFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
-        todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
+        todoViewModel = ViewModelProvider(requireActivity())[TodoViewModel::class.java]
     }
 
     override fun onCreateView(

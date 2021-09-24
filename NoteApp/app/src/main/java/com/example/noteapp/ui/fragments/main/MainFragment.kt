@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
@@ -15,14 +16,14 @@ import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
 import com.example.noteapp.ui.fragments.todo.DialogAddCategoryItem
 import com.example.noteapp.viewmodels.ProfilViewModel
 import com.example.noteapp.viewmodels.NoteViewModel
-import com.example.noteapp.viewmodels.ToDoViewModel
+import com.example.noteapp.viewmodels.TodoViewModel
 
 class MainFragment : BaseFragment(), OnItemClickDialogListener {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private lateinit var noteViewModel: NoteViewModel
-    private lateinit var todoViewModel: ToDoViewModel
+    private lateinit var todoViewModel: TodoViewModel
     private lateinit var profileViewModel: ProfilViewModel
     private val request_code = 123
 
@@ -32,20 +33,31 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
         super.onDestroyView()
     }
 
-    override fun onBackPress() {
-        if (noteViewModel.getMultiSelectMode().value == true) {
-            noteViewModel.setMutliSelectMode(false)
-            noteViewModel.setNotifyDataNote(true)
-            noteViewModel.setNotifyDataCategory(true)
-        }
+    private fun onBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (noteViewModel.getMultiSelectMode().value == true) {
+                        noteViewModel.setMutliSelectMode(false)
+                        noteViewModel.setNotifyDataNote(true)
+                        noteViewModel.setNotifyDataCategory(true)
+                    }
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                }
+            })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        onBackPressed()
+
         noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
-        todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
+        todoViewModel = ViewModelProvider(requireActivity())[TodoViewModel::class.java]
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -175,8 +187,8 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
 
         binding.fragmentMainAddNoteFab.setOnClickListener {
             if (binding.fragmentMainAddNoteFab.labelText == "Add Note") {
-                noteViewModel.newNote = true
                 binding.fragmentMainFam.close(true)
+                noteViewModel.newNote = true
                 navigateToFragment(
                     findNavController(), R.id.addNoteFragment
                 )

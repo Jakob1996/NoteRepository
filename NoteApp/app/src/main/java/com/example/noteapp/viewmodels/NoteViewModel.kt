@@ -153,6 +153,7 @@ class NoteViewModel(app: Application) : AndroidViewModel(app) {
 
 
     fun setDefaultNoteState() {
+        setSearchMode(false)
         setSelectedNote(null)
         noteBeforeChange = null
         noteTitle = ""
@@ -166,5 +167,6 @@ class NoteViewModel(app: Application) : AndroidViewModel(app) {
         isFavourite = false
         hasPassword = false
         password = 0
+        isSearchEdit = 1
     }
 }

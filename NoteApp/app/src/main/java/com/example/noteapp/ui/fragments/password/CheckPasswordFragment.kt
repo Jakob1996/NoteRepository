@@ -2,7 +2,6 @@ package com.example.noteapp.ui.fragments.password
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,13 +16,13 @@ import com.example.noteapp.databinding.FragmentCheckPasswordBinding
 import com.example.noteapp.navigation.Navigation
 import com.example.noteapp.tools.OnBackPressListener
 import com.example.noteapp.viewmodels.NoteViewModel
-import com.example.noteapp.viewmodels.ToDoViewModel
+import com.example.noteapp.viewmodels.TodoViewModel
 
 class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
 
     private lateinit var noteViewModel: NoteViewModel
 
-    private lateinit var todoViewModel: ToDoViewModel
+    private lateinit var todoViewModel: TodoViewModel
     private var quit: Int = 1
 
     private var _binding: FragmentCheckPasswordBinding? = null
@@ -33,14 +32,14 @@ class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
-        todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
+        todoViewModel = ViewModelProvider(requireActivity())[TodoViewModel::class.java]
 
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    requireActivity().supportFragmentManager.popBackStack()
                     isEnabled = false
+                    requireActivity().onBackPressed()
                 }
             })
     }
@@ -67,7 +66,7 @@ class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
                                 .toInt() == password
                         ) {
                             val fragManager = requireActivity().supportFragmentManager
-                            navigateToFragment(findNavController(), R.id.generalNoteFragment)
+                            navigateToFragment(findNavController(), R.id.action_check_password_fragment_to_general_note_fragment)
                             closeKeyboard()
                         } else {
                             Toast.makeText(

@@ -52,14 +52,14 @@
                     android:text="Note creator"
                     android:textColor="@color/colorIcons" />
 
-                <ImageView
-                    android:id="@+id/fragmentAddNoteToolbarSaveIv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_done"
-                    app:tint="@color/colorIcons" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/fragmentAddNoteToolbarSaveIv"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_alignParentRight="true"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:src="@drawable/ic_done"-->
+<!--                    app:tint="@color/colorIcons" />-->
             </RelativeLayout>
 
             <LinearLayout
@@ -74,19 +74,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentAddNoteToolbarRl">
 
-                <View
-                    android:id="@+id/fragmentAddNoteSubtitleIndicatorV"
-                    android:layout_width="7dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/background_subtitle_indicator" />
+<!--                <View-->
+<!--                    android:id="@+id/fragmentAddNoteSubtitleIndicatorV"-->
+<!--                    android:layout_width="7dp"-->
+<!--                    android:layout_height="32dp"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:background="@drawable/background_subtitle_indicator" />-->
 
                 <EditText
                     android:id="@+id/fragmentAddNoteTitleEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="5dp"
                     android:background="@color/color_Primary"
                     android:fontFamily="@font/robotoligth"
                     android:gravity="center_vertical"

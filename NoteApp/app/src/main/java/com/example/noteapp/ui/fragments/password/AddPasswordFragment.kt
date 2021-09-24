@@ -11,13 +11,13 @@ import com.example.noteapp.data.Category
 import com.example.noteapp.data.Note
 import com.example.noteapp.databinding.FragmentAddPasswordBinding
 import com.example.noteapp.viewmodels.NoteViewModel
-import com.example.noteapp.viewmodels.ToDoViewModel
+import com.example.noteapp.viewmodels.TodoViewModel
 
 class AddPasswordFragment : Fragment() {
 
     private lateinit var noteViewModel: NoteViewModel
 
-    private lateinit var todoViewModel: ToDoViewModel
+    private lateinit var todoViewModel: TodoViewModel
 
     private var _binding: FragmentAddPasswordBinding? = null
     private val binding get() = _binding!!
@@ -31,23 +31,14 @@ class AddPasswordFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
-        todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
+        todoViewModel = ViewModelProvider(requireActivity())[TodoViewModel::class.java]
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentAddPasswordBinding.inflate(inflater, container, false)
-
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-
-                    requireActivity().supportFragmentManager.popBackStack()
-                }
-            })
 
         return binding.root
     }

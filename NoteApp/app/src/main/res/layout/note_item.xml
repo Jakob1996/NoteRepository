@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.jcminarro.roundkornerlayout.RoundKornerFrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.jcminarro.roundkornerlayout.RoundKornerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/linear"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layout_margin="7dp"
+    android:orientation="vertical"
     app:corner_radius="16dp">
 
     <LinearLayout
@@ -38,7 +37,6 @@
             android:id="@+id/note_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/note_title"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="9dp"
             android:layout_marginTop="3dp"
@@ -53,11 +51,11 @@
             android:textStyle="normal" />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:id="@+id/itemsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
+            android:orientation="horizontal"
             android:padding="3dp"
             android:visibility="gone">
 
@@ -65,20 +63,20 @@
                 android:id="@+id/favLayItem"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/ic_baseline_favorite_24"
-                app:tint = "@color/gold"
-                android:visibility="gone"
                 android:layout_marginEnd="3dp"
-                />
+                android:src="@drawable/ic_baseline_turned_in_24"
+                android:visibility="gone"
+                app:tint="@color/gold" />
+
 
             <ImageView
                 android:id="@+id/delLayItem"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginEnd="3dp"
                 android:src="@drawable/ic_lock_all"
-                app:tint = "@color/gold"
                 android:visibility="gone"
-                android:layout_marginEnd="3dp" />
+                app:tint="@color/gold" />
         </LinearLayout>
     </LinearLayout>
 </com.jcminarro.roundkornerlayout.RoundKornerFrameLayout>

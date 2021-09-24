@@ -41,9 +41,7 @@ class EditNoteFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         noteViewModel.getSelectedNote().observe(viewLifecycleOwner, {
             binding.fragmentEditNoteTitleEt.setText(it!!.title)
             setFontColor(it.fontColor)
@@ -52,11 +50,11 @@ class EditNoteFragment : Fragment() {
 
         binding.fragmentEditNoteDescriptionEt.setText(noteViewModel.getSelectedNote().value!!.message)
 
-
         //!!!
         if (binding.fragmentEditNoteDescriptionEt.text.isNotEmpty()) {
             binding.fragmentEditNoteDescriptionEt.requestFocus(binding.fragmentEditNoteDescriptionEt.text.length)
         }
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onStart() {
@@ -118,10 +116,6 @@ class EditNoteFragment : Fragment() {
         super.onDestroyView()
     }
 
-    private fun exitTransaction() {
-        requireActivity().supportFragmentManager.popBackStack()
-    }
-
     private fun saveNoteState() {
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -138,7 +132,7 @@ class EditNoteFragment : Fragment() {
                         noteViewModel.updateNote(note)
                     }
                     isEnabled = false
-                    exitTransaction()
+                    requireActivity().onBackPressed()
                 }
             })
     }

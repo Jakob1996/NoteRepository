@@ -3,10 +3,9 @@ package com.example.noteapp.ui.fragments.note
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,14 +16,14 @@ import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
 import com.example.noteapp.data.Note
 import com.example.noteapp.databinding.FragmentAddNoteBinding
+import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
 import com.example.noteapp.ui.fragments.password.RemovePasswordDialogFragment
 import com.example.noteapp.viewmodels.ProfilViewModel
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.firebase.auth.FirebaseAuth
 import java.util.*
 
-class AddNoteFragment : Fragment() {
+class AddNoteFragment : BaseFragment() {
 
     private var _binding: FragmentAddNoteBinding? = null
 
@@ -33,8 +32,6 @@ class AddNoteFragment : Fragment() {
     private lateinit var noteViewModel: NoteViewModel
 
     private lateinit var profileViewModel: ProfilViewModel
-
-    private val fbAuth = FirebaseAuth.getInstance()
 
     private var selectedImagePath: String = ""
 
@@ -60,7 +57,10 @@ class AddNoteFragment : Fragment() {
                     val color = noteViewModel.selectedNoteColor
                     val fontSize = noteViewModel.selectedFontSize
                     val fontColor = noteViewModel.selectedFontNote
-                    val favourite = noteViewModel.isFavourite
+                    val favourite = binding.fragmentAddNoteCastomizer.noteCastomizerFavouriteCb.isChecked
+
+                    Log.d("sdfaf", "$favourite")
+
                     val hasPassword = noteViewModel.hasPassword
                     val password = noteViewModel.password
 
@@ -88,6 +88,7 @@ class AddNoteFragment : Fragment() {
                     isEnabled = false
                     closeKeyboard()
 
+                    requireActivity().onBackPressed()
                 }
             })
 
@@ -100,8 +101,8 @@ class AddNoteFragment : Fragment() {
 
         initMiscellaneous()
 
-        val gradientDrawable: GradientDrawable =
-            binding.fragmentAddNoteSubtitleIndicatorV.background as GradientDrawable
+//        val gradientDrawable: GradientDrawable =
+//            binding.fragmentAddNoteSubtitleIndicatorV.background as GradientDrawable
 
         binding.fragmentAddNoteCastomizer.noteCastomizerFontSizeFl.setOnClickListener {
             ++noteViewModel.selectedFontSize
@@ -131,7 +132,9 @@ class AddNoteFragment : Fragment() {
             }
         }
 
-        binding.fragmentAddNoteToolbarBackButtonIv.setOnClickListener { requireActivity().onBackPressed() }
+        binding.fragmentAddNoteToolbarBackButtonIv.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
         binding.fragmentAddNoteCastomizer.noteCastomizerFavouriteFl.setOnClickListener {
             noteViewModel.isFavourite = !noteViewModel.isFavourite
@@ -151,7 +154,7 @@ class AddNoteFragment : Fragment() {
 
             if (noteViewModel.getSelectedNote().value == null) {
                 noteViewModel.selectedNoteColor = "#333333"
-                gradientDrawable.setColor(Color.parseColor(noteViewModel.selectedNoteColor))
+//                gradientDrawable.setColor(Color.parseColor(noteViewModel.selectedNoteColor))
 
             } else {
                 noteViewModel.noteTitle = it!!.title
@@ -171,7 +174,7 @@ class AddNoteFragment : Fragment() {
                 setFontSize(noteViewModel.selectedFontSize)
 
                 val selectedColor = noteViewModel.getSelectedNote().value?.color
-                gradientDrawable.setColor(Color.parseColor(selectedColor))
+//                gradientDrawable.setColor(Color.parseColor(selectedColor))
                 noteViewModel.selectedNoteColor = noteViewModel.getSelectedNote().value!!.color
 
 //                when (noteViewModel.getSelectedNote().value?.color) {
@@ -213,9 +216,9 @@ class AddNoteFragment : Fragment() {
     }
 
     private fun setSubtitleIndicator() {
-        val gradientDrawable: GradientDrawable =
-            binding.fragmentAddNoteSubtitleIndicatorV.background as GradientDrawable
-        gradientDrawable.setColor(Color.parseColor(noteViewModel.selectedNoteColor))
+//        val gradientDrawable: GradientDrawable =
+//            binding.fragmentAddNoteSubtitleIndicatorV.background as GradientDrawable
+//        gradientDrawable.setColor(Color.parseColor(noteViewModel.selectedNoteColor))
     }
 
     private fun initMiscellaneous() {

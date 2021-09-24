@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_Primary"
-    android:clickable="true"
-    android:focusable="true">
+    android:clickable="true">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -32,8 +31,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:navigationIcon="@drawable/ic_back"
-                app:titleTextColor="@color/white">
+                app:navigationIcon="@drawable/ic_back">
 
                 <ImageView
                     android:id="@+id/fragmentGeneralNoteToolbarBackIv"
@@ -74,19 +72,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentSearchCategoryToolbarRl">
 
-                <View
-                    android:id="@+id/fragmentGeneralNoteSubtitleIndicatorV"
-                    android:layout_width="7dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/background_subtitle_indicator" />
-
                 <TextView
                     android:id="@+id/fragmentGeneralNoteTitleTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="5dp"
                     android:background="@color/color_Primary"
                     android:ellipsize="end"
                     android:fontFamily="@font/robotoligth"

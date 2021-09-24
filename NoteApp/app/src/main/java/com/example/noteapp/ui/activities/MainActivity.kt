@@ -5,15 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.R
 import com.example.noteapp.databinding.ActivityMainBinding
-import com.example.noteapp.ui.interfaces.BackPressedListener
 import com.example.noteapp.viewmodels.NoteViewModel
-import com.example.noteapp.viewmodels.ToDoViewModel
+import com.example.noteapp.viewmodels.TodoViewModel
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var noteViewModel: NoteViewModel
 
-    lateinit var toDoViewModel: ToDoViewModel
+    lateinit var todoViewModel: TodoViewModel
 
     private val SHARED_PREFS = "sharedPrefs"
 
@@ -33,7 +32,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
-        toDoViewModel = ViewModelProvider(this)[ToDoViewModel::class.java]
+
+        todoViewModel = ViewModelProvider(this)[TodoViewModel::class.java]
 
         loadData()
     }
@@ -56,18 +56,6 @@ class MainActivity : AppCompatActivity() {
             val sp = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
             val editor = sp.edit()
             editor.putBoolean(KEY, noteViewModel.getSortDescNote().value!!).apply()
-        }
-    }
-
-
-    override fun onBackPressed() {
-        val currentFragment =
-            supportFragmentManager.fragments[supportFragmentManager.fragments.size - 1]
-
-        if (currentFragment is BackPressedListener) {
-            (currentFragment as BackPressedListener).onBackPress()
-        } else {
-            super.onBackPressed()
         }
     }
 }

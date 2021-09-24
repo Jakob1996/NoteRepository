@@ -1,7 +1,6 @@
 package com.example.noteapp.ui.fragments.todo
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,13 +16,13 @@ import com.example.noteapp.data.Category
 import com.example.noteapp.databinding.FragmentTodoListBinding
 import com.example.noteapp.navigation.Navigation
 import com.example.noteapp.viewmodels.NoteViewModel
-import com.example.noteapp.viewmodels.ToDoViewModel
+import com.example.noteapp.viewmodels.TodoViewModel
 
 class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
 
     private lateinit var noteViewModel: NoteViewModel
 
-    private lateinit var todoViewModel: ToDoViewModel
+    private lateinit var todoViewModel: TodoViewModel
 
     private lateinit var toDoCategoryAdapter: ItemsCategoryTodoAdapter
 
@@ -35,7 +34,7 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
         super.onCreate(savedInstanceState)
 
         noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
-        todoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
+        todoViewModel = ViewModelProvider(requireActivity())[TodoViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -105,7 +104,10 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
             todoViewModel.setSelectedCategotyItem(category)
             todoViewModel.categoryItemBeforeChange = category
             if (category.hasPassword) {
-
+                navigateToFragment(
+                    findNavController(),
+                    R.id.action_to_check_password_fragment
+                )
             } else {
                 navigateToFragment(findNavController(), R.id.action_to_general_todo_fragment)
             }
