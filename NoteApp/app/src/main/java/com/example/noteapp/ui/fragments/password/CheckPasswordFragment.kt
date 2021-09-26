@@ -65,8 +65,7 @@ class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
                         if (binding.fragmentCheckPasswordPasswordEt.text.toString()
                                 .toInt() == password
                         ) {
-                            val fragManager = requireActivity().supportFragmentManager
-                            navigateToFragment(findNavController(), R.id.action_check_password_fragment_to_general_note_fragment)
+                            navigateToFragment(findNavController(), R.id.action_to_general_note_fragment)
                             closeKeyboard()
                         } else {
                             Toast.makeText(

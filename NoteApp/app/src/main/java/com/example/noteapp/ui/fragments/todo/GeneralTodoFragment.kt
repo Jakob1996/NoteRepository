@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -28,7 +27,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import fadeIn
 import fadeOut
 import kotlinx.coroutines.*
-import java.util.*
 
 class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation {
 
@@ -46,7 +44,6 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        saveTodoList()
         todoViewModel = ViewModelProvider(requireActivity())[TodoViewModel::class.java]
     }
 
@@ -60,40 +57,12 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        setupView()
         initMiscellaneous()
 
-        todoViewModel.getSelectedCategotyItem()
-            .observe(viewLifecycleOwner, { it ->
-                binding.run { fragmentGeneralTodoTitleEt.setText(it?.categoryName) }
+        super.onViewCreated(view, savedInstanceState)
 
-                binding.fragmentGeneralTodoToolbarTitleTv.text =
-                    getString(R.string.categoryEditorTextView)
-                todoViewModel.selectedCategotyItemColor = it!!.color
-                todoViewModel.categoryName = it.categoryName
-                todoViewModel.categoryDate = it.date
-                todoViewModel.categoryIsSelected = it.isSelected
-                todoViewModel.isFavouriteCategory = it.isFavoutire
-                todoViewModel.hasPasswordCategory = it.hasPassword
-                todoViewModel.passwordCategory = it.password
-                todoViewModel.categoryId = it.rowIdCategory
 
-                setImagePassword(todoViewModel.hasPasswordCategory)
-
-                binding.fragmentGeneralTodoCastomizer.todoCastomizerFavoutiteCb.isChecked =
-                    todoViewModel.isFavouriteCategory
-                todoViewModel.getAllItemsFromCategory(todoViewModel.getSelectedCategotyItem().value!!.rowIdCategory)
-                    .observe(viewLifecycleOwner, {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            withContext(Dispatchers.Main) {
-                                delay(200)
-                                updateItems(it)
-                                binding.fragmentGeneralTodoPb.fadeOut()
-                                binding.fragmentGeneralTodoRv.fadeIn()
-                            }
-                        }
-                    })
-            })
 
         binding.fragmentGeneralTodoCastomizer.todoCastomizerLockIv.setOnClickListener {
             if (todoViewModel.hasPasswordCategory) {
@@ -196,9 +165,9 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
         }
     }
 
-    private fun saveTodoList() {
+    private fun setSaveAndQuitState() {
         requireActivity().onBackPressedDispatcher.addCallback(
-            this,
+            viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
 
@@ -206,15 +175,61 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
                         todoViewModel.setDefaultTodoState()
                     }
 
-                    quit()
+                    saveTodoList()
+
                     isEnabled = false
                     requireActivity().onBackPressed()
                 }
             })
     }
 
-    private fun quit() {
 
+    private fun setupView() {
+        setTodoObserver()
+        setSaveAndQuitState()
+        setupOnBackPressedBtn()
+    }
+
+    private fun setTodoObserver() {
+        todoViewModel.getSelectedCategotyItem()
+            .observe(viewLifecycleOwner, {
+                binding.run { fragmentGeneralTodoTitleEt.setText(it?.categoryName) }
+
+                binding.fragmentGeneralTodoToolbarTitleTv.text =
+                    getString(R.string.categoryEditorTextView)
+                todoViewModel.categoryName = it!!.categoryName
+                todoViewModel.categoryDate = it.date
+                todoViewModel.categoryIsSelected = it.isSelected
+                todoViewModel.isFavouriteCategory = it.isFavoutire
+                todoViewModel.hasPasswordCategory = it.hasPassword
+                todoViewModel.passwordCategory = it.password
+                todoViewModel.categoryId = it.rowIdCategory
+
+                setImagePassword(todoViewModel.hasPasswordCategory)
+
+                binding.fragmentGeneralTodoCastomizer.todoCastomizerFavoutiteCb.isChecked =
+                    todoViewModel.isFavouriteCategory
+                todoViewModel.getAllItemsFromCategory(todoViewModel.getSelectedCategotyItem().value!!.rowIdCategory)
+                    .observe(viewLifecycleOwner, {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            withContext(Dispatchers.Main) {
+                                delay(200)
+                                updateItems(it)
+                                binding.fragmentGeneralTodoPb.fadeOut()
+                                binding.fragmentGeneralTodoRv.fadeIn()
+                            }
+                        }
+                    })
+            })
+    }
+
+    private fun setupOnBackPressedBtn(){
+        binding.fragmentGeneralTodoToolbarBackIv.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+    }
+
+    private fun saveTodoList() {
         val beforeCategory = todoViewModel.categoryItemBeforeChange
         val colorr = todoViewModel.selectedCategotyItemColor
         val name = binding.fragmentGeneralTodoTitleEt.text.toString()

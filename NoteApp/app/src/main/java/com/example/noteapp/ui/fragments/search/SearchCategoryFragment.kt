@@ -55,7 +55,7 @@ class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentSearchCategoryBinding.inflate(inflater, container, false)
         return binding.root
@@ -78,12 +78,11 @@ class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
         }
 
         binding.fragmentSearchCategoryToolbarBackIv.setOnClickListener {
-            findNavController().navigate(R.id.action_search_note_fragment_to_mainFramgent)
+            requireActivity().onBackPressed()
         }
 
         binding.fragmentSearchCategorySearchEt.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 

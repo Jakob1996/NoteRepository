@@ -11,10 +11,6 @@
     <color name="dark_green">#232F34</color>
     <color name="gold">#FDBE3B</color>
 
-    <color name="prim">#689f38</color>
-    <color name="dar">#387002</color>
-    <color name="li">#99d066</color>
-
     <color name="pink">#ff0266</color>
     <color name="color_Primary">#272727</color>
     <color name="colorPrimary_dark">#292929</color>
@@ -35,20 +31,10 @@
     <color name="colorSearchBackgoround">#333333</color>
     <color name="colorLoginBackground">#252525</color>
     <color name="textColor">#D5D4D3</color>
-    <color name="colorFont1">#DCDCDC</color>
-    <color name="colorFont2">#ededed</color>
-    <color name="colorFont3">#e0e0e0</color>
-    <color name="colorFont4">#d4d4d4</color>
-    <color name="colorFont5">#c8c8c8</color>
     <color name="colorDelet">#D8FFFFFF</color>
 
-    <color name="colorGray">#B8b7b6</color>
+    <color name="grayColor">#B8b7b6</color>
 
-    <color name="colorDefaultNoteColor2">#252525</color>
-    <color name="colorNoteColor22">#FDBE3B</color>
-    <color name="colorNoteColor33">#FF4842</color>
-    <color name="colorNoteColor44">#3A52FC</color>
-    <color name="colorNoteColor55">#000000</color>
-    <color name="colorNoteColor66">#00E676</color>
-    <color name="colorPassword">#FF4343</color>
+    <color name="defaultNoteColor">#252525</color>
+    <color name="passwordColor">#FF4343</color>
 </resources>

@@ -12,8 +12,7 @@
         app:exitAnim="@anim/zero_to_zero"
         app:popEnterAnim="@anim/zero_to_zero"
         app:popExitAnim="@anim/animation_backto"
-        app:popUpTo="@id/mainFramgent"
-        app:popUpToInclusive="false" />
+        app:popUpTo="@id/mainFramgent" />
 
     <action
         android:id="@+id/action_to_login_fragment"
@@ -31,7 +30,8 @@
         app:enterAnim="@anim/animation_into"
         app:exitAnim="@anim/zero_to_zero"
         app:popEnterAnim="@anim/zero_to_zero"
-        app:popExitAnim="@anim/animation_backto" />
+        app:popExitAnim="@anim/animation_backto"
+        app:popUpTo="@id/mainFramgent" />
 
     <action
         android:id="@+id/action_to_check_password_fragment"
@@ -41,8 +41,7 @@
         app:popEnterAnim="@anim/zero_to_zero"
         app:popExitAnim="@anim/animation_backto"
         app:popUpTo="@id/mainFramgent"
-        app:popUpToInclusive="false"
-        />
+        app:popUpToInclusive="false" />
 
     <action
         android:id="@+id/action_to_edit_note_fragment"
@@ -57,11 +56,6 @@
         android:id="@+id/mainFramgent"
         android:name="com.example.noteapp.ui.fragments.main.MainFragment"
         tools:layout="@layout/fragment_main">
-
-        <action
-            android:id="@+id/action_main_framgent_to_general_note_fragment"
-            app:destination="@id/generalNoteFragment"
-            app:popUpToInclusive="true" />
 
         <action
             android:id="@+id/action_main_fragment_to_search_note_fragment"
@@ -131,6 +125,11 @@
             android:id="@+id/action_general_note_fragment_to_search_note_fragment"
             app:destination="@id/searchNoteFragment"
             app:popUpTo="@id/searchNoteFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_generalNoteFragment_to_mainFramgent"
+            app:destination="@id/mainFramgent"
+            app:popUpTo="@id/mainFramgent"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -235,8 +234,8 @@
             app:exitAnim="@anim/zero_to_zero"
             app:popEnterAnim="@anim/zero_to_zero"
             app:popExitAnim="@anim/animation_backto"
-            app:popUpToInclusive="false"
-            app:popUpTo="@id/mainFramgent" />
+            app:popUpTo="@id/mainFramgent"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"

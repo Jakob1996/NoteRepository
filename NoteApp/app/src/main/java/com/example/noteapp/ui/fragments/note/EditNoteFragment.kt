@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.noteapp.databinding.FragmentEditNoteBinding
 import com.example.noteapp.viewmodels.NoteViewModel
 
@@ -25,8 +26,13 @@ class EditNoteFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
+    }
+
+    private fun setupView() {
+        setOnBackPressedBtnClick()
+        setOnBackPressedDispatcher()
+        setSaveBtnListener()
     }
 
     override fun onCreateView(
@@ -34,14 +40,21 @@ class EditNoteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        saveNoteState()
+        setOnBackPressedDispatcher()
 
         _binding = FragmentEditNoteBinding.inflate(inflater, container, false)
 
         return binding.root
     }
 
+    private fun setOnBackPressedBtnClick() {
+        binding.fragmentEditNoteToolbarBackIv.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupView()
         noteViewModel.getSelectedNote().observe(viewLifecycleOwner, {
             binding.fragmentEditNoteTitleEt.setText(it!!.title)
             setFontColor(it.fontColor)
@@ -54,6 +67,7 @@ class EditNoteFragment : Fragment() {
         if (binding.fragmentEditNoteDescriptionEt.text.isNotEmpty()) {
             binding.fragmentEditNoteDescriptionEt.requestFocus(binding.fragmentEditNoteDescriptionEt.text.length)
         }
+
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -71,41 +85,58 @@ class EditNoteFragment : Fragment() {
     }
 
     private fun setFontColor(colorPath: Int?) {
-        when (colorPath) {
-            1 -> {
-                binding.fragmentEditNoteDescriptionEt.setTextColor(Color.parseColor("#FFFFFF"))
-            }
+        binding.fragmentEditNoteDescriptionEt.run {
+            when (colorPath) {
+                1 -> {
+                    setTextColor(Color.parseColor("#FFFFFF"))
+                }
 
-            2 -> {
-                binding.fragmentEditNoteDescriptionEt.setTextColor(Color.parseColor("#959595"))
-            }
+                2 -> {
+                    setTextColor(Color.parseColor("#959595"))
+                }
 
-            3 -> {
-                binding.fragmentEditNoteDescriptionEt.setTextColor(Color.parseColor("#666666"))
+                3 -> {
+                    setTextColor(Color.parseColor("#666666"))
+                }
             }
         }
     }
 
     private fun setFontSize(colorSize: Int?) {
-        when (colorSize) {
-            1 -> {
-                binding.fragmentEditNoteDescriptionEt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15F)
-            }
 
-            2 -> {
-                binding.fragmentEditNoteDescriptionEt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
-            }
+        binding.fragmentEditNoteDescriptionEt.run {
+            when (colorSize) {
+                1 -> {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 15F)
+                }
 
-            3 -> {
-                binding.fragmentEditNoteDescriptionEt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25F)
-            }
+                2 -> {
+                    setTextSize(
+                        TypedValue.COMPLEX_UNIT_SP,
+                        20F
+                    )
+                }
 
-            4 -> {
-                binding.fragmentEditNoteDescriptionEt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30F)
-            }
+                3 -> {
+                    setTextSize(
+                        TypedValue.COMPLEX_UNIT_SP,
+                        25F
+                    )
+                }
 
-            5 -> {
-                binding.fragmentEditNoteDescriptionEt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 35F)
+                4 -> {
+                    setTextSize(
+                        TypedValue.COMPLEX_UNIT_SP,
+                        30F
+                    )
+                }
+
+                5 -> {
+                    setTextSize(
+                        TypedValue.COMPLEX_UNIT_SP,
+                        35F
+                    )
+                }
             }
         }
     }
@@ -116,24 +147,34 @@ class EditNoteFragment : Fragment() {
         super.onDestroyView()
     }
 
-    private fun saveNoteState() {
+    private fun setOnBackPressedDispatcher() {
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-
-                    if (binding.fragmentEditNoteTitleEt.text.isNotEmpty() || binding.fragmentEditNoteDescriptionEt.text.isNotEmpty()) {
-                        val note = noteViewModel.getSelectedNote().value
-                        val title = binding.fragmentEditNoteTitleEt.text.toString()
-                        val mess = binding.fragmentEditNoteDescriptionEt.text.toString()
-                        note!!.message = mess
-                        note.title = title
-
-                        noteViewModel.updateNote(note)
-                    }
                     isEnabled = false
+                    saveNoteState()
                     requireActivity().onBackPressed()
                 }
             })
+    }
+
+    private fun setSaveBtnListener() {
+        binding.fragmentEditNoteToolbarSaveIv.setOnClickListener {
+            saveNoteState()
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun saveNoteState() {
+        if (binding.fragmentEditNoteTitleEt.text.isNotEmpty() || binding.fragmentEditNoteDescriptionEt.text.isNotEmpty()) {
+            val note = noteViewModel.getSelectedNote().value
+            val title = binding.fragmentEditNoteTitleEt.text.toString()
+            val mess = binding.fragmentEditNoteDescriptionEt.text.toString()
+            note!!.message = mess
+            note.title = title
+
+            noteViewModel.updateNote(note)
+        }
     }
 }

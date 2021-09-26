@@ -36,11 +36,11 @@ class DialogAddCategoryItem : DialogFragment() {
 
 
         binding.addItemDialogAddBtn.setOnClickListener {
-            if (binding.addItemDialogTitleTv.text.isEmpty()) {
+            if (binding.addItemDialogTitleEt.text.isEmpty()) {
                 dismiss()
             } else {
                 val category = Category(
-                    binding.addItemDialogTitleTv.text.toString(),
+                    binding.addItemDialogTitleEt.text.toString(),
                     "#333333",
                     false,
                     Calendar.getInstance().timeInMillis

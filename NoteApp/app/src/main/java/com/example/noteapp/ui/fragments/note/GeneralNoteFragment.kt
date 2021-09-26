@@ -2,7 +2,6 @@ package com.example.noteapp.ui.fragments.note
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.*
@@ -40,74 +39,73 @@ class GeneralNoteFragment : BaseFragment() {
 
     private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        saveNoteState()
+    private fun setOnBackPressedDispatcher() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    saveNoteState()
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                }
+            })
     }
 
     private fun saveNoteState() {
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    noteViewModel.run {
-                        if (getSearchMode().value == true && binding.fragmentGeneralNoteDescriptionTv.text.isNotEmpty()) {
-                            textHighLighter
-                                .setForegroundColor(binding.fragmentGeneralNoteDescriptionTv.currentTextColor)
-                                .setBackgroundColor(Color.TRANSPARENT)
-                                .invalidate(TextHighlighter.BASE_MATCHER)
-                            setSearchMode(false)
-                        } else {
-                            val title = binding.fragmentGeneralNoteTitleTv.text.toString()
-                            val message = binding.fragmentGeneralNoteDescriptionTv.text.toString()
-                            val date = Calendar.getInstance().timeInMillis
-                            val color = selectedNoteColor
-                            val fontSize = selectedFontSize
-                            val fontColor = selectedFontNote
-                            val favourite = binding.fragmentGeneralNoteCastomizer.noteCastomizerFavouriteCb.isChecked
-                            val hasPassword = hasPassword
-                            val password = password
+        noteViewModel.run {
+            if (getSearchMode().value == true && binding.fragmentGeneralNoteDescriptionTv.text.isNotEmpty()) {
+                textHighLighter
+                    .setForegroundColor(binding.fragmentGeneralNoteDescriptionTv.currentTextColor)
+                    .setBackgroundColor(Color.TRANSPARENT)
+                    .invalidate(TextHighlighter.BASE_MATCHER)
+                setSearchMode(false)
+            } else {
+                val title = binding.fragmentGeneralNoteTitleTv.text.toString()
+                val message = binding.fragmentGeneralNoteDescriptionTv.text.toString()
+                val date = Calendar.getInstance().timeInMillis
+                val color = selectedNoteColor
+                val fontSize = selectedFontSize
+                val fontColor = selectedFontNote
+                val favourite =
+                    binding.fragmentGeneralNoteCastomizer.noteCastomizerFavouriteCb.isChecked
+                val hasPassword = hasPassword
+                val password = password
 
-                            val noteBefore = noteBeforeChange
-                            val titleBefore = titleBefore
-                            val messBefore = messageBefore
+                val noteBefore = noteBeforeChange
+                val titleBefore = titleBefore
+                val messBefore = messageBefore
 
-                            if (titleBefore != title
-                                || messBefore != message
-                                || noteBefore?.color != color
-                                || fontSize != noteBefore.fontSize
-                                || fontColor != noteBefore.fontColor
-                                || noteBefore.title.length != title.length
-                                || noteBefore.message.length != message.length
-                                || noteBefore.isFavourite != favourite
-                                || noteBefore.hasPassword != hasPassword
-                            ) {
-                                val rowId = getSelectedNote().value?.rowId
-                                val note = Note(
-                                    title, message, date, false, color,
-                                    fontColor, fontSize, favourite, hasPassword, password
-                                )
-                                note.let {
-                                    if (rowId != null) {
-                                        note.rowId = rowId
-                                    }
-                                }
-
-                                saveNoteInFirebase(note)
-                                updateNote(note)
-                                noteState = null
-                            }
-
-                            quit = 2
-                            closeKeyboard()
+                if (titleBefore != title
+                    || messBefore != message
+                    || noteBefore?.color != color
+                    || fontSize != noteBefore.fontSize
+                    || fontColor != noteBefore.fontColor
+                    || noteBefore.title.length != title.length
+                    || noteBefore.message.length != message.length
+                    || noteBefore.isFavourite != favourite
+                    || noteBefore.hasPassword != hasPassword
+                ) {
+                    val rowId = getSelectedNote().value?.rowId
+                    val note = Note(
+                        title, message, date, false, color,
+                        fontColor, fontSize, favourite, hasPassword, password
+                    )
+                    note.let {
+                        if (rowId != null) {
+                            note.rowId = rowId
                         }
-                        setDefaultNoteState()
-                        isEnabled = false
-                        requireActivity().onBackPressed()
                     }
+
+                    saveNoteInFirebase(note)
+                    updateNote(note)
+                    noteState = null
                 }
-            })
+
+                quit = 2
+                closeKeyboard()
+            }
+            setDefaultNoteState()
+        }
     }
 
     private fun saveNoteInFirebase(note: Note) {
@@ -149,6 +147,14 @@ class GeneralNoteFragment : BaseFragment() {
         setOnFavouriteListener()
         setSearchModeObserver()
         setSelectedNoteObserver()
+        setOnBackPressedListener()
+        setOnBackPressedDispatcher()
+    }
+
+    private fun setOnBackPressedListener() {
+        binding.fragmentGeneralNoteToolbarBackIv.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
     }
 
     override fun onDestroyView() {
@@ -199,7 +205,7 @@ class GeneralNoteFragment : BaseFragment() {
 
     private fun setDoubleClickListener() {
         binding.fragmentGeneralNoteDescriptionTv.setOnClickListener {
-            DoubleClickListener(callback = object : DoubleClickListener.Callback{
+            DoubleClickListener(callback = object : DoubleClickListener.Callback {
                 override fun doubleClicked() {
                     navigateToFragment(
                         findNavController(), R.id.editNoteFragment

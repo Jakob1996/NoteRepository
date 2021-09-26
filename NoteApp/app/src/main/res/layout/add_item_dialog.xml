@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragmentaddPasswordLl"
-    android:layout_width="wrap_content"
+    android:id="@+id/addItemDialogLl"
+    android:layout_width="150dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:background="@drawable/background_dialog"
@@ -17,15 +17,18 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/addItemDialogTitleTv"
+            android:id="@+id/addItemDialogTitleEt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:backgroundTint="@color/colorNoteColor2"
+            android:ellipsize="end"
             android:fontFamily="@font/ubunturegular"
             android:gravity="bottom"
             android:hint="@string/title"
+            android:inputType="text"
+            android:maxLines="1"
             android:textColor="@color/white"
             android:textColorHint="@color/colorIcons" />
 
@@ -38,7 +41,7 @@
 
         <Button
             android:id="@+id/addItemDialogAddBtn"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary_dark"
             android:fontFamily="@font/ubunturegular"

@@ -39,16 +39,16 @@ class DialogAddToDoFragment : DialogFragment() {
         _binding = AddItemDialogBinding.inflate(inflater, container, false)
 
         todoViewModel.getSelectedItem().observe(viewLifecycleOwner, {
-            binding.addItemDialogTitleTv.setText(it?.nameItem)
+            binding.addItemDialogTitleEt.setText(it?.nameItem)
         })
 
         binding.addItemDialogAddBtn.setOnClickListener {
             if (todoViewModel.getSelectedItem().value == null) {
-                if (binding.addItemDialogTitleTv.text.toString().isEmpty()) {
+                if (binding.addItemDialogTitleEt.text.toString().isEmpty()) {
                     dismiss()
                 } else {
                     val item = ItemOfList(
-                        binding.addItemDialogTitleTv.text.toString(),
+                        binding.addItemDialogTitleEt.text.toString(),
                         todoViewModel.getSelectedCategotyItem().value!!.rowIdCategory
                     ).apply {
                         idItem = Calendar.getInstance().timeInMillis.toInt()
@@ -63,14 +63,14 @@ class DialogAddToDoFragment : DialogFragment() {
                     dismiss()
                 }
             } else {
-                if (binding.addItemDialogTitleTv.text.toString().isEmpty()) {
+                if (binding.addItemDialogTitleEt.text.toString().isEmpty()) {
                     dismiss()
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {
                         val it = todoViewModel.getSelectedItem().value
                         val item =
                             ItemOfList(
-                                binding.addItemDialogTitleTv.text.toString(),
+                                binding.addItemDialogTitleEt.text.toString(),
                                 it!!.categoryId,
                                 false
                             )
