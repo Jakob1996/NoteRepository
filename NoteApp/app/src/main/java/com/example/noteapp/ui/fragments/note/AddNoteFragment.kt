@@ -59,8 +59,6 @@ class AddNoteFragment : BaseFragment() {
                     val fontColor = noteViewModel.selectedFontNote
                     val favourite = binding.fragmentAddNoteCastomizer.noteCastomizerFavouriteCb.isChecked
 
-                    Log.d("sdfaf", "$favourite")
-
                     val hasPassword = noteViewModel.hasPassword
                     val password = noteViewModel.password
 
