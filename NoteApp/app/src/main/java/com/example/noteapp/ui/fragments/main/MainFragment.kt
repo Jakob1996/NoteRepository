@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
@@ -17,6 +18,8 @@ import com.example.noteapp.ui.fragments.todo.DialogAddCategoryItem
 import com.example.noteapp.viewmodels.ProfilViewModel
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.TodoViewModel
+import fadeIn
+import fadeOut
 
 class MainFragment : BaseFragment(), OnItemClickDialogListener {
 
@@ -26,6 +29,21 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
     private lateinit var todoViewModel: TodoViewModel
     private lateinit var profileViewModel: ProfilViewModel
     private val request_code = 123
+
+    override fun setupView() {
+        binding.fragmentMainDl.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
+        setupFavouriteButtonObserverState()
+        setOnFavouriteButtonClickListener()
+        setOnLoginBtnListener()
+        setOnHomeDrawerBtnListener()
+        setOnHomeBtnListener()
+        setupMultiSelectModeObserverState()
+        setupViewPagerChangeListener()
+        setupMultiBtnClickListener()
+        setupMainBtnListener()
+        setupSortBtnListener()
+    }
 
     override fun onDestroyView() {
         noteViewModel.view = _binding
@@ -38,11 +56,14 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (noteViewModel.getMultiSelectMode().value == true) {
-                        noteViewModel.setMutliSelectMode(false)
-                        noteViewModel.setNotifyDataNote(true)
-                        noteViewModel.setNotifyDataCategory(true)
+                    noteViewModel.run {
+                        if (getMultiSelectMode().value == true) {
+                            setMutliSelectMode(false)
+                            setNotifyDataNote(true)
+                            setNotifyDataCategory(true)
+                        }
                     }
+
                     isEnabled = false
                     requireActivity().onBackPressed()
                 }
@@ -53,11 +74,8 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
         super.onCreate(savedInstanceState)
 
         onBackPressed()
-
-        noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
-        todoViewModel = ViewModelProvider(requireActivity())[TodoViewModel::class.java]
+        setupViewModel()
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,23 +86,28 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
 
         if (_binding == null) {
             _binding = FragmentMainBinding.inflate(inflater, container, false)
-            setUpTabs()
+            setupViewPager()
         }
-
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun setupFavouriteButtonObserverState() {
         noteViewModel.getNoteFabButtonMode().observe(viewLifecycleOwner, {
             if (it == true) {
-                binding.fragmentMainFam.visibility = View.GONE
+                binding.fragmentMainFam.fadeOut()
             } else {
-                binding.fragmentMainFam.visibility = View.VISIBLE
+                binding.fragmentMainFam.fadeIn()
             }
         })
+    }
 
+    private fun setupViewModel(){
+        noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
+        todoViewModel = ViewModelProvider(requireActivity())[TodoViewModel::class.java]
+    }
+
+    private fun setOnFavouriteButtonClickListener() {
         binding.fragmentMainToolbarFavouriteCb.setOnClickListener {
             if (noteViewModel.getNoteFabButtonMode().value == true) {
                 noteViewModel.run {
@@ -97,7 +120,9 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
                 findNavController()
             }
         }
+    }
 
+    private fun setOnLoginBtnListener() {
         binding.fragmentMainMenu.menuDrawerLoginLl.setOnClickListener {
             if (fbAuth.currentUser != null) {
                 navigateToFragment(
@@ -111,34 +136,44 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
             }
             binding.fragmentMainDl.close()
         }
+    }
 
+    private fun setOnHomeDrawerBtnListener() {
         binding.fragmentMainMenu.menuDrawerHomeLl.setOnClickListener { binding.fragmentMainDl.close() }
+    }
 
+    private fun setOnHomeBtnListener() {
         binding.fragmentMainToolbarMenuIb.setOnClickListener {
-            if (noteViewModel.getMultiSelectMode().value == true) {
-                noteViewModel.setMutliSelectMode(false)
-                noteViewModel.setNotifyDataNote(true)
-                noteViewModel.setNotifyDataCategory(true)
-            } else {
-                binding.fragmentMainDl.open()
+            noteViewModel.run {
+                if (getMultiSelectMode().value == true) {
+                    setMutliSelectMode(false)
+                    setNotifyDataNote(true)
+                    setNotifyDataCategory(true)
+                } else {
+//                binding.fragmentMainDl.open()
+                    navigateToFragment(findNavController(), R.id.action_to_login_fragment)
+                }
             }
         }
+    }
 
+    private fun setupMultiSelectModeObserverState() {
         noteViewModel.getMultiSelectMode().observe(viewLifecycleOwner, {
             if (it == true) {
-                onMultiSelectMode()
+                enableMultiSelectMode()
             } else {
-                exitMultiSelectMode()
+                disableMultiSelectMode()
             }
         })
+    }
 
+    private fun setupViewPagerChangeListener(){
         binding.fragmentMainVp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
                 positionOffsetPixels: Int
-            ) {
-            }
+            ) {}
 
             override fun onPageSelected(position: Int) {
                 if (position == 0) {
@@ -150,41 +185,47 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
 
             override fun onPageScrollStateChanged(state: Int) {}
         })
+    }
 
-        binding.fragmentMainToolbarSearchIb.setOnClickListener {
-            if (noteViewModel.getMultiSelectMode().value == true) {
+    private fun setupMultiBtnClickListener(){
+        binding.fragmentMainToolbarMultibuttonIb.setOnClickListener {
+            noteViewModel.run {
+                if (noteViewModel.getMultiSelectMode().value == true) {
 
-                //DeleteNotes in firebase
-                if (fbAuth.currentUser != null) {
-                    profileViewModel =
-                        ViewModelProvider(requireActivity())[ProfilViewModel::class.java]
-                    profileViewModel.deleteDataFromFirebase(noteViewModel.selectedNotes)
-                }
-                //DeleteNotes
-                noteViewModel.deleteNotes(noteViewModel.selectedNotes)
+                    //DeleteNotes in firebase
+                    if (fbAuth.currentUser != null) {
+                        profileViewModel =
+                            ViewModelProvider(requireActivity())[ProfilViewModel::class.java]
+                        profileViewModel.deleteDataFromFirebase(noteViewModel.selectedNotes)
+                        profileViewModel.deleteCategoriesFromFirebase(todoViewModel.selectedCategoryItems)
+                    }
+                    //DeleteNotes
+                    deleteNotes(noteViewModel.selectedNotes)
+                    selectedNotes.forEach { it.isSelected = false }
+                    selectedNotes.clear()
 
-                noteViewModel.selectedNotes.forEach { it.isSelected = false }
-                noteViewModel.selectedNotes.clear()
+                    //Delete Category
+                    todoViewModel.deleteCategotyItems(todoViewModel.selectedCategoryItems)
 
-                //Delete Category
-                todoViewModel.deleteCategotyItems(todoViewModel.selectedCategoryItems)
+                    todoViewModel.selectedCategoryItems.forEach { it.isSelected = false }
+                    todoViewModel.selectedCategoryItems.clear()
 
-                todoViewModel.selectedCategoryItems.forEach { it.isSelected = false }
-                todoViewModel.selectedCategoryItems.clear()
+                    setMutliSelectMode(false)
 
-                noteViewModel.setMutliSelectMode(false)
-
-            } else {
-                if (binding.fragmentMainVp.currentItem == 0) {
-                    navigateToFragment(
-                        findNavController(), R.id.searchNoteFragment
-                    )
                 } else {
-                    navigateToFragment(findNavController(), R.id.searchCategoryFragment)
+                    if (binding.fragmentMainVp.currentItem == 0) {
+                        navigateToFragment(
+                            findNavController(), R.id.searchNoteFragment
+                        )
+                    } else {
+                        navigateToFragment(findNavController(), R.id.searchCategoryFragment)
+                    }
                 }
             }
         }
+    }
 
+    private fun setupMainBtnListener(){
         binding.fragmentMainAddNoteFab.setOnClickListener {
             if (binding.fragmentMainAddNoteFab.labelText == "Add Note") {
                 binding.fragmentMainFam.close(true)
@@ -198,7 +239,9 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
                 dialogFragment.show(fm, "Abc")
             }
         }
+    }
 
+    private fun setupSortBtnListener(){
         binding.fragmentMainSortNoteFab.setOnClickListener {
             showDialog(
                 this,
@@ -210,41 +253,49 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
     }
 
     override fun onItemClickDialog(sortDesc: Boolean) {
-        noteViewModel.setSortDescNote(sortDesc)
-        noteViewModel.setSortDescCategory(sortDesc)
+        noteViewModel.run {
+            setSortDescNote(sortDesc)
+            setSortDescCategory(sortDesc)
+        }
     }
 
-    private fun exitMultiSelectMode() {
-        binding.fragmentMainToolbarSearchIb.setImageResource(R.drawable.ic_search)
+    private fun disableMultiSelectMode() {
+        binding.fragmentMainToolbarMultibuttonIb.setImageResource(R.drawable.ic_search)
         when (noteViewModel.getNoteFabButtonMode().value) {
             false -> {
-                binding.fragmentMainFam.visibility = View.VISIBLE
+                binding.fragmentMainFam.fadeIn()
             }
             true -> {
-                binding.fragmentMainFam.visibility = View.GONE
+                binding.fragmentMainFam.fadeOut()
             }
             else -> {
-                binding.fragmentMainFam.visibility = View.VISIBLE
+                binding.fragmentMainFam.fadeIn()
             }
         }
-        binding.fragmentMainToolbarMenuIb.visibility = View.VISIBLE
-        binding.fragmentMainToolbarMenuIb.setImageResource(R.drawable.ic_menu2)
-        binding.fragmentSearchCategoryToolbarTitleTv.text = getString(R.string.Explore)
-        binding.fragmentMainToolbarFavouriteCb.visibility = View.VISIBLE
+        binding.run {
+            fragmentMainToolbarMenuIb.fadeIn()
+            fragmentMainToolbarMenuIb.setImageResource(R.drawable.ic_menu2)
+            fragmentSearchCategoryToolbarTitleTv.text = getString(R.string.Explore)
+            fragmentMainToolbarFavouriteCb.fadeIn()
+        }
     }
 
-    private fun setUpTabs() {
+    private fun setupViewPager() {
         val adapter = ViewPagerAdapter(requireActivity().supportFragmentManager)
-        binding.fragmentMainVp.adapter = adapter
-        binding.fragmentMainVp.offscreenPageLimit = 1
-        binding.fragmentMainTl.setupWithViewPager(binding.fragmentMainVp)
+        binding.run {
+            fragmentMainVp.adapter = adapter
+            fragmentMainVp.offscreenPageLimit = 1
+            fragmentMainTl.setupWithViewPager(binding.fragmentMainVp)
+        }
     }
 
-    private fun onMultiSelectMode() {
-        binding.fragmentSearchCategoryToolbarTitleTv.text = getString(R.string.deleteToolbar)
-        binding.fragmentMainFam.visibility = View.GONE
-        binding.fragmentMainToolbarSearchIb.setImageResource(R.drawable.ic_round_delete_outline)
-        binding.fragmentMainToolbarMenuIb.setImageResource(R.drawable.ic_round_arrow_back_ios)
-        binding.fragmentMainToolbarFavouriteCb.visibility = View.GONE
+    private fun enableMultiSelectMode() {
+        binding.run {
+            fragmentSearchCategoryToolbarTitleTv.text = getString(R.string.deleteToolbar)
+            fragmentMainFam.fadeOut()
+            fragmentMainToolbarMultibuttonIb.setImageResource(R.drawable.ic_round_delete_outline)
+            fragmentMainToolbarMenuIb.setImageResource(R.drawable.ic_round_arrow_back_ios)
+            fragmentMainToolbarFavouriteCb.fadeOut()
+        }
     }
 }

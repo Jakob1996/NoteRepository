@@ -27,5 +27,5 @@ interface ItemDao {
     fun deleteAllItems(categoryId: Int)
 
     @Query("SELECT * FROM item_table")
-    fun getAllI(): Flow<List<ItemOfList>>
+    fun getAllTodoItems(): Flow<List<ItemOfList>>
 }

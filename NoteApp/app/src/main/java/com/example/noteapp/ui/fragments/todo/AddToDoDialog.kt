@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
-class DialogAddToDoFragment : DialogFragment() {
+class AddToDoDialog : DialogFragment() {
 
     private lateinit var todoViewModel: TodoViewModel
 

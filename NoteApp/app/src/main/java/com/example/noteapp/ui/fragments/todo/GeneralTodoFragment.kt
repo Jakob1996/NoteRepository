@@ -18,6 +18,7 @@ import com.example.noteapp.adapters.OnItemTodoClickListener
 import com.example.noteapp.adapters.ToDoItemAdapter
 import com.example.noteapp.data.Category
 import com.example.noteapp.data.ItemOfList
+import com.example.noteapp.data.Note
 import com.example.noteapp.databinding.FragmentGeneralTodoBinding
 import com.example.noteapp.navigation.Navigation
 import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
@@ -76,7 +77,7 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
 
         binding.fragmentGeneralTodoToolbarSaveIv.setOnClickListener {
             val fm = requireActivity().supportFragmentManager
-            val dialogFragment = DialogAddToDoFragment()
+            val dialogFragment = AddToDoDialog()
             dialogFragment.show(fm, "Abc")
 
             itemTodoAdapter.notifyDataSetChanged()
@@ -123,7 +124,7 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
         todoViewModel.setSelectedItem(itemsOfList)
 
         val fm = requireActivity().supportFragmentManager
-        val dialogFragment = DialogAddToDoFragment()
+        val dialogFragment = AddToDoDialog()
         dialogFragment.show(fm, "Abc")
 
         itemTodoAdapter.notifyDataSetChanged()
@@ -165,7 +166,7 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
         }
     }
 
-    private fun setSaveAndQuitState() {
+    private fun setupSaveAndQuitState() {
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
@@ -184,13 +185,13 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
     }
 
 
-    private fun setupView() {
-        setTodoObserver()
-        setSaveAndQuitState()
+    override fun setupView() {
+        setupTodoObserver()
+        setupSaveAndQuitState()
         setupOnBackPressedBtn()
     }
 
-    private fun setTodoObserver() {
+    private fun setupTodoObserver() {
         todoViewModel.getSelectedCategotyItem()
             .observe(viewLifecycleOwner, {
                 binding.run { fragmentGeneralTodoTitleEt.setText(it?.categoryName) }
@@ -223,7 +224,7 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
             })
     }
 
-    private fun setupOnBackPressedBtn(){
+    private fun setupOnBackPressedBtn() {
         binding.fragmentGeneralTodoToolbarBackIv.setOnClickListener {
             requireActivity().onBackPressed()
         }
@@ -258,9 +259,17 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
             }
 
             todoViewModel.updateCategoryItem(category)
+            saveCategoryInFirebase(category)
         }
 
         closeKeyboard()
         quit = 2
+    }
+
+
+    private fun saveCategoryInFirebase(category: Category) {
+        if (fbAuth.currentUser != null) {
+            todoViewModel.saveCategoryInCloud(category)
+        }
     }
 }

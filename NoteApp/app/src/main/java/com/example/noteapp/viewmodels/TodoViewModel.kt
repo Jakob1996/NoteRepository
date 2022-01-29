@@ -115,7 +115,7 @@ class TodoViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun deleteItems(categoryId: Int) {
-        CoroutineScope(Dispatchers.IO).launch { repository.deleteAllITems(categoryId) }
+        CoroutineScope(Dispatchers.IO).launch { repository.deleteAllItems(categoryId) }
     }
 
     //State Model

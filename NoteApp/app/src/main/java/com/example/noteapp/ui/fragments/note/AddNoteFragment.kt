@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -67,8 +66,7 @@ class AddNoteFragment : BaseFragment() {
                             title, description, date, isSelected = false, color,
                             fontColor, fontSize, favourite, hasPassword, password
                         ).apply {
-                            rowId =
-                                title.hashCode() + description.hashCode() + date.hashCode() * color.hashCode()
+                            rowId = getRandomIdForNote()
                         }
 
                         noteViewModel.insertNote(note)
@@ -344,17 +342,9 @@ class AddNoteFragment : BaseFragment() {
 
     private fun setFontColor(colorPath: Int?) {
         when (colorPath) {
-            1 -> {
-                binding.fragmentAddNoteDescriptionEt.setTextColor(Color.parseColor("#FFFFFF"))
-            }
-
-            2 -> {
-                binding.fragmentAddNoteDescriptionEt.setTextColor(Color.parseColor("#959595"))
-            }
-
-            3 -> {
-                binding.fragmentAddNoteDescriptionEt.setTextColor(Color.parseColor("#666666"))
-            }
+            1 -> { binding.fragmentAddNoteDescriptionEt.setTextColor(Color.parseColor("#FFFFFF")) }
+            2 -> { binding.fragmentAddNoteDescriptionEt.setTextColor(Color.parseColor("#959595")) }
+            3 -> { binding.fragmentAddNoteDescriptionEt.setTextColor(Color.parseColor("#666666")) }
         }
     }
 
@@ -362,25 +352,11 @@ class AddNoteFragment : BaseFragment() {
         binding.fragmentAddNoteDescriptionEt.run {
             val complexUnitSp = TypedValue.COMPLEX_UNIT_SP
             when (colorSize) {
-                1 -> {
-                    setTextSize(complexUnitSp, 15F)
-                }
-
-                2 -> {
-                    setTextSize(complexUnitSp, 20F)
-                }
-
-                3 -> {
-                    setTextSize(complexUnitSp, 25F)
-                }
-
-                4 -> {
-                    setTextSize(complexUnitSp, 30F)
-                }
-
-                5 -> {
-                    setTextSize(complexUnitSp, 35F)
-                }
+                1 -> { setTextSize(complexUnitSp, 15F) }
+                2 -> { setTextSize(complexUnitSp, 20F) }
+                3 -> { setTextSize(complexUnitSp, 25F) }
+                4 -> { setTextSize(complexUnitSp, 30F) }
+                5 -> { setTextSize(complexUnitSp, 35F) }
             }
         }
     }
@@ -446,6 +422,9 @@ class AddNoteFragment : BaseFragment() {
             }
         }
     }
+
+    fun getRandomIdForNote(): Int =
+        Random().nextInt(1000000000)
 
     /*
     private fun openImagePicker() {

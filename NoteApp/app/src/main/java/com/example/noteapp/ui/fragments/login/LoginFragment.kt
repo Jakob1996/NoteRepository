@@ -54,15 +54,8 @@ class LoginFragment : BaseFragment() {
                 fbAuth.signInWithEmailAndPassword(email, password)
                     .addOnSuccessListener { authRes ->
                         if (fbAuth.currentUser != null) {
-                            profilViewModel.addNotesToCloud(noteViewModel.getAllNotes.value!!)
 
-                            profilViewModel.getNotesFromFirebase()
-                                .observe(viewLifecycleOwner, { list ->
-
-                                    list.forEach {
-                                        insertOrUpdate(it)
-                                    }
-                                })
+                            updateNotesWithCloud()
                             Snackbar.make(requireView(), "Cloud updated", Snackbar.LENGTH_LONG)
                                 .show()
 
@@ -86,7 +79,46 @@ class LoginFragment : BaseFragment() {
         }
     }
 
-    private fun insertOrUpdate(note: Note) {
+    private fun insertNote(note: Note) {
         noteViewModel.insertNote(note)
     }
+
+    private fun updateNotesWithCloud() {
+        profilViewModel.addNotesToCloud(noteViewModel.getAllNotes.value!!)
+
+        profilViewModel.getNotesFromFirebase()
+            .observe(viewLifecycleOwner, { list ->
+
+                list.forEach {
+                    insertNote(it)
+                }
+            })
+    }
+
+    private fun updateCategoriesWithCloud() {
+        addCategoryAndTodoItemsToCloud()
+
+    }
+
+    private fun addCategoryAndTodoItemsToCloud() {
+//        profileViewModel?.run {
+//            //Todo
+//            addAllCategoriesToCloud()
+//            //Todo
+//            addAllTodoItemsToCloud()
+//        }
+    }
+
+    private fun getCategoriesAndTodoItemsFromCloud() {
+//        profilViewModel?.run {
+//            //Todo
+//            getCategoriesFromCloud()
+//            //Todo
+//            getTodoListFromCloud()
+//        }
+    }
+
+//    private fun getCategoriesFromRoom() = profilViewModel.getCategoriesFromCloud()
+
+//    private fun getTodoItemsFromRoom() = profilViewModel.getTodoItemsFromRoom()
 }

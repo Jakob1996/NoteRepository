@@ -58,7 +58,7 @@
                     android:layout_marginEnd="10dp">
 
                     <ImageButton
-                        android:id="@+id/fragmentMainToolbarSearchIb"
+                        android:id="@+id/fragmentMainToolbarMultibuttonIb"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_centerVertical="true"
@@ -148,10 +148,12 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="@color/colorSearchBackgoround"
+            android:visibility="gone"
             app:itemTextColor="@color/white">
 
             <include
                 android:id="@+id/fragmentMainMenu"
+                android:visibility="gone"
                 layout="@layout/menu_drawer" />
         </com.google.android.material.navigation.NavigationView>
     </androidx.drawerlayout.widget.DrawerLayout>

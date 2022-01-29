@@ -17,6 +17,8 @@ import com.example.noteapp.databinding.FragmentTodoListBinding
 import com.example.noteapp.navigation.Navigation
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.TodoViewModel
+import fadeIn
+import fadeOut
 
 class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
 
@@ -65,9 +67,9 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
             updateItems(todoViewModel.allCategoryItems.value!!)
             if (todoViewModel.allCategoryItems.value!!.none { it.isFavoutire }
                 && noteViewModel.getNoteFabButtonMode().value == true) {
-                binding.fragmentTodoListEmptyFavouritiesTv.visibility = View.VISIBLE
+                binding.fragmentTodoListEmptyFavouritiesTv.fadeIn()
             } else {
-                binding.fragmentTodoListEmptyFavouritiesTv.visibility = View.INVISIBLE
+                binding.fragmentTodoListEmptyFavouritiesTv.fadeOut()
             }
         })
 
@@ -199,9 +201,9 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
     private fun checkIsEmpty() {
         todoViewModel.allCategoryItems.observe(viewLifecycleOwner, {
             if (todoViewModel.allCategoryItems.value!!.isEmpty()) {
-                binding.fragmentTodoListEmptyTv.visibility = View.VISIBLE
+                binding.fragmentTodoListEmptyTv.fadeIn()
             } else {
-                binding.fragmentTodoListEmptyTv.visibility = View.GONE
+                binding.fragmentTodoListEmptyTv.fadeOut()
             }
         })
     }

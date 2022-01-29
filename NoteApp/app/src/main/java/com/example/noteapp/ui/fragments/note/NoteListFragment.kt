@@ -17,6 +17,8 @@ import com.example.noteapp.navigation.Navigation
 import com.example.noteapp.tools.OnItemClickListener
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.TodoViewModel
+import fadeIn
+import fadeOut
 
 class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
 
@@ -58,9 +60,9 @@ class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
             updateNotes(noteViewModel.getAllNotes.value!!)
             if (noteViewModel.getAllNotes.value!!.none { it.isFavourite }
                 && noteViewModel.getNoteFabButtonMode().value == true) {
-                binding.fragmentNotesListEmptyFavouritiesTv.visibility = View.VISIBLE
+                binding.fragmentNotesListEmptyFavouritiesTv.fadeIn()
             } else {
-                binding.fragmentNotesListEmptyFavouritiesTv.visibility = View.INVISIBLE
+                binding.fragmentNotesListEmptyFavouritiesTv.fadeOut()
             }
         })
 
@@ -91,9 +93,9 @@ class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
     private fun checkIsEmpty() {
         noteViewModel.getAllNotes.observe(viewLifecycleOwner, {
             if (noteViewModel.getAllNotes.value!!.isEmpty()) {
-                binding.fragmentNotesListEmptyTv.visibility = View.VISIBLE
+                binding.fragmentNotesListEmptyTv.fadeIn()
             } else {
-                binding.fragmentNotesListEmptyTv.visibility = View.GONE
+                binding.fragmentNotesListEmptyTv.fadeOut()
             }
         })
     }

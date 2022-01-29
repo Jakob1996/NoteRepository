@@ -67,9 +67,9 @@ class UserProfilFragment : Fragment(), Navigation {
         }
 
         binding.fragmentProfilRemoveFirebaseBtn.setOnClickListener {
-            val a = noteViewModel.getAllNotes.value
-            a?.let { it1 ->
-                profilViewModel.deleteDataFromFirebase(it1)
+            val notes = noteViewModel.getAllNotes.value
+            notes?.let { notes ->
+                profilViewModel.deleteDataFromFirebase(notes)
             }
         }
 
@@ -85,7 +85,7 @@ class UserProfilFragment : Fragment(), Navigation {
             profilViewModel.getNotesFromFirebase().observe(viewLifecycleOwner, {
                 val allNotes = noteViewModel.getAllNotes
                 it.forEach { note ->
-                    insertOrUpdateNotes(note)
+                    insertNote(note)
                 }
             })
 //            profilViewModel.getCategoriesFromFirebase().observe(viewLifecycleOwner, {
@@ -96,8 +96,7 @@ class UserProfilFragment : Fragment(), Navigation {
         }
     }
 
-    private fun insertOrUpdateNotes(note: Note) {
-
+    private fun insertNote(note: Note) {
         noteViewModel.insertNote(note)
     }
 

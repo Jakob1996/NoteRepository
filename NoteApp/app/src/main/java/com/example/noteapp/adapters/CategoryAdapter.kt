@@ -2,11 +2,12 @@ package com.example.noteapp.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.noteapp.data.Category
 import com.example.noteapp.databinding.CategoryItemBinding
+import makeGone
+import makeVisible
 
 class ItemsCategoryTodoAdapter(
     private val list: List<Category>, private val listener: OnItemCategoryClickListener
@@ -50,15 +51,15 @@ class ItemsCategoryTodoAdapter(
             }
 
             if (cat.isFavoutire) {
-                itemBinding.categoryItemFavouriteIv.visibility = View.VISIBLE
+                itemBinding.categoryItemFavouriteIv.makeVisible()
             } else {
-                itemBinding.categoryItemFavouriteIv.visibility = View.GONE
+                itemBinding.categoryItemFavouriteIv.makeGone()
             }
 
             if (cat.hasPassword) {
-                itemBinding.categoryItemLockIv.visibility = View.VISIBLE
+                itemBinding.categoryItemLockIv.makeVisible()
             } else {
-                itemBinding.categoryItemLockIv.visibility = View.GONE
+                itemBinding.categoryItemLockIv.makeGone()
             }
         }
     }

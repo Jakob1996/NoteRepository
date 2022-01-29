@@ -3,13 +3,15 @@ package com.example.noteapp.adapters
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.noteapp.data.Note
 import com.example.noteapp.databinding.NoteItemBinding
 import com.example.noteapp.tools.OnItemClickListener
+import fadeIn
+import fadeOut
+import makeGone
+import makeVisible
 
 class NoteAdapter(private val noteList: List<Note>, private val listener: OnItemClickListener) :
     RecyclerView.Adapter<NoteAdapter.MyViewHolder>() {
@@ -51,21 +53,21 @@ class NoteAdapter(private val noteList: List<Note>, private val listener: OnItem
             }
 
             if (note.isFavourite) {
-                viewBinding.favLayItem.visibility = View.VISIBLE
-                viewBinding.itemsLayout.visibility = View.VISIBLE
+                viewBinding.favLayItem.makeVisible()
+                viewBinding.itemsLayout.makeVisible()
             } else {
-                viewBinding.favLayItem.visibility = View.GONE
+                viewBinding.favLayItem.makeGone()
             }
 
             if (note.hasPassword) {
-                viewBinding.delLayItem.visibility = View.VISIBLE
-                viewBinding.itemsLayout.visibility = View.VISIBLE
+                viewBinding.delLayItem.makeVisible()
+                viewBinding.itemsLayout.makeVisible()
             } else {
-                viewBinding.delLayItem.visibility = View.GONE
+                viewBinding.delLayItem.makeGone()
             }
 
             if (!note.hasPassword && !note.isFavourite) {
-                viewBinding.itemsLayout.visibility = View.GONE
+                viewBinding.itemsLayout.makeGone()
             }
 
             viewBinding.noteTitle.text = note.title

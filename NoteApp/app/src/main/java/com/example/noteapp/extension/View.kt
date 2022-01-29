@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.annotation.DrawableRes
 
-private const val FADE_DURATION = 500L
+private const val FADE_DURATION = 300L
 private const val ALPHA_VISIBLE = 1.0f
 private const val ALPHA_GONE = 0.0f
 private const val ZERO_MARGIN = 0

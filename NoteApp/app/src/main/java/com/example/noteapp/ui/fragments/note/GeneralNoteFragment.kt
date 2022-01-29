@@ -130,12 +130,7 @@ class GeneralNoteFragment : BaseFragment() {
         profileViewModel = ViewModelProvider(requireActivity())[ProfilViewModel::class.java]
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setupView()
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    private fun setupView() {
+    override fun setupView() {
         initCastomizer()
         setSearchDescriptionListener()
         setChangePasswordListener()
