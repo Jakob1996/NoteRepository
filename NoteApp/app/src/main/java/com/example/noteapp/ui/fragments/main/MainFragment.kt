@@ -219,8 +219,8 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
                     setMutliSelectMode(false)
 
                 } else {
-                    noteViewModel.setIsFromMainFragmentNavigation(false)
                     if (binding.fragmentMainVp.currentItem == 0) {
+                        noteViewModel.setIsFromMainFragmentNavigation(false)
                         navigateToFragment(
                             findNavController(), R.id.action_to_search_note_fragment
                         )
