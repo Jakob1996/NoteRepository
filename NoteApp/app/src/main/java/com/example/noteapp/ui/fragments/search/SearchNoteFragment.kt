@@ -38,6 +38,7 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
+                    noteViewModel.setIsFromMainFragmentNavigation(true)
                     noteViewModel.search = null
                     isEnabled = false
                     requireActivity().onBackPressed()
@@ -59,7 +60,7 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
 
         showSoftKeyboard()
 
-        binding.editSearcher.requestFocus()
+        binding.fragmentSearchNoteSearchEt.requestFocus()
 
         noteViewModel.getAllNotes.observe(viewLifecycleOwner, {
             if (noteViewModel.search != null) {
@@ -70,8 +71,8 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
         })
 
         if (noteViewModel.search != null) {
-            binding.editSearcher.setText(noteViewModel.search)
-            binding.editSearcher.requestFocus(binding.editSearcher.text.length)
+            binding.fragmentSearchNoteSearchEt.setText(noteViewModel.search)
+            binding.fragmentSearchNoteSearchEt.requestFocus(binding.fragmentSearchNoteSearchEt.text.length)
         }
 
         binding.fragmentSearchCategoryToolbarBackIv.setOnClickListener {
@@ -79,7 +80,7 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
-        binding.editSearcher.addTextChangedListener(object : TextWatcher {
+        binding.fragmentSearchNoteSearchEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -87,7 +88,7 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
 
                 if (!s.isNullOrEmpty()) {
                     updateNotes(noteViewModel.getAllNotes.value!!, s.toString())
-                    noteViewModel.search = binding.editSearcher.text.toString()
+                    noteViewModel.search = binding.fragmentSearchNoteSearchEt.text.toString()
                 } else updateNotesEmpty()
             }
 
@@ -96,8 +97,8 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
         })
 
         binding.closeBtn.setOnClickListener {
-            if (binding.editSearcher.text.isNotEmpty()) {
-                binding.editSearcher.text.clear()
+            if (binding.fragmentSearchNoteSearchEt.text.isNotEmpty()) {
+                binding.fragmentSearchNoteSearchEt.text.clear()
             } else {
                 noteViewModel.search = null
                 closeKeyboard()
@@ -139,7 +140,10 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
             findNavController().navigate(R.id.action_search_note_fragment_to_check_password_fragment)
         } else {
             noteViewModel.isSearchEdit = 2
-            navigateToFragment(findNavController(), R.id.generalNoteFragment)
+            navigateToFragment(
+                findNavController(),
+                R.id.action_search_note_fragment_to_general_note_fragment
+            )
         }
     }
 

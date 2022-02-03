@@ -149,7 +149,7 @@ class NoteViewModel(app: Application) : AndroidViewModel(app) {
 
     //State Model
 
-    var p: Boolean = true
+    var state: Boolean = true
 
 
     fun setDefaultNoteState() {
@@ -169,4 +169,13 @@ class NoteViewModel(app: Application) : AndroidViewModel(app) {
         password = 0
         isSearchEdit = 1
     }
+
+    //Check password fragment
+    private var isFromMainFragmentNavigation = true
+
+    fun setIsFromMainFragmentNavigation(isFromMain: Boolean) {
+        isFromMainFragmentNavigation = isFromMain
+    }
+
+    fun getIsFromMainFragmentNavigation() = isFromMainFragmentNavigation
 }

@@ -1,11 +1,13 @@
 package com.example.noteapp.ui.fragments.search
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -39,6 +41,7 @@ class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
+                    todoViewModel.setIsFromMainFragmentNavigation(true)
                     todoViewModel.search = null
                     popBackStack("SCF", requireActivity().supportFragmentManager, false)
                     isEnabled = false
@@ -64,7 +67,11 @@ class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        todoViewModel.allCategoryItems.observe(viewLifecycleOwner, Observer {
+        showSoftKeyboard()
+
+        binding.fragmentSearchCategorySearchEt.requestFocus()
+
+        todoViewModel.allCategoryItems.observe(viewLifecycleOwner, {
             if (todoViewModel.search != null) {
                 updateCategory(it, todoViewModel.search!!)
             } else {
@@ -92,9 +99,14 @@ class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
                 } else updateCategoryEmpty()
             }
 
-            override fun afterTextChanged(s: Editable?) {
-            }
+            override fun afterTextChanged(s: Editable?) {}
         })
+    }
+
+    private fun showSoftKeyboard() {
+        val imm =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
     }
 
     private fun updateCategory(list: List<Category>, search: String) {
@@ -102,7 +114,7 @@ class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
         binding.fragmentSearchCategoryRv.layoutManager = lm
 
 
-        val listMod = list.filter { it ->
+        val listMod = list.filter {
             it.categoryName.toLowerCase().contains(search.toLowerCase())
         }
 

@@ -3,6 +3,7 @@ package com.example.noteapp.ui.fragments.note
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -40,70 +41,75 @@ class GeneralNoteFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private fun setOnBackPressedDispatcher() {
+
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    saveNoteState()
-                    isEnabled = false
-                    requireActivity().onBackPressed()
+                    if (noteViewModel.getSearchMode().value == true) {
+                        setOffSearchInNoteState()
+                    } else {
+                        saveNoteState()
+                        isEnabled = false
+                        requireActivity().onBackPressed()
+                    }
                 }
             })
     }
 
+    private fun setOffSearchInNoteState() {
+        textHighLighter
+            .setForegroundColor(binding.fragmentGeneralNoteDescriptionTv.currentTextColor)
+            .setBackgroundColor(Color.TRANSPARENT)
+            .invalidate(TextHighlighter.BASE_MATCHER)
+        noteViewModel.setSearchMode(false)
+    }
+
     private fun saveNoteState() {
         noteViewModel.run {
-            if (getSearchMode().value == true && binding.fragmentGeneralNoteDescriptionTv.text.isNotEmpty()) {
-                textHighLighter
-                    .setForegroundColor(binding.fragmentGeneralNoteDescriptionTv.currentTextColor)
-                    .setBackgroundColor(Color.TRANSPARENT)
-                    .invalidate(TextHighlighter.BASE_MATCHER)
-                setSearchMode(false)
-            } else {
-                val title = binding.fragmentGeneralNoteTitleTv.text.toString()
-                val message = binding.fragmentGeneralNoteDescriptionTv.text.toString()
-                val date = Calendar.getInstance().timeInMillis
-                val color = selectedNoteColor
-                val fontSize = selectedFontSize
-                val fontColor = selectedFontNote
-                val favourite =
-                    binding.fragmentGeneralNoteCastomizer.noteCastomizerFavouriteCb.isChecked
-                val hasPassword = hasPassword
-                val password = password
+            val title = binding.fragmentGeneralNoteTitleTv.text.toString()
+            val message = binding.fragmentGeneralNoteDescriptionTv.text.toString()
+            val date = Calendar.getInstance().timeInMillis
+            val color = selectedNoteColor
+            val fontSize = selectedFontSize
+            val fontColor = selectedFontNote
+            val favourite =
+                binding.fragmentGeneralNoteCastomizer.noteCastomizerFavouriteCb.isChecked
+            val hasPassword = hasPassword
+            val password = password
 
-                val noteBefore = noteBeforeChange
-                val titleBefore = titleBefore
-                val messBefore = messageBefore
+            val noteBefore = noteBeforeChange
+            val titleBefore = titleBefore
+            val messBefore = messageBefore
 
-                if (titleBefore != title
-                    || messBefore != message
-                    || noteBefore?.color != color
-                    || fontSize != noteBefore.fontSize
-                    || fontColor != noteBefore.fontColor
-                    || noteBefore.title.length != title.length
-                    || noteBefore.message.length != message.length
-                    || noteBefore.isFavourite != favourite
-                    || noteBefore.hasPassword != hasPassword
-                ) {
-                    val rowId = getSelectedNote().value?.rowId
-                    val note = Note(
-                        title, message, date, false, color,
-                        fontColor, fontSize, favourite, hasPassword, password
-                    )
-                    note.let {
-                        if (rowId != null) {
-                            note.rowId = rowId
-                        }
+            if (titleBefore != title
+                || messBefore != message
+                || noteBefore?.color != color
+                || fontSize != noteBefore.fontSize
+                || fontColor != noteBefore.fontColor
+                || noteBefore.title.length != title.length
+                || noteBefore.message.length != message.length
+                || noteBefore.isFavourite != favourite
+                || noteBefore.hasPassword != hasPassword
+            ) {
+                val rowId = getSelectedNote().value?.rowId
+                val note = Note(
+                    title, message, date, false, color,
+                    fontColor, fontSize, favourite, hasPassword, password
+                )
+                note.let {
+                    if (rowId != null) {
+                        note.rowId = rowId
                     }
-
-                    saveNoteInFirebase(note)
-                    updateNote(note)
-                    noteState = null
                 }
 
-                quit = 2
-                closeKeyboard()
+                saveNoteInFirebase(note)
+                updateNote(note)
+                noteState = null
             }
+
+            quit = 2
+            closeKeyboard()
             setDefaultNoteState()
         }
     }
@@ -130,7 +136,13 @@ class GeneralNoteFragment : BaseFragment() {
         profileViewModel = ViewModelProvider(requireActivity())[ProfilViewModel::class.java]
     }
 
-    override fun setupView() {
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupView()
+    }
+
+    private fun setupView() {
         initCastomizer()
         setSearchDescriptionListener()
         setChangePasswordListener()
@@ -259,6 +271,8 @@ class GeneralNoteFragment : BaseFragment() {
 
     private fun setSearchModeObserver() {
         noteViewModel.getSearchMode().observe(viewLifecycleOwner, {
+            Log.d("AADBF", "ISCORRECT")
+            cleanSerchMode()
             if (noteViewModel.getSearchMode().value == true) {
                 textHighLighter
                     .setBackgroundColor(Color.parseColor("#FFFF00"))
@@ -268,9 +282,15 @@ class GeneralNoteFragment : BaseFragment() {
         })
     }
 
+    private fun cleanSerchMode(){
+        textHighLighter
+            .setForegroundColor(binding.fragmentGeneralNoteDescriptionTv.currentTextColor)
+            .setBackgroundColor(Color.TRANSPARENT)
+            .invalidate(TextHighlighter.BASE_MATCHER)
+    }
+
     private fun setSelectedNoteObserver() {
         noteViewModel.getSelectedNote().observe(viewLifecycleOwner, {
-
             if (noteViewModel.getSelectedNote().value == null) {
                 noteViewModel.selectedNoteColor = "#333333"
             } else {

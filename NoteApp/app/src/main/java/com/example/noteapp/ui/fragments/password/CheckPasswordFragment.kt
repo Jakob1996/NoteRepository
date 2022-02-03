@@ -65,7 +65,18 @@ class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
                         if (binding.fragmentCheckPasswordPasswordEt.text.toString()
                                 .toInt() == password
                         ) {
-                            navigateToFragment(findNavController(), R.id.action_to_general_note_fragment)
+
+                            if (noteViewModel.getIsFromMainFragmentNavigation()) {
+                                navigateToFragment(
+                                    findNavController(),
+                                    R.id.action_to_general_note_fragment
+                                )
+                            } else {
+                                navigateToFragment(
+                                    findNavController(),
+                                    R.id.action_check_note_password_fragment_to_general_todo_fragment
+                                )
+                            }
                             closeKeyboard()
                         } else {
                             Toast.makeText(
@@ -89,7 +100,11 @@ class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
                     if (binding.fragmentCheckPasswordPasswordEt.text.toString()
                             .toInt() == password
                     ) {
-                        findNavController().navigate(R.id.action_check_password_fragment_to_general_todo_fragment)
+                        if (todoViewModel.getIsFromMainFragmentNavigation()) {
+                            findNavController().navigate(R.id.action_check_password_fragment_to_general_todo_fragment)
+                        } else {
+                            findNavController().navigate(R.id.action_check_search_password_fragment_to_general_todo_fragment)
+                        }
                     } else {
                         Toast.makeText(
                             requireContext(),

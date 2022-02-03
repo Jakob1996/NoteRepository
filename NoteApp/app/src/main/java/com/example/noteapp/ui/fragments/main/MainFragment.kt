@@ -30,7 +30,12 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
     private lateinit var profileViewModel: ProfilViewModel
     private val request_code = 123
 
-    override fun setupView() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupView()
+    }
+
+    private fun setupView() {
         binding.fragmentMainDl.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
         setupFavouriteButtonObserverState()
@@ -102,7 +107,7 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
         })
     }
 
-    private fun setupViewModel(){
+    private fun setupViewModel() {
         noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
         todoViewModel = ViewModelProvider(requireActivity())[TodoViewModel::class.java]
     }
@@ -167,13 +172,14 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
         })
     }
 
-    private fun setupViewPagerChangeListener(){
+    private fun setupViewPagerChangeListener() {
         binding.fragmentMainVp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
                 positionOffsetPixels: Int
-            ) {}
+            ) {
+            }
 
             override fun onPageSelected(position: Int) {
                 if (position == 0) {
@@ -187,7 +193,7 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
         })
     }
 
-    private fun setupMultiBtnClickListener(){
+    private fun setupMultiBtnClickListener() {
         binding.fragmentMainToolbarMultibuttonIb.setOnClickListener {
             noteViewModel.run {
                 if (noteViewModel.getMultiSelectMode().value == true) {
@@ -213,19 +219,24 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
                     setMutliSelectMode(false)
 
                 } else {
+                    noteViewModel.setIsFromMainFragmentNavigation(false)
                     if (binding.fragmentMainVp.currentItem == 0) {
                         navigateToFragment(
-                            findNavController(), R.id.searchNoteFragment
+                            findNavController(), R.id.action_to_search_note_fragment
                         )
                     } else {
-                        navigateToFragment(findNavController(), R.id.searchCategoryFragment)
+                        todoViewModel.setIsFromMainFragmentNavigation(false)
+                        navigateToFragment(
+                            findNavController(),
+                            R.id.action_to_search_category_fragment
+                        )
                     }
                 }
             }
         }
     }
 
-    private fun setupMainBtnListener(){
+    private fun setupMainBtnListener() {
         binding.fragmentMainAddNoteFab.setOnClickListener {
             if (binding.fragmentMainAddNoteFab.labelText == "Add Note") {
                 binding.fragmentMainFam.close(true)
@@ -241,7 +252,7 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
         }
     }
 
-    private fun setupSortBtnListener(){
+    private fun setupSortBtnListener() {
         binding.fragmentMainSortNoteFab.setOnClickListener {
             showDialog(
                 this,

@@ -172,7 +172,7 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
                 ItemsCategoryTodoAdapter(listMode.asReversed(), this)
             }
         } else {
-            if (noteViewModel.p) {
+            if (noteViewModel.state) {
                 ItemsCategoryTodoAdapter(listMode, this)
             } else {
                 ItemsCategoryTodoAdapter(listMode.asReversed(), this)

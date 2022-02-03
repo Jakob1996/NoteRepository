@@ -76,7 +76,7 @@
                 />
 
             <EditText
-                android:id="@+id/editSearcher"
+                android:id="@+id/fragmentSearchNoteSearchEt"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_centerVertical="true"
@@ -101,7 +101,7 @@
                 android:src="@drawable/ic_close"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/editSearcher"
+                app:layout_constraintLeft_toRightOf="@id/fragmentSearchNoteSearchEt"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

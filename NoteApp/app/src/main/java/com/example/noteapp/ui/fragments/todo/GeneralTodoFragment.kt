@@ -58,12 +58,9 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupView()
         initMiscellaneous()
-
-        super.onViewCreated(view, savedInstanceState)
-
-
 
         binding.fragmentGeneralTodoCastomizer.todoCastomizerLockIv.setOnClickListener {
             if (todoViewModel.hasPasswordCategory) {
@@ -184,8 +181,7 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
             })
     }
 
-
-    override fun setupView() {
+    private fun setupView() {
         setupTodoObserver()
         setupSaveAndQuitState()
         setupOnBackPressedBtn()

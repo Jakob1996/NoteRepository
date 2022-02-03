@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         val sp = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
         state = sp.getBoolean(KEY, false)
         if (state != null) {
-            noteViewModel.p = state!!
+            noteViewModel.state = state!!
         }
     }
 

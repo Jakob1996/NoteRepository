@@ -15,6 +15,25 @@
         app:popUpTo="@id/mainFramgent" />
 
     <action
+        android:id="@+id/action_to_search_note_fragment"
+        app:destination="@id/searchNoteFragment"
+        app:enterAnim="@anim/animation_into"
+        app:exitAnim="@anim/zero_to_zero"
+        app:popEnterAnim="@anim/zero_to_zero"
+        app:popExitAnim="@anim/animation_backto"
+        app:popUpTo="@id/mainFramgent" />
+
+    <action
+        android:id="@+id/action_to_search_category_fragment"
+        app:destination="@id/searchCategoryFragment"
+        app:enterAnim="@anim/animation_into"
+        app:exitAnim="@anim/zero_to_zero"
+        app:launchSingleTop="true"
+        app:popEnterAnim="@anim/zero_to_zero"
+        app:popExitAnim="@anim/animation_backto"
+        app:popUpTo="@id/mainFramgent" />
+
+    <action
         android:id="@+id/action_to_login_fragment"
         app:destination="@id/loginFragment"
         app:enterAnim="@anim/from_minus_left_to_zero"
@@ -137,6 +156,15 @@
         android:name="com.example.noteapp.ui.fragments.search.SearchNoteFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search_note">
+
+        <action
+            android:id="@+id/action_search_note_fragment_to_general_note_fragment"
+            app:destination="@id/generalNoteFragment"
+            app:enterAnim="@anim/animation_into"
+            app:exitAnim="@anim/zero_to_zero"
+            app:popEnterAnim="@anim/zero_to_zero"
+            app:popExitAnim="@anim/animation_backto" />
+
         <action
             android:id="@+id/action_search_note_fragment_to_mainFramgent"
             app:popUpTo="@id/mainFramgent" />
@@ -144,16 +172,11 @@
         <action
             android:id="@+id/action_search_note_fragment_to_check_password_fragment"
             app:destination="@id/checkPasswordFragment"
-            app:enterAnim="@anim/from_right_to_left"
+            app:enterAnim="@anim/animation_into"
             app:exitAnim="@anim/zero_to_zero"
             app:popEnterAnim="@anim/zero_to_zero"
-            app:popExitAnim="@anim/from_left_to_right" />
-        <action
-            android:id="@+id/action_search_note_fragment_to_general_note_fragment"
-            app:destination="@id/generalNoteFragment"
-            app:exitAnim="@anim/zero_to_zero"
-            app:launchSingleTop="true"
-            app:popExitAnim="@anim/zero_to_zero" />
+            app:popExitAnim="@anim/animation_backto" />
+
     </fragment>
 
     <fragment
@@ -236,6 +259,26 @@
             app:popExitAnim="@anim/animation_backto"
             app:popUpTo="@id/mainFramgent"
             app:popUpToInclusive="false" />
+
+        <action
+            android:id="@+id/action_check_search_password_fragment_to_general_todo_fragment"
+            app:destination="@id/generalTodoFragment"
+            app:enterAnim="@anim/animation_into"
+            app:exitAnim="@anim/zero_to_zero"
+            app:popEnterAnim="@anim/zero_to_zero"
+            app:popExitAnim="@anim/animation_backto"
+            app:popUpTo="@id/searchCategoryFragment"
+            app:popUpToInclusive="false" />
+
+        <action
+            android:id="@+id/action_check_note_password_fragment_to_general_todo_fragment"
+            app:destination="@id/generalNoteFragment"
+            app:enterAnim="@anim/animation_into"
+            app:exitAnim="@anim/zero_to_zero"
+            app:popEnterAnim="@anim/zero_to_zero"
+            app:popExitAnim="@anim/animation_backto"
+            app:popUpTo="@id/searchNoteFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
@@ -266,11 +309,19 @@
     <fragment
         android:id="@+id/searchCategoryFragment"
         android:name="com.example.noteapp.ui.fragments.search.SearchCategoryFragment"
-        android:label="SearchCategoryFragment"
+        app:enterAnim="@anim/from_down_to_up"
+        app:exitAnim="@anim/zero_to_zero"
+        app:popEnterAnim="@anim/zero_to_zero"
+        app:popExitAnim="@anim/from_up_to_down"
         tools:layout="@layout/fragment_search_category">
+
         <action
             android:id="@+id/action_search_category_fragment_to_general_todo_fragment"
-            app:destination="@id/generalTodoFragment" />
+            app:destination="@id/generalTodoFragment"
+            app:enterAnim="@anim/animation_into"
+            app:exitAnim="@anim/zero_to_zero"
+            app:popEnterAnim="@anim/zero_to_zero"
+            app:popExitAnim="@anim/animation_backto" />
 
         <action
             android:id="@+id/action_search_category_fragment_to_main_fragment"
@@ -281,7 +332,8 @@
             app:enterAnim="@anim/animation_into"
             app:exitAnim="@anim/zero_to_zero"
             app:popEnterAnim="@anim/zero_to_zero"
-            app:popExitAnim="@anim/animation_backto" />
+            app:popExitAnim="@anim/animation_backto"
+            app:popUpTo="@id/searchCategoryFragment" />
     </fragment>
 
 </navigation>

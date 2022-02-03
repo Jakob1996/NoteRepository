@@ -184,7 +184,7 @@ class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
                 NoteAdapter(listMod.asReversed(), this)
             }
         } else {
-            noteAdapter = if (noteViewModel.p) {
+            noteAdapter = if (noteViewModel.state) {
                 NoteAdapter(listMod, this)
             } else {
                 NoteAdapter(listMod.asReversed(), this)

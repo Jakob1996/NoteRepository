@@ -37,17 +37,8 @@ class SearchDialogFragment : DialogFragment() {
             if (binding.searchNoteDialogTitleEt.text.toString().trim().isEmpty()) {
                 dismiss()
             } else {
-                //TODO!!!
-                /*
-                        noteViewModel.setSearchMode(true)
-                        noteViewModel.searchInNote = binding.searchNoteEditText.text.toString()
-                        val textHighLighter = TextHighlighter()
-                        textHighLighter
-                            .setBackgroundColor(Color.parseColor("#FFFF00"))
-                            .addTarget(mess_addEditFrag)
-                            .highlight(noteViewModel.searchInNote, TextHighlighter.BASE_MATCHER)
-
-                             */
+                noteViewModel.setSearchMode(true)
+                noteViewModel.searchInNote = binding.searchNoteDialogTitleEt.text.toString()
                 dismiss()
             }
         }

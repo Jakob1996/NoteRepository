@@ -1,6 +1,7 @@
 package com.example.noteapp.viewmodels
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -121,7 +122,7 @@ class TodoViewModel(app: Application) : AndroidViewModel(app) {
     //State Model
     internal var p: Boolean = true
 
-    internal fun setDefaultTodoState(){
+    internal fun setDefaultTodoState() {
         setSelectedCategotyItem(null)
         categoryItemBeforeChange = null
         selectedCategotyItemColor = "#333333"
@@ -133,5 +134,18 @@ class TodoViewModel(app: Application) : AndroidViewModel(app) {
         passwordCategory = 0
         categoryId = 0
         isSearchEdit = 1
+    }
+
+    //Check password fragment
+    private var isFromMainFragmentNavigation = true
+
+    fun setIsFromMainFragmentNavigation(isFromMain: Boolean) {
+        Log.d("AAA", "oiuioiuoi")
+        isFromMainFragmentNavigation = isFromMain
+    }
+
+    fun getIsFromMainFragmentNavigation(): Boolean {
+        Log.d("AAAI", "iiii")
+        return isFromMainFragmentNavigation
     }
 }
