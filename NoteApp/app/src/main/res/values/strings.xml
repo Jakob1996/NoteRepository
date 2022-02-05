@@ -1,20 +1,17 @@
 <resources>
     <string name="app_name">NoteApp</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title">Title</string>
     <string name="message">Message</string>
-    <string name="notesIsEmpty">fsdafdsa</string>
+    <string name="empty_notes">Empty notes</string>
+    <string name="empty_todo_list">Empty todo list</string>
     <string name="pick_color">Pick Color</string>
     <string name="note_title">Note Title</string>
     <string name="type_note_here">Type note here...</string>
     <string name="add_image">Add Image</string>
-    <string name="explore">Explore</string>
-    <string name="notes_is_empty">Notes is empty</string>
-    <string name="checkbox">CheckBox</string>
-    <string name="Explore">Explore</string>
-    <string name="deleteToolbar">Delete</string>
-    <string name="categoryEditorTextView">Category editor</string>
+    <string name="explore" translatable="false">Explore</string>
+    <string name="delete">Delete</string>
+    <string name="category_edit">Category editor</string>
     <string name="favourite_empty_list">Favourite list is empty</string>
     <string name="password">Password</string>
     <string name="confirm">Confirm</string>
@@ -32,7 +29,7 @@
     <string name="password_star">PASSWORD *</string>
     <string name="email_star">EMAIL *</string>
     <string name="sign_in">SIGN IN</string>
-    <string name="save_button">SAVE BUTTON</string>
+    <string name="save">SAVE</string>
     <string name="logout">LOGOUT</string>
     <string name="repeat_password_star">REPEAT PASSWORD *</string>
     <string name="find_your_category">Find your category</string>
@@ -40,8 +37,8 @@
     <string name="category_list_is_empty">Category list is empty</string>
     <string name="favourite_list_is_empty">Favourite list is empty</string>
     <string name="text_lenght">Text lenght:</string>
-    <string name="mynote">MyNote</string>
-    <string name="home">Home</string>
+    <string name="my_note">MyNote</string>
+    <string name="home" translatable="false">Home</string>
     <string name="favourities">Favourities</string>
     <string name="removed">Removed</string>
     <string name="profile">Profile</string>
@@ -54,4 +51,15 @@
     <string name="search">Search...</string>
     <string name="descending">Descending</string>
     <string name="ascending">Ascending</string>
+    <string name="note_creator">Note creator</string>
+    <string name="find_your_note">Find your note</string>
+    <string name="search_in_notes">Search in notes...</string>
+    <string name="do_you_want_to_remove_the_password">Do you want to remove the password?</string>
+    <string name="no">No</string>
+    <string name="remove">Remove</string>
+    <string name="notes">NOTES</string>
+    <string name="todo_list">CHECK LIST</string>
+    <string name="add_note">Add Note</string>
+    <string name="add_category">Add Category</string>
+    <string name="sort_date">Sort date</string>
 </resources>

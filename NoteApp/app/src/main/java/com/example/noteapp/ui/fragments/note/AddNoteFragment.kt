@@ -91,10 +91,16 @@ class AddNoteFragment : BaseFragment() {
         return binding.root
     }
 
+    private fun getRequestFocus(){
+        binding.fragmentAddNoteTitleEt.requestFocus()
+        showSoftKeyboard()
+    }
+
     @SuppressLint("Range")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getRequestFocus()
         initMiscellaneous()
 
 //        val gradientDrawable: GradientDrawable =

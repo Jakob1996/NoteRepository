@@ -26,8 +26,7 @@
                 android:gravity="center_vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:titleTextColor="@color/white">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageButton
                     android:id="@+id/fragmentMainToolbarMenuIb"
@@ -40,15 +39,11 @@
 
                 <TextView
                     android:id="@+id/fragmentSearchCategoryToolbarTitleTv"
+                    style="@style/MainTitleStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:fontFamily="@font/robotoligth"
-                    android:text="@string/explore"
-                    android:textColor="@color/textColor"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:layout_centerInParent="true"
+                    android:text="@string/explore" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -128,7 +123,7 @@
                     android:src="@drawable/ic_baseline_bookmark_add"
                     app:fab_colorNormal="@color/gold"
                     app:fab_colorPressed="@color/gold"
-                    app:fab_label="Add Note" />
+                    app:fab_label="@string/add_note" />
 
                 <com.github.clans.fab.FloatingActionButton
                     android:id="@+id/fragmentMainSortNoteFab"
@@ -138,7 +133,7 @@
                     android:tint="@color/white"
                     app:fab_colorNormal="@color/gold"
                     app:fab_colorPressed="@color/gold"
-                    app:fab_label="Sort date" />
+                    app:fab_label="@string/sort_date" />
             </com.github.clans.fab.FloatingActionMenu>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -153,8 +148,8 @@
 
             <include
                 android:id="@+id/fragmentMainMenu"
-                android:visibility="gone"
-                layout="@layout/menu_drawer" />
+                layout="@layout/menu_drawer"
+                android:visibility="gone" />
         </com.google.android.material.navigation.NavigationView>
     </androidx.drawerlayout.widget.DrawerLayout>
 </RelativeLayout>

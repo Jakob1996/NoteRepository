@@ -23,12 +23,19 @@ import fadeOut
 
 class MainFragment : BaseFragment(), OnItemClickDialogListener {
 
+    companion object {
+        const val REQUEST_CODE_KEY = 123
+    }
+
     private var _binding: FragmentMainBinding? = null
+
     private val binding get() = _binding!!
+
     private lateinit var noteViewModel: NoteViewModel
+
     private lateinit var todoViewModel: TodoViewModel
+
     private lateinit var profileViewModel: ProfilViewModel
-    private val request_code = 123
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -155,6 +162,7 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
                     setNotifyDataNote(true)
                     setNotifyDataCategory(true)
                 } else {
+                    //TODO {FEATURE IMPLEMENTATION}
 //                binding.fragmentMainDl.open()
                     navigateToFragment(findNavController(), R.id.action_to_login_fragment)
                 }
@@ -183,9 +191,9 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
 
             override fun onPageSelected(position: Int) {
                 if (position == 0) {
-                    binding.fragmentMainAddNoteFab.labelText = "Add Note"
+                    binding.fragmentMainAddNoteFab.labelText = getString(R.string.add_note)
                 } else {
-                    binding.fragmentMainAddNoteFab.labelText = "Add Category"
+                    binding.fragmentMainAddNoteFab.labelText = getString(R.string.add_category)
                 }
             }
 
@@ -238,13 +246,13 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
 
     private fun setupMainBtnListener() {
         binding.fragmentMainAddNoteFab.setOnClickListener {
-            if (binding.fragmentMainAddNoteFab.labelText == "Add Note") {
+            if (binding.fragmentMainAddNoteFab.labelText == getString(R.string.add_note)) {
                 binding.fragmentMainFam.close(true)
                 noteViewModel.newNote = true
                 navigateToFragment(
-                    findNavController(), R.id.addNoteFragment
+                    findNavController(), R.id.action_to_add_note_fragment
                 )
-            } else if (binding.fragmentMainAddNoteFab.labelText == "Add Category") {
+            } else if (binding.fragmentMainAddNoteFab.labelText == getString(R.string.add_category)) {
                 val fm = requireActivity().supportFragmentManager
                 val dialogFragment = DialogAddCategoryItem()
                 dialogFragment.show(fm, "Abc")
@@ -258,7 +266,7 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
                 this,
                 "SortDialogFragment",
                 parentFragmentManager,
-                request_code
+                REQUEST_CODE_KEY
             )
         }
     }
@@ -286,13 +294,14 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
         binding.run {
             fragmentMainToolbarMenuIb.fadeIn()
             fragmentMainToolbarMenuIb.setImageResource(R.drawable.ic_menu2)
-            fragmentSearchCategoryToolbarTitleTv.text = getString(R.string.Explore)
+            fragmentSearchCategoryToolbarTitleTv.text = getString(R.string.explore)
             fragmentMainToolbarFavouriteCb.fadeIn()
         }
     }
 
     private fun setupViewPager() {
-        val adapter = ViewPagerAdapter(requireActivity().supportFragmentManager)
+        val adapter =
+            ViewPagerAdapter(requireActivity().supportFragmentManager, this.requireContext())
         binding.run {
             fragmentMainVp.adapter = adapter
             fragmentMainVp.offscreenPageLimit = 1
@@ -302,7 +311,7 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
 
     private fun enableMultiSelectMode() {
         binding.run {
-            fragmentSearchCategoryToolbarTitleTv.text = getString(R.string.deleteToolbar)
+            fragmentSearchCategoryToolbarTitleTv.text = getString(R.string.delete)
             fragmentMainFam.fadeOut()
             fragmentMainToolbarMultibuttonIb.setImageResource(R.drawable.ic_round_delete_outline)
             fragmentMainToolbarMenuIb.setImageResource(R.drawable.ic_round_arrow_back_ios)

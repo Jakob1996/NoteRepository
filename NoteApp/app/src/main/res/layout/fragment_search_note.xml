@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="Find your note"
+            android:text="@string/find_your_note"
             android:textColor="@color/colorIcons" />
 
     </RelativeLayout>
@@ -84,7 +84,7 @@
                 android:backgroundTint="#00FFFFFF"
                 android:fontFamily="@font/ubunturegular"
                 android:gravity="center_vertical"
-                android:hint="Search in notes..."
+                android:hint="@string/search_in_notes"
                 android:textColor="@color/white"
                 android:textColorHint="@color/colorIcons"
                 android:textSize="13sp"

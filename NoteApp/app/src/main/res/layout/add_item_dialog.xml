@@ -1,51 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/addItemDialogLl"
-    android:layout_width="150dp"
+    android:minWidth="200dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:background="@drawable/background_dialog"
     android:clickable="true"
-    android:focusable="true"
-    android:orientation="vertical">
+    android:focusable="true">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:background="@color/colorQuickActionsBackground"
-        android:orientation="horizontal">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/addItemDialogTitleEt"
+        <LinearLayout
+            android:id="@+id/addItemDialogTitleLl"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:backgroundTint="@color/colorNoteColor2"
-            android:ellipsize="end"
-            android:fontFamily="@font/ubunturegular"
-            android:gravity="bottom"
-            android:hint="@string/title"
-            android:inputType="text"
-            android:maxLines="1"
-            android:textColor="@color/white"
-            android:textColorHint="@color/colorIcons" />
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@color/colorQuickActionsBackground"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/addItemDialogTitleEt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:backgroundTint="@color/colorNoteColor2"
+                android:ellipsize="end"
+                android:fontFamily="@font/ubunturegular"
+                android:gravity="bottom"
+                android:hint="@string/title"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textCursorDrawable="@drawable/text_resource"
+                android:textColor="@color/white"
+                android:textColorHint="@color/colorIcons" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimary_dark">
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/addItemDialogAddBtn"
+        <LinearLayout
+            android:id="@+id/addItemDialogAddBtnLl"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:background="@color/colorPrimary_dark"
-            android:fontFamily="@font/ubunturegular"
-            android:text="@string/add"
-            android:textColor="@color/colorNoteColor2" />
-    </LinearLayout>
-</LinearLayout>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addItemDialogTitleLl">
+
+            <Button
+                android:id="@+id/addItemDialogAddBtn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary_dark"
+                android:fontFamily="@font/ubunturegular"
+                android:text="@string/add"
+                android:textColor="@color/colorNoteColor2" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

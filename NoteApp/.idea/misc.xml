@@ -3,13 +3,51 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/background_dialog.xml" value="0.21666666666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_share.xml" value="0.184375" />
+        <entry key="app/src/main/res/drawable/ic_baseline_turned_in_24.xml" value="0.184375" />
+        <entry key="app/src/main/res/drawable/ic_lock_24.xml" value="0.184375" />
+        <entry key="app/src/main/res/drawable/ic_options.xml" value="0.18333333333333332" />
+        <entry key="app/src/main/res/drawable/ic_outline_info.xml" value="0.18333333333333332" />
+        <entry key="app/src/main/res/drawable/ic_outline_more.xml" value="0.18333333333333332" />
+        <entry key="app/src/main/res/drawable/ic_outline_removed.xml" value="0.18333333333333332" />
+        <entry key="app/src/main/res/drawable/ic_round_all.xml" value="0.18333333333333332" />
+        <entry key="app/src/main/res/drawable/ic_round_arrow_back_ios.xml" value="0.18333333333333332" />
+        <entry key="app/src/main/res/drawable/ic_round_color_text_24.xml" value="0.18333333333333332" />
+        <entry key="app/src/main/res/drawable/ic_round_delete_outline.xml" value="0.18333333333333332" />
+        <entry key="app/src/main/res/drawable/text_resource.xml" value="0.1640625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/add_item_dialog.xml" value="0.20052083333333334" />
+        <entry key="app/src/main/res/layout/category_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/check_password_dialog.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_add_note.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_add_password.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_before_edit_note.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_check_password.xml" value="0.14791666666666667" />
+        <entry key="app/src/main/res/layout/fragment_edit_note.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_fragments_keeper.xml" value="0.15833333333333333" />
-        <entry key="app/src/main/res/layout/fragment_main.xml" value="0.13703703703703704" />
-        <entry key="app/src/main/res/layout/fragment_notes_list.xml" value="0.21979166666666666" />
+        <entry key="app/src/main/res/layout/fragment_general_note.xml" value="0.1671875" />
+        <entry key="app/src/main/res/layout/fragment_general_todo.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_notes_list.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_profil.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_registration.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_search_category.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_search_note.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_todo_list.xml" value="0.10688956433637285" />
-        <entry key="app/src/main/res/layout/menu_drawer.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/image_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/info_dialog.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/lock_dialog.xml" value="0.1671875" />
+        <entry key="app/src/main/res/layout/menu_drawer.xml" value="0.13636363636363635" />
+        <entry key="app/src/main/res/layout/note_castomizer.xml" value="0.15" />
+        <entry key="app/src/main/res/layout/note_item.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/remove_password_dialog.xml" value="0.1671875" />
+        <entry key="app/src/main/res/layout/search_note_dialog.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/sort_dialog.xml" value="0.15" />
+        <entry key="app/src/main/res/layout/text_cursor.xml" value="0.14791666666666667" />
+        <entry key="app/src/main/res/layout/todo_castomizer.xml" value="0.15" />
+        <entry key="app/src/main/res/layout/todo_item.xml" value="0.15104166666666666" />
       </map>
     </option>
   </component>

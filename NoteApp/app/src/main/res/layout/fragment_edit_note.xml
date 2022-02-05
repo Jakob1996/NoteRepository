@@ -36,14 +36,11 @@
 
             <TextView
                 android:id="@+id/fragmentEditNoteToolbarTitleTv"
+                style="@style/MainTitleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:fontFamily="@font/robotoligth"
-                android:text="@string/note_editor"
-                android:textColor="@color/colorIcons"
-                android:textSize="14sp" />
+                android:layout_centerInParent="true"
+                android:text="@string/note_editor" />
 
             <ImageView
                 android:id="@+id/fragmentEditNoteToolbarSaveIv"

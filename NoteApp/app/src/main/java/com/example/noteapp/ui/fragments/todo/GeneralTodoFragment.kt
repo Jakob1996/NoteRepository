@@ -18,7 +18,6 @@ import com.example.noteapp.adapters.OnItemTodoClickListener
 import com.example.noteapp.adapters.ToDoItemAdapter
 import com.example.noteapp.data.Category
 import com.example.noteapp.data.ItemOfList
-import com.example.noteapp.data.Note
 import com.example.noteapp.databinding.FragmentGeneralTodoBinding
 import com.example.noteapp.navigation.Navigation
 import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
@@ -28,6 +27,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import fadeIn
 import fadeOut
 import kotlinx.coroutines.*
+import android.view.WindowManager
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.CoroutinesRoom
 
 class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation {
 
@@ -75,6 +79,9 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
         binding.fragmentGeneralTodoToolbarSaveIv.setOnClickListener {
             val fm = requireActivity().supportFragmentManager
             val dialogFragment = AddToDoDialog()
+
+            dialogFragment.dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+
             dialogFragment.show(fm, "Abc")
 
             itemTodoAdapter.notifyDataSetChanged()
@@ -122,13 +129,16 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
 
         val fm = requireActivity().supportFragmentManager
         val dialogFragment = AddToDoDialog()
+
+        dialogFragment.dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+
         dialogFragment.show(fm, "Abc")
 
         itemTodoAdapter.notifyDataSetChanged()
     }
 
     private fun updateItems(list: List<ItemOfList>) {
-        val lm = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+        val lm = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         binding.fragmentGeneralTodoRv.layoutManager = lm
 
@@ -189,34 +199,32 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
 
     private fun setupTodoObserver() {
         todoViewModel.getSelectedCategotyItem()
-            .observe(viewLifecycleOwner, {
-                binding.run { fragmentGeneralTodoTitleEt.setText(it?.categoryName) }
+            .observe(viewLifecycleOwner, { category ->
+                binding.run { fragmentGeneralTodoTitleEt.setText(category?.categoryName) }
 
                 binding.fragmentGeneralTodoToolbarTitleTv.text =
-                    getString(R.string.categoryEditorTextView)
-                todoViewModel.categoryName = it!!.categoryName
-                todoViewModel.categoryDate = it.date
-                todoViewModel.categoryIsSelected = it.isSelected
-                todoViewModel.isFavouriteCategory = it.isFavoutire
-                todoViewModel.hasPasswordCategory = it.hasPassword
-                todoViewModel.passwordCategory = it.password
-                todoViewModel.categoryId = it.rowIdCategory
+                    getString(R.string.category_edit)
+                todoViewModel.categoryName = category!!.categoryName
+                todoViewModel.categoryDate = category.date
+                todoViewModel.categoryIsSelected = category.isSelected
+                todoViewModel.isFavouriteCategory = category.isFavoutire
+                todoViewModel.hasPasswordCategory = category.hasPassword
+                todoViewModel.passwordCategory = category.password
+                todoViewModel.categoryId = category.rowIdCategory
 
                 setImagePassword(todoViewModel.hasPasswordCategory)
-
                 binding.fragmentGeneralTodoCastomizer.todoCastomizerFavoutiteCb.isChecked =
                     todoViewModel.isFavouriteCategory
-                todoViewModel.getAllItemsFromCategory(todoViewModel.getSelectedCategotyItem().value!!.rowIdCategory)
-                    .observe(viewLifecycleOwner, {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            withContext(Dispatchers.Main) {
-                                delay(200)
-                                updateItems(it)
+                runBlocking {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        todoViewModel.getAllItemsFromCategory(todoViewModel.getSelectedCategotyItem().value!!.rowIdCategory)
+                            .observe(viewLifecycleOwner, {
                                 binding.fragmentGeneralTodoPb.fadeOut()
+                                updateItems(it)
                                 binding.fragmentGeneralTodoRv.fadeIn()
-                            }
-                        }
-                    })
+                            })
+                    }
+                }
             })
     }
 
@@ -261,7 +269,6 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
         closeKeyboard()
         quit = 2
     }
-
 
     private fun saveCategoryInFirebase(category: Category) {
         if (fbAuth.currentUser != null) {

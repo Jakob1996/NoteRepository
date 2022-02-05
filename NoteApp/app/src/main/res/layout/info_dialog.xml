@@ -32,11 +32,10 @@
             android:id="@+id/infoDialogLenghtTv"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:backgroundTint="@color/colorNoteColor2"
             android:fontFamily="@font/ubunturegular"
             android:gravity="center_vertical"
-            android:text=""
             android:textColor="@color/white"
             android:textColorHint="@color/colorIcons" />
 

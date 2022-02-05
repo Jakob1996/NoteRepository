@@ -46,7 +46,7 @@
             android:layout_marginStart="10dp"
             android:button="@null"
             android:contentDescription="@string/app_name"
-            android:drawableRight="@drawable/checkbox_favourite_selector"
+            android:drawableEnd="@drawable/checkbox_favourite_selector"
             android:padding="11dp" />
 
         <ImageView

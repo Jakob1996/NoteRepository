@@ -68,7 +68,6 @@
                 android:visibility="gone"
                 app:tint="@color/gold" />
 
-
             <ImageView
                 android:id="@+id/delLayItem"
                 android:layout_width="20dp"

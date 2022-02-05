@@ -156,12 +156,6 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
         super.onDestroyView()
     }
 
-    private fun showSoftKeyboard() {
-        val imm =
-            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-        imm?.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
-    }
-
     private fun closeKeyboard() {
         val view = requireActivity().currentFocus
         if (view != null) {

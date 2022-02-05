@@ -1,11 +1,15 @@
 package com.example.noteapp.ui.fragments.todo
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.noteapp.R
 import com.example.noteapp.data.ItemOfList
 import com.example.noteapp.databinding.AddItemDialogBinding
 import com.example.noteapp.viewmodels.TodoViewModel
@@ -29,6 +33,8 @@ class AddToDoDialog : DialogFragment() {
         super.onCreate(savedInstanceState)
         todoViewModel = ViewModelProvider(requireActivity())[TodoViewModel::class.java]
     }
+
+    override fun getTheme(): Int = R.style.RoundedCornersDialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -99,6 +105,14 @@ class AddToDoDialog : DialogFragment() {
         }
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val window = dialog?.window
+        window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
     }
 
     override fun onDestroy() {

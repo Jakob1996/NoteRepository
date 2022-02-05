@@ -226,7 +226,7 @@ class GeneralNoteFragment : BaseFragment() {
                 callback = object : DoubleClickListener.Callback {
                     override fun doubleClicked() {
                         navigateToFragment(
-                            findNavController(), R.id.editNoteFragment
+                            findNavController(), R.id.action_to_edit_note_fragment
                         )
                     }
                 }

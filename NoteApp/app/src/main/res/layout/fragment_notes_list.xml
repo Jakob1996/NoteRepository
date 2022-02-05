@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/ubuntumedium"
         android:gravity="center"
-        android:hint="@string/notes_is_empty"
+        android:hint="@string/empty_notes"
         android:textColorHint="@color/colorNoteSubtitleText"
         android:textSize="18sp"
         android:visibility="invisible"

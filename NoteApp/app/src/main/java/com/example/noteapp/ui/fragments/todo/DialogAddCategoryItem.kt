@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.noteapp.R
 import com.example.noteapp.data.Category
 import com.example.noteapp.databinding.AddItemDialogBinding
 import com.example.noteapp.viewmodels.TodoViewModel
@@ -22,6 +23,8 @@ class DialogAddCategoryItem : DialogFragment() {
 
     private val binding get() = _binding!!
 
+    override fun getTheme(): Int = R.style.RoundedCornersDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         todoViewModel = ViewModelProvider(requireActivity())[TodoViewModel::class.java]
@@ -31,9 +34,8 @@ class DialogAddCategoryItem : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = AddItemDialogBinding.inflate(inflater, container, false)
-
 
         binding.addItemDialogAddBtn.setOnClickListener {
             if (binding.addItemDialogTitleEt.text.isEmpty()) {

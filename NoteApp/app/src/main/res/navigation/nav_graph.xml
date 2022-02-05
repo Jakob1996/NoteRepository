@@ -6,6 +6,17 @@
     app:startDestination="@id/mainFramgent">
 
     <action
+        android:id="@+id/action_to_add_note_fragment"
+        android:label="AddNoteFragment"
+        app:destination="@id/addNoteFragment"
+        app:enterAnim="@anim/animation_into"
+        app:exitAnim="@anim/zero_to_zero"
+        app:popEnterAnim="@anim/zero_to_zero"
+        app:popExitAnim="@anim/animation_backto"
+        app:popUpTo="@id/mainFramgent"
+        tools:layout="@layout/fragment_add_note" />
+
+    <action
         android:id="@+id/action_to_general_note_fragment"
         app:destination="@id/generalNoteFragment"
         app:enterAnim="@anim/animation_into"
@@ -65,10 +76,10 @@
     <action
         android:id="@+id/action_to_edit_note_fragment"
         app:destination="@id/editNoteFragment"
-        app:enterAnim="@android:anim/fade_in"
-        app:exitAnim="@android:anim/fade_out"
-        app:popEnterAnim="@android:anim/fade_in"
-        app:popExitAnim="@android:anim/fade_out"
+        app:enterAnim="@anim/animation_into"
+        app:exitAnim="@anim/zero_to_zero"
+        app:popEnterAnim="@anim/zero_to_zero"
+        app:popExitAnim="@anim/animation_backto"
         app:popUpTo="@id/generalNoteFragment" />
 
     <fragment
@@ -134,7 +145,11 @@
             app:destination="@id/editNoteFragment" />
         <action
             android:id="@+id/action_general_note_fragment_to_add_password_fragment"
-            app:destination="@id/addPasswordFragment" />
+            app:destination="@id/addPasswordFragment"
+            app:enterAnim="@anim/animation_into"
+            app:exitAnim="@anim/zero_to_zero"
+            app:popEnterAnim="@anim/zero_to_zero"
+            app:popExitAnim="@anim/animation_backto" />
         <action
             android:id="@+id/action_general_note_fragment_to_main_fragment"
             app:popUpTo="@id/mainFramgent"
@@ -189,7 +204,11 @@
             app:popUpTo="@id/mainFramgent" />
         <action
             android:id="@+id/action_general_todo_fragment_to_add_password_fragment"
-            app:destination="@id/addPasswordFragment" />
+            app:destination="@id/addPasswordFragment"
+            app:enterAnim="@anim/animation_into"
+            app:exitAnim="@anim/zero_to_zero"
+            app:popEnterAnim="@anim/zero_to_zero"
+            app:popExitAnim="@anim/animation_backto" />
         <action
             android:id="@+id/action_general_todo_fragment_to_search_category_fragment"
             app:destination="@id/searchCategoryFragment" />
@@ -208,6 +227,10 @@
         android:id="@+id/addNoteFragment"
         android:name="com.example.noteapp.ui.fragments.note.AddNoteFragment"
         android:label="AddNoteFragment"
+        app:enterAnim="@anim/animation_into"
+        app:exitAnim="@anim/zero_to_zero"
+        app:popEnterAnim="@anim/zero_to_zero"
+        app:popExitAnim="@anim/animation_backto"
         tools:layout="@layout/fragment_add_note">
         <action
             android:id="@+id/action_add_note_fragment_to_main_framgent"

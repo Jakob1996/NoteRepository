@@ -20,8 +20,8 @@
         android:fontFamily="@font/robotoligth"
         android:includeFontPadding="false"
         android:maxLines="1"
-        android:paddingLeft="7dp"
-        android:text="@string/checkbox"
+        android:paddingStart="7dp"
+        android:paddingEnd="7dp"
         android:textColor="@color/white"
         android:textSize="17sp" />
 
