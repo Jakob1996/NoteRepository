@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -19,6 +20,10 @@ import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.TodoViewModel
 import fadeIn
 import fadeOut
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
 
@@ -160,47 +165,55 @@ class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
 
     private fun updateNotes(list: List<Note>) {
 
-        val lm = if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        CoroutineScope(Dispatchers.Main).launch {
 
-        } else {
-            StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
-        }
+            binding.fragmentNotesListRv.fadeOut()
 
-        binding.fragmentNotesListRv.layoutManager = lm
+            val lm =
+                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
-        val listMod: List<Note>
+                } else {
+                    StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
+                }
 
-        if (noteViewModel.getNoteFabButtonMode().value == true) {
-            listMod = list.filter { it.isFavourite }
-        } else {
-            listMod = list
-        }
+            binding.fragmentNotesListRv.layoutManager = lm
 
-        if (noteViewModel.getSortDescNote().value != null) {
-            noteAdapter = if (noteViewModel.getSortDescNote().value!!) {
-                NoteAdapter(listMod, this)
+            val listMod: List<Note>
+
+            if (noteViewModel.getNoteFabButtonMode().value == true) {
+                listMod = list.filter { it.isFavourite }
             } else {
-                NoteAdapter(listMod.asReversed(), this)
+                listMod = list
             }
-        } else {
-            noteAdapter = if (noteViewModel.state) {
-                NoteAdapter(listMod, this)
+
+            if (noteViewModel.getSortDescNote().value != null) {
+                noteAdapter = if (noteViewModel.getSortDescNote().value!!) {
+                    NoteAdapter(listMod, this@NoteListFragment)
+                } else {
+                    NoteAdapter(listMod.asReversed(), this@NoteListFragment)
+                }
             } else {
-                NoteAdapter(listMod.asReversed(), this)
+                noteAdapter = if (noteViewModel.state) {
+                    NoteAdapter(listMod, this@NoteListFragment)
+                } else {
+                    NoteAdapter(listMod.asReversed(), this@NoteListFragment)
+                }
             }
+
+            binding.fragmentNotesListRv.adapter = noteAdapter
+
+            if (noteViewModel.noteState != null) {
+                (binding.fragmentNotesListRv.layoutManager as StaggeredGridLayoutManager).onRestoreInstanceState(
+                    noteViewModel.noteState
+                )
+            }
+
+            checkIsEmpty()
+            noteAdapter.notifyDataSetChanged()
+
+            binding.fragmentNotesListRv.fadeIn()
         }
-
-        binding.fragmentNotesListRv.adapter = noteAdapter
-
-        if (noteViewModel.noteState != null) {
-            (binding.fragmentNotesListRv.layoutManager as StaggeredGridLayoutManager).onRestoreInstanceState(
-                noteViewModel.noteState
-            )
-        }
-
-        checkIsEmpty()
-        noteAdapter.notifyDataSetChanged()
     }
 
     override fun onPause() {

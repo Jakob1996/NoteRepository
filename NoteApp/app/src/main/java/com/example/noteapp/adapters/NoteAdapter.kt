@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.noteapp.R
 import com.example.noteapp.data.Note
 import com.example.noteapp.databinding.NoteItemBinding
 import com.example.noteapp.tools.OnItemClickListener
@@ -49,7 +50,7 @@ class NoteAdapter(private val noteList: List<Note>, private val listener: OnItem
             viewBinding.linear.setBackgroundColor(Color.parseColor(note.color))
 
             if (note.isSelected) {
-                viewBinding.linear.setBackgroundColor(Color.parseColor("#F0F4D7"))
+                viewBinding.linear.setBackgroundResource(R.drawable.background_edit)
             }
 
             if (note.isFavourite) {

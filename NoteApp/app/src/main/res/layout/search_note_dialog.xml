@@ -1,44 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/searchNoteDialogLl"
-    android:layout_width="200dp"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/infoDialogCl"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:background="@color/colorQuickActionsBackground"
     android:clickable="true"
     android:focusable="true"
+    android:minWidth="200dp"
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/searchNoteDialogSearchWrapperLl"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:background="@color/colorQuickActionsBackground"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/searchNoteDialogTitleEt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:backgroundTint="@color/colorNoteColor2"
+            android:ellipsize="end"
             android:fontFamily="@font/ubunturegular"
             android:gravity="bottom"
             android:hint="@string/title"
+            android:inputType="text"
             android:textColor="@color/white"
-            android:textColorHint="@color/colorIcons" />
+            android:textColorHint="@color/colorIcons"
+            android:textCursorDrawable="@drawable/text_resource" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/searchNoteDialogButtonWrapperLl"
+        android:layout_width="0dp"
         android:layout_height="50dp"
-        android:background="@color/colorPrimary_dark">
+        android:background="@color/colorPrimary_dark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchNoteDialogSearchWrapperLl">
 
         <Button
             android:id="@+id/searchNoteDialogSeachBtn"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary_dark"
             android:fontFamily="@font/ubunturegular"
@@ -46,4 +60,4 @@
             android:textColor="@color/colorNoteColor2" />
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

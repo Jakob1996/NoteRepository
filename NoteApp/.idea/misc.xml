@@ -3,7 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/background_button.xml" value="0.215625" />
         <entry key="app/src/main/res/drawable/background_dialog.xml" value="0.21666666666666667" />
+        <entry key="app/src/main/res/drawable/background_miscallaneous.xml" value="0.1703125" />
+        <entry key="app/src/main/res/drawable/background_no_edit.xml" value="0.1703125" />
+        <entry key="app/src/main/res/drawable/background_note_color_5.xml" value="0.1703125" />
+        <entry key="app/src/main/res/drawable/background_subtitle_indicator.xml" value="0.1703125" />
         <entry key="app/src/main/res/drawable/ic_baseline_share.xml" value="0.184375" />
         <entry key="app/src/main/res/drawable/ic_baseline_turned_in_24.xml" value="0.184375" />
         <entry key="app/src/main/res/drawable/ic_lock_24.xml" value="0.184375" />
@@ -17,7 +22,7 @@
         <entry key="app/src/main/res/drawable/ic_round_delete_outline.xml" value="0.18333333333333332" />
         <entry key="app/src/main/res/drawable/text_resource.xml" value="0.1640625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/add_item_dialog.xml" value="0.20052083333333334" />
+        <entry key="app/src/main/res/layout/add_item_dialog.xml" value="0.125" />
         <entry key="app/src/main/res/layout/category_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/check_password_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_add_note.xml" value="0.335" />
@@ -43,8 +48,9 @@
         <entry key="app/src/main/res/layout/note_castomizer.xml" value="0.15" />
         <entry key="app/src/main/res/layout/note_item.xml" value="0.125" />
         <entry key="app/src/main/res/layout/remove_password_dialog.xml" value="0.1671875" />
-        <entry key="app/src/main/res/layout/search_note_dialog.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/sort_dialog.xml" value="0.15" />
+        <entry key="app/src/main/res/layout/search_note_dialog.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/sort_date_dialog.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/sort_dialog.xml" value="0.165" />
         <entry key="app/src/main/res/layout/text_cursor.xml" value="0.14791666666666667" />
         <entry key="app/src/main/res/layout/todo_castomizer.xml" value="0.15" />
         <entry key="app/src/main/res/layout/todo_item.xml" value="0.15104166666666666" />

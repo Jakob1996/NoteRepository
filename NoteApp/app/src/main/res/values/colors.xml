@@ -13,7 +13,7 @@
 
     <color name="pink">#ff0266</color>
     <color name="color_Primary">#272727</color>
-    <color name="colorPrimary_dark">#292929</color>
+    <color name="colorPrimary_dark">#272727</color>
     <color name="colorSearchIcon">#DBDBDB</color>
     <color name="colorTextHint">#7B7B7B</color>
     <color name="colorQuickActionsBackground">#323232</color>

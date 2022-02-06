@@ -12,8 +12,10 @@ import androidx.viewpager.widget.ViewPager
 import com.example.noteapp.R
 import com.example.noteapp.adapters.ViewPagerAdapter
 import com.example.noteapp.databinding.FragmentMainBinding
+import com.example.noteapp.databinding.SortDialogBinding
 import com.example.noteapp.ui.interfaces.OnItemClickDialogListener
 import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
+import com.example.noteapp.ui.fragments.sort.SortDialogFragment
 import com.example.noteapp.ui.fragments.todo.DialogAddCategoryItem
 import com.example.noteapp.viewmodels.ProfilViewModel
 import com.example.noteapp.viewmodels.NoteViewModel
@@ -21,7 +23,7 @@ import com.example.noteapp.viewmodels.TodoViewModel
 import fadeIn
 import fadeOut
 
-class MainFragment : BaseFragment(), OnItemClickDialogListener {
+class MainFragment : BaseFragment() {
 
     companion object {
         const val REQUEST_CODE_KEY = 123
@@ -262,21 +264,12 @@ class MainFragment : BaseFragment(), OnItemClickDialogListener {
 
     private fun setupSortBtnListener() {
         binding.fragmentMainSortNoteFab.setOnClickListener {
-            showDialog(
-                this,
-                "SortDialogFragment",
-                parentFragmentManager,
-                REQUEST_CODE_KEY
-            )
+            val fm = requireActivity().supportFragmentManager
+            val dialogFragment = SortDialogFragment()
+            dialogFragment.show(fm, "SortDialogFragment")
         }
     }
 
-    override fun onItemClickDialog(sortDesc: Boolean) {
-        noteViewModel.run {
-            setSortDescNote(sortDesc)
-            setSortDescCategory(sortDesc)
-        }
-    }
 
     private fun disableMultiSelectMode() {
         binding.fragmentMainToolbarMultibuttonIb.setImageResource(R.drawable.ic_search)

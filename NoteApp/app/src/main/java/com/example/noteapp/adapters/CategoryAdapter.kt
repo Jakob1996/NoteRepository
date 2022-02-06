@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.noteapp.R
 import com.example.noteapp.data.Category
 import com.example.noteapp.databinding.CategoryItemBinding
 import makeGone
@@ -47,7 +48,7 @@ class ItemsCategoryTodoAdapter(
             itemBinding.categoryItemLl.setBackgroundColor(Color.parseColor(cat.color))
 
             if (cat.isSelected) {
-                itemBinding.categoryItemLl.setBackgroundColor(Color.parseColor("#F0F4D7"))
+                itemBinding.categoryItemLl.setBackgroundResource(R.drawable.background_edit)
             }
 
             if (cat.isFavoutire) {

@@ -19,6 +19,7 @@ import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.TodoViewModel
 import fadeIn
 import fadeOut
+import kotlinx.coroutines.*
 
 class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
 
@@ -142,7 +143,6 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
     }
 
     private fun exitMultiSelectMode() {
-
         noteViewModel.selectedNotes.forEach { it.isSelected = false }
         noteViewModel.selectedNotes.clear()
 
@@ -153,31 +153,36 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
     }
 
     private fun updateItems(list: List<Category>) {
-        val lm = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-        binding.fragmentTodoListRv.layoutManager = lm
 
-        val listMode: List<Category>
+            CoroutineScope(Dispatchers.Main).launch {
 
-        if (noteViewModel.getCategoryFabButtonMode().value == true) {
-            listMode = list.filter { it.isFavoutire == true }
-        } else {
-            listMode = list
-        }
+                binding.fragmentTodoListRv.fadeOut()
 
-        toDoCategoryAdapter = if (noteViewModel.getSortDescCategory().value != null) {
-            if (noteViewModel.getSortDescCategory().value!!) {
-                ItemsCategoryTodoAdapter(listMode, this)
+                val lm = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+                binding.fragmentTodoListRv.layoutManager = lm
 
-            } else {
-                ItemsCategoryTodoAdapter(listMode.asReversed(), this)
-            }
-        } else {
-            if (noteViewModel.state) {
-                ItemsCategoryTodoAdapter(listMode, this)
-            } else {
-                ItemsCategoryTodoAdapter(listMode.asReversed(), this)
-            }
-        }
+                val listMode: List<Category>
+
+                if (noteViewModel.getCategoryFabButtonMode().value == true) {
+                    listMode = list.filter { it.isFavoutire }
+                } else {
+                    listMode = list
+                }
+
+                toDoCategoryAdapter = if (noteViewModel.getSortDescCategory().value != null) {
+                    if (noteViewModel.getSortDescCategory().value!!) {
+                        ItemsCategoryTodoAdapter(listMode, this@CategoryFragment)
+
+                    } else {
+                        ItemsCategoryTodoAdapter(listMode.asReversed(), this@CategoryFragment)
+                    }
+                } else {
+                    if (noteViewModel.state) {
+                        ItemsCategoryTodoAdapter(listMode, this@CategoryFragment)
+                    } else {
+                        ItemsCategoryTodoAdapter(listMode.asReversed(), this@CategoryFragment)
+                    }
+                }
 
 /*
         toDoCategoryAdapter = if(viewModel.getSortDescNote().value!!) {
@@ -186,16 +191,19 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
         }
 
  */
-        binding.fragmentTodoListRv.adapter = toDoCategoryAdapter
+                binding.fragmentTodoListRv.adapter = toDoCategoryAdapter
 
-        if (noteViewModel.categoryToDoState != null) {
-            (binding.fragmentTodoListRv.layoutManager as StaggeredGridLayoutManager).onRestoreInstanceState(
-                noteViewModel.categoryToDoState
-            )
-        }
+                if (noteViewModel.categoryToDoState != null) {
+                    (binding.fragmentTodoListRv.layoutManager as StaggeredGridLayoutManager).onRestoreInstanceState(
+                        noteViewModel.categoryToDoState
+                    )
+                }
 
-        checkIsEmpty()
-        toDoCategoryAdapter.notifyDataSetChanged()
+                checkIsEmpty()
+                toDoCategoryAdapter.notifyDataSetChanged()
+
+                binding.fragmentTodoListRv.fadeIn()
+            }
     }
 
     private fun checkIsEmpty() {

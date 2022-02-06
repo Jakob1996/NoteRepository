@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="7dp"
+    android:background="@drawable/text_resource"
     android:orientation="vertical"
     app:corner_radius="16dp">
 

@@ -37,6 +37,12 @@ class DialogAddCategoryItem : DialogFragment() {
     ): View {
         _binding = AddItemDialogBinding.inflate(inflater, container, false)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.addItemDialogAddBtn.setOnClickListener {
             if (binding.addItemDialogTitleEt.text.isEmpty()) {
                 dismiss()
@@ -55,7 +61,6 @@ class DialogAddCategoryItem : DialogFragment() {
                 dismiss()
             }
         }
-        return binding.root
     }
 
     override fun onDestroyView() {

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.noteapp.R
 import com.example.noteapp.databinding.SearchNoteDialogBinding
 import com.example.noteapp.viewmodels.NoteViewModel
 
@@ -16,6 +17,8 @@ class SearchDialogFragment : DialogFragment() {
     private var _binding: SearchNoteDialogBinding? = null
 
     private val binding get() = _binding!!
+
+    override fun getTheme(): Int = R.style.RoundedCornersDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
