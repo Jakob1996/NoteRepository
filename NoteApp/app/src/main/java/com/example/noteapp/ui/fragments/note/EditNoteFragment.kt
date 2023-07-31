@@ -21,9 +21,7 @@ class EditNoteFragment : Fragment() {
     private lateinit var noteViewModel: NoteViewModel
 
     private var _binding: FragmentEditNoteBinding? = null
-
     private val binding get() = _binding!!
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         noteViewModel = ViewModelProvider(requireActivity())[NoteViewModel::class.java]
@@ -34,7 +32,6 @@ class EditNoteFragment : Fragment() {
         setOnBackPressedDispatcher()
         setSaveBtnListener()
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,14 +49,13 @@ class EditNoteFragment : Fragment() {
             findNavController().popBackStack()
         }
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupView()
-        noteViewModel.getSelectedNote().observe(viewLifecycleOwner, {
+        noteViewModel.getSelectedNote().observe(viewLifecycleOwner) {
             binding.fragmentEditNoteTitleEt.setText(it!!.title)
             setFontColor(it.fontColor)
             setFontSize(it.fontSize)
-        })
+        }
 
         binding.fragmentEditNoteDescriptionEt.setText(noteViewModel.getSelectedNote().value!!.message)
 

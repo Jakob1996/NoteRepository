@@ -34,14 +34,12 @@ class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
     private lateinit var noteAdapter: NoteAdapter
 
     private var _binding: FragmentNotesListBinding? = null
-
     private val binding get() = _binding!!
 
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -57,11 +55,11 @@ class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
     ): View {
         _binding = FragmentNotesListBinding.inflate(inflater, container, false)
 
-        noteViewModel.getSortDescNote().observe(requireActivity(), {
+        noteViewModel.getSortDescNote().observe(requireActivity()) {
             updateNotes(noteViewModel.getAllNotes.value!!)
-        })
+        }
 
-        noteViewModel.getNoteFabButtonMode().observe(viewLifecycleOwner, {
+        noteViewModel.getNoteFabButtonMode().observe(viewLifecycleOwner) {
             updateNotes(noteViewModel.getAllNotes.value!!)
             if (noteViewModel.getAllNotes.value!!.none { it.isFavourite }
                 && noteViewModel.getNoteFabButtonMode().value == true) {
@@ -69,18 +67,18 @@ class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
             } else {
                 binding.fragmentNotesListEmptyFavouritiesTv.fadeOut()
             }
-        })
+        }
 
-        noteViewModel.getNotifyDataNote().observe(viewLifecycleOwner, {
+        noteViewModel.getNotifyDataNote().observe(viewLifecycleOwner) {
             if (it == true) {
                 noteViewModel.getAllNotes.value?.forEach { it.isSelected = false }
                 updateNotes(noteViewModel.getAllNotes.value!!)
                 exitMultiSelectMode()
                 noteViewModel.setNotifyDataNote(false)
             }
-        })
+        }
 
-        noteViewModel.getAllNotes.observe(viewLifecycleOwner, { it ->
+        noteViewModel.getAllNotes.observe(viewLifecycleOwner) { it ->
             noteViewModel.getAllNotes.value?.forEach {
                 for (i in noteViewModel.selectedNotes) {
                     if (it.rowId == i.rowId) {
@@ -89,20 +87,20 @@ class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
                 }
             }
             updateNotes(it)
-        })
+        }
         checkIsEmpty()
 
         return binding.root
     }
 
     private fun checkIsEmpty() {
-        noteViewModel.getAllNotes.observe(viewLifecycleOwner, {
+        noteViewModel.getAllNotes.observe(viewLifecycleOwner) {
             if (noteViewModel.getAllNotes.value!!.isEmpty()) {
                 binding.fragmentNotesListEmptyTv.fadeIn()
             } else {
                 binding.fragmentNotesListEmptyTv.fadeOut()
             }
-        })
+        }
     }
 
     override fun onItemClick(note: Note, position: Int) {
@@ -171,20 +169,17 @@ class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
 
             val lm =
                 if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-
+                    StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
                 } else {
                     StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
                 }
 
             binding.fragmentNotesListRv.layoutManager = lm
 
-            val listMod: List<Note>
-
-            if (noteViewModel.getNoteFabButtonMode().value == true) {
-                listMod = list.filter { it.isFavourite }
+            val listMod: List<Note> = if (noteViewModel.getNoteFabButtonMode().value == true) {
+                list.filter { it.isFavourite }
             } else {
-                listMod = list
+                list
             }
 
             if (noteViewModel.getSortDescNote().value != null) {

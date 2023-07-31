@@ -11,9 +11,9 @@
     <color name="dark_green">#232F34</color>
     <color name="gold">#FDBE3B</color>
 
-    <color name="pink">#ff0266</color>
-    <color name="color_Primary">#272727</color>
-    <color name="colorPrimary_dark">#272727</color>
+    <color name="pink">#FF0266</color>
+    <color name="color_Primary">#171717</color>
+    <color name="colorPrimary_dark">#171717</color>
     <color name="colorSearchIcon">#DBDBDB</color>
     <color name="colorTextHint">#7B7B7B</color>
     <color name="colorQuickActionsBackground">#323232</color>

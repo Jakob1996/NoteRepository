@@ -30,13 +30,9 @@ class MainFragment : BaseFragment() {
     }
 
     private var _binding: FragmentMainBinding? = null
-
     private val binding get() = _binding!!
-
     private lateinit var noteViewModel: NoteViewModel
-
     private lateinit var todoViewModel: TodoViewModel
-
     private lateinit var profileViewModel: ProfilViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -107,13 +103,13 @@ class MainFragment : BaseFragment() {
     }
 
     private fun setupFavouriteButtonObserverState() {
-        noteViewModel.getNoteFabButtonMode().observe(viewLifecycleOwner, {
+        noteViewModel.getNoteFabButtonMode().observe(viewLifecycleOwner) {
             if (it == true) {
                 binding.fragmentMainFam.fadeOut()
             } else {
                 binding.fragmentMainFam.fadeIn()
             }
-        })
+        }
     }
 
     private fun setupViewModel() {
@@ -173,13 +169,13 @@ class MainFragment : BaseFragment() {
     }
 
     private fun setupMultiSelectModeObserverState() {
-        noteViewModel.getMultiSelectMode().observe(viewLifecycleOwner, {
+        noteViewModel.getMultiSelectMode().observe(viewLifecycleOwner) {
             if (it == true) {
                 enableMultiSelectMode()
             } else {
                 disableMultiSelectMode()
             }
-        })
+        }
     }
 
     private fun setupViewPagerChangeListener() {

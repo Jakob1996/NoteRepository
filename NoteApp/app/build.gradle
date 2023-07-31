@@ -4,13 +4,13 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.example.noteapp"
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
@@ -88,12 +88,16 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
 
     //Core
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31"
     implementation 'androidx.appcompat:appcompat:1.4.0'
-    implementation 'com.android.support:design:32.0.0'
 
     implementation 'androidx.viewpager2:viewpager2:1.1.0-beta01'
+
+    //implementation 'io.github.sangcomzmz:fishbun:1.1.1'
+
+
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
 }

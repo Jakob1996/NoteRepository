@@ -432,6 +432,7 @@ class AddNoteFragment : BaseFragment() {
     fun getRandomIdForNote(): Int =
         Random().nextInt(1000000000)
 
+
     /*
     private fun openImagePicker() {
         val count = 10 - viewModel.pathImage.size
@@ -443,5 +444,6 @@ class AddNoteFragment : BaseFragment() {
             .setIsUseDetailView(false)
             .startAlbum()
     }
+
      */
 }
