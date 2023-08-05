@@ -80,6 +80,26 @@
         </FrameLayout>
 
         <FrameLayout
+            android:id="@+id/noteCastomizerImageFl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <View
+                android:layout_width="47dp"
+                android:layout_height="47dp" />
+
+            <ImageView
+                android:layout_width="47dp"
+                android:layout_height="47dp"
+                android:contentDescription="@string/app_name"
+                android:padding="11dp"
+                android:src="@drawable/ic_image"
+                app:tint="@color/white" />
+
+        </FrameLayout>
+
+        <FrameLayout
             android:id="@+id/noteCastomizerSearchFl"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

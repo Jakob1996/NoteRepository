@@ -9,6 +9,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import com.example.noteapp.data.Category
 import com.example.noteapp.data.Note
+import com.example.noteapp.data.PathTypeConverter
 import com.example.noteapp.databinding.FragmentAddPasswordBinding
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.TodoViewModel
@@ -71,7 +72,8 @@ class AddPasswordFragment : Fragment() {
                     fontSize,
                     favourite,
                     hasPassword,
-                    password
+                    password,
+                    PathTypeConverter.toJsonPathList(listOf())
                 ).apply {
                     rowId = rowIdd
                 }

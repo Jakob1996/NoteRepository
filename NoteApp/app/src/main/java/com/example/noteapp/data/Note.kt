@@ -1,6 +1,8 @@
 package com.example.noteapp.data
 
 import androidx.room.*
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 @Entity(tableName = "note_table")
 data class Note(
@@ -14,24 +16,25 @@ data class Note(
         val isFavourite:Boolean=false,
         val hasPassword:Boolean=false,
         val password:Int=0,
-) {
+        val imagePaths:String
+        ) {
     @PrimaryKey(autoGenerate = true)
     var rowId = 0
 }
 
-/*
+
 class PathTypeConverter{
+    companion object {
+        @TypeConverter
+        fun fromJsonToPathList(value: String): List<String> {
+            val listType = object : TypeToken<List<String>>() {}.type
+            return Gson().fromJson(value, listType)
+        }
 
-    @TypeConverter
-    fun fromString(value: String): ArrayList<String> {
-        val listType = object : TypeToken<List<String>>() {}.type
-        return Gson().fromJson(value, listType)
-    }
-
-    @TypeConverter
-    fun fromListLisr(list: ArrayList<String>): String {
-        val gson = Gson()
-        return gson.toJson(list)
+        @TypeConverter
+        fun toJsonPathList(list: List<String>): String {
+            val gson = Gson()
+            return gson.toJson(list)
+        }
     }
 }
- */

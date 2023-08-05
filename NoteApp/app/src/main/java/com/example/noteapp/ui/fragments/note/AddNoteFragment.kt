@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
 import com.example.noteapp.data.Note
+import com.example.noteapp.data.PathTypeConverter
 import com.example.noteapp.databinding.FragmentAddNoteBinding
 import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
 import com.example.noteapp.ui.fragments.password.RemovePasswordDialogFragment
@@ -64,7 +65,9 @@ class AddNoteFragment : BaseFragment() {
                     if (title.isNotEmpty() || description.isNotEmpty()) {
                         val note = Note(
                             title, description, date, isSelected = false, color,
-                            fontColor, fontSize, favourite, hasPassword, password
+                            fontColor, fontSize, favourite, hasPassword, password, PathTypeConverter.toJsonPathList(
+                                listOf()
+                            )
                         ).apply {
                             rowId = getRandomIdForNote()
                         }
@@ -409,7 +412,8 @@ class AddNoteFragment : BaseFragment() {
                 fontSize,
                 isFavourite,
                 hasPassword,
-                password
+                password,
+                PathTypeConverter.toJsonPathList(listOf())
             )
 
             note.rowId = id

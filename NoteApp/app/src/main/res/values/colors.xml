@@ -34,6 +34,7 @@
     <color name="colorDelet">#D8FFFFFF</color>
 
     <color name="grayColor">#B8b7b6</color>
+    <color name="color15PercentBlackTransparent">#26000000</color>
 
     <color name="defaultNoteColor">#252525</color>
     <color name="passwordColor">#FF4343</color>

@@ -67,7 +67,7 @@ class NoteViewModel(app: Application) : AndroidViewModel(app) {
     var noteTitle = ""
     var noteMessage = ""
     var noteDate: Long = 1
-    var pathImage = arrayListOf<String?>()
+    var pathImage = mutableListOf<String>()
     var idNote = 1
     var hasPassword = false
     var password: Int = 0

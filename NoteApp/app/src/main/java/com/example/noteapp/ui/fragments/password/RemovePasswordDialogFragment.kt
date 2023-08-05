@@ -42,73 +42,69 @@ class RemovePasswordDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.noRemovePasswordButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
+        binding.noRemovePasswordButton.setOnClickListener { dismiss() }
+
+        binding.yesRemovePasswordButton.setOnClickListener {
+            if (noteViewModel.getSelectedNote().value != null) {
+                val note = noteViewModel.getSelectedNote().value
+
+                val title = note!!.title
+                val message = note.message
+                val date = note.date
+                val color = note.color
+                val fontColor = note.fontColor
+                val fontSize = note.fontSize
+                val favourite = note.isFavourite
+                val isSelected = note.isSelected
+                val path = note.imagePaths
+                val rowIdd = note.rowId
+                val hasPassword = false
+                val password = 0
+                val not = Note(
+                    title,
+                    message,
+                    date,
+                    isSelected,
+                    color,
+                    fontColor,
+                    fontSize,
+                    favourite,
+                    hasPassword,
+                    password,
+                    path
+                    ).apply {
+                    rowId = rowIdd
+                }
+                noteViewModel.setSelectedNote(not)
+                dismiss()
+            } else {
+                val category = todoViewModel.getSelectedCategotyItem().value
+
+                val name = category!!.categoryName
+                val color = category.color
+                val date = category.date
+                val isSelected = category.isSelected
+                val isFavourite = category.isFavoutire
+                val hasPassword = false
+                val password = 0
+                val id = category.rowIdCategory
+
+                val cat = Category(
+                    name,
+                    color,
+                    isSelected,
+                    date,
+                    isFavourite,
+                    hasPassword,
+                    password
+                ).apply {
+                    rowIdCategory = id
+                }
+
+                todoViewModel.setSelectedCategotyItem(cat)
                 dismiss()
             }
-        })
-
-        binding.yesRemovePasswordButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                if (noteViewModel.getSelectedNote().value != null) {
-                    val note = noteViewModel.getSelectedNote().value
-
-                    val title = note!!.title
-                    val message = note.message
-                    val date = note.date
-                    val color = note.color
-                    val fontColor = note.fontColor
-                    val fontSize = note.fontSize
-                    val favourite = note.isFavourite
-                    val isSelected = note.isSelected
-                    val rowIdd = note.rowId
-                    val hasPassword = false
-                    val password = 0
-                    val not = Note(
-                        title,
-                        message,
-                        date,
-                        isSelected,
-                        color,
-                        fontColor,
-                        fontSize,
-                        favourite,
-                        hasPassword,
-                        password
-                    ).apply {
-                        rowId = rowIdd
-                    }
-                    noteViewModel.setSelectedNote(not)
-                    dismiss()
-                } else {
-                    val category = todoViewModel.getSelectedCategotyItem().value
-
-                    val name = category!!.categoryName
-                    val color = category.color
-                    val date = category.date
-                    val isSelected = category.isSelected
-                    val isFavourite = category.isFavoutire
-                    val hasPassword = false
-                    val password = 0
-                    val id = category.rowIdCategory
-
-                    val cat = Category(
-                        name,
-                        color,
-                        isSelected,
-                        date,
-                        isFavourite,
-                        hasPassword,
-                        password
-                    ).apply {
-                        rowIdCategory = id
-                    }
-
-                    todoViewModel.setSelectedCategotyItem(cat)
-                    dismiss()
-                }
-            }
-        })
+        }
     }
 
     override fun onDestroyView() {
