@@ -9,39 +9,6 @@
     android:focusable="true"
     tools:context=".ui.fragments.search.SearchNoteFragment">
 
-    <RelativeLayout
-        android:id="@+id/fragmentSearchCategoryToolbarRl"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/colorPrimary_dark"
-        android:gravity="center_vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@color/white">
-
-        <ImageView
-            android:id="@+id/fragmentSearchCategoryToolbarBackIv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_back"
-            app:tint="@color/colorIcons" />
-
-        <TextView
-            android:id="@+id/fragmentSearchCategoryToolbarTitleTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="@string/find_your_category"
-            android:textColor="@color/colorIcons" />
-
-    </RelativeLayout>
-
     <androidx.cardview.widget.CardView
         android:id="@+id/fragmentSearchCategoryCv"
         android:layout_width="match_parent"
@@ -53,7 +20,7 @@
         app:cardCornerRadius="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragmentSearchCategoryToolbarRl">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

@@ -32,6 +32,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.CoroutinesRoom
+import com.example.noteapp.ui.activities.MainActivity
 
 class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation {
 
@@ -76,7 +77,8 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
             }
         }
 
-        binding.fragmentGeneralTodoToolbarSaveIv.setOnClickListener {
+        val mainActivity = this.activity as MainActivity
+        mainActivity.onEditBtnPressed {
             val fm = requireActivity().supportFragmentManager
             val dialogFragment = AddToDoDialog()
 
@@ -88,6 +90,13 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val activity = this.activity as MainActivity
+
+        activity.setupToolbar("Main", true, backBtnVisible = true, editBtnVisible = true)
+    }
 
     private fun initMiscellaneous() {
         val layoutMiscellaneous = binding.fragmentGeneralTodoCastomizer
@@ -194,16 +203,18 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
     private fun setupView() {
         setupTodoObserver()
         setupSaveAndQuitState()
-        setupOnBackPressedBtn()
+        val mainActivity = this.activity as MainActivity
+
+        mainActivity.onBackBtnPressed {
+            requireActivity().onBackPressed()
+        }
     }
 
     private fun setupTodoObserver() {
         todoViewModel.getSelectedCategotyItem()
-            .observe(viewLifecycleOwner, { category ->
+            .observe(viewLifecycleOwner) { category ->
                 binding.run { fragmentGeneralTodoTitleEt.setText(category?.categoryName) }
 
-                binding.fragmentGeneralTodoToolbarTitleTv.text =
-                    getString(R.string.category_edit)
                 todoViewModel.categoryName = category!!.categoryName
                 todoViewModel.categoryDate = category.date
                 todoViewModel.categoryIsSelected = category.isSelected
@@ -218,20 +229,14 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
                 runBlocking {
                     CoroutineScope(Dispatchers.Main).launch {
                         todoViewModel.getAllItemsFromCategory(todoViewModel.getSelectedCategotyItem().value!!.rowIdCategory)
-                            .observe(viewLifecycleOwner, {
+                            .observe(viewLifecycleOwner) {
                                 binding.fragmentGeneralTodoPb.fadeOut()
                                 updateItems(it)
                                 binding.fragmentGeneralTodoRv.fadeIn()
-                            })
+                            }
                     }
                 }
-            })
-    }
-
-    private fun setupOnBackPressedBtn() {
-        binding.fragmentGeneralTodoToolbarBackIv.setOnClickListener {
-            requireActivity().onBackPressed()
-        }
+            }
     }
 
     private fun saveTodoList() {

@@ -13,6 +13,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.databinding.FragmentEditNoteBinding
+import com.example.noteapp.ui.activities.MainActivity
 import com.example.noteapp.viewmodels.NoteViewModel
 
 
@@ -28,10 +29,26 @@ class EditNoteFragment : Fragment() {
     }
 
     private fun setupView() {
-        setOnBackPressedBtnClick()
         setOnBackPressedDispatcher()
-        setSaveBtnListener()
+
+        val activity = this.activity as MainActivity
+        activity.onBackBtnPressed {
+            findNavController().popBackStack()
+        }
+
+        activity.onDoneBtnPressed {
+            saveNoteState()
+            findNavController().popBackStack()
+        }
     }
+
+    override fun onResume() {
+        super.onResume()
+        val activity = this.activity as MainActivity
+
+        activity.setupToolbar("Your note", true, backBtnVisible = true, doneBtnVisible = true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,11 +61,6 @@ class EditNoteFragment : Fragment() {
         return binding.root
     }
 
-    private fun setOnBackPressedBtnClick() {
-        binding.fragmentEditNoteToolbarBackIv.setOnClickListener {
-            findNavController().popBackStack()
-        }
-    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupView()
         noteViewModel.getSelectedNote().observe(viewLifecycleOwner) {
@@ -153,13 +165,6 @@ class EditNoteFragment : Fragment() {
                     requireActivity().onBackPressed()
                 }
             })
-    }
-
-    private fun setSaveBtnListener() {
-        binding.fragmentEditNoteToolbarSaveIv.setOnClickListener {
-            saveNoteState()
-            findNavController().popBackStack()
-        }
     }
 
     private fun saveNoteState() {

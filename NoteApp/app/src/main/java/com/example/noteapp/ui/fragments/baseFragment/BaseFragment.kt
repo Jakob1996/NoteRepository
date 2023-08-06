@@ -3,6 +3,7 @@ package com.example.noteapp.ui.fragments.baseFragment
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import com.example.noteapp.ui.interfaces.ToolbarAction
 import com.google.firebase.auth.FirebaseAuth
 
 abstract class BaseFragment : Fragment(), com.example.noteapp.navigation.Navigation {

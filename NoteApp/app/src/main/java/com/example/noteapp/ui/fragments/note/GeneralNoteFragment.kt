@@ -19,6 +19,7 @@ import com.example.noteapp.data.Note
 import com.example.noteapp.data.PathTypeConverter
 import com.example.noteapp.databinding.FragmentGeneralNoteBinding
 import com.example.noteapp.tools.DoubleClickListener
+import com.example.noteapp.ui.activities.MainActivity
 import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
 import com.example.noteapp.ui.fragments.info.InfoDialogFragment
 import com.example.noteapp.ui.fragments.password.RemovePasswordDialogFragment
@@ -79,6 +80,7 @@ class GeneralNoteFragment : BaseFragment(), ImageClickListener {
     }
 
     private fun saveNoteState() {
+        val a = this.activity as MainActivity
         noteViewModel.run {
             val title = binding.fragmentGeneralNoteTitleTv.text.toString()
             val message = binding.fragmentGeneralNoteDescriptionTv.text.toString()
@@ -198,7 +200,6 @@ class GeneralNoteFragment : BaseFragment(), ImageClickListener {
         initCastomizer()
         setSearchDescriptionListener()
         setChangePasswordListener()
-        setEditNoteListener()
         setDoubleClickListener()
         setChangeFontSizeListener()
         setChangeFontColorListener()
@@ -206,20 +207,30 @@ class GeneralNoteFragment : BaseFragment(), ImageClickListener {
         setOnFavouriteListener()
         setSearchModeObserver()
         setSelectedNoteObserver()
-        setOnBackPressedListener()
         setOnBackPressedDispatcher()
         setupOnImageClickListener()
+
+        val activity = this.activity as MainActivity
+
+        activity.onBackBtnPressed {
+            requireActivity().onBackPressed()
+        }
+
+        activity.onEditBtnPressed {
+            navigateToFragment(findNavController(), R.id.action_to_edit_note_fragment)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val activity = this.activity as MainActivity
+
+        activity.setupToolbar("Main", true, backBtnVisible = true, editBtnVisible = true)
     }
 
     private fun setupOnImageClickListener() {
         binding.fragmentGeneralNoteCastomizer.noteCastomizerImageFl.setOnClickListener {
             openImagePicker()
-        }
-    }
-
-    private fun setOnBackPressedListener() {
-        binding.fragmentGeneralNoteToolbarBackIv.setOnClickListener {
-            requireActivity().onBackPressed()
         }
     }
 
@@ -291,12 +302,6 @@ class GeneralNoteFragment : BaseFragment(), ImageClickListener {
                 }
             )
         )
-    }
-
-    private fun setEditNoteListener() {
-        binding.fragmentGeneralNoteToolbarEditIv.setOnClickListener {
-            navigateToFragment(findNavController(), R.id.action_to_edit_note_fragment)
-        }
     }
 
     private fun setChangePasswordListener() {

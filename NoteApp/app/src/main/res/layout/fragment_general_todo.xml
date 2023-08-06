@@ -18,54 +18,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:paddingBottom="35dp">
+            android:paddingBottom="35dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true">
-
-                <RelativeLayout
-                    android:id="@+id/fragmentGeneralTodoToolbarRl"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@color/color_Primary"
-                    android:gravity="center_vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:navigationIcon="@drawable/ic_back"
-                    app:titleTextColor="@color/white">
-
-                    <ImageView
-                        android:id="@+id/fragmentGeneralTodoToolbarBackIv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_back"
-                        app:tint="@color/colorIcons" />
-
-                    <TextView
-                        android:id="@+id/fragmentGeneralTodoToolbarTitleTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:text="@string/todo_list_creator"
-                        android:textColor="@color/colorIcons" />
-
-                    <ImageView
-                        android:id="@+id/fragmentGeneralTodoToolbarSaveIv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_add_circle"
-                        app:tint="@color/colorIcons" />
-                </RelativeLayout>
 
                 <LinearLayout
                     android:id="@+id/fragmentGeneralTodoTitleLl"
@@ -77,7 +38,7 @@
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/fragmentGeneralTodoToolbarRl">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <EditText
                         android:id="@+id/fragmentGeneralTodoTitleEt"

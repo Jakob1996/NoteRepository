@@ -16,6 +16,7 @@ import com.example.noteapp.R
 import com.example.noteapp.data.Note
 import com.example.noteapp.data.PathTypeConverter
 import com.example.noteapp.databinding.FragmentAddNoteBinding
+import com.example.noteapp.ui.activities.MainActivity
 import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
 import com.example.noteapp.ui.fragments.password.RemovePasswordDialogFragment
 import com.example.noteapp.viewmodels.ProfilViewModel
@@ -94,6 +95,14 @@ class AddNoteFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val activity = this.activity as MainActivity
+
+        activity.setupToolbar("Main", true, backBtnVisible = true)
+    }
+
     private fun getRequestFocus(){
         binding.fragmentAddNoteTitleEt.requestFocus()
         showSoftKeyboard()
@@ -137,9 +146,12 @@ class AddNoteFragment : BaseFragment() {
             }
         }
 
-        binding.fragmentAddNoteToolbarBackButtonIv.setOnClickListener {
+        val mainActivity = this.activity as MainActivity
+
+        mainActivity.onBackBtnPressed {
             requireActivity().onBackPressed()
         }
+
 
         binding.fragmentAddNoteCastomizer.noteCastomizerFavouriteFl.setOnClickListener {
             noteViewModel.isFavourite = !noteViewModel.isFavourite

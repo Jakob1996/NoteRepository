@@ -1,15 +1,12 @@
 package com.example.noteapp.ui.fragments.search
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -18,6 +15,7 @@ import com.example.noteapp.adapters.ItemsCategoryTodoAdapter
 import com.example.noteapp.adapters.OnItemCategoryClickListener
 import com.example.noteapp.data.Category
 import com.example.noteapp.databinding.FragmentSearchCategoryBinding
+import com.example.noteapp.ui.activities.MainActivity
 import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
 import com.example.noteapp.viewmodels.TodoViewModel
 
@@ -50,6 +48,14 @@ class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
             })
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val mainActivity = this.activity as MainActivity
+
+        mainActivity.setupToolbar("Main", titleVisible = true, backBtnVisible = true)
+    }
+
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
@@ -71,21 +77,17 @@ class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
 
         binding.fragmentSearchCategorySearchEt.requestFocus()
 
-        todoViewModel.allCategoryItems.observe(viewLifecycleOwner, {
+        todoViewModel.allCategoryItems.observe(viewLifecycleOwner) {
             if (todoViewModel.search != null) {
                 updateCategory(it, todoViewModel.search!!)
             } else {
                 updateCategoryEmpty()
             }
-        })
+        }
 
         if (todoViewModel.search != null) {
             binding.fragmentSearchCategorySearchEt.setText(todoViewModel.search)
             binding.fragmentSearchCategorySearchEt.requestFocus(binding.fragmentSearchCategorySearchEt.text.length)
-        }
-
-        binding.fragmentSearchCategoryToolbarBackIv.setOnClickListener {
-            requireActivity().onBackPressed()
         }
 
         binding.fragmentSearchCategorySearchEt.addTextChangedListener(object : TextWatcher {
@@ -101,6 +103,12 @@ class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
 
             override fun afterTextChanged(s: Editable?) {}
         })
+
+        val mainActivity = this.activity as MainActivity
+
+        mainActivity.onBackBtnPressed {
+            requireActivity().onBackPressed()
+        }
     }
 
     private fun updateCategory(list: List<Category>, search: String) {

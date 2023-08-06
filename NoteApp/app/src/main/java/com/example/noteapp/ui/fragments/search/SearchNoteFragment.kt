@@ -17,6 +17,7 @@ import com.example.noteapp.adapters.NoteAdapter
 import com.example.noteapp.data.Note
 import com.example.noteapp.databinding.FragmentSearchNoteBinding
 import com.example.noteapp.tools.OnItemClickListener
+import com.example.noteapp.ui.activities.MainActivity
 import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
 import com.example.noteapp.viewmodels.NoteViewModel
 
@@ -46,6 +47,14 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
             })
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val mainActivity = this.activity as MainActivity
+
+        mainActivity.setupToolbar("Main", titleVisible = true, backBtnVisible = true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,22 +71,17 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
 
         binding.fragmentSearchNoteSearchEt.requestFocus()
 
-        noteViewModel.getAllNotes.observe(viewLifecycleOwner, {
+        noteViewModel.getAllNotes.observe(viewLifecycleOwner) {
             if (noteViewModel.search != null) {
                 updateNotes(it, noteViewModel.search!!)
             } else {
                 updateNotesEmpty()
             }
-        })
+        }
 
         if (noteViewModel.search != null) {
             binding.fragmentSearchNoteSearchEt.setText(noteViewModel.search)
             binding.fragmentSearchNoteSearchEt.requestFocus(binding.fragmentSearchNoteSearchEt.text.length)
-        }
-
-        binding.fragmentSearchCategoryToolbarBackIv.setOnClickListener {
-            noteViewModel.search = null
-            requireActivity().supportFragmentManager.popBackStack()
         }
 
         binding.fragmentSearchNoteSearchEt.addTextChangedListener(object : TextWatcher {
@@ -104,6 +108,13 @@ class SearchNoteFragment : BaseFragment(), OnItemClickListener {
                 closeKeyboard()
                 requireActivity().supportFragmentManager.popBackStack()
             }
+        }
+
+        val mainActivity = this.activity as MainActivity
+
+        mainActivity.onBackBtnPressed {
+            noteViewModel.search = null
+            requireActivity().supportFragmentManager.popBackStack()
         }
     }
 
