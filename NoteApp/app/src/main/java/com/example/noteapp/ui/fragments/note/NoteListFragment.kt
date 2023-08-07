@@ -1,11 +1,9 @@
 package com.example.noteapp.ui.fragments.note
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -22,10 +20,9 @@ import fadeIn
 import fadeOut
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
+class NoteListFragment : Fragment(), OnItemClickListener, Navigation {
 
     private lateinit var noteViewModel: NoteViewModel
 
@@ -40,6 +37,7 @@ class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
         _binding = null
         super.onDestroyView()
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -55,14 +53,20 @@ class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
     ): View {
         _binding = FragmentNotesListBinding.inflate(inflater, container, false)
 
-        noteViewModel.getSortDescNote().observe(requireActivity()) {
+        noteViewModel.sortDescendingNote.observe(requireActivity()) {
+            noteViewModel.getAllNotes.value?.let {
+                updateNotes(it)
+            }
+        }
+
+        noteViewModel.isSortDescendingNoteStateAction.observe(requireActivity()) {
             updateNotes(noteViewModel.getAllNotes.value!!)
         }
 
-        noteViewModel.getNoteFabButtonMode().observe(viewLifecycleOwner) {
+        noteViewModel.fabNoteButtonMode.observe(viewLifecycleOwner) {
             updateNotes(noteViewModel.getAllNotes.value!!)
             if (noteViewModel.getAllNotes.value!!.none { it.isFavourite }
-                && noteViewModel.getNoteFabButtonMode().value == true) {
+                && noteViewModel.fabNoteButtonMode.value == true) {
                 binding.fragmentNotesListEmptyFavouritiesTv.fadeIn()
             } else {
                 binding.fragmentNotesListEmptyFavouritiesTv.fadeOut()
@@ -129,7 +133,7 @@ class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
 
     override fun onItemLongClick(note: Note, position: Int) {
         if (noteViewModel.getMultiSelectMode().value == false) {
-            noteViewModel.setMutliSelectMode(true)
+            noteViewModel.setMultiSelectMode(true)
             selectNote(note, position)
         }
     }
@@ -158,42 +162,28 @@ class NoteListFragment() : Fragment(), OnItemClickListener, Navigation {
         noteViewModel.selectedNotes.forEach { it.isSelected = false }
         noteViewModel.selectedNotes.clear()
 
-        noteViewModel.setMutliSelectMode(false)
+        noteViewModel.setMultiSelectMode(false)
     }
 
     private fun updateNotes(list: List<Note>) {
-
         CoroutineScope(Dispatchers.Main).launch {
 
             binding.fragmentNotesListRv.fadeOut()
 
-            val lm =
-                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-                } else {
-                    StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
-                }
+            val lm = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
 
             binding.fragmentNotesListRv.layoutManager = lm
 
-            val listMod: List<Note> = if (noteViewModel.getNoteFabButtonMode().value == true) {
+            val notesList = if (noteViewModel.fabNoteButtonMode.value == true) {
                 list.filter { it.isFavourite }
             } else {
                 list
             }
 
-            if (noteViewModel.getSortDescNote().value != null) {
-                noteAdapter = if (noteViewModel.getSortDescNote().value!!) {
-                    NoteAdapter(listMod, this@NoteListFragment)
-                } else {
-                    NoteAdapter(listMod.asReversed(), this@NoteListFragment)
-                }
+            noteAdapter = if (noteViewModel.sharePreferences.loadSortDescendingData()) {
+                NoteAdapter(notesList, this@NoteListFragment)
             } else {
-                noteAdapter = if (noteViewModel.state) {
-                    NoteAdapter(listMod, this@NoteListFragment)
-                } else {
-                    NoteAdapter(listMod.asReversed(), this@NoteListFragment)
-                }
+                NoteAdapter(notesList.asReversed(), this@NoteListFragment)
             }
 
             binding.fragmentNotesListRv.adapter = noteAdapter

@@ -71,7 +71,6 @@ class EditNoteFragment : Fragment() {
 
         binding.fragmentEditNoteDescriptionEt.setText(noteViewModel.getSelectedNote().value!!.message)
 
-        //!!!
         if (binding.fragmentEditNoteDescriptionEt.text.isNotEmpty()) {
             binding.fragmentEditNoteDescriptionEt.requestFocus(binding.fragmentEditNoteDescriptionEt.text.length)
         }

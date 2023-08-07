@@ -40,6 +40,8 @@ class TodoViewModel(app: Application) : AndroidViewModel(app) {
 
     private val selectedCategoryItem = MutableLiveData<Category?>()
 
+    val sortDescendingCategory = MutableLiveData<Boolean?>()
+
     fun getSelectedCategotyItem(): LiveData<Category?> = selectedCategoryItem
 
     fun setSelectedCategotyItem(category: Category?) {

@@ -1,24 +1,23 @@
 package com.example.noteapp.ui.fragments.password
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentCheckPasswordBinding
 import com.example.noteapp.navigation.Navigation
 import com.example.noteapp.tools.OnBackPressListener
+import com.example.noteapp.ui.activities.MainActivity
+import com.example.noteapp.ui.fragments.baseFragment.BaseFragment
 import com.example.noteapp.viewmodels.NoteViewModel
 import com.example.noteapp.viewmodels.TodoViewModel
 
-class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
+class CheckPasswordFragment : BaseFragment(), OnBackPressListener, Navigation {
 
     private lateinit var noteViewModel: NoteViewModel
 
@@ -40,6 +39,7 @@ class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
                 override fun handleOnBackPressed() {
                     isEnabled = false
                     requireActivity().onBackPressed()
+                    closeKeyboard()
                 }
             })
     }
@@ -56,6 +56,9 @@ class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val mainActivity = this.activity as MainActivity
+        mainActivity.hideToolbar()
 
         binding.fragmentCheckPasswordOkBtn.setOnClickListener {
             if (noteViewModel.getSelectedNote().value != null) {
@@ -120,9 +123,10 @@ class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-
             }
         }
+
+        getRequestFocus()
     }
 
     override fun onDestroyView() {
@@ -141,18 +145,14 @@ class CheckPasswordFragment : Fragment(), OnBackPressListener, Navigation {
         }
     }
 
-    private fun closeKeyboard() {
-        val view = requireActivity().currentFocus
-        if (view != null) {
-            val imm =
-                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-    }
-
     override fun onBackPressed() {
         quit = 2
         noteViewModel.isSearchEdit = 1
         requireActivity().supportFragmentManager.popBackStack()
+    }
+
+    private fun getRequestFocus() {
+        binding.fragmentCheckPasswordPasswordEt.requestFocus()
+        showSoftKeyboard()
     }
 }

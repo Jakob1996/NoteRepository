@@ -66,7 +66,7 @@ class MainFragment : BaseFragment() {
         val mainActivity = this.activity as MainActivity
 
         mainActivity.onFavouriteBtnPressed {
-            if (noteViewModel.getNoteFabButtonMode().value == true) {
+            if (noteViewModel.fabNoteButtonMode.value == true) {
                 noteViewModel.run {
                     setNoteFabButtonMode(false)
                     setCategoryFabButtonMode(false)
@@ -100,7 +100,7 @@ class MainFragment : BaseFragment() {
                     todoViewModel.selectedCategoryItems.forEach { it.isSelected = false }
                     todoViewModel.selectedCategoryItems.clear()
 
-                    setMutliSelectMode(false)
+                    setMultiSelectMode(false)
 
                 } else {
                     if (binding.fragmentMainVp.currentItem == 0) {
@@ -133,7 +133,7 @@ class MainFragment : BaseFragment() {
                 override fun handleOnBackPressed() {
                     noteViewModel.run {
                         if (getMultiSelectMode().value == true) {
-                            setMutliSelectMode(false)
+                            setMultiSelectMode(false)
                             setNotifyDataNote(true)
                             setNotifyDataCategory(true)
                         }
@@ -168,7 +168,7 @@ class MainFragment : BaseFragment() {
     }
 
     private fun setupFavouriteButtonObserverState() {
-        noteViewModel.getNoteFabButtonMode().observe(viewLifecycleOwner) {
+        noteViewModel.fabNoteButtonMode.observe(viewLifecycleOwner) {
             if (it == true) {
                 binding.fragmentMainFam.fadeOut()
             } else {
@@ -278,7 +278,7 @@ class MainFragment : BaseFragment() {
         val mainActivity = this.activity as MainActivity
 
         mainActivity.disableMultiSelectMode()
-        when (noteViewModel.getNoteFabButtonMode().value) {
+        when (noteViewModel.fabNoteButtonMode.value) {
             false -> {
                 binding.fragmentMainFam.fadeIn()
             }

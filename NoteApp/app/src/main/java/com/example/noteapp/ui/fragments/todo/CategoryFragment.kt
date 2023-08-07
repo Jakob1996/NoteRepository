@@ -60,30 +60,36 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        noteViewModel.getSortDescCategory().observe(requireActivity(), {
-            updateItems(todoViewModel.allCategoryItems.value!!)
-        })
+        todoViewModel.sortDescendingCategory.observe(requireActivity()) {
+            todoViewModel.allCategoryItems.value?.let {
+                updateItems(it)
+            }
+        }
 
-        noteViewModel.getCategoryFabButtonMode().observe(requireActivity(), {
-            updateItems(todoViewModel.allCategoryItems.value!!)
+        noteViewModel.getCategoryFabButtonMode().observe(requireActivity()) {
+            todoViewModel.allCategoryItems.value?.let {
+                updateItems(it)
+            }
             if (todoViewModel.allCategoryItems.value!!.none { it.isFavoutire }
-                && noteViewModel.getNoteFabButtonMode().value == true) {
+                && noteViewModel.fabNoteButtonMode.value == true) {
                 binding.fragmentTodoListEmptyFavouritiesTv.fadeIn()
             } else {
                 binding.fragmentTodoListEmptyFavouritiesTv.fadeOut()
             }
-        })
+        }
 
-        noteViewModel.getNotifyDataCategory().observe(viewLifecycleOwner, {
+        noteViewModel.getNotifyDataCategory().observe(viewLifecycleOwner) {
             if (it == true) {
                 todoViewModel.allCategoryItems.value?.forEach { it.isSelected = false }
-                updateItems(todoViewModel.allCategoryItems.value!!)
+                todoViewModel.allCategoryItems.value?.let { categoryItems ->
+                    updateItems(categoryItems)
+                }
                 exitMultiSelectMode()
                 noteViewModel.setNotifyDataCategory(false)
             }
-        })
+        }
 
-        todoViewModel.allCategoryItems.observe(viewLifecycleOwner, {
+        todoViewModel.allCategoryItems.observe(viewLifecycleOwner) {
             todoViewModel.allCategoryItems.value?.forEach {
                 for (i in todoViewModel.selectedCategoryItems) {
                     if (it.rowIdCategory.equals(i.rowIdCategory)) {
@@ -93,7 +99,7 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
             }
 
             updateItems(it)
-        })
+        }
     }
 
     override fun onItemClick(category: Category, position: Int) {
@@ -119,7 +125,7 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
 
     override fun onItemLongClick(category: Category, position: Int) {
         if (noteViewModel.getMultiSelectMode().value == false) {
-            noteViewModel.setMutliSelectMode(true)
+            noteViewModel.setMultiSelectMode(true)
             selectCategoryItem(category, position)
         }
     }
@@ -149,71 +155,52 @@ class CategoryFragment : Fragment(), OnItemCategoryClickListener, Navigation {
         todoViewModel.selectedCategoryItems.forEach { it.isSelected = false }
         todoViewModel.selectedCategoryItems.clear()
 
-        noteViewModel.setMutliSelectMode(false)
+        noteViewModel.setMultiSelectMode(false)
     }
 
     private fun updateItems(list: List<Category>) {
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.fragmentTodoListRv.fadeOut()
 
-            CoroutineScope(Dispatchers.Main).launch {
+            val lm = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+            binding.fragmentTodoListRv.layoutManager = lm
 
-                binding.fragmentTodoListRv.fadeOut()
-
-                val lm = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-                binding.fragmentTodoListRv.layoutManager = lm
-
-                val listMode: List<Category>
-
+            val categoryList: List<Category> =
                 if (noteViewModel.getCategoryFabButtonMode().value == true) {
-                    listMode = list.filter { it.isFavoutire }
+                    list.filter { it.isFavoutire }
                 } else {
-                    listMode = list
+                    list
                 }
 
-                toDoCategoryAdapter = if (noteViewModel.getSortDescCategory().value != null) {
-                    if (noteViewModel.getSortDescCategory().value!!) {
-                        ItemsCategoryTodoAdapter(listMode, this@CategoryFragment)
-
-                    } else {
-                        ItemsCategoryTodoAdapter(listMode.asReversed(), this@CategoryFragment)
-                    }
-                } else {
-                    if (noteViewModel.state) {
-                        ItemsCategoryTodoAdapter(listMode, this@CategoryFragment)
-                    } else {
-                        ItemsCategoryTodoAdapter(listMode.asReversed(), this@CategoryFragment)
-                    }
-                }
-
-/*
-        toDoCategoryAdapter = if(viewModel.getSortDescNote().value!!) {
-        } else{
-            ItemsCategoryTodoAdapter(list.asReversed(), this) // asReversed - Na odwrót
-        }
-
- */
-                binding.fragmentTodoListRv.adapter = toDoCategoryAdapter
-
-                if (noteViewModel.categoryToDoState != null) {
-                    (binding.fragmentTodoListRv.layoutManager as StaggeredGridLayoutManager).onRestoreInstanceState(
-                        noteViewModel.categoryToDoState
-                    )
-                }
-
-                checkIsEmpty()
-                toDoCategoryAdapter.notifyDataSetChanged()
-
-                binding.fragmentTodoListRv.fadeIn()
+            toDoCategoryAdapter = if(noteViewModel.sharePreferences.loadSortDescendingData()){
+                ItemsCategoryTodoAdapter(categoryList, this@CategoryFragment)
+            } else {
+                ItemsCategoryTodoAdapter(categoryList.asReversed(), this@CategoryFragment)
             }
+
+            binding.fragmentTodoListRv.adapter = toDoCategoryAdapter
+
+            if (noteViewModel.categoryToDoState != null) {
+                (binding.fragmentTodoListRv.layoutManager as StaggeredGridLayoutManager).onRestoreInstanceState(
+                    noteViewModel.categoryToDoState
+                )
+            }
+
+            checkIsEmpty()
+            toDoCategoryAdapter.notifyDataSetChanged()
+
+            binding.fragmentTodoListRv.fadeIn()
+        }
     }
 
     private fun checkIsEmpty() {
-        todoViewModel.allCategoryItems.observe(viewLifecycleOwner, {
+        todoViewModel.allCategoryItems.observe(viewLifecycleOwner) {
             if (todoViewModel.allCategoryItems.value!!.isEmpty()) {
                 binding.fragmentTodoListEmptyTv.fadeIn()
             } else {
                 binding.fragmentTodoListEmptyTv.fadeOut()
             }
-        })
+        }
     }
 
     override fun onPause() {

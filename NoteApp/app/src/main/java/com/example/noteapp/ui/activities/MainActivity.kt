@@ -18,12 +18,6 @@ class MainActivity : AppCompatActivity(), ToolbarAction {
 
     lateinit var todoViewModel: TodoViewModel
 
-    private val SHARED_PREFS = "sharedPrefs"
-
-    private val KEY = "key"
-
-    private var state: Boolean? = null
-
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,29 +32,6 @@ class MainActivity : AppCompatActivity(), ToolbarAction {
         noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
 
         todoViewModel = ViewModelProvider(this)[TodoViewModel::class.java]
-
-        loadData()
-    }
-
-    override fun onStop() {
-        saveData()
-        super.onStop()
-    }
-
-    private fun loadData() {
-        val sp = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
-        state = sp.getBoolean(KEY, false)
-        if (state != null) {
-            noteViewModel.state = state!!
-        }
-    }
-
-    private fun saveData() {
-        if (noteViewModel.getSortDescNote().value != null) {
-            val sp = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
-            val editor = sp.edit()
-            editor.putBoolean(KEY, noteViewModel.getSortDescNote().value!!).apply()
-        }
     }
 
     override fun setupToolbar(
@@ -109,6 +80,8 @@ class MainActivity : AppCompatActivity(), ToolbarAction {
         } else {
             binding.fragmentEditNoteToolbarSaveIv.visibility = View.GONE
         }
+
+        binding.fragmentSearchCategoryToolbarRl.visibility = View.VISIBLE
     }
 
     override fun onBackBtnPressed(action: () -> Unit) {
@@ -153,11 +126,21 @@ class MainActivity : AppCompatActivity(), ToolbarAction {
         binding.fragmentMainToolbarMultibuttonIb.setImageResource(R.drawable.ic_search)
         binding.fragmentMainToolbarMultibuttonIb.fadeIn()
         binding.fragmentSearchCategoryToolbarTitleTv.text = getString(R.string.explore)
+        binding.fragmentMainToolbarFavouriteCb.fadeIn()
+
     }
 
     override fun enableMultiSelectMode() {
         binding.fragmentSearchCategoryToolbarTitleTv.text = getString(R.string.delete)
         binding.fragmentMainToolbarMultibuttonIb.setImageResource(R.drawable.ic_round_delete_outline)
         binding.fragmentMainToolbarFavouriteCb.fadeOut()
+    }
+
+    override fun showToolbar() {
+        binding.fragmentSearchCategoryToolbarRl.visibility = View.VISIBLE
+    }
+
+    override fun hideToolbar() {
+        binding.fragmentSearchCategoryToolbarRl.visibility = View.GONE
     }
 }

@@ -13,6 +13,8 @@ import kotlinx.coroutines.*
 
 class NoteViewModel(app: Application) : AndroidViewModel(app) {
 
+    val sharePreferences = SharePreferences(app.applicationContext)
+
     var view: FragmentMainBinding? = null
 
     var view2: FragmentGeneralNoteBinding? = null
@@ -51,9 +53,7 @@ class NoteViewModel(app: Application) : AndroidViewModel(app) {
 
     var isSearchEdit = 1
 
-    private var fabNoteButtonMode = MutableLiveData<Boolean?>()
-    fun getNoteFabButtonMode(): LiveData<Boolean?> = fabNoteButtonMode
-
+    var fabNoteButtonMode = MutableLiveData<Boolean?>()
     fun setNoteFabButtonMode(boolean: Boolean?) {
         fabNoteButtonMode.postValue(boolean)
     }
@@ -73,13 +73,7 @@ class NoteViewModel(app: Application) : AndroidViewModel(app) {
     var password: Int = 0
     var isFavourite = false
 
-    private val sortDescNote = MutableLiveData<Boolean?>()
-
-    fun getSortDescNote(): LiveData<Boolean?> = sortDescNote
-
-    fun setSortDescNote(boolean: Boolean) {
-        sortDescNote.postValue(boolean)
-    }
+    val isSortDescendingNoteStateAction = MutableLiveData<Boolean?>()
 
     private val multiSelectMode = MutableLiveData<Boolean?>()
 
@@ -88,7 +82,8 @@ class NoteViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun getMultiSelectMode(): LiveData<Boolean?> = multiSelectMode
-    fun setMutliSelectMode(boolean: Boolean?) {
+
+    fun setMultiSelectMode(boolean: Boolean?) {
         multiSelectMode.postValue(boolean)
     }
 
@@ -111,13 +106,7 @@ class NoteViewModel(app: Application) : AndroidViewModel(app) {
         notifyDataNote.postValue(boolean)
     }
 
-    private val sortDescCategory = MutableLiveData<Boolean?>()
-
-    fun getSortDescCategory(): LiveData<Boolean?> = sortDescCategory
-
-    fun setSortDescCategory(boolean: Boolean) {
-        sortDescCategory.postValue(boolean)
-    }
+    val sortDescendingNote = MutableLiveData<Boolean?>()
 
     private val notifyDataCategory = MutableLiveData<Boolean?>()
 
@@ -148,9 +137,6 @@ class NoteViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     //State Model
-
-    var state: Boolean = true
-
 
     fun setDefaultNoteState() {
         setSearchMode(false)

@@ -17,11 +17,11 @@ interface ToolbarAction {
     fun onSearchBtnPressed(action: () -> Unit)
     fun onDoneBtnPressed(action: () -> Unit)
     fun onEditBtnPressed(action: () -> Unit)
-
     fun setToolbarTitle(title: String)
-
     fun changeToolbarMultiSelectIcon(icon: Int)
-
     fun disableMultiSelectMode()
     fun enableMultiSelectMode()
+
+    fun showToolbar()
+    fun hideToolbar()
 }

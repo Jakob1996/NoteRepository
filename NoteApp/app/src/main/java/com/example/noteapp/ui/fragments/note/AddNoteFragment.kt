@@ -223,15 +223,6 @@ class AddNoteFragment : BaseFragment() {
         })
     }
 
-    private fun closeKeyboard() {
-        val view = requireActivity().currentFocus
-        if (view != null) {
-            val imm =
-                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-    }
-
     private fun setSubtitleIndicator() {
 //        val gradientDrawable: GradientDrawable =
 //            binding.fragmentAddNoteSubtitleIndicatorV.background as GradientDrawable

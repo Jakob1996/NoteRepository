@@ -111,16 +111,6 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
             }
         }
     }
-
-    private fun closeKeyboard() {
-        val view = requireActivity().currentFocus
-        if (view != null) {
-            val imm =
-                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-    }
-
     override fun onItemClick(itemsOfList: ItemOfList, position: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             if (itemsOfList.isDone) {
@@ -132,7 +122,6 @@ class GeneralTodoFragment : BaseFragment(), OnItemTodoClickListener, Navigation 
             }
         }
     }
-
     override fun onItemLongClick(itemsOfList: ItemOfList, position: Int) {
         todoViewModel.setSelectedItem(itemsOfList)
 
