@@ -109,6 +109,16 @@ class SearchCategoryFragment : BaseFragment(), OnItemCategoryClickListener {
         mainActivity.onBackBtnPressed {
             requireActivity().onBackPressed()
         }
+
+        binding.closeBtn.setOnClickListener {
+            if (binding.fragmentSearchCategorySearchEt.text.isNotEmpty()) {
+                binding.fragmentSearchCategorySearchEt.text.clear()
+            } else {
+                todoViewModel.search = null
+                closeKeyboard()
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+        }
     }
 
     private fun updateCategory(list: List<Category>, search: String) {
