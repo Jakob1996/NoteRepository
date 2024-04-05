@@ -1,16 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../../../layout/custom_preview.xml" value="0.2111111111111111" />
+        <entry key="app/src/main/res/drawable/abc.xml" value="0.16" />
         <entry key="app/src/main/res/drawable/background_button.xml" value="0.215625" />
         <entry key="app/src/main/res/drawable/background_dialog.xml" value="0.21666666666666667" />
+        <entry key="app/src/main/res/drawable/background_edit.xml" value="0.161" />
         <entry key="app/src/main/res/drawable/background_miscallaneous.xml" value="0.1703125" />
         <entry key="app/src/main/res/drawable/background_no_edit.xml" value="0.1703125" />
+        <entry key="app/src/main/res/drawable/background_note_color_1.xml" value="0.161" />
         <entry key="app/src/main/res/drawable/background_note_color_5.xml" value="0.1703125" />
         <entry key="app/src/main/res/drawable/background_subtitle_indicator.xml" value="0.1703125" />
+        <entry key="app/src/main/res/drawable/ic_add_circle.xml" value="0.162" />
+        <entry key="app/src/main/res/drawable/ic_baseline_lock.xml" value="0.162" />
+        <entry key="app/src/main/res/drawable/ic_baseline_login.xml" value="0.161" />
         <entry key="app/src/main/res/drawable/ic_baseline_share.xml" value="0.184375" />
         <entry key="app/src/main/res/drawable/ic_baseline_turned_in_24.xml" value="0.184375" />
+        <entry key="app/src/main/res/drawable/ic_image.xml" value="0.162" />
         <entry key="app/src/main/res/drawable/ic_lock_24.xml" value="0.184375" />
         <entry key="app/src/main/res/drawable/ic_options.xml" value="0.18333333333333332" />
         <entry key="app/src/main/res/drawable/ic_outline_info.xml" value="0.18333333333333332" />
@@ -20,7 +27,10 @@
         <entry key="app/src/main/res/drawable/ic_round_arrow_back_ios.xml" value="0.18333333333333332" />
         <entry key="app/src/main/res/drawable/ic_round_color_text_24.xml" value="0.18333333333333332" />
         <entry key="app/src/main/res/drawable/ic_round_delete_outline.xml" value="0.18333333333333332" />
+        <entry key="app/src/main/res/drawable/ic_round_size_text.xml" value="0.162" />
+        <entry key="app/src/main/res/drawable/new_resource.xml" value="0.16" />
         <entry key="app/src/main/res/drawable/text_resource.xml" value="0.1640625" />
+        <entry key="app/src/main/res/drawable/white_button_style.xml" value="0.162" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/add_item_dialog.xml" value="0.125" />
         <entry key="app/src/main/res/layout/category_item.xml" value="0.1" />
@@ -54,6 +64,8 @@
         <entry key="app/src/main/res/layout/text_cursor.xml" value="0.14791666666666667" />
         <entry key="app/src/main/res/layout/todo_castomizer.xml" value="0.15" />
         <entry key="app/src/main/res/layout/todo_item.xml" value="0.15104166666666666" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_app.xml" value="0.161" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_app2.xml" value="0.162" />
       </map>
     </option>
   </component>
